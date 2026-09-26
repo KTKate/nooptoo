@@ -11,7 +11,7 @@ import alpaca_data as A
 from core import load_panel, stock_cols, RES
 import bt
 
-A.RL = A.RateLimiter(60)
+A.RL = A.RateLimiter(50)
 P = load_panel()
 cols = stock_cols(P)
 o, c, rawc, dv = (P[k][cols] for k in ["o", "c", "rawc", "dv"])

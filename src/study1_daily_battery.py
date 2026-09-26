@@ -8,14 +8,19 @@ Output: results/study1_battery.csv
 """
 import numpy as np
 import pandas as pd
-from core import load_panel, stock_cols, half_spread_bps, cost_bps, split_stats, RES
+from core import load_panel, stock_cols, exec_cost_bps, split_stats, RES
 import bt
 
 P = load_panel()
 cols = stock_cols(P)
 o, h, l, c, rawc, dv = (P[k][cols] for k in ["o", "h", "l", "c", "rawc", "dv"])
-hs = half_spread_bps(P)[cols]
-cs = cost_bps(hs)
+# per-side costs by execution: signals that use the open print must trade after it (continuous market,
+# opening spread) and exit in the closing auction; close->open trades enter in the closing auction and
+# exit in the first minutes (the Yahoo open is the first trade, not the opening cross); close->close
+# trades use the closing auction on both sides. bt.run charges 2 x the per-side frame, so pass the mean.
+c_auc = exec_cost_bps(P, "auction")[cols]
+c_open = exec_cost_bps(P, "open")[cols]
+COST = {"open": (c_open + c_auc) / 2, "close_night": (c_auc + c_open.shift(-1)) / 2, "close_cc": c_auc}
 
 adv = dv.rolling(20, min_periods=10).median().shift(1)   # known before open t
 px = rawc.shift(1)
@@ -41,21 +46,21 @@ rng = (h / l - 1)
 # decision at OPEN of t: use info <= c_{t-1} and o_t. holding: o_t -> c_t
 # decision at CLOSE of t: info <= c_t. holding: c_t -> o_{t+1} or c_t -> c_{t+1}
 S = []
-S.append(("open:gap_down_fade", -gap, oc, "open"))
+S.append(("open:gap_down_fade", -gap, oc, "open"))  # 4th field: cost key
 S.append(("open:gap_up_go", gap, oc, "open"))
 S.append(("open:gap_down_fade_volnorm", -gap / vol20.shift(1), oc, "open"))
 S.append(("open:prev_loser", -ret1.shift(1), oc, "open"))
 S.append(("open:prev_winner", ret1.shift(1), oc, "open"))
 S.append(("open:intraday_mom20", id_mom20.shift(1), oc, "open"))
-S.append(("close:overnight_mom20", on_mom20, co_next, "close"))
-S.append(("close:intraday_loser_overnight", -oc, co_next, "close"))
-S.append(("close:day_loser_overnight", -ret1, co_next, "close"))
-S.append(("close:day_winner_overnight", ret1, co_next, "close"))
-S.append(("close:lowvol_overnight", -vol20, co_next, "close"))
-S.append(("close:rev1_cc", -ret1, cc_next, "close"))
-S.append(("close:rev5_cc", -ret5, cc_next, "close"))
-S.append(("close:mom5_cc", ret5, cc_next, "close"))
-S.append(("close:bigrange_loser_cc", -ret1 * rng, cc_next, "close"))
+S.append(("close:overnight_mom20", on_mom20, co_next, "close_night"))
+S.append(("close:intraday_loser_overnight", -oc, co_next, "close_night"))
+S.append(("close:day_loser_overnight", -ret1, co_next, "close_night"))
+S.append(("close:day_winner_overnight", ret1, co_next, "close_night"))
+S.append(("close:lowvol_overnight", -vol20, co_next, "close_night"))
+S.append(("close:rev1_cc", -ret1, cc_next, "close_cc"))
+S.append(("close:rev5_cc", -ret5, cc_next, "close_cc"))
+S.append(("close:mom5_cc", ret5, cc_next, "close_cc"))
+S.append(("close:bigrange_loser_cc", -ret1 * rng, cc_next, "close_cc"))
 
 rows = []
 for tname, Emask in tiers.items():
@@ -63,6 +68,7 @@ for tname, Emask in tiers.items():
         # eligibility uses liquidity known before the open of t (valid for both open and close decisions)
         E = Emask & sig.notna()
         W = bt.select_topk(sig, E, 10)
+        cs = COST[when]
         r = bt.run(W, R, cs, roundtrip=True)
         # decile long-short gross (signal quality)
         Wl = bt.select_quantile(sig, E, 0.1, True)

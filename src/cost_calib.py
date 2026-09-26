@@ -40,29 +40,29 @@ def sample_quotes(n_per_bucket=40, n_days=4, seed=1):
             pool = a[(a > lo) & (a <= hi) & (px > 2)].index
             for t in rng.choice(pool, min(n_per_bucket, len(pool)), replace=False):
                 rows.append((pd.Timestamp(d), t))
-    out = []
-    for i, (d, t) in enumerate(rows):
-        for hm in TIMES:
-            st = pd.Timestamp(f"{d.date()} {hm}").tz_localize("America/New_York").tz_convert("UTC")
-            try:
-                j = A.get("quotes", dict(symbols=t, start=st.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                                         end=(st + pd.Timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                                         limit=1000, feed="sip"))
-            except RuntimeError as e:
-                print("err", t, d, e)
-                continue
-            q = pd.DataFrame((j.get("quotes") or {}).get(t, []))
-            if not len(q):
-                continue
-            q = q[(q.bp > 0) & (q.ap > q.bp)]
-            if not len(q):
-                continue
-            mid = (q.ap + q.bp) / 2
-            hs = ((q.ap - q.bp) / 2 / mid * 1e4)
-            out.append(dict(date=d, ticker=t, hm=hm, hs_med=hs.median(), hs_mean=hs.mean(), nq=len(q),
-                            mid=mid.median()))
-        if i % 50 == 0:
-            print(i, len(rows), flush=True)
+    def one(job):
+        d, t, hm = job
+        st = pd.Timestamp(f"{d.date()} {hm}").tz_localize("America/New_York").tz_convert("UTC")
+        try:
+            j = A.get("quotes", dict(symbols=t, start=st.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                     end=(st + pd.Timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                     limit=1000, feed="sip"))
+        except RuntimeError as e:
+            print("err", t, d, e)
+            return None
+        q = pd.DataFrame((j.get("quotes") or {}).get(t, []))
+        if not len(q):
+            return None
+        q = q[(q.bp > 0) & (q.ap > q.bp)]
+        if not len(q):
+            return None
+        mid = (q.ap + q.bp) / 2
+        hs = ((q.ap - q.bp) / 2 / mid * 1e4)
+        return dict(date=d, ticker=t, hm=hm, hs_med=hs.median(), hs_mean=hs.mean(), nq=len(q), mid=mid.median())
+    from concurrent.futures import ThreadPoolExecutor
+    jobs = [(d, t, hm) for d, t in rows for hm in TIMES]
+    with ThreadPoolExecutor(8) as ex:
+        out = [x for x in ex.map(one, jobs) if x is not None]
     s = pd.DataFrame(out)
     s.to_parquet(f"{RES}/spread_sample.parquet", index=False)
     return s

@@ -15,12 +15,15 @@ Output: results/study2_earnings.csv
 """
 import numpy as np
 import pandas as pd
-from core import load_panel, stock_cols, half_spread_bps, cost_bps, split_stats, ann_stats, RES, DATA
+from core import load_panel, stock_cols, exec_cost_bps, split_stats, ann_stats, RES, DATA
 
 P = load_panel()
 cols = stock_cols(P)
 c, rawc, dv = P["c"][cols], P["rawc"][cols], P["dv"][cols]
-cs = cost_bps(half_spread_bps(P)[cols])
+# every entry and exit happens at a close: market-on-close orders (closing auction). A variant charging the
+# continuous-market cost at 15:45 is reported too (COSTKIND=close).
+import os
+cs = exec_cost_bps(P, os.environ.get("COSTKIND", "auction"))[cols]
 days = c.index
 adv = dv.rolling(20, min_periods=10).median()
 ret = c.pct_change()
@@ -119,6 +122,6 @@ for k, (n, expo) in out.items():
                          maxdd=st.loc[per, "maxdd"], avg_expo=expo.loc[{"dev": slice("2020", "2023"),
                          "val": slice("2024", "2025-06"), "oos": slice("2025-07", "2026-09")}[per]].mean()))
 df = pd.DataFrame(rows)
-df.to_csv(f"{RES}/study2_earnings.csv", index=False)
+df.to_csv(f"{RES}/study2_earnings_{os.environ.get('COSTKIND', 'auction')}.csv", index=False)
 pd.set_option("display.width", 250)
 print(df.pivot_table(index="strat", columns="period", values=["sharpe", "ann_ret", "avg_expo"]).round(2))

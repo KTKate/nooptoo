@@ -5,20 +5,21 @@ Predictions are made at the close of day t (features use c_t). Execution variant
   day1  : buy at the open of t+1, sell at the close of t+1
   cc1   : buy close t, sell close t+1
   cc5   : buy close t, hold 5 days (5 overlapping cohorts, 1/5 of capital each)
-Costs per side come from core.cost_bps (spread model + slippage + fees). Auction-to-auction trades
-are also shown with an auction cost (fees + 1 bp) because MOO/MOC orders do not cross the spread.
+Costs per side (core.exec_cost_bps): closing-auction side = fees + 1 bp + 10% of the half-spread;
+open side = quoted 09:35 half-spread + 2 bp + fees, because the Yahoo open is the first trade rather than
+the opening cross (variant 'auction' prices the open side like the close, an optimistic bound).
 Output: results/study3_eval.csv
 """
 import numpy as np
 import pandas as pd
-from core import load_panel, stock_cols, half_spread_bps, cost_bps, split_stats, RES
+from core import load_panel, stock_cols, exec_cost_bps, split_stats, RES
 import bt
 
 P = load_panel()
 cols = stock_cols(P)
 o, c = P["o"][cols], P["c"][cols]
-cs = cost_bps(half_spread_bps(P)[cols])
-auction = pd.DataFrame(1.3, index=cs.index, columns=cs.columns)
+c_auc = exec_cost_bps(P, "auction")[cols]
+c_open = exec_cost_bps(P, "open")[cols]
 R = {"night": o.shift(-1) / c - 1, "day1": c.shift(-1) / o.shift(-1) - 1, "cc1": c.shift(-1) / c - 1,
      "cc5": c.shift(-1) / c - 1}
 rows = []
@@ -33,18 +34,17 @@ for tgt in ["night", "day1", "cc1", "cc5"]:
         W = bt.select_topk(S, E, k)
         variants = {}
         if tgt == "cc5":
-            Wh = bt.hold_k_days(W, 5)
-            variants["model"] = bt.run(Wh.shift(0), R[tgt], cs, roundtrip=False)
+            variants["model"] = bt.run(bt.hold_k_days(W, 5), R[tgt], c_auc, roundtrip=False)
         elif tgt == "cc1":
-            variants["model"] = bt.run(W, R[tgt], cs, roundtrip=False)
+            variants["model"] = bt.run(W, R[tgt], c_auc, roundtrip=False)
         elif tgt == "night":
-            variants["model"] = bt.run(W, R[tgt], cs, roundtrip=True)
-            variants["auction"] = bt.run(W, R[tgt], auction, roundtrip=True)
+            variants["model"] = bt.run(W, R[tgt], (c_auc + c_open.shift(-1)) / 2, roundtrip=True)
+            variants["auction"] = bt.run(W, R[tgt], c_auc, roundtrip=True)
         else:
-            # entry at next open: the cost that applies is the one known at t+1 open
-            variants["model"] = bt.run(W, R[tgt], cs.shift(-1), roundtrip=True)
-            variants["auction"] = bt.run(W, R[tgt], auction, roundtrip=True)
+            variants["model"] = bt.run(W, R[tgt], (c_auc + c_open.shift(-1)) / 2, roundtrip=True)
+            variants["auction"] = bt.run(W, R[tgt], c_auc, roundtrip=True)
         for vn, r in variants.items():
+            r = r.loc["2022":]                      # predictions start 2022Q1 ("dev" = 2022-2023)
             st = split_stats(r["net"])
             stg = split_stats(r["gross"])
             for per in ["dev", "val", "oos"]:

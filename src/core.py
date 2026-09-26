@@ -179,3 +179,17 @@ def half_spread_panel(P, hm="12:00"):
     px = P["rawc"].shift(1)
     vol = np.log(P["c"] / P["c"].shift(1)).rolling(20, min_periods=10).std().shift(1)
     return half_spread_model(adv, px, vol.clip(lower=1e-3), hm).astype("float32")
+
+
+def exec_cost_bps(P, kind, slippage=2.0, fees=0.3, auction_frac=0.1):
+    """Per-side cost panel (bps) by execution type, known before day t:
+      'auction'  : market-on-open / market-on-close order. No spread is crossed; charge fees + 1 bp +
+                   auction_frac x quoted half-spread for joining a thin auction.
+      'open'     : marketable order in the first minutes (quoted spread at 09:35) + slippage + fees
+      'mid'      : marketable order midday (12:00 spread) + slippage + fees
+      'close'    : marketable order at 15:45 + slippage + fees
+    """
+    if kind == "auction":
+        return (fees + 1.0 + auction_frac * half_spread_panel(P, "15:45")).astype("float32")
+    hm = {"open": "09:35", "mid": "12:00", "close": "15:45"}[kind]
+    return (half_spread_panel(P, hm) + slippage + fees).astype("float32")

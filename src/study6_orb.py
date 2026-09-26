@@ -1,5 +1,6 @@
 """Study 6: 5-minute opening-range breakout on "stocks in play" (Zarattini & Aziz 2023,
-"Can Day Trading Really Be Profitable?"), with 5-minute Alpaca SIP bars, 2024-01 .. 2026-09.
+"Can Day Trading Really Be Profitable?"), with 5-minute Alpaca SIP bars, 2024-01 .. 2026-09 (opening bar for the whole universe from the
+m5snap dataset; full-session bars fetched only for the top-20 candidates of each day).
 
 Published rule (parameters not tuned here):
   universe at t: price > $5, 14-day average volume > 1M shares, ATR14 > $0.50 (all known at t-1)
@@ -29,18 +30,10 @@ OUT_TR = f"{RES}/study6_orb_trades.parquet"
 
 def first_bars():
     """Per stock-day: first 5-minute bar (9:30) o h l c v, from the m5 store (cached)."""
-    fn = os.path.join(A.LOCAL, "m5_first.parquet")
-    if os.path.exists(fn):
-        return pd.read_parquet(fn)
-    parts = []
-    for f in sorted(os.listdir(os.path.join(A.LOCAL, "m5"))):
-        d = pd.read_parquet(os.path.join(A.LOCAL, "m5", f))
-        d = d[(d.ts.dt.hour == 9) & (d.ts.dt.minute == 30)]
-        d["date"] = d.ts.dt.normalize()
-        parts.append(d[["date", "ticker", "o", "h", "l", "c", "v"]])
-    fb = pd.concat(parts, ignore_index=True)
-    fb.to_parquet(fn, index=False)
-    return fb
+    d = A.read("m5snap", columns=["ts", "ticker", "o", "h", "l", "c", "v"])
+    d = d[(d.ts.dt.hour == 9) & (d.ts.dt.minute == 30)]
+    d["date"] = d.ts.dt.normalize()
+    return d[["date", "ticker", "o", "h", "l", "c", "v"]]
 
 
 def candidates(k=20):
@@ -77,8 +70,9 @@ def candidates(k=20):
 def simulate_trades(cand):
     rows = []
     cand = cand.assign(month=cand.date.dt.strftime("%Y-%m"))
+    A.fetch_pairs(zip(cand.ticker, cand.date))          # full-session bars only for the candidates
     for m, cm in cand.groupby("month"):
-        d = A.read("m5", start=m, end=m, tickers=sorted(cm.ticker.unique()))
+        d = A.read("m5full", start=m, end=m, tickers=sorted(cm.ticker.unique()))
         d = d[(d.ts.dt.time >= pd.Timestamp("09:30").time()) & (d.ts.dt.time < pd.Timestamp("16:00").time())]
         d["date"] = d.ts.dt.normalize()
         g = {k: v for k, v in d.groupby(["date", "ticker"])}
