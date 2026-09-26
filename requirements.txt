@@ -1,0 +1,8 @@
+pandas>=2.2
+numpy
+pyarrow
+zstandard
+scipy
+lightgbm
+yfinance
+requests

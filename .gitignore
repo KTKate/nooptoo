@@ -2,3 +2,4 @@ data/*
 !data/store/
 __pycache__/
 *.pyc
+logs/

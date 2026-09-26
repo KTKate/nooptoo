@@ -10,7 +10,7 @@ Conventions
   deliberately conservative for a $10k account (market impact ~0):
       cost_side = half_spread + slippage + fees
   half_spread comes from the Abdi-Ranaldo (2017) close-high-low estimator,
-  rolling 63-day median per stock (lagged one day), floored by a
+  rolling 63-day mean of the daily terms per stock (lagged one day), floored by a
   dollar-volume bucket table taken from typical quoted spreads.
 """
 import os
@@ -79,10 +79,13 @@ def half_spread_bps(P):
     """Per stock-day half-spread estimate in bps, known before the open of that day."""
     lc, lh, ll = np.log(P["c"]), np.log(P["h"]), np.log(P["l"])
     eta = (lh + ll) / 2
-    # Abdi-Ranaldo: s^2 = 4 (c_t - eta_t)(c_t - eta_{t+1}); use t-1 values so it is known at t
+    # Abdi-Ranaldo: s^2 = 4 (c_t - eta_t)(c_t - eta_{t+1}). The term dated t uses the high/low of
+    # t+1, so it is only known after the close of t+1: shift by 2 to be known before the open of t.
     s2 = 4 * (lc - eta) * (lc - eta.shift(-1))
-    s2 = s2.shift(1)
-    ar = np.sqrt(s2.clip(lower=0).rolling(63, min_periods=20).mean()) * 1e4  # full spread bps
+    s2 = s2.shift(2)
+    # average the raw (possibly negative) terms first, then clip: clipping each day first biases the
+    # estimate upward by the noise level (tens of bps even for mega caps)
+    ar = np.sqrt(s2.rolling(63, min_periods=20).mean().clip(lower=0)) * 1e4  # full spread bps
     # floor table on 20d median dollar volume
     adv = P["dv"].rolling(20, min_periods=5).median().shift(1)
     floor = pd.DataFrame(np.select(
@@ -148,3 +151,31 @@ def block_bootstrap_sharpe(r, block=10, n=2000, seed=0, periods=252):
         x = r[np.array(idx[:T])]
         out.append(x.mean() / x.std() * np.sqrt(periods))
     return np.percentile(out, [2.5, 50, 97.5])
+
+
+# ---------------------------------------------------------------- quote-calibrated spread model
+_SPREAD_MODEL = None
+
+
+def half_spread_model(adv, px, vol20, hm="12:00"):
+    """Quoted half-spread (bps) predicted from lagged 20d median dollar volume, price and 20d daily
+    log-return vol, fitted on an Alpaca SIP NBBO sample (src/cost_calib.py, results/spread_model.json).
+    hm: time of day, one of 09:31 09:35 12:00 15:45 (the open is much wider than midday).
+    Returns the conditional mean exp(mu + s^2/2), floored at half a cent."""
+    global _SPREAD_MODEL
+    if _SPREAD_MODEL is None:
+        import json
+        _SPREAD_MODEL = json.load(open(os.path.join(RES, "spread_model.json")))
+    m = _SPREAD_MODEL
+    mu = (m["const"] + m["ladv"] * np.log(adv) + m["lpx"] * np.log(px) + m["lvol"] * np.log(vol20)
+          + m.get(f"t{hm}", 0.0))
+    hs = np.exp(mu + 0.5 * m["resid_sd"] ** 2)
+    return np.maximum(hs, 0.5 * 0.01 / px * 1e4)
+
+
+def half_spread_panel(P, hm="12:00"):
+    """half_spread_model on the wide daily panel, using only information known before day t."""
+    adv = P["dv"].rolling(20, min_periods=10).median().shift(1)
+    px = P["rawc"].shift(1)
+    vol = np.log(P["c"] / P["c"].shift(1)).rolling(20, min_periods=10).std().shift(1)
+    return half_spread_model(adv, px, vol.clip(lower=1e-3), hm).astype("float32")
