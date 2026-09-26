@@ -38,17 +38,35 @@ ETF1M = ["SPY", "QQQ", "IWM", "DIA", "MDY", "XLK", "XLF", "XLE", "XLV", "XLI", "
 
 
 class RateLimiter:
+    """Request pacing shared by every process on this machine (the 200/min limit is per account):
+    the next free slot time is kept in a small file guarded by an exclusive lock. per_min is
+    this process's own ceiling; the global ceiling is GLOBAL_PER_MIN."""
+    GLOBAL_PER_MIN = 190
+
     def __init__(self, per_min=190):
-        self.gap = 60.0 / per_min
+        self.own_gap = 60.0 / per_min
+        self.gap = 60.0 / self.GLOBAL_PER_MIN
         self.lock = threading.Lock()
-        self.next = time.monotonic()
+        self.own_next = 0.0
+        self.fn = os.path.join(LOCAL, ".ratelimit")
+        os.makedirs(LOCAL, exist_ok=True)
 
     def wait(self):
+        import fcntl
         with self.lock:
-            now = time.monotonic()
-            t = max(now, self.next)
-            self.next = t + self.gap
-        time.sleep(max(0.0, t - time.monotonic()))
+            with open(self.fn, "a+") as f:
+                fcntl.flock(f, fcntl.LOCK_EX)
+                f.seek(0)
+                txt = f.read().strip()
+                now = time.time()
+                t = max(now, float(txt) if txt else 0.0, self.own_next)
+                f.seek(0)
+                f.truncate()
+                f.write(repr(t + self.gap))
+                f.flush()
+                fcntl.flock(f, fcntl.LOCK_UN)
+            self.own_next = t + self.own_gap
+        time.sleep(max(0.0, t - time.time()))
 
 
 RL = RateLimiter(int(os.environ.get("ALPACA_PER_MIN", "190")))
@@ -143,6 +161,8 @@ def fetch_month(ds, tickers, month, timeframe, chunk, workers=4):
         return 0
     a = pd.Timestamp(month + "-01")
     b = a + pd.offsets.MonthBegin(1)
+    # the free plan only serves SIP data older than 15 minutes
+    b = min(b, pd.Timestamp.now(tz="UTC").tz_localize(None).floor("min") - pd.Timedelta(minutes=20))
     groups = [todo[i:i + chunk] for i in range(0, len(todo), chunk)]
     with ThreadPoolExecutor(workers) as ex:
         parts = list(ex.map(lambda g: bars(g, timeframe, a.strftime("%Y-%m-%dT00:00:00Z"),
@@ -203,3 +223,63 @@ if __name__ == "__main__":
         run_m1()
     elif what == "m5":
         run_m5()
+
+
+# ------------------------------------------------------------------ official auction prices
+def _official(t, day, kind):
+    """Primary-exchange opening cross ('O' opening print) or closing cross ('6' closing print) for ticker t
+    on day, from SIP trades. ('Q'/'M' official open/close are reported by every market center, so a 2-share
+    Arca print can carry them; they are not used.)"""
+    if kind == "open":
+        a, b, cond = f"{day} 09:29:00", f"{day} 09:45:00", "O"
+    else:
+        a, b, cond = f"{day} 15:59:00", f"{day} 16:15:00", "6"
+    a = pd.Timestamp(a).tz_localize("America/New_York").tz_convert("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
+    b = pd.Timestamp(b).tz_localize("America/New_York").tz_convert("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
+    p = dict(symbols=t, start=a, end=b, limit=10000, feed="sip")
+    first = np.nan
+    for _ in range(10):
+        j = get("trades", p)
+        tr = (j.get("trades") or {}).get(t, [])
+        for x in tr:
+            if np.isnan(first) and not set(x.get("c", [])) & {"I", "T", "U", "Z"}:
+                first = x["p"]
+            if cond in x.get("c", []):
+                return x["p"], first
+        if not j.get("next_page_token"):
+            break
+        p["page_token"] = j["next_page_token"]
+    return np.nan, first
+
+
+def auction_prices(pairs, workers=4, with_close=False):
+    """pairs: iterable of (ticker, date). Returns DataFrame ticker, date, open_off, close_off, first_trade.
+    Cached in data/local/auctions.parquet; only missing pairs are requested."""
+    fn = os.path.join(LOCAL, "auctions.parquet")
+    have = pd.read_parquet(fn) if os.path.exists(fn) else pd.DataFrame(
+        columns=["ticker", "date", "open_off", "close_off", "first_trade"])
+    have["date"] = pd.to_datetime(have["date"])
+    want = pd.DataFrame(list(pairs), columns=["ticker", "date"]).drop_duplicates()
+    want["date"] = pd.to_datetime(want["date"])
+    todo = want.merge(have[["ticker", "date"]], how="left", indicator=True)
+    todo = todo[todo._merge == "left_only"][["ticker", "date"]]
+
+    def one(r):
+        d = r[1].strftime("%Y-%m-%d")
+        try:
+            o, f = _official(r[0], d, "open")
+            c = _official(r[0], d, "close")[0] if with_close else np.nan
+        except RuntimeError:
+            o = c = f = np.nan
+        return dict(ticker=r[0], date=r[1], open_off=o, close_off=c, first_trade=f)
+    rows = []
+    items = list(todo.itertuples(index=False, name=None))
+    for i in range(0, len(items), 400):
+        with ThreadPoolExecutor(workers) as ex:
+            rows += list(ex.map(one, items[i:i + 400]))
+        new = pd.concat([have, pd.DataFrame(rows)], ignore_index=True)
+        new.to_parquet(fn, index=False)
+        print("auctions", len(rows), "/", len(items), flush=True)
+    if rows:
+        have = pd.concat([have, pd.DataFrame(rows)], ignore_index=True)
+    return want.merge(have, on=["ticker", "date"], how="left")

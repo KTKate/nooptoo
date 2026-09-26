@@ -9,7 +9,8 @@ Rule as published (no parameter tuning here):
   short exits above min(LB, session VWAP). Everything is flat at the close.
 Execution: the decision uses the close of the minute bar that ends at the mark (e.g. 9:59 bar for 10:00);
 the fill is the close of the next minute bar (one minute of delay) plus cost. Final exit at the 15:59 bar close.
-Costs per side: SPY/QQQ/IWM/DIA 0.5 bp half-spread + 1 bp slippage + 0.3 bp fees = 1.8 bp.
+Costs per side: SPY/QQQ/IWM/DIA 0.5 bp half-spread + 1 bp slippage + 0.3 bp fees = 1.8 bp (base case);
+sensitivity at 0.5 bp per side (close to the true SPY half-spread of ~0.1 bp plus fees) and at zero (gross).
 Sizing variants: 1x (cash account; short signals either skipped or implemented with an inverse ETF),
 and the paper's volatility sizing  lev = min(cap, 2% / 14-day daily vol).
 Periods: dev 2019-07..2023-12, val 2024-01..2025-06, oos 2025-07..2026-09.
@@ -54,8 +55,9 @@ def simulate(close, opn, vwap, divadj=None):
         if np.isnan(sigma.loc[d, 60]) or np.isnan(prevc.loc[d]):
             continue
         px, vw, sg = close.loc[d].values, vwap.loc[d].values, sigma.loc[d].values
-        pos, entry, trades = 0, np.nan, 0
+        pos, entry = 0, np.nan
         pnl = {1: 0.0, -1: 0.0}
+        ntr = {1: 0, -1: 0}
         for m in marks:
             p = px[m - 1]                     # close of the bar ending at the mark
             ub, lb = hi.loc[d] * (1 + sg[m - 1]), lo.loc[d] * (1 - sg[m - 1])
@@ -71,18 +73,25 @@ def simulate(close, opn, vwap, divadj=None):
             if want != pos:
                 fill = px[m]                  # one minute later
                 if pos != 0:
-                    pnl[pos] += pos * (fill / entry - 1) - COST
-                    trades += 1
+                    pnl[pos] += pos * (fill / entry - 1)
+                    ntr[pos] += 1
                 if want != 0:
                     entry = fill
-                    pnl[want] -= COST
                 pos = want
         if pos != 0:
-            pnl[pos] += pos * (px[389] / entry - 1) - COST
-            trades += 1
-        out.append((d, pnl[1] + pnl[-1], pnl[1], trades))
-    # ret_long: the short signals are ignored (flat instead); this is the cash-account version
-    return pd.DataFrame(out, columns=["date", "ret1x", "ret_long", "trades"]).set_index("date")
+            pnl[pos] += pos * (px[389] / entry - 1)
+            ntr[pos] += 1
+        out.append((d, pnl[1], pnl[-1], ntr[1], ntr[-1]))
+    r = pd.DataFrame(out, columns=["date", "g_long", "g_short", "n_long", "n_short"]).set_index("date")
+    # every round trip pays COST twice (entry and exit)
+    r["trades"] = r.n_long + r.n_short
+    r["gross"] = r.g_long + r.g_short
+    r["ret1x"] = r.gross - 2 * COST * r.trades
+    # ret_long: short signals ignored (flat instead); the cash-account version
+    r["ret_long"] = r.g_long - 2 * COST * r.n_long
+    r["ret1x_0.5bp"] = r.gross - 2 * 0.5e-4 * r.trades
+    r["ret_long_0.5bp"] = r.g_long - 2 * 0.5e-4 * r.n_long
+    return r
 
 
 if __name__ == "__main__":
@@ -97,7 +106,7 @@ if __name__ == "__main__":
             r[f"vol_cap{cap}"] = r.ret1x * lev
         r["bh"] = dret.reindex(r.index)
         r.to_parquet(f"{RES}/study5_daily_{t}.parquet")
-        for col in ["ret1x", "ret_long", "vol_cap1", "vol_cap2", "vol_cap4", "bh"]:
+        for col in ["gross", "ret1x_0.5bp", "ret_long_0.5bp", "ret1x", "ret_long", "vol_cap1", "vol_cap2", "vol_cap4", "bh"]:
             for per, a, b in [("dev", "2019-07", "2023-12"), ("val", "2024-01", "2025-06"),
                               ("oos", "2025-07", "2026-09"), ("post_pub", "2024-03", "2026-09")]:
                 st = ann_stats(r[col].loc[a:b])
