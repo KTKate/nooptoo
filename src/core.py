@@ -34,21 +34,25 @@ _PANEL = None
 
 
 def load_panel(cache=True):
-    """Return dict of wide float32 panels: o h l c rawc v dv (dollar volume), plus 'etf' ohlc."""
+    """Return dict of wide float32 panels: o h l c rawc v dv (dollar volume), built from data/store.
+    The derived pickle cache is rebuilt automatically when the store has newer data."""
     global _PANEL
-    if _PANEL is not None:
+    import store
+    stamp = store.meta().get("daily_last", "")
+    if _PANEL is not None and _PANEL.get("_stamp") == stamp:
         return _PANEL
     pq = os.path.join(DATA, "panel.pkl")
     if cache and os.path.exists(pq):
-        _PANEL = pd.read_pickle(pq)
-        return _PANEL
-    d = pd.read_parquet(os.path.join(DATA, "daily_all.parquet"))
-    d = d[d.date >= "2019-06-01"]
-    d = d[(d.close > 0) & (d.open > 0) & (d.high > 0) & (d.low > 0)]
-    f = (d.adj_close / d.close).astype("float64")
-    d["o"], d["h"], d["l"], d["c"] = d.open * f, d.high * f, d.low * f, d.adj_close
-    d["rawc"] = d.close
-    d["v"] = d.volume
+        P = pd.read_pickle(pq)
+        if P.get("_stamp") == stamp:
+            _PANEL = P
+            return P
+    d = store.read("daily", start="2019-06")
+    d = d[(d.c > 0) & (d.o > 0) & (d.h > 0) & (d.l > 0)]
+    f = store.adj_factor(d).astype("float64")
+    d["rawc"] = d["c"]
+    for k in ["o", "h", "l", "c"]:
+        d[k] = d[k] * f
     P = {}
     for k in ["o", "h", "l", "c", "rawc", "v"]:
         P[k] = d.pivot(index="date", columns="ticker", values=k).astype("float32")
@@ -61,6 +65,7 @@ def load_panel(cache=True):
     bad = (P["l"] > P["h"] * 1.0001) | (P["o"] > P["h"] * 1.02) | (P["o"] < P["l"] * 0.98)
     for k in ["o", "h", "l", "c"]:
         P[k] = P[k].mask(bad)
+    P["_stamp"] = stamp
     pd.to_pickle(P, pq)
     _PANEL = P
     return P

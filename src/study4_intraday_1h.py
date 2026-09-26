@@ -22,7 +22,8 @@ import pandas as pd
 from core import load_panel, half_spread_bps, cost_bps, ann_stats, RES, DATA
 
 SPLIT = "2025-09-30"
-X = pd.read_parquet(f"{DATA}/intraday_60m.parquet")
+import store
+X = store.read("intra60")
 X["date"] = X.ts.dt.tz_localize(None).dt.normalize()
 X["hm"] = X.ts.dt.strftime("%H:%M")
 X = X[X.hm.isin(["09:30", "10:30", "11:30", "12:30", "13:30", "14:30", "15:30"])]

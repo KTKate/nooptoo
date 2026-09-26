@@ -62,7 +62,8 @@ F["beta"] = beta
 F["resid1"] = lr - beta.mul(spy, axis=0)
 F["resid5"] = F["resid1"].rolling(5).sum()
 # earnings calendar features (dates are announced in advance; surprise known after report)
-E = pd.read_parquet(f"{DATA}/earnings.parquet")
+import store
+E = store.read("earnings")
 E = E[E.symbol.isin(cols)]
 days = c.index
 di = days.searchsorted(pd.to_datetime(E.date).values)

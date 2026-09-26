@@ -25,7 +25,8 @@ days = c.index
 adv = dv.rolling(20, min_periods=10).median()
 ret = c.pct_change()
 
-E = pd.read_parquet(f"{DATA}/earnings.parquet")
+import store
+E = store.read("earnings")
 E = E[E.symbol.isin(cols)].copy()
 E["date"] = pd.to_datetime(E["date"])
 # map report date to trading-day index (next trading day if report on a holiday)
