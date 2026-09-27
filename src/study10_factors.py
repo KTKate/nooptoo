@@ -46,7 +46,7 @@ def rec(test, name, uni, x, **kw):
     """x: Series indexed by day, mean overnight return of a daily portfolio (decimal)."""
     for per, a, b in PER:
         y = x.loc[a:b].dropna()
-        if len(y) < 20:
+        if len(y) < (5 if test == "C" else 20):
             continue
         rows.append(dict(test=test, factor=name, universe=uni, period=per, n_days=len(y), bps=1e4 * y.mean(),
                          t=y.mean() / y.std() * np.sqrt(len(y)) if y.std() > 0 else np.nan, **kw))
