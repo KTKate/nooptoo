@@ -22,39 +22,63 @@ from core import load_panel, stock_cols, exec_cost_bps, half_spread_panel, ann_s
 import bt
 
 
-def snap_panels():
+def snap_panels(mode="base"):
+    """5-minute snapshot panels (date x ticker) restricted to stock-days consistent with the Yahoo daily store.
+    mode (the Alpaca-Yahoo consistency filter):
+      base   : drop stock-days with >15% open/close disagreement, and drop whole tickers whose monthly median
+               close disagreement exceeds 0.5% in any month (spin-off / stock-dividend adjustments)
+      month  : looser: same day filter, but drop only the ticker-months above 0.5%, not the whole ticker
+      strict : stricter: day filter at 5%, whole tickers dropped above 0.25% in any month
+      none   : no consistency filter at all
+    """
     ndone = len(A.done_pairs("m5snap"))                      # cache key: number of fetched days
-    fn = os.path.join(A.LOCAL, f"m5snap_panels_{ndone}.pkl")
+    fn = os.path.join(A.LOCAL, f"m5snap_panels_{ndone}{'' if mode == 'base' else '_' + mode}.pkl")
     if os.path.exists(fn):
         return pd.read_pickle(fn)
-    d = A.read("m5snap")
-    d["date"] = d.ts.dt.normalize()
-    d["hm"] = d.ts.dt.strftime("%H:%M")
-    out = {}
-    for hm in ["09:30", "09:35", "09:55", "15:40", "15:55"]:
-        s = d[d.hm == hm]
-        for k in ["o", "c", "vwap", "v"]:
-            out[f"{k}{hm}"] = s.pivot(index="date", columns="ticker", values=k)
+    raw_fn = os.path.join(A.LOCAL, f"m5snap_panels_{ndone}_raw.pkl")
+    if os.path.exists(raw_fn):
+        out = pd.read_pickle(raw_fn)
+    else:
+        d = A.read("m5snap")
+        d["date"] = d.ts.dt.normalize()
+        d["hm"] = d.ts.dt.strftime("%H:%M")
+        out = {}
+        for hm in ["09:30", "09:35", "09:55", "15:40", "15:55"]:
+            s = d[d.hm == hm]
+            for k in ["o", "c", "vwap", "v"]:
+                out[f"{k}{hm}"] = s.pivot(index="date", columns="ticker", values=k)
+        del d
+        pd.to_pickle(out, raw_fn)
     # consistency with the Yahoo daily store: a few tickers are adjusted differently (splits, reused symbols);
     # drop stock-days where the Alpaca 09:30 open or 15:55 close is more than 15% away from Yahoo's open/close
     from core import load_panel
     P = load_panel()
     raw = P["rawc"].reindex(index=out["o09:30"].index, columns=out["o09:30"].columns)
+    if mode == "none":
+        out = {k: v.reindex_like(raw) for k, v in out.items()}
+        pd.to_pickle(out, fn)
+        return out
+    day_lim, month_lim = (np.log(1.05), 0.0025) if mode == "strict" else (np.log(1.15), 0.005)
     yo = (P["o"] / (P["c"] / P["rawc"])).reindex_like(raw)
     r1 = np.log(out["o09:30"].reindex_like(raw) / yo).abs()
     r2 = np.log(out["c15:55"].reindex_like(raw) / raw).abs()
-    ok = (r1 < np.log(1.15)) & (r2 < np.log(1.15))
+    ok = (r1 < day_lim) & (r2 < day_lim)
     # tickers whose Yahoo history carries spin-off / stock-dividend adjustments that Alpaca's split
     # adjustment lacks (e.g. CMCSA, SPGI, LEN, FNF, ILMN): the 15:55 close and the Yahoo close differ by a
     # constant factor for months. Mixing the two sources would create fake gaps, so drop those tickers.
     lr = np.log(out["c15:55"].reindex_like(raw) / raw)
-    monthly = lr.groupby(lr.index.to_period("M")).median().abs()
-    bad = monthly.columns[(monthly > 0.005).any()]
-    print("snap consistency: tickers dropped for adjustment mismatch", len(bad))
-    ok.loc[:, bad] = False
-    print("snap consistency: dropped share of stock-days", float(1 - ok.values[raw.notna().values].mean()))
-    for k in out:
-        out[k] = out[k].reindex_like(raw).where(ok)
+    mper = lr.index.to_period("M")
+    monthly = lr.groupby(mper).median().abs()
+    if mode == "month":
+        badm = (monthly > month_lim).reindex(mper).fillna(False).values
+        print("snap consistency: ticker-months dropped", int((monthly > month_lim).values.sum()))
+        ok = ok & ~badm
+    else:
+        bad = monthly.columns[(monthly > month_lim).any()]
+        print("snap consistency: tickers dropped for adjustment mismatch", len(bad))
+        ok.loc[:, bad] = False
+    print("snap consistency:", mode, "dropped share of stock-days", float(1 - ok.values[raw.notna().values].mean()))
+    out = {k: v.reindex_like(raw).where(ok) for k, v in out.items()}
     pd.to_pickle(out, fn)
     return out
 
