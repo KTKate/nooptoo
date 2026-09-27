@@ -13,7 +13,7 @@ Checks:
   filter    Alpaca-Yahoo consistency filter in study8_exec_retest.snap_panels: base, month (drop only
             ticker-months), strict, none, and a source-consistent signal that uses only Alpaca prices
   half_year subperiods; regime check 2020-2026 with the (unexecutable) closing-price signal
-  tails     result without the best 1% of trades (is the edge a few lottery tickets?)
+  tails     result without the best 1% of trades, and with both tails clipped at the 1st/99th percentile
   hedged    alpha after regressing on the IWM overnight return
   bootstrap / deflated Sharpe
 Output: results/study9_smallcap_robust.csv
@@ -97,6 +97,10 @@ for rule, s in sig.items():
     cut = tr.quantile(0.99)
     Rclip = Rn.where(~((W > 0) & (W * Rn >= cut)), 0.0)
     add("tails_drop_top1pct", rule, bt.run(W, Rclip, cost_of()))
+    # the one-sided drop penalises any right-skewed return; clipping both tails at the 1st/99th percentile of
+    # trade returns is the symmetric version
+    lo_, hi_ = Rn.stack()[(W > 0).stack()].quantile([0.01, 0.99]).values
+    add("tails_winsor_1_99", rule, bt.run(W, Rn.clip(lo_, hi_), cost_of()))
     trade_r = Rn.stack()[(W > 0).stack()]
     rows.append(dict(test="trade_stats", rule=rule, period="2024-26", mean_bps=1e4 * trade_r.mean(),
                      median_bps=1e4 * trade_r.median(), hit=(trade_r > 0).mean(), n_trades=len(trade_r),
