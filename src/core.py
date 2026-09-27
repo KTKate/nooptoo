@@ -167,10 +167,14 @@ def half_spread_model(adv, px, vol20, hm="12:00"):
         import json
         _SPREAD_MODEL = json.load(open(os.path.join(RES, "spread_model.json")))
     m = _SPREAD_MODEL
+    # inputs clipped to the range covered by the quote sample; output capped at 300 bps per side
+    adv = np.clip(adv, 2e5, None)
+    px = np.clip(px, 1.0, None)
+    vol20 = np.clip(vol20, 0.005, 0.15)
     mu = (m["const"] + m["ladv"] * np.log(adv) + m["lpx"] * np.log(px) + m["lvol"] * np.log(vol20)
           + m.get(f"t{hm}", 0.0))
     hs = np.exp(mu + 0.5 * m["resid_sd"] ** 2)
-    return np.maximum(hs, 0.5 * 0.01 / px * 1e4)
+    return np.minimum(np.maximum(hs, 0.5 * 0.01 / px * 1e4), 300.0)
 
 
 def half_spread_panel(P, hm="12:00"):

@@ -7,7 +7,8 @@ Daily-bar backtests assume two things that cannot be done:
     15:40-15:45 bar) and the day's data up to then; entry is the official close (Yahoo close = closing cross).
   * "open:" rules compute the gap from the opening print and trade at that print. Here entry is at 09:35
     (close of the first 5-minute bar) or 10:00, with the quoted spread at 09:35 charged.
-Exits for overnight holds: first trade (Yahoo open, with the opening spread charged), the 09:35 price,
+Exits for overnight holds: opening auction (market-on-open; Yahoo open = opening cross in the median, +2.5 bp
+per side for the measured average gap), the first trade with the opening spread charged, the 09:35 price,
 or the 09:30-09:35 bar VWAP (a VWAP order over the first five minutes).
 Universe tiers as in study 1 (M: $5-50M ADV, S: $1-5M ADV; L: > $50M). Top-10 long-only equal weight,
 plus the short side for the gap-up fade (needs margin and borrow).
@@ -22,7 +23,8 @@ import bt
 
 
 def snap_panels():
-    fn = os.path.join(A.LOCAL, "m5snap_panels.pkl")
+    ndone = len(A.done_pairs("m5snap"))                      # cache key: number of fetched days
+    fn = os.path.join(A.LOCAL, f"m5snap_panels_{ndone}.pkl")
     if os.path.exists(fn):
         return pd.read_pickle(fn)
     d = A.read("m5snap")
@@ -68,8 +70,12 @@ if __name__ == "__main__":
         "intraday_loser_overnight_1545": -(p1545 / o - 1),
         "intraday_loser_overnight_close": -(c / o - 1),               # the unexecutable daily-bar version
         "day_loser_overnight_1545": -(p1545 / c.shift(1) - 1),
+        "day_loser_overnight_close": -(c / c.shift(1) - 1),
+        "day_winner_overnight_1545": p1545 / c.shift(1) - 1,
+        "day_winner_overnight_close": c / c.shift(1) - 1,
     }
-    exits = {"yahoo_open": (o.shift(-1), hs_open.shift(-1) + 2 + fees),
+    exits = {"open_auction": (o.shift(-1), c_auc.shift(-1) + 2.5),
+             "yahoo_open_cont": (o.shift(-1), hs_open.shift(-1) + 2 + fees),
              "p0935": (p935.shift(-1), hs_open.shift(-1) + 2 + fees),
              "vwap0930_0935": (vw930.shift(-1), hs_open.shift(-1) + 1 + fees)}
     rows = []

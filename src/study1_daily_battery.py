@@ -15,12 +15,13 @@ P = load_panel()
 cols = stock_cols(P)
 o, h, l, c, rawc, dv = (P[k][cols] for k in ["o", "h", "l", "c", "rawc", "dv"])
 # per-side costs by execution: signals that use the open print must trade after it (continuous market,
-# opening spread) and exit in the closing auction; close->open trades enter in the closing auction and
-# exit in the first minutes (the Yahoo open is the first trade, not the opening cross); close->close
-# trades use the closing auction on both sides. bt.run charges 2 x the per-side frame, so pass the mean.
+# opening spread) and exit in the closing auction; close->close trades use the closing auction on both
+# sides. bt.run charges 2 x the per-side frame, so pass the mean.
 c_auc = exec_cost_bps(P, "auction")[cols]
 c_open = exec_cost_bps(P, "open")[cols]
-COST = {"open": (c_open + c_auc) / 2, "close_night": (c_auc + c_open.shift(-1)) / 2, "close_cc": c_auc}
+# close->open: market-on-close entry and market-on-open exit (the Yahoo open equals the opening cross in the
+# median; on average the cross was 2-7 bp below it for these picks, see validate_overnight.py -> +2.5 bp/side)
+COST = {"open": (c_open + c_auc) / 2, "close_night": c_auc + 2.5, "close_cc": c_auc}
 
 adv = dv.rolling(20, min_periods=10).median().shift(1)   # known before open t
 px = rawc.shift(1)

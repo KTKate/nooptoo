@@ -115,6 +115,8 @@ for K in [10, 20]:
     n, expo = simulate(E[E.adv > 5e7], -2, 1, K, "through")
     out[f"hold_through_liquid_K{K}"] = (n, expo)
 
+pd.DataFrame({k: n for k, (n, expo) in out.items()}).to_parquet(
+    f"{RES}/study2_daily_{os.environ.get('COSTKIND', 'auction')}.parquet")
 for k, (n, expo) in out.items():
     st = split_stats(n)
     for per in ["dev", "val", "oos"]:

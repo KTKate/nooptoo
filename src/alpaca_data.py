@@ -113,17 +113,16 @@ def bars(symbols, timeframe, start, end, adjustment="split"):
     while True:
         j = get("bars", p)
         for s, bl in (j.get("bars") or {}).items():
-            if bl:
-                d = pd.DataFrame(bl)
-                d["ticker"] = s
-                rows.append(d)
+            for b in bl:
+                b["ticker"] = s
+            rows.extend(bl)
         tok = j.get("next_page_token")
         if not tok:
             break
         p["page_token"] = tok
     if not rows:
         return pd.DataFrame()
-    d = pd.concat(rows, ignore_index=True)
+    d = pd.DataFrame.from_records(rows)
     d["ts"] = pd.to_datetime(d.t, utc=True).dt.tz_convert("America/New_York").dt.tz_localize(None)
     d = d.rename(columns={"vw": "vwap"})
     if timeframe.endswith("Min"):
@@ -295,7 +294,7 @@ def trading_days(start, end):
 
 
 def fetch_windows(ds="m5snap", start="2024-01", end=None, windows=(("09:30", "10:00"), ("15:30", "16:00")),
-                  tickers=None, timeframe="5Min", chunk=400, workers=6):
+                  tickers=None, timeframe="5Min", chunk=400, workers=16):
     """5-minute bars in fixed intraday windows for the whole universe, one request batch per day.
     Progress is tracked per day in done_<ds>.parquet (column 'month' holds the day string)."""
     tick = tickers or stock_universe()
