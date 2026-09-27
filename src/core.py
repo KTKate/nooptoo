@@ -197,3 +197,11 @@ def exec_cost_bps(P, kind, slippage=2.0, fees=0.3, auction_frac=0.1):
         return (fees + 1.0 + auction_frac * half_spread_panel(P, "15:45")).astype("float32")
     hm = {"open": "09:35", "mid": "12:00", "close": "15:45"}[kind]
     return (half_spread_panel(P, hm) + slippage + fees).astype("float32")
+
+
+def traded_close(P):
+    """Close as it traded (Alpaca raw daily bars, data/local/d1raw.parquet from src/fetch_rawdaily.py), on the
+    panel grid. Yahoo's raw close is adjusted for later splits (a later 1:50 reverse split makes earlier prices
+    50x too high), so price filters must use this. NaN before 2023-12 and where Alpaca has no bar."""
+    d = pd.read_parquet(os.path.join(DATA, "local", "d1raw.parquet"))
+    return d.pivot(index="date", columns="ticker", values="c_raw").reindex(index=P["c"].index, columns=P["c"].columns)

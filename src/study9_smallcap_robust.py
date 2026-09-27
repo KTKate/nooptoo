@@ -10,6 +10,7 @@ Checks:
             picks is 7.3 bp on the exit side, results/overnight_auction_check.csv)
   k         top-k neighborhood 3 .. 30
   tier      ADV band and price floor neighborhood
+  universe  the earlier m5snap-only universe (look-ahead selection) vs all small caps
   filter    Alpaca-Yahoo consistency filter in study8_exec_retest.snap_panels: base, month (drop only
             ticker-months), strict, none, and a source-consistent signal that uses only Alpaca prices
   half_year subperiods; regime check 2020-2026 with the (unexecutable) closing-price signal
@@ -20,8 +21,8 @@ Output: results/study9_smallcap_robust.csv
 """
 import numpy as np
 import pandas as pd
-from core import load_panel, stock_cols, half_spread_panel, ann_stats, deflated_sharpe, block_bootstrap_sharpe, RES
-from study8_exec_retest import snap_panels
+from core import load_panel, stock_cols, traded_close, half_spread_panel, ann_stats, deflated_sharpe, block_bootstrap_sharpe, RES
+from study8_exec_retest import snap_panels, price_1545
 import bt
 
 N_TRIALS = 250
@@ -32,7 +33,7 @@ rs = lambda x: x.reindex(index=days, columns=cols)
 Rn = rs(P["o"][cols].shift(-1) / P["c"][cols] - 1)                       # close -> next open, total return
 hs = rs(half_spread_panel(P, "15:45")[cols])
 adv = rs(P["dv"][cols].rolling(20, min_periods=10).median().shift(1))
-px = rs(P["rawc"][cols].shift(1))
+px = rs(traded_close(P)[cols].shift(1))                                  # traded price (no later splits)
 yo = rs(P["o"][cols] / (P["c"][cols] / P["rawc"][cols]))                   # raw-scale Yahoo open
 prevc = rs(P["rawc"][cols].shift(1))
 LAST = P["c"].index[-1]
@@ -55,23 +56,28 @@ def add(tag, rule, r, periods=(("val", "2024-01", "2025-06"), ("oos", "2025-07",
                          cost_bps=1e4 * r.cost.loc[x.index].mean(), names=r.n.loc[x.index].mean(), **kw))
 
 
-def signals(S):
-    p1545 = rs(S["c15:40"])
+def signals(mode):
+    p1545 = rs(price_1545(mode))
     return p1545, {"s_intraday_loser": -(p1545 / yo - 1), "s_day_loser": -(p1545 / prevc - 1)}
 
 
-def tier(p1545, lo=1e6, hi=5e6, pmin=2.0):
-    return (px > pmin) & (adv > lo) & (adv <= hi) & p1545.notna()
+def tier(p1545, lo=1e6, hi=5e6, pmin=2.0, price=None):
+    return ((px if price is None else price) > pmin) & (adv > lo) & (adv <= hi) & p1545.notna()
 
 
-S0 = snap_panels("base")
-p1545, sig = signals(S0)
+p1545, sig = signals("base")
 E0 = tier(p1545)
 base = {}
+snapcols = set(snap_panels("base")["c15:40"].columns)
+in_snap = pd.DataFrame(False, index=days, columns=cols)
+in_snap.loc[:, [c for c in cols if c in snapcols]] = True
 for rule, s in sig.items():
     W = bt.select_topk(s, E0 & s.notna(), 10)
     base[rule] = (W, bt.run(W, Rn, cost_of()))
     add("base", rule, base[rule][1], k=10)
+    # the earlier universe: only stocks in m5snap (look-ahead: ADV > $5M on some day up to 2026-09)
+    add("universe", rule, bt.run(bt.select_topk(s, E0 & in_snap & s.notna(), 10), Rn, cost_of()),
+        universe="m5snap_only")
     # cost grid
     for frac in [0.1, 0.25, 0.5, 1.0]:
         for extra in [0.0, 2.5, 5.0, 10.0]:
@@ -85,6 +91,10 @@ for rule, s in sig.items():
         E = tier(p1545, lo, hi, pmin)
         add("tier", rule, bt.run(bt.select_topk(s, E & s.notna(), 10), Rn, cost_of()),
             adv_lo=lo, adv_hi=hi, pmin=pmin)
+    # the earlier (look-ahead) price filter on Yahoo's split-adjusted close, for comparison
+    E = tier(p1545, price=rs(P["rawc"][cols].shift(1)))
+    add("tier", rule, bt.run(bt.select_topk(s, E & s.notna(), 10), Rn, cost_of()), adv_lo=1e6, adv_hi=5e6, pmin=2,
+        price_filter="yahoo_split_adjusted")
     # half years
     r = base[rule][1]
     for (y, h), x in r.net.iloc[:-1].groupby([r.index[:-1].year, (r.index[:-1].month - 1) // 6]):
@@ -104,7 +114,7 @@ for rule, s in sig.items():
     trade_r = Rn.stack()[(W > 0).stack()]
     rows.append(dict(test="trade_stats", rule=rule, period="2024-26", mean_bps=1e4 * trade_r.mean(),
                      median_bps=1e4 * trade_r.median(), hit=(trade_r > 0).mean(), n_trades=len(trade_r),
-                     pct_px_lt5=float((rs(P["rawc"][cols])[W > 0].stack() < 5).mean()),
+                     pct_px_lt5=float((px.shift(-1)[W > 0].stack().dropna() < 5).mean()),
                      median_adv=float(adv[W > 0].stack().median())))
     # hedged vs IWM overnight
     X = pd.concat([r.net, iwmN], axis=1).dropna()
@@ -122,14 +132,14 @@ for rule, s in sig.items():
 
 # consistency-filter variants
 for mode in ["month", "strict", "none"]:
-    S = snap_panels(mode)
-    p, sg = signals(S)
+    p, sg = signals(mode)
     E = tier(p)
     for rule, s in sg.items():
         W = bt.select_topk(s, E & s.notna(), 10)
         add("filter", rule, bt.run(W, Rn, cost_of()), mode=mode,
             overlap=float(((W > 0) & (base[rule][0] > 0)).sum(1).mean()))
-# source-consistent signal: Alpaca prices only (09:30 bar open, previous day's 15:55 bar close), no filter
+# source-consistent signal: Alpaca prices only (09:30 bar open, previous day's 15:55 bar close), no filter.
+# Only the m5snap universe has the 09:30 bar, so this variant excludes the small caps m5snap leaves out.
 S = snap_panels("none")
 pa = rs(S["c15:40"])
 sga = {"s_intraday_loser": -(pa / rs(S["o09:30"]) - 1), "s_day_loser": -(pa / rs(S["c15:55"]).shift(1) - 1)}
@@ -139,7 +149,8 @@ for rule, s in sga.items():
     add("filter", rule, bt.run(W, Rn, cost_of()), mode="alpaca_only",
         overlap=float(((W > 0) & (base[rule][0] > 0)).sum(1).mean()))
 
-# regime check with the closing-price signal (not executable; known only after the close) 2020-2026
+# regime check with the closing-price signal (not executable; known only after the close) 2020-2026.
+# Traded prices are not available before 2023-12, so this check uses Yahoo's split-adjusted price filter.
 alld = P["c"].loc["2020-01-02":].index
 ra = lambda x: x.reindex(index=alld, columns=cols)
 advA = ra(P["dv"][cols].rolling(20, min_periods=10).median().shift(1))

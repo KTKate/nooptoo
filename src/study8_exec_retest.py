@@ -83,6 +83,36 @@ def snap_panels(mode="base"):
     return out
 
 
+def price_1545(mode="base"):
+    """15:45 price (close of the 15:40-15:45 bar) for the m5snap universe plus the small caps that m5snap
+    leaves out (m5snapx, src/fetch_snap_smallcap.py; only the 15:30-16:00 window). The extra tickers get the
+    same consistency filter, using the 15:55 close only (no 09:30 bar for them)."""
+    base = snap_panels(mode)["c15:40"]
+    if not os.path.isdir(os.path.join(A.LOCAL, "m5snapx")):
+        return base
+    d = A.read("m5snapx")
+    d["date"] = d.ts.dt.normalize()
+    d["hm"] = d.ts.dt.strftime("%H:%M")
+    p = d[d.hm == "15:40"].pivot(index="date", columns="ticker", values="c")
+    c55 = d[d.hm == "15:55"].pivot(index="date", columns="ticker", values="c")
+    p = p[[t for t in p.columns if t not in base.columns]]
+    from core import load_panel
+    P = load_panel()
+    raw = P["rawc"].reindex(index=base.index, columns=p.columns)
+    p = p.reindex_like(raw)
+    if mode != "none":
+        day_lim, month_lim = (np.log(1.05), 0.0025) if mode == "strict" else (np.log(1.15), 0.005)
+        lr = np.log(c55.reindex_like(raw) / raw)
+        ok = lr.abs() < day_lim
+        monthly = lr.groupby(lr.index.to_period("M")).median().abs()
+        if mode == "month":
+            ok = ok & ~(monthly > month_lim).reindex(lr.index.to_period("M")).fillna(False).values
+        else:
+            ok.loc[:, monthly.columns[(monthly > month_lim).any()]] = False
+        p = p.where(ok)
+    return pd.concat([base, p], axis=1)
+
+
 if __name__ == "__main__":
     P = load_panel()
     S = snap_panels()

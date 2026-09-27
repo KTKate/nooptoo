@@ -7,24 +7,24 @@ executable timing (signals at 15:45, market-on-close entry, market-on-open exit,
   m_day_winner          mid caps ($5-50M ADV): largest gain from the previous close to 15:45, top 10
   combo                 50% ml_overnight_k10 + 50% s_intraday_loser (same account, 5 names each side)
   spy_buy_hold          SPY total return
+Price filters use the close as it traded (core.traded_close), not Yahoo's split-adjusted close.
 Output: results/final_series.parquet, results/final_summary.csv
 """
 import numpy as np
 import pandas as pd
-from core import load_panel, stock_cols, exec_cost_bps, ann_stats, deflated_sharpe, block_bootstrap_sharpe, RES
-from study8_exec_retest import snap_panels
+from core import load_panel, stock_cols, traded_close, exec_cost_bps, ann_stats, deflated_sharpe, block_bootstrap_sharpe, RES
+from study8_exec_retest import price_1545
 import bt
 
 P = load_panel()
 cols = stock_cols(P)
-S = snap_panels()
 days = P["c"].loc["2024-01-02":].index
 o, c, raw, dv = (P[k][cols].reindex(days) for k in ["o", "c", "rawc", "dv"])
 Rn = (P["o"][cols].shift(-1) / P["c"][cols] - 1).reindex(days)
 cost = (exec_cost_bps(P, "auction")[cols] + 2.5).reindex(days)
 adv = P["dv"][cols].rolling(20, min_periods=10).median().shift(1).reindex(days)
-px = P["rawc"][cols].shift(1).reindex(days)
-p1545 = S["c15:40"].reindex(index=days, columns=cols)
+px = traded_close(P)[cols].shift(1).reindex(days)                     # price filter on the traded price
+p1545 = price_1545().reindex(index=days, columns=cols)       # m5snap + small caps it leaves out
 yo = (P["o"][cols] / (P["c"][cols] / P["rawc"][cols])).reindex(days)        # raw-scale open
 prevc = P["rawc"][cols].shift(1).reindex(days)
 tierS = (px > 2) & (adv > 1e6) & (adv <= 5e6) & p1545.notna()
