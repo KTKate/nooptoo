@@ -43,6 +43,11 @@ Close->open holds are not day trades (no PDT issue). Snap filter drops 483 ticke
 re-check the small-cap rules with a looser filter (e.g. only drop tickers with a persistent >0.5% level
 shift, not monthly medians) to be sure the survivors are not selected by the filter.
 
+## Models
+`data/models/night_<quarter>.txt` (git-ignored, not on Hugging Face) are needed by study3_timing.py and
+paper_overnight.py. Regenerate with `Q_START=2024Q1 python src/study3_ml.py night` (about 1 hour), then run
+`python src/hf_sync.py push` after adding `data/models` to the sync (or copy them into data/local/models).
+
 ## Remaining
 1. Robustness for the small-cap rules like `study3_robust.py` does for ML (cost sensitivity incl. full
    half-spread in auctions, k neighborhood, half-years, looser/stricter snap filter).
