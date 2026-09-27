@@ -15,6 +15,8 @@ Steps (cron, America/New_York, trading days):
          (Alpaca accepts market-on-close orders until 15:50; the run takes about 1-2 minutes)
   09:20  python src/paper_overnight.py exit       # market-on-open sells for every open position
   daily 17:30  python src/update_data.py daily    # keeps the Yahoo daily store current (used by the features)
+  src/paper_job.sh wraps these for scheduled cloud runs (setup, calendar check, wait, run, commit the logs).
+  python src/paper_overnight.py reconcile         # fills vs official auction prints, equity history
   quarterly     rm data/ml_frame.parquet; Q_START=<new quarter> Q_END=<new quarter> python src/study3_ml.py night
 
 SAFETY: without --submit nothing is sent; the intended orders are written to logs/paper/. Orders go only to
@@ -203,6 +205,49 @@ def exit_(submit=False):
             print(od["symbol"], r.status_code, r.text[:200])
 
 
+def session_today():
+    """Today's regular session from the Alpaca calendar: (open, close) as 'HH:MM', or None on a holiday."""
+    d = dt.date.today().isoformat()
+    cal = requests.get(f"{TRADE}/calendar", headers=H, params=dict(start=d, end=d), timeout=30).json()
+    return (cal[0]["open"], cal[0]["close"]) if cal and cal[0]["date"] == d else None
+
+
+def reconcile():
+    """Fills of the last 10 days against the official auction prints; appends to logs/paper/fills.csv and
+    writes the account equity history to logs/paper/equity.csv."""
+    after = (dt.date.today() - dt.timedelta(days=10)).isoformat()
+    od = requests.get(f"{TRADE}/orders", headers=H, timeout=30,
+                      params=dict(status="closed", after=after + "T00:00:00Z", limit=500, direction="asc")).json()
+    rows = []
+    for o in od:
+        if o.get("filled_at") and o.get("time_in_force") in ("cls", "opg"):
+            day = pd.Timestamp(o["filled_at"]).tz_convert("America/New_York").strftime("%Y-%m-%d")
+            try:
+                off = A._official(o["symbol"], day, "close" if o["time_in_force"] == "cls" else "open")[0]
+            except RuntimeError:
+                off = np.nan
+            px = float(o["filled_avg_price"])
+            sign = 1 if o["side"] == "buy" else -1
+            rows.append(dict(day=day, symbol=o["symbol"], side=o["side"], tif=o["time_in_force"],
+                             qty=float(o["filled_qty"]), fill=px, official=off,
+                             slip_bps=sign * 1e4 * (px / off - 1) if off == off and off else np.nan))
+    fn = os.path.join(LOG, "fills.csv")
+    new = pd.DataFrame(rows)
+    if os.path.exists(fn) and len(new):
+        new = pd.concat([pd.read_csv(fn), new]).drop_duplicates(["day", "symbol", "side", "tif"], keep="last")
+    if len(new):
+        new.sort_values(["day", "tif", "symbol"]).to_csv(fn, index=False)
+        print(new.tail(20).to_string(index=False))
+        print("mean slippage vs official print (bp, positive = worse):", round(new.slip_bps.mean(), 2))
+    ph = requests.get(f"{TRADE}/account/portfolio/history", headers=H, timeout=30,
+                      params=dict(period="3M", timeframe="1D")).json()
+    if ph.get("timestamp"):
+        eq = pd.DataFrame({"date": pd.to_datetime(ph["timestamp"], unit="s").date, "equity": ph["equity"],
+                           "pnl": ph["profit_loss"]})
+        eq.to_csv(os.path.join(LOG, "equity.csv"), index=False)
+        print(eq.tail(5).to_string(index=False))
+
+
 if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else "entry"
     submit = "--submit" in sys.argv
@@ -214,3 +259,7 @@ if __name__ == "__main__":
         entry(submit, day, strategy)
     elif what == "exit":
         exit_(submit)
+    elif what == "session":
+        print(session_today())
+    elif what == "reconcile":
+        reconcile()

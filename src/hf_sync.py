@@ -2,6 +2,7 @@
 PRIVATE Hugging Face dataset repo, so a fresh session does not re-download them from Alpaca.
 
     python src/hf_sync.py pull      # download whatever the repo has into data/local (run first in a new session)
+    python src/hf_sync.py pull models   # only the LightGBM models (what the paper runner needs)
     python src/hf_sync.py push      # upload data/local (only files that changed; creates the repo if needed)
 
 Needs HF_TOKEN (write access) in the environment. Repo id: HF_DATA_REPO (default <your user>/nooptoo-market-data).
@@ -40,10 +41,11 @@ def push():
     print("pushed to", rid)
 
 
-def pull():
+def pull(only=None):
     api = HfApi(token=os.environ["HF_TOKEN"])
     rid = repo_id(api)
-    snapshot_download(rid, repo_type="dataset", local_dir=LOCAL, token=os.environ["HF_TOKEN"])
+    snapshot_download(rid, repo_type="dataset", local_dir=LOCAL, token=os.environ["HF_TOKEN"],
+                      allow_patterns=[f"{only}/*"] if only else None)
     src = os.path.join(LOCAL, "models")
     if os.path.isdir(src):
         os.makedirs(MODELS, exist_ok=True)
@@ -53,4 +55,8 @@ def pull():
 
 
 if __name__ == "__main__":
-    {"push": push, "pull": pull}[sys.argv[1] if len(sys.argv) > 1 else "pull"]()
+    what = sys.argv[1] if len(sys.argv) > 1 else "pull"
+    if what == "pull":
+        pull(sys.argv[2] if len(sys.argv) > 2 else None)
+    else:
+        push()

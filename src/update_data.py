@@ -126,6 +126,7 @@ def update_daily(overlap_days=10, chunk=150, tickers=None):
             fresh.append(d)
         print(" ", i, flush=True)
     fresh = pd.concat(fresh, ignore_index=True)
+    fresh = fresh[fresh.date <= last_session()]         # a run during market hours must not store today's partial bar
     # split detection on the overlap window
     ov = fresh.merge(st[["date", "ticker", "c"]], on=["date", "ticker"], suffixes=("", "_old"))
     ratio = (ov.c / ov.c_old).groupby(ov.ticker).median()
