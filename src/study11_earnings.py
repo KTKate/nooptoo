@@ -56,26 +56,17 @@ N = N[N.sym.isin(set(E.symbol))]
 N["t"] = pd.to_datetime(N.ts, utc=True).dt.tz_convert("America/New_York").dt.tz_localize(None)
 news_start = N.t.min()
 N = N.sort_values("t")
-rows = []
-Ng = {s: g for s, g in N.groupby("sym")}
-for r in E.itertuples():
-    g = Ng.get(r.symbol)
-    timing, sent = "unknown", np.nan
-    if g is not None:
-        a, b = r.date - pd.Timedelta(hours=8), r.date + pd.Timedelta(days=1, hours=9, minutes=30)
-        # window: from 16:00 the day before to 09:30 the day after the report date
-        w = g[(g.t >= a) & (g.t < b + pd.Timedelta(days=3 if r.date.dayofweek == 4 else 0))]
-        if len(w):
-            t0 = w.t.iloc[0]
-            if t0 < r.date + pd.Timedelta(hours=9, minutes=30):
-                timing = "BMO"
-            elif t0 >= r.date + pd.Timedelta(hours=16):
-                timing = "AMC"
-            else:
-                timing = "during"
-            sent = w.sent.iloc[:3].mean()
-    rows.append((timing, sent))
-E["timing"], E["sent"] = [x[0] for x in rows], [x[1] for x in rows]
+# first earnings headline at or after 16:00 of the day before the report date (merge_asof per symbol)
+E = E.sort_values("date")
+E["wstart"] = E.date - pd.Timedelta(hours=8)
+N2 = N[["sym", "t", "sent"]].rename(columns={"sym": "symbol"}).sort_values("t")
+M = pd.merge_asof(E.sort_values("wstart"), N2, left_on="wstart", right_on="t", by="symbol", direction="forward")
+wend = M.date + pd.Timedelta(days=1, hours=9, minutes=30) + pd.to_timedelta(np.where(M.date.dt.dayofweek == 4, 2, 0), "D")
+hit = M.t.notna() & (M.t < wend)
+M["timing"] = np.where(~hit, "unknown", np.where(M.t < M.date + pd.Timedelta(hours=9, minutes=30), "BMO",
+                       np.where(M.t >= M.date + pd.Timedelta(hours=16), "AMC", "during")))
+M["sent"] = M.sent.where(hit)
+E = M.drop(columns=["wstart", "t"])
 E = E[E.timing.isin(["BMO", "AMC"])].copy()
 E["R"] = E.di + (E.timing == "AMC").astype(int)
 E = E[E.R < len(days) - 11]
