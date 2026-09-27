@@ -77,8 +77,9 @@ Nv, Iv = night.values, intra.values
 mn, mi = mkt_n.values, mkt_i.values
 E["j"] = E.symbol.map(ci)
 E["surp_sign"] = np.sign(E.surprise.fillna(0))
-E["tier"] = [tier.values[R - 1, j] for R, j in zip(E.R, E.j)]
-E = E[[bool(elig.values[R - 1, j]) for R, j in zip(E.R, E.j)]]
+TV, EV = tier.values, elig.values
+E["tier"] = TV[E.R.values - 1, E.j.values]
+E = E[EV[E.R.values - 1, E.j.values]]
 prof = []
 for k in range(-10, 11):
     i = E.R.values + k
