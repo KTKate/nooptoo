@@ -11,8 +11,10 @@ Checks:
   k         top-k neighborhood 3 .. 30
   tier      ADV band and price floor neighborhood
   universe  the earlier m5snap-only universe (look-ahead selection) vs all small caps
-  filter    Alpaca-Yahoo consistency filter in study8_exec_retest.snap_panels: base, month (drop only
-            ticker-months), strict, none, and a source-consistent signal that uses only Alpaca prices
+  filter    Alpaca-Yahoo consistency filter in study8_exec_retest.snap_panels. Main runs use none (no filter);
+            base (the earlier default: drops whole tickers with a mismatch anywhere in 2024-26, which removes
+            distressed small caps that later reverse-split, i.e. real losses, with hindsight), month (drops only
+            ticker-months), strict, and a source-consistent signal that uses only Alpaca prices
   half_year subperiods; regime check 2020-2026 with the (unexecutable) closing-price signal
   tails     result without the best 1% of trades, and with both tails clipped at the 1st/99th percentile
   hedged    alpha after regressing on the IWM overnight return
@@ -65,10 +67,10 @@ def tier(p1545, lo=1e6, hi=5e6, pmin=2.0, price=None):
     return ((px if price is None else price) > pmin) & (adv > lo) & (adv <= hi) & p1545.notna()
 
 
-p1545, sig = signals("base")
+p1545, sig = signals("none")                  # no consistency filter: the base filter removes real losses with hindsight
 E0 = tier(p1545)
 base = {}
-snapcols = set(snap_panels("base")["c15:40"].columns)
+snapcols = set(snap_panels("none")["c15:40"].columns)
 in_snap = pd.DataFrame(False, index=days, columns=cols)
 in_snap.loc[:, [c for c in cols if c in snapcols]] = True
 for rule, s in sig.items():
@@ -131,7 +133,7 @@ for rule, s in sig.items():
     print(rule, "done", flush=True)
 
 # consistency-filter variants
-for mode in ["month", "strict", "none"]:
+for mode in ["base", "month", "strict"]:
     p, sg = signals(mode)
     E = tier(p)
     for rule, s in sg.items():
