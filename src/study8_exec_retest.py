@@ -35,6 +35,26 @@ def snap_panels():
         s = d[d.hm == hm]
         for k in ["o", "c", "vwap", "v"]:
             out[f"{k}{hm}"] = s.pivot(index="date", columns="ticker", values=k)
+    # consistency with the Yahoo daily store: a few tickers are adjusted differently (splits, reused symbols);
+    # drop stock-days where the Alpaca 09:30 open or 15:55 close is more than 15% away from Yahoo's open/close
+    from core import load_panel
+    P = load_panel()
+    raw = P["rawc"].reindex(index=out["o09:30"].index, columns=out["o09:30"].columns)
+    yo = (P["o"] / (P["c"] / P["rawc"])).reindex_like(raw)
+    r1 = np.log(out["o09:30"].reindex_like(raw) / yo).abs()
+    r2 = np.log(out["c15:55"].reindex_like(raw) / raw).abs()
+    ok = (r1 < np.log(1.15)) & (r2 < np.log(1.15))
+    # tickers whose Yahoo history carries spin-off / stock-dividend adjustments that Alpaca's split
+    # adjustment lacks (e.g. CMCSA, SPGI, LEN, FNF, ILMN): the 15:55 close and the Yahoo close differ by a
+    # constant factor for months. Mixing the two sources would create fake gaps, so drop those tickers.
+    lr = np.log(out["c15:55"].reindex_like(raw) / raw)
+    monthly = lr.groupby(lr.index.to_period("M")).median().abs()
+    bad = monthly.columns[(monthly > 0.005).any()]
+    print("snap consistency: tickers dropped for adjustment mismatch", len(bad))
+    ok.loc[:, bad] = False
+    print("snap consistency: dropped share of stock-days", float(1 - ok.values[raw.notna().values].mean()))
+    for k in out:
+        out[k] = out[k].reindex_like(raw).where(ok)
     pd.to_pickle(out, fn)
     return out
 

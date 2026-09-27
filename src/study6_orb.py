@@ -25,7 +25,11 @@ import pandas as pd
 import alpaca_data as A
 from core import load_panel, ann_stats, RES, half_spread_model
 
-OUT_TR = f"{RES}/study6_orb_trades.parquet"
+TF = os.environ.get("ORB_TF", "5Min")          # 1Min: exact intrabar sequencing for the tight stop
+DS = "m5full" if TF == "5Min" else "m1full"
+OPT = os.environ.get("ORB_OPT") == "1"        # optimistic bound: the stop cannot trigger inside the entry bar
+SUF = ("" if TF == "5Min" else "_1min") + ("_opt" if OPT else "")
+OUT_TR = f"{RES}/study6_orb_trades{SUF}.parquet"
 
 
 def first_bars():
@@ -70,9 +74,9 @@ def candidates(k=20):
 def simulate_trades(cand):
     rows = []
     cand = cand.assign(month=cand.date.dt.strftime("%Y-%m"))
-    A.fetch_pairs(zip(cand.ticker, cand.date))          # full-session bars only for the candidates
+    A.fetch_pairs(zip(cand.ticker, cand.date), ds=DS, timeframe=TF)   # full-session bars only for the candidates
     for m, cm in cand.groupby("month"):
-        d = A.read("m5full", start=m, end=m, tickers=sorted(cm.ticker.unique()))
+        d = A.read(DS, start=m, end=m, tickers=sorted(cm.ticker.unique()))
         d = d[(d.ts.dt.time >= pd.Timestamp("09:30").time()) & (d.ts.dt.time < pd.Timestamp("16:00").time())]
         d["date"] = d.ts.dt.normalize()
         g = {k: v for k, v in d.groupby(["date", "ticker"])}
@@ -80,14 +84,17 @@ def simulate_trades(cand):
             b = g.get((r.date, r.ticker))
             if b is None or len(b) < 10 or b.ts.iloc[0].time() != pd.Timestamp("09:30").time():
                 continue
-            o1, h1, l1, c1 = b.o.iloc[0], b.h.iloc[0], b.l.iloc[0], b.c.iloc[0]
+            nb = 1 if TF == "5Min" else 5                 # bars forming the 5-minute opening range
+            if TF != "5Min" and b.ts.iloc[min(4, len(b) - 1)].time() != pd.Timestamp("09:34").time():
+                continue
+            o1, h1, l1, c1 = b.o.iloc[0], b.h.iloc[:nb].max(), b.l.iloc[:nb].min(), b.c.iloc[nb - 1]
             side = 1 if c1 > o1 else (-1 if c1 < o1 else 0)
             if side == 0:
                 continue
             lvl = h1 if side == 1 else l1
             stop_dist = 0.1 * r.atr
-            O, H, L, C = b.o.values[1:], b.h.values[1:], b.l.values[1:], b.c.values[1:]
-            T = b.ts.values[1:]
+            O, H, L, C = b.o.values[nb:], b.h.values[nb:], b.l.values[nb:], b.c.values[nb:]
+            T = b.ts.values[nb:]
             entry = exitp = np.nan
             ei = xi = None
             for i in range(len(O)):
@@ -100,7 +107,7 @@ def simulate_trades(cand):
                 continue
             stop = entry - side * stop_dist
             how = "close"
-            for i in range(ei, len(O)):
+            for i in range(ei + 1 if OPT else ei, len(O)):
                 if side == 1 and L[i] <= stop:
                     exitp = stop if i == ei else min(stop, O[i]); xi = i; how = "stop"; break
                 if side == -1 and H[i] >= stop:
@@ -167,6 +174,6 @@ if __name__ == "__main__":
         rows.append(dict(k=0, long_only=True, sizing="SPY_buy_hold", period=per, sharpe=st["sharpe"],
                          ann_ret=st["ann_ret"], maxdd=st["maxdd"]))
     df = pd.DataFrame(rows)
-    df.to_csv(f"{RES}/study6_orb.csv", index=False)
+    df.to_csv(f"{RES}/study6_orb{SUF}.csv", index=False)
     pd.set_option("display.width", 250)
     print(df.round(3).to_string())

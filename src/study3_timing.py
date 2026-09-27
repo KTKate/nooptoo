@@ -34,15 +34,16 @@ etf1545 = m1.pivot(index="date", columns="ticker", values="c")
 o, h, l, c, rawc, v, dv = (P[k][cols] for k in ["o", "h", "l", "c", "rawc", "v", "dv"])
 adjf = c / rawc
 test_days = [d for d in days if d >= pd.Timestamp("2024-01-02") and d in p1545.index and d in etf1545.index]
-models = {}
-rows = []
-for d in test_days:
+live_cols = [t for t in cols if P["dv"][t].loc["2023-06":].max() > 3e6]   # others can never pass the universe filter
+
+
+def one_day(d):
     i = days.get_loc(d)
     sl = slice(max(0, i - 260), i + 1)
-    oo, hh, ll, cc, rr, vv, dd = (x.iloc[sl].copy() for x in (o, h, l, c, rawc, v, dv))
-    px = p1545.loc[d]
+    oo, hh, ll, cc, rr, vv, dd = (x[live_cols].iloc[sl].copy() for x in (o, h, l, c, rawc, v, dv))
+    px = p1545.loc[d].reindex(live_cols)
     ok = px.notna()
-    cc.iloc[-1] = np.where(ok, px * adjf.loc[d], np.nan)
+    cc.iloc[-1] = np.where(ok, px * adjf.loc[d, live_cols], np.nan)
     rr.iloc[-1] = np.where(ok, px, np.nan)
     hh.iloc[-1] = np.maximum(hh.iloc[-1], cc.iloc[-1])
     ll.iloc[-1] = np.minimum(ll.iloc[-1], cc.iloc[-1])
@@ -55,15 +56,17 @@ for d in test_days:
     F, mkt, adv20 = M.build(oo, hh, ll, cc, rr, vv, dd, spy, P["c"]["^VIX"].iloc[sl], P["c"]["^VIX3M"].iloc[sl],
                             iwm, earn=earn)
     last = {k: f.iloc[[-1]] for k, f in F.items()}
-    univ = ((rr > 5) & (adv20 > 5e6)).iloc[[-1]]
-    X = M.features_frame(last, mkt.iloc[[-1]], univ & ok.to_frame().T.reindex(columns=univ.columns).values)
+    univ = ((rr > 5) & (adv20 > 5e6)).iloc[[-1]] & ok.values
+    X = M.features_frame(last, mkt.iloc[[-1]], univ)
     q = pd.Period(d, freq="Q")
-    if q not in models:
-        models[q] = lgb.Booster(model_file=f"{DATA}/models/night_{q}.txt")
-    X = X[models[q].feature_name()]
-    rows.append(pd.Series(models[q].predict(X), index=X.index))
-    if len(rows) % 50 == 0:
-        print(d.date(), len(rows), flush=True)
+    mdl = lgb.Booster(model_file=f"{DATA}/models/night_{q}.txt")
+    X = X[mdl.feature_name()]
+    return pd.Series(mdl.predict(X), index=X.index)
+
+
+from multiprocessing import Pool
+with Pool(4) as pool:
+    rows = pool.map(one_day, test_days, chunksize=8)
 pred = pd.concat(rows)
 pd.DataFrame({"pred": pred}).to_parquet(f"{RES}/study3_pred_night_1545.parquet")
 
