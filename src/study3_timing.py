@@ -9,6 +9,9 @@ For every day t in 2024-01..2026-09 the feature panels are cut at t (260-day his
   SPY/IWM -> 15:44 minute close; VIX -> daily close (small look-ahead, the model uses it as a regime input)
 The quarterly models saved by study3_ml.py (Q_START=2024Q1 night) predict on these rows. The trade is
 unchanged: buy in the closing auction of t, sell in the opening auction of t+1.
+SNAP_MODE (environment, default base) selects the Alpaca-Yahoo consistency filter of the 15:45 prices
+(study8_exec_retest.snap_panels); the base filter drops whole tickers using the full 2024-26 history, so
+SNAP_MODE=none is the look-ahead-free check. Non-base modes write files with a _<mode> suffix.
 Output: results/study3_timing.csv, results/study3_pred_night_1545.parquet
 """
 import os
@@ -24,7 +27,9 @@ P, cols = M.P, M.cols
 days = M.days
 earn = M.earnings_features()
 from study8_exec_retest import snap_panels
-snap = snap_panels()
+MODE = os.environ.get("SNAP_MODE", "base")
+SUF = "" if MODE == "base" else f"_{MODE}"
+snap = snap_panels(MODE)
 p1545 = snap["c15:40"].reindex(columns=cols)
 m1 = A.read("m1", start="2023-12", tickers=["SPY", "IWM"])
 m1 = m1[m1.ts.dt.strftime("%H:%M") == "15:44"]
@@ -68,7 +73,7 @@ from multiprocessing import Pool
 with Pool(4) as pool:
     rows = pool.map(one_day, test_days, chunksize=8)
 pred = pd.concat(rows)
-pd.DataFrame({"pred": pred}).to_parquet(f"{RES}/study3_pred_night_1545.parquet")
+pd.DataFrame({"pred": pred}).to_parquet(f"{RES}/study3_pred_night_1545{SUF}.parquet")
 
 R = o.shift(-1) / c - 1
 c_auc = exec_cost_bps(P, "auction")[cols]
@@ -86,7 +91,7 @@ for name, pr in [("close_features", base), ("features_at_1545", pred)]:
                             maxdd=st["maxdd"], gross_bps=1e4 * r.gross.loc[a:b].mean(),
                             cost_bps=1e4 * r.cost.loc[a:b].mean()))
 df = pd.DataFrame(out)
-df.to_csv(f"{RES}/study3_timing.csv", index=False)
+df.to_csv(f"{RES}/study3_timing{SUF}.csv", index=False)
 print(df.round(3).to_string())
 # overlap of the top-10 lists
 S1 = base.unstack().reindex(columns=cols).loc["2024-01-02":]

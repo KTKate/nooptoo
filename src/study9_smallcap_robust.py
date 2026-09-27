@@ -144,6 +144,11 @@ S = snap_panels("none")
 pa = rs(S["c15:40"])
 sga = {"s_intraday_loser": -(pa / rs(S["o09:30"]) - 1), "s_day_loser": -(pa / rs(S["c15:55"]).shift(1) - 1)}
 E = tier(pa)
+# day loser from Alpaca prices only over the full small-cap universe (15:45 price and previous 15:55 close)
+pf = rs(price_1545("none"))
+sga_full = -(pf / rs(price_1545("none", "c15:55")).shift(1) - 1)
+add("filter", "s_day_loser", bt.run(bt.select_topk(sga_full, tier(pf) & sga_full.notna(), 10), Rn, cost_of()),
+    mode="alpaca_only_full_universe")
 for rule, s in sga.items():
     W = bt.select_topk(s, E & s.notna(), 10)
     add("filter", rule, bt.run(W, Rn, cost_of()), mode="alpaca_only",

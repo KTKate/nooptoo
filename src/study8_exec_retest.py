@@ -83,17 +83,17 @@ def snap_panels(mode="base"):
     return out
 
 
-def price_1545(mode="base"):
-    """15:45 price (close of the 15:40-15:45 bar) for the m5snap universe plus the small caps that m5snap
+def price_1545(mode="base", key="c15:40"):
+    """15:45 price (close of the 15:40-15:45 bar; key selects another 15:30-16:00 field) for the m5snap universe plus the small caps that m5snap
     leaves out (m5snapx, src/fetch_snap_smallcap.py; only the 15:30-16:00 window). The extra tickers get the
     same consistency filter, using the 15:55 close only (no 09:30 bar for them)."""
-    base = snap_panels(mode)["c15:40"]
+    base = snap_panels(mode)[key]
     if not os.path.isdir(os.path.join(A.LOCAL, "m5snapx")):
         return base
     d = A.read("m5snapx")
     d["date"] = d.ts.dt.normalize()
     d["hm"] = d.ts.dt.strftime("%H:%M")
-    p = d[d.hm == "15:40"].pivot(index="date", columns="ticker", values="c")
+    p = d[d.hm == key[1:]].pivot(index="date", columns="ticker", values=key[0])
     c55 = d[d.hm == "15:55"].pivot(index="date", columns="ticker", values="c")
     p = p[[t for t in p.columns if t not in base.columns]]
     from core import load_panel
