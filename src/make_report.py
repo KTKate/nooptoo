@@ -377,13 +377,15 @@ pre {{ background: var(--panel); border: 1px solid var(--rule); padding: 14px 16
 <section>
   <h2>Practical constraints for a $10,000 account</h2>
   <div class="grid2">
-    <div class="panel"><h3>Pattern day trader rule</h3><p>Buying at the close and selling at the next open is not a
-    day trade, so the PDT limit (4 day trades in 5 days under $25,000 in a margin account) does not apply. Every
-    intraday strategy tested would have needed $25,000 or a cash account, and all of them lost money anyway.</p></div>
+    <div class="panel"><h3>Pattern day trader rule</h3><p>The SEC approved FINRA's removal of the pattern day
+    trader rule and its $25,000 minimum on 2026-04-14, effective 2026-06-04 (brokers have until 2027-10-20 to
+    implement it). Alpaca switched to its intraday margin framework on 2026-06-04. Intraday strategies are therefore
+    open to a $10,000 account; they were rejected here because they lose money after costs, not because of the rule.
+    The overnight strategy holds no position within one day in any case.</p></div>
     <div class="panel"><h3>Cash or margin</h3><p>In a cash account, Tuesday morning's sale settles
     on Wednesday (T+1). Buying Tuesday afternoon with those proceeds and selling Wednesday morning can count as a
     good-faith violation, depending on when the broker credits settlement. A margin account used without leverage
-    avoids this; the PDT rule still does not apply. The alternative in a cash account is to trade each half of the
+    avoids this. The alternative in a cash account is to trade each half of the
     capital on alternate nights, which halves exposure. About 250 round trips a year.</p></div>
     <div class="panel"><h3>Borrow</h3><p>The ML ranker is long only. No short positions, so no borrow fees or
     locate risk.</p></div>
@@ -402,20 +404,19 @@ pre {{ background: var(--panel); border: 1px solid var(--rule); padding: 14px 16
 <section>
   <h2>Paper-trading plan</h2>
   <ol>
-    <li>Run the ML ranker in dry-run mode for 2 weeks (orders written to <code>logs/paper/</code>, nothing sent). Compare
-    each day's list with the backtest list computed after the close.</li>
-    <li>With the owner's approval only, submit to the Alpaca paper account for at least 3 months (about 60 nights).
-    Record fill prices against the official auction prints.</li>
+    <li>2026-09-28: one dry run of the scheduled job (orders written to <code>logs/paper/</code>, nothing sent).</li>
+    <li>From 2026-09-29: the scheduled job sends market-on-close buys and market-on-open sells to the Alpaca paper
+    account every trading day (owner approved). Holidays and early-close days are skipped. Each run commits its log,
+    and <code>reconcile</code> compares every fill with the official auction print.</li>
     <li>Stop or re-evaluate if the paper account is more than 15% below its high, if the mean fill is more than 5 bp
-    per side worse than the auction print, or if the 60-night Sharpe is below 0.</li>
+    per side worse than the auction print, or if the Sharpe over 60 nights is below 0.</li>
     <li>Retrain at the start of each quarter (next: 2026Q4).</li>
-    <li>Real money is a separate decision after the paper period. Keeping the comparison with SPY buy and hold is
-    part of that decision: the candidate beat it on Sharpe in 2024-26, but not by a margin that rules out luck.</li>
+    <li>Real money is a separate decision after the paper period, compared against SPY buy and hold.</li>
   </ol>
-  <pre>Weekdays, America/New_York
-15:45  python src/paper_overnight.py entry            # dry run; add --submit only with approval
-09:15  python src/paper_overnight.py exit             # market-on-open sells of all positions
-17:30  python src/update_data.py daily                # Yahoo daily store for tomorrow's features
+  <pre>Weekdays, America/New_York (scheduled cloud runs)
+15:05  bash src/paper_job.sh entry     # setup, data update, waits until 15:46, market-on-close buys
+09:05  bash src/paper_job.sh exit      # market-on-open sells of all positions
+Manual: python src/paper_overnight.py reconcile     # fills vs official auction prints, equity history
 Quarterly: rm data/ml_frame.parquet; Q_START=2026Q4 Q_END=2026Q4 python src/study3_ml.py night
 Replay a past day: python src/paper_overnight.py entry --day=2026-09-25</pre>
 </section>
