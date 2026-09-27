@@ -12,7 +12,9 @@ range, liquidity, market state (SPY, VIX), and the earnings calendar
 Walk-forward: retrain every quarter on all data up to the quarter start minus a
 10-day embargo; first test quarter 2022Q1. Only the stock universe with
 price > $5 and 20d median dollar volume > $5M is used.
-Output: results/study3_preds.parquet and results/study3_ml.csv
+Output: results/study3_pred_<target>[_from<Q_START>].parquet, data/models/<target>_<quarter>.txt
+Live retrain for a new quarter (after `python src/update_data.py daily`; delete data/ml_frame.parquet first so
+the feature frame is rebuilt with the new days):  Q_START=2026Q4 Q_END=2026Q4 python src/study3_ml.py night
 """
 import os, sys
 import numpy as np
@@ -46,7 +48,8 @@ params = dict(objective="regression", learning_rate=0.03, num_leaves=63, min_dat
 
 dates = X.index.get_level_values(0)
 Q_START = os.environ.get("Q_START", "2022Q1")          # later start: only (re)train and save models
-quarters = pd.period_range(Q_START, "2026Q3", freq="Q")
+Q_END = os.environ.get("Q_END", "2026Q3")              # a quarter without test data only trains and saves a model
+quarters = pd.period_range(Q_START, Q_END, freq="Q")
 targets = sys.argv[1:] or list(T)
 preds = {}
 for tgt in targets:
@@ -60,18 +63,21 @@ for tgt in targets:
         cut = days[max(0, days.searchsorted(a) - H[tgt] - 10)]
         tr = ok & (dates < cut)
         te = (dates >= a) & (dates <= b)
-        if te.sum() == 0:
-            continue
         ds = lgb.Dataset(X.loc[tr, feat], yr[tr])
         mdl = lgb.train(params, ds, num_boost_round=300)
         os.makedirs(f"{DATA}/models", exist_ok=True)
         mdl.save_model(f"{DATA}/models/{tgt}_{q}.txt")
+        if te.sum() == 0:
+            print(tgt, q, "train", int(tr.sum()), "no test data: model saved for live use", flush=True)
+            continue
         p = pd.Series(mdl.predict(X.loc[te, feat]), index=X.index[te])
         out.append(p)
         print(tgt, q, "train", int(tr.sum()), "test", int(te.sum()), flush=True)
         if q == quarters[-1]:
             imp = pd.Series(mdl.feature_importance("gain"), index=feat).sort_values(ascending=False)
             imp.to_csv(f"{RES}/study3_importance_{tgt}.csv")
+    if not out:
+        continue
     preds[tgt] = pd.concat(out)
     suffix = "" if Q_START == "2022Q1" else f"_from{Q_START}"
     pd.DataFrame({"pred": preds[tgt]}).to_parquet(f"{RES}/study3_pred_{tgt}{suffix}.parquet")

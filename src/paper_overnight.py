@@ -1,10 +1,12 @@
 """Paper-trading runner for the overnight strategies (Alpaca PAPER account only).
 
-Strategies (--strategy=, default combo):
+Strategies (--strategy=, default ml: the only one that survived the look-ahead-free tests, see reports/):
   ml        rank the liquid universe (price > $5, ADV > $5M) with the latest quarterly overnight LightGBM model
   smallcap  small caps (price > $2, 20d median dollar volume $1-5M): largest loss from today's open to 15:45
             (s_intraday_loser in final_series.py)
   combo     half the equity in the top K/2 of each list (a name on both lists is bought once, double size)
+  smallcap and combo are kept for comparison runs only: without the hindsight consistency filter their
+  2024-26 Sharpe is about 1.0 (below SPY buy-and-hold), study 9 / results/final_summary.csv
 At ~15:45 ET buy the picks in the closing auction (market-on-close), sell everything in the next opening
 auction (market-on-open). Positions are held overnight only, so no day trades are created (PDT does not apply).
 
@@ -13,7 +15,7 @@ Steps (cron, America/New_York, trading days):
          (Alpaca accepts market-on-close orders until 15:50; the run takes about 1-2 minutes)
   09:20  python src/paper_overnight.py exit       # market-on-open sells for every open position
   daily 17:30  python src/update_data.py daily    # keeps the Yahoo daily store current (used by the features)
-  quarterly     Q_START=<new quarter> python src/study3_ml.py night   # retrain on all data to date
+  quarterly     rm data/ml_frame.parquet; Q_START=<new quarter> Q_END=<new quarter> python src/study3_ml.py night
 
 SAFETY: without --submit nothing is sent; the intended orders are written to logs/paper/. Orders go only to
 paper-api.alpaca.markets and only when ALPACA_PAPER_KEY_ID is set and the account id matches
@@ -141,7 +143,7 @@ def tradable(tickers):
     return [t for t in tickers if t in ok]
 
 
-def entry(submit=False, day=None, strategy="combo"):
+def entry(submit=False, day=None, strategy="ml"):
     import ml_features as M
     P, cols = M.P, M.cols
     test = day is not None
@@ -205,7 +207,7 @@ if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else "entry"
     submit = "--submit" in sys.argv
     day = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--day=")), None)
-    strategy = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--strategy=")), "combo")
+    strategy = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--strategy=")), "ml")
     if strategy not in ("ml", "smallcap", "combo"):
         raise SystemExit("--strategy must be ml, smallcap or combo")
     if what == "entry":

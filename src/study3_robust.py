@@ -1,6 +1,6 @@
 """Robustness of the overnight LightGBM strategy (buy top-k in the closing auction, sell in the opening auction).
 
-Uses the 15:45-feature predictions (study3_timing.py) when present, else the close-feature predictions.
+Uses the 15:45-feature predictions (study3_timing.py; SNAP_MODE, default none = no look-ahead filter) when present, else the close-feature predictions.
 Checks: cost sensitivity (auction fraction of the quoted half-spread, extra bps per side for the measured
 Yahoo-open vs opening-cross gap), top-k neighborhood, half-year subperiods, market-hedged alpha,
 block-bootstrap Sharpe CI, and the deflated Sharpe ratio for the number of variants tried in this project.
@@ -19,7 +19,8 @@ cols = stock_cols(P)
 o, c = P["o"][cols], P["c"][cols]
 R = o.shift(-1) / c - 1
 hs = half_spread_panel(P, "15:45")[cols]
-fn = f"{RES}/study3_pred_night_1545.parquet"
+MODE = os.environ.get("SNAP_MODE", "none")          # snapshot filter used for the 15:45 predictions
+fn = f"{RES}/study3_pred_night_1545{'' if MODE == 'base' else '_' + MODE}.parquet"
 src = "features_at_1545" if os.path.exists(fn) and "--close" not in sys.argv else "close_features"
 pred = pd.read_parquet(fn if src == "features_at_1545" else f"{RES}/study3_pred_night.parquet")["pred"]
 S = pred.unstack().reindex(columns=cols)

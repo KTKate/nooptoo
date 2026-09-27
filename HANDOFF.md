@@ -1,58 +1,54 @@
-# Handoff (session 2 -> session 3)
+# Handoff (session 3 -> next)
 
-Branch `claude/youthful-edison-ca09h8`. Paper trading only; never place orders without the owner's go-ahead.
+Branch `claude/youthful-edison-ca09h8`. Paper trading only; never place orders (`--submit`) without the owner's go-ahead.
+Report: `reports/overnight_report.html` (built by `python src/make_report.py`), published as a private Artifact.
 
 ## Data
-- `data/store/` (git): Yahoo daily/earnings/60m. `data/local/` (git-ignored minute data) is on the private
-  Hugging Face dataset `Incarnadin/nooptoo-market-data`: run `python src/hf_sync.py pull` first (needs `HF_TOKEN`).
-  Folders: `m1` = 1-minute ETF bars 2019-06..2026-09, `m5snap` = 5-minute bars 09:30-10:00 and 15:30-16:00 for
-  3,564 stocks 2024-01..2026-09, `m5full`/`m1full` = full-session bars for ORB candidates. One file per month.
-- Alpaca keys: `ALPACA_PAPER_KEY_ID` / `ALPACA_PAPER_SECRET_KEY` (paper account, $10k, margin 4x).
-- Rate limit is shared across processes via `data/local/.ratelimit` (alpaca_data.RateLimiter).
-- Never use `pkill -f`/`pgrep -f` with a pattern that also appears in your own shell command (it kills the shell).
+- `data/store/` (git): Yahoo daily/earnings/60m. `data/local/` (git-ignored) and `data/models/` are on the private
+  Hugging Face dataset `Incarnadin/nooptoo-market-data`: `python src/hf_sync.py pull` (needs `HF_TOKEN`) restores both
+  (models are stored under `models/` in the repo and copied into `data/models`).
+- New in session 3: `data/local/d1raw.parquet` (Alpaca unadjusted daily closes, `src/fetch_rawdaily.py`),
+  `data/local/m5snapx/` (15:30-16:00 5-minute bars for 1,125 small caps missing from m5snap,
+  `src/fetch_snap_smallcap.py`).
+- Alpaca free plan: SIP requests must end more than 15 minutes in the past.
+- Never use `pkill -f`/`pgrep -f` or `ps | grep <pattern> | xargs kill` with a pattern that appears in your own command
+  line; it kills the shell (happened again this session).
 
-## Fixes made in session 2
-- Spread estimator: look-ahead (shift 2) and upward bias (average then clip). Replaced by a quote-calibrated
-  model (`core.half_spread_model`, 3,076 Alpaca NBBO samples, `results/spread_model.json`), inputs clipped,
-  capped 300 bp. Execution-specific costs: `core.exec_cost_bps(P, "auction"|"open"|"mid"|"close")`.
-- Yahoo open = opening cross in the median (auction check, `validate_overnight.py`); cross 2-7 bp lower on
-  average for overnight picks -> +2.5 bp per side added. Yahoo close = official closing cross.
-- Mixing Alpaca intraday with Yahoo daily needs the consistency filter in `study8_exec_retest.snap_panels`
-  (spin-off/stock-dividend adjustments differ; the "large-cap gap-up fade Sharpe 8" was this artifact).
+## Corrections made in session 3 (both were look-ahead)
+1. `study8_exec_retest.snap_panels("base")` dropped 483 whole tickers whose Alpaca and Yahoo prices disagreed in any
+   month of 2024-26. Many were distressed small caps whose later reverse splits were adjusted differently, so the filter
+   removed future losers. Verified with official auction prints (`study9_trade_check`, and the 40 worst removed trades
+   re-priced: same -31% mean). Default is now `SNAP_MODE=none` in `final_series.py`, `study3_robust.py`, study 9.
+   `snap_panels(mode)` supports base / month / strict / none.
+2. Yahoo's "raw" close is adjusted for later splits (price filters used prices that did not exist on the day).
+   `core.traded_close(P)` gives the traded close; small-cap and M tiers use it. The m5snap universe itself was chosen
+   with hindsight (ADV > $5M on any day up to 2026-09); `study8_exec_retest.price_1545()` adds the missing small caps.
 
-## Verdicts (2024-01..2025-06 val / 2025-07..2026-09 holdout, net of costs)
-Rejected: calendar/ETF effects (study0), noise-area SPY/QQQ momentum (study5: gross edge 2019-23, gone
-after publication), last-half-hour momentum (study7), ORB stocks in play (study6: -60..-80 bp/trade;
-optimistic fills still -30..-40), gap fades at 9:35/10:00 entries (study8), PEAD/EAR (study2),
-any overnight rule exited in the continuous market after the open (opening spread 35-190 bp).
-Weak/benchmark-like: pre-earnings run-up (study2, Sharpe 1.5/1.0), ML cc5 (1.8/1.1-1.3).
-
-Survivors (signal at 15:45, market-on-close buy, market-on-open sell; `results/final_summary.csv`):
-| strategy | val | holdout | 2024-26 | 95% CI | DSR(250 trials) |
-|---|---|---|---|---|---|
-| ml_overnight_k10 (LightGBM, 15:45 features) | 1.65 | 1.80 | 1.72 | 0.63-2.93 | 0.50 |
-| s_intraday_loser (small caps $1-5M ADV) | 2.09 | 2.39 | 2.23 | 1.01-3.37 | 0.82 |
-| s_day_loser | 2.24 | 2.59 | 2.39 | 1.23-3.55 | 0.89 |
-| m_day_winner | 1.56 | 1.47 | 1.50 | 0.38-2.72 | 0.36 |
-| combo 50/50 ml + s_intraday_loser | 2.41 | 2.68 | 2.53 | 1.36-3.76 | 0.91 |
-| SPY buy and hold | 1.15 | 1.58 | 1.28 | | |
-Correlation with SPY ~0. Caveats: ML alpha ~0 in 2022-23 (regime-dependent); break-even round-trip cost
-~40 bp (ML) so auction fill quality is the main risk; small-cap auctions are thin; survivorship check
-(`survivorship.py`) shows <2 bp/day effect for these 1-day rules (lower bound, only 628 delisted names).
-Close->open holds are not day trades (no PDT issue). Snap filter drops 483 tickers (15% of stock-days):
-re-check the small-cap rules with a looser filter (e.g. only drop tickers with a persistent >0.5% level
-shift, not monthly medians) to be sure the survivors are not selected by the filter.
+## Verdicts (2024-01..2025-06 val / 2025-07..2026-09 holdout, net, no hindsight filter; results/final_summary.csv)
+| strategy | val | holdout | 2024-26 | previous (base filter) |
+|---|---|---|---|---|
+| ml_overnight_k10 | 1.78 | 1.78 | 1.78 | 1.72 |
+| s_intraday_loser | 0.82 | 1.25 | 1.03 | 2.21 |
+| s_day_loser | 1.03 | 0.80 | 0.92 | 2.32 |
+| m_day_winner | 0.46 | 1.29 | 0.90 | 1.36 |
+| combo 5 ML + 5 small-cap | 1.19 | 0.87 | 1.02 | 2.64 |
+| SPY buy and hold | 1.15 | 1.58 | 1.28 | |
+Only the ML overnight ranker remains (paper trade). Caveats (results/study3_robust.csv): DSR 0.54 (not significant),
+beta 1.9 to SPY overnight return (hedged Sharpe 1.13), half-years 2026H1 +0.25 and 2026H2 -1.16, break-even at ~50%
+of the quoted half-spread per auction side. All intraday studies (0, 4-8) and the earnings rules (2) are rejected.
 
 ## Models
-`data/models/night_<quarter>.txt` (git-ignored, not on Hugging Face) are needed by study3_timing.py and
-paper_overnight.py. Regenerate with `Q_START=2024Q1 python src/study3_ml.py night` (about 1 hour), then run
-`python src/hf_sync.py push` after adding `data/models` to the sync (or copy them into data/local/models).
+`data/models/night_2024Q1..2026Q3.txt` regenerated and pushed to Hugging Face. For 2026Q4 (from 2026-10-01):
+`python src/update_data.py daily; rm data/ml_frame.parquet; Q_START=2026Q4 Q_END=2026Q4 python src/study3_ml.py night`
+(Q_END with no test data now trains and saves the model). Training needs ~6 GB RAM: do not run it next to study 9.
 
-## Remaining
-1. Robustness for the small-cap rules like `study3_robust.py` does for ML (cost sensitivity incl. full
-   half-spread in auctions, k neighborhood, half-years, looser/stricter snap filter).
-2. Report: `reports/` HTML (load artifact-design skill first), comparisons vs buy-and-hold, verdict per
-   strategy, practical constraints ($10k, PDT, cash vs margin, borrow, survivorship), reproduction commands;
-   publish as an Artifact and give the owner the link.
-3. Extend `src/paper_overnight.py` (dry-run default, tested for 2026-09-25) to the combo strategy and describe
-   a paper-trading schedule; do not submit orders without approval.
+## Paper runner
+`src/paper_overnight.py` default `--strategy=ml` (also smallcap / combo for comparison). Dry run by default; replay with
+`--day=YYYY-MM-DD` (uses the SIP 15:40-15:45 bar). Replay of 2026-09-25: 7 of 10 picks match the backtest.
+Schedule (weekdays ET): 15:45 entry, 09:15 exit, 17:30 `update_data.py daily`. Plan and stop rules in the report.
+
+## Open items
+- Owner decision: approve paper submission (`--submit`) after a 2-week dry run; a scheduler is needed to run the
+  15:45 / 09:15 jobs (this container is ephemeral).
+- Cash vs margin: T+1 settlement makes nightly round trips in a cash account a possible good-faith violation.
+- Survivorship for small caps is poorly measured (Alpaca has only 19 delisted names with 2024-26 data).
