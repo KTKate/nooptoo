@@ -3,3 +3,8 @@ data/*
 __pycache__/
 *.pyc
 logs/
+!data/local/
+data/local/*
+!data/local/auctions.parquet
+!data/local/delisted_daily.parquet
+!data/local/alpaca_assets_*.parquet
