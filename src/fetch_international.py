@@ -4,7 +4,8 @@ Outputs (data/local/intl/):
   nasdaqtraded.txt, screener.json   raw directory files (downloaded if missing)
   universe.csv                      ticker, name, country, region, kind (adr_name / foreign_large / etf), in_store
   daily.parquet                     long daily OHLCV from Yahoo (auto_adjust=False), with q like data/store
-  m5win.parquet                     Alpaca 5-minute bars in 11:25-11:35 and 15:30-16:00 ET windows (liquid names)
+  m15win.parquet                    Alpaca 15-minute bars 11:15-11:30 and 15:30-16:00 ET (liquid European names);
+                                    the 11:15 bar close is the 11:30 price, the 15:30 bar close the 15:45 price
 
     python src/fetch_international.py universe
     python src/fetch_international.py daily
@@ -153,26 +154,28 @@ def fetch_daily(start="2019-05-01", end="2026-09-28"):
     print(len(d), d.ticker.nunique())
 
 
-def fetch_m5(tickers, start="2019-06-01", end="2026-09-26"):
-    """5-minute bars in the 11:25-11:35 and 15:30-16:00 ET windows. One request per ticker-chunk per month,
-    filtered locally (Alpaca has no time-of-day filter; 5-minute bars for a month are ~1.6k per ticker)."""
+def fetch_m5(tickers, start="2019-06-01", end="2026-09-26", tf="15Min"):
+    """Intraday bars around 11:30 and 15:30-16:00 ET. One paginated request per ticker-chunk per month, filtered
+    locally (Alpaca has no time-of-day filter). 15-minute bars need ~4x fewer requests than 5-minute bars."""
     import alpaca_data as A
-    fn = os.path.join(OUT, "m5win.parquet")
+    fn = os.path.join(OUT, "m15win.parquet" if tf == "15Min" else "m5win.parquet")
     have = pd.read_parquet(fn) if os.path.exists(fn) else pd.DataFrame(columns=["ts", "ticker"])
     done = set(have.ticker.unique())
     tickers = [t for t in tickers if t not in done]
     months = pd.date_range(start, end, freq="MS")
     out = [have] if len(have) else []
-    for i in range(0, len(tickers), 10):
-        ch = tickers[i:i + 10]
+    step = 70 if tf == "15Min" else 10
+    for i in range(0, len(tickers), step):
+        ch = tickers[i:i + step]
         got = []
         for m in months:
             a = m.strftime("%Y-%m-%dT00:00:00Z")
-            b = (m + pd.offsets.MonthBegin(1)).strftime("%Y-%m-%dT00:00:00Z")
-            df = A.bars(ch, "5Min", a, b)
+            b = min(m + pd.offsets.MonthBegin(1), pd.Timestamp(end)).strftime("%Y-%m-%dT00:00:00Z")
+            df = A.bars(ch, tf, a, b)
             if len(df):
                 hm = df.ts.dt.hour * 100 + df.ts.dt.minute
-                got.append(df[((hm >= 1125) & (hm < 1135)) | (hm >= 1530)])
+                got.append(df[((hm >= 1115) & (hm < 1135)) | (hm >= 1530)])
+            print("  month", m.strftime("%Y-%m"), flush=True)
         if got:
             out.append(pd.concat(got, ignore_index=True))
         pd.concat(out, ignore_index=True).to_parquet(fn, compression="zstd", index=False)
