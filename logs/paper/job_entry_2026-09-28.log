@@ -1,0 +1,113 @@
+== paper job entry 2026-09-28 15:05:56 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+Fetching 11 files:   0%|          | 0/11 [00:00<?, ?it/s]Fetching 11 files:   9%|▉         | 1/11 [00:00<00:02,  4.08it/s]Fetching 11 files:  18%|█▊        | 2/11 [00:00<00:02,  3.94it/s]Fetching 11 files:  27%|██▋       | 3/11 [00:00<00:01,  4.01it/s]Fetching 11 files:  82%|████████▏ | 9/11 [00:00<00:00, 15.59it/s]Fetching 11 files: 100%|██████████| 11/11 [00:01<00:00, 10.95it/s]
+pulled Incarnadin/nooptoo-market-data into /home/user/nooptoo/data/local
+daily up to date 2026-09-25
+earnings: fetched 30 days, 945 rows
+      date  equity  pnl
+2026-09-22 10000.0  0.0
+2026-09-23 10000.0  0.0
+2026-09-24 10000.0  0.0
+2026-09-25 10000.0  0.0
+2026-09-26 10000.0  0.0
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+panel ready 2026-09-25
+entry at 15:46:18 ET, submit flag: ''
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+{
+ "day": "2026-09-28",
+ "strategy": "ml",
+ "model": "night_2026Q3.txt",
+ "ml_top": {
+  "USDE": 0.06725,
+  "VKTX": 0.0627,
+  "RBLX": 0.05834,
+  "SATL": 0.05627,
+  "XNCR": 0.05448,
+  "RES": 0.04655,
+  "CNC": 0.04402,
+  "ETON": 0.04367,
+  "KTOS": 0.04299,
+  "OBX": 0.04237
+ },
+ "equity": 10000.0,
+ "orders": [
+  {
+   "symbol": "USDE",
+   "qty": 64,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "VKTX",
+   "qty": 29,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "RBLX",
+   "qty": 23,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SATL",
+   "qty": 166,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "XNCR",
+   "qty": 39,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "RES",
+   "qty": 174,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "CNC",
+   "qty": 16,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ETON",
+   "qty": 16,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "KTOS",
+   "qty": 22,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "OBX",
+   "qty": 74,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": false,
+ "notional": 9817.78
+}

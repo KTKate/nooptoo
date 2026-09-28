@@ -1,0 +1,92 @@
+{
+ "day": "2026-09-28",
+ "strategy": "ml",
+ "model": "night_2026Q3.txt",
+ "ml_top": {
+  "USDE": 0.06725,
+  "VKTX": 0.0627,
+  "RBLX": 0.05834,
+  "SATL": 0.05627,
+  "XNCR": 0.05448,
+  "RES": 0.04655,
+  "CNC": 0.04402,
+  "ETON": 0.04367,
+  "KTOS": 0.04299,
+  "OBX": 0.04237
+ },
+ "equity": 10000.0,
+ "orders": [
+  {
+   "symbol": "USDE",
+   "qty": 64,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "VKTX",
+   "qty": 29,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "RBLX",
+   "qty": 23,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SATL",
+   "qty": 166,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "XNCR",
+   "qty": 39,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "RES",
+   "qty": 174,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "CNC",
+   "qty": 16,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ETON",
+   "qty": 16,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "KTOS",
+   "qty": 22,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "OBX",
+   "qty": 74,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": false,
+ "notional": 9817.78
+}
