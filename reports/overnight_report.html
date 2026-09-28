@@ -76,8 +76,10 @@ pre { background: var(--panel); border: 1px solid var(--rule); padding: 14px 16p
   return is leveraged exposure to the market's overnight drift. Every intraday rule lost money after costs. The
   small-cap overnight rules that looked strongest in the previous session were inflated by two hindsight errors,
   found and fixed in this session. News, headline sentiment, earnings timing, insider trades, short-sale volume,
-  sector effects, per-stock models and cohorts of similar stocks were tested next (studies 10-14); none clearly
-  improves on the ML ranker, and models trained per behavior cohort are the next candidate.</p>
+  sector effects, per-stock models, cohorts of similar stocks, insider purchases, international ADRs, corporate events
+  and earnings prediction were tested next (studies 10-18); none clearly improves on the ML ranker. Four candidates
+  (behavior-cohort models, 60-day insider cluster buys, the ADR loser rule, small-cap no-news losers) are recorded
+  daily in shadow mode next to the paper account.</p>
 </header>
 
 <section>
@@ -303,6 +305,10 @@ pre { background: var(--panel); border: 1px solid var(--rule); padding: 14px 16p
 <tr><td class="num">12</td><td>Insider open-market purchases and sales (SEC Form 4, 2019-2026Q1)</td><td><span class="chip no">Reject</span></td><td>Cluster buys: Sharpe about 0 in 2020-23, 0.5-1.0 in 2024-25, 1.9-2.3 in 2025-26 (5-20 day holds). Not stable.</td></tr>
 <tr><td class="num">13</td><td>One model per stock and per sector vs one pooled model (300 most traded stocks)</td><td><span class="chip no">Reject</span></td><td>The pooled model is better in every period (Sharpe 1.26/1.49 vs 0.28-0.88); per-stock models have too little data.</td></tr>
 <tr><td class="num">14</td><td>Cohorts of similar stocks (co-movement and behavior groups, rebuilt yearly) with a model per group</td><td><span class="chip lead">Candidate</span></td><td>Per-behavior-group models: Sharpe 0.52/3.00/2.66 vs 0.79/2.36/2.42 for the pooled model (close-of-day features). The gain is lower volatility at the same mean return; the difference is not statistically detectable. Next candidate.</td></tr>
+<tr><td class="num">15</td><td>Insider purchases in depth: role, size, cluster, opportunistic vs routine insiders, 10b5-1 plans, holds of 1-60 days, market-hedged (400 variants)</td><td><span class="chip lead">Candidate</span></td><td>5-20 day holds work only since 2024 (hedged Sharpe -0.5 in 2020-23). Mid caps with 2+ buyers held 60 days: hedged Sharpe 1.55/1.42/1.33, about 6% a year because 15% of capital is used; deflated Sharpe 0.86. Shadow test.</td></tr>
+<tr><td class="num">16</td><td>International: US-listed ADRs and country ETFs, Europe and Asia lead-lag, ADR cross-section</td><td><span class="chip lead">Candidate</span></td><td>Lead-lag effects are absent (ADR prices already reflect the US afternoon). Buying the 5 ADRs with the largest loss to 15:45: Sharpe 0.52 (validation) and 1.74 (holdout), deflated Sharpe 0.08. Shadow test only.</td></tr>
+<tr><td class="num">17</td><td>Corporate events: S&amp;P 500 additions and deletions, Russell reconstitution, ex-dividend, splits, options expiration (25 variants)</td><td><span class="chip no">Reject</span></td><td>S&amp;P additions jump +339 bp the first night, before an auction order is possible; the later run-up is +20 bp. Forward splits: the night before averages +184 bp but the median is 26-38 bp and liquid names give 1.02/1.45/0.22. Reverse splits fall 20% around the event (short only).</td></tr>
+<tr><td class="num">18</td><td>Predicting the earnings reaction before the report (64,391 reports, 28 inputs)</td><td><span class="chip no">Reject</span></td><td>Top 10 predicted: Sharpe 1.22/1.66/0.40; accuracy (rank correlation) falls from 0.049 to 0.014 and the sign is right 50-51% of the time.</td></tr>
 <tr><td class="num">-</td><td>Macro calendar (FOMC, CPI, jobs report nights)</td><td><span class="chip no">Reject</span></td><td>The ML strategy&#x27;s jobs-report nights average -17 to -32 bp, but only 15-18 nights per period (t below 0.6).</td></tr></tbody></table></div>
 </section>
 

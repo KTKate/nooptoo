@@ -186,6 +186,21 @@ studies = [
     ("14", "Cohorts of similar stocks (co-movement and behavior groups, rebuilt yearly) with a model per group", "Candidate",
      "Per-behavior-group models: Sharpe 0.52/3.00/2.66 vs 0.79/2.36/2.42 for the pooled model (close-of-day features). "
      "The gain is lower volatility at the same mean return; the difference is not statistically detectable. Next candidate."),
+    ("15", "Insider purchases in depth: role, size, cluster, opportunistic vs routine insiders, 10b5-1 plans, "
+     "holds of 1-60 days, market-hedged (400 variants)", "Candidate",
+     "5-20 day holds work only since 2024 (hedged Sharpe -0.5 in 2020-23). Mid caps with 2+ buyers held 60 days: "
+     "hedged Sharpe 1.55/1.42/1.33, about 6% a year because 15% of capital is used; deflated Sharpe 0.86. Shadow test."),
+    ("16", "International: US-listed ADRs and country ETFs, Europe and Asia lead-lag, ADR cross-section", "Candidate",
+     "Lead-lag effects are absent (ADR prices already reflect the US afternoon). Buying the 5 ADRs with the largest "
+     "loss to 15:45: Sharpe 0.52 (validation) and 1.74 (holdout), deflated Sharpe 0.08. Shadow test only."),
+    ("17", "Corporate events: S&P 500 additions and deletions, Russell reconstitution, ex-dividend, splits, options "
+     "expiration (25 variants)", "Reject",
+     "S&P additions jump +339 bp the first night, before an auction order is possible; the later run-up is +20 bp. "
+     "Forward splits: the night before averages +184 bp but the median is 26-38 bp and liquid names give 1.02/1.45/0.22. "
+     "Reverse splits fall 20% around the event (short only)."),
+    ("18", "Predicting the earnings reaction before the report (64,391 reports, 28 inputs)", "Reject",
+     "Top 10 predicted: Sharpe 1.22/1.66/0.40; accuracy (rank correlation) falls from 0.049 to 0.014 and the sign is "
+     "right 50-51% of the time."),
     ("-", "Macro calendar (FOMC, CPI, jobs report nights)", "Reject",
      "The ML strategy's jobs-report nights average -17 to -32 bp, but only 15-18 nights per period (t below 0.6)."),
 ]
@@ -276,8 +291,10 @@ pre {{ background: var(--panel); border: 1px solid var(--rule); padding: 14px 16
   return is leveraged exposure to the market's overnight drift. Every intraday rule lost money after costs. The
   small-cap overnight rules that looked strongest in the previous session were inflated by two hindsight errors,
   found and fixed in this session. News, headline sentiment, earnings timing, insider trades, short-sale volume,
-  sector effects, per-stock models and cohorts of similar stocks were tested next (studies 10-14); none clearly
-  improves on the ML ranker, and models trained per behavior cohort are the next candidate.</p>
+  sector effects, per-stock models, cohorts of similar stocks, insider purchases, international ADRs, corporate events
+  and earnings prediction were tested next (studies 10-18); none clearly improves on the ML ranker. Four candidates
+  (behavior-cohort models, 60-day insider cluster buys, the ADR loser rule, small-cap no-news losers) are recorded
+  daily in shadow mode next to the paper account.</p>
 </header>
 
 <section>
