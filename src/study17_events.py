@@ -274,6 +274,8 @@ R = S[S.kind == "reverse"]
 spl = {"split_fwd_close-6_to_close-1": [(d - 6, d - 1, j, "close", 0) for d, j in zip(F.d0, F.j)],
        "split_fwd_close-1_to_close+9": [(d - 1, d + 9, j, "close", 0) for d, j in zip(F.d0, F.j)],
        "split_fwd_close-1_night": [(d - 1, d, j, "open", 0) for d, j in zip(F.d0, F.j)],
+       "split_fwd_close-1_night_cleanratio_adv>20M": [(d - 1, d, j, "open", 0) for d, j, r in zip(F.d0, F.j, F.ratio)
+                                                      if abs(2 * r - round(2 * r)) < 0.02 and adv[d - 1, j] > 2e7],
        "split_rev_close0_to_close+9(long)": [(d, d + 9, j, "close", 0) for d, j in zip(R.d0, R.j)]}
 for k, v in spl.items():
     v = [t for t in v if elig(t[0], t[2])]
