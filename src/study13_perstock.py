@@ -33,7 +33,7 @@ y = X["y_night"]
 yr = y.groupby(level=0).rank(pct=True) - 0.5
 
 small = dict(objective="regression", learning_rate=0.05, num_leaves=7, min_data_in_leaf=40, feature_fraction=0.7,
-             bagging_fraction=0.8, bagging_freq=1, lambda_l2=10.0, verbose=-1, num_threads=4)
+             bagging_fraction=0.8, bagging_freq=1, lambda_l2=10.0, verbose=-1, num_threads=1)   # tiny data: threads only add overhead
 mid = dict(objective="regression", learning_rate=0.03, num_leaves=31, min_data_in_leaf=500, feature_fraction=0.7,
            bagging_fraction=0.7, bagging_freq=1, lambda_l2=10.0, verbose=-1, num_threads=4)
 
