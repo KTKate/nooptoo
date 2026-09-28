@@ -170,8 +170,26 @@ studies = [
      "open loses (opening spread 35-190 bp). Gap fades at 09:35/10:00 entries lose."),
     ("9", "Robustness of the small-cap overnight rules (this session)", "Reject",
      "Two hindsight effects inflated them (details below). Without them the Sharpe is about 1.0, below SPY."),
+    ("10", "News (Benzinga via Alpaca, 2019-2026), headline sentiment, event types (analyst, FDA, offering, M&A, "
+     "earnings, government and regulation words), FINRA short-sale volume, sector momentum", "Reject",
+     "Small caps that fall without news rebound overnight (+10-14 bp vs the average small cap, t 3-8), but a traded "
+     "version is no better than SPY after costs. Added to the ML ranker, the factors are mixed (Sharpe 0.97/2.20/2.63 "
+     "vs 0.79/2.36/2.42 for 2022-23 / validation / holdout); news and event features get almost no weight."),
+    ("11", "Earnings: 10 days before to 10 days after each report, overnight and intraday, timing from news "
+     "timestamps (82,801 reports)", "Reject",
+     "Reaction night +11 bp beyond the market on average (beats +139 bp, misses -282 bp); misses keep falling for "
+     "two nights. Holding through the report, pre-report run-ups and post-reaction trades are market-like or negative."),
+    ("12", "Insider open-market purchases and sales (SEC Form 4, 2019-2026Q1)", "Reject",
+     "Cluster buys: Sharpe about 0 in 2020-23, 0.5-1.0 in 2024-25, 1.9-2.3 in 2025-26 (5-20 day holds). Not stable."),
+    ("13", "One model per stock and per sector vs one pooled model (300 most traded stocks)", "Reject",
+     "The pooled model is better in every period (Sharpe 1.26/1.49 vs 0.28-0.88); per-stock models have too little data."),
+    ("14", "Cohorts of similar stocks (co-movement and behavior groups, rebuilt yearly) with a model per group", "Candidate",
+     "Per-behavior-group models: Sharpe 0.52/3.00/2.66 vs 0.79/2.36/2.42 for the pooled model (close-of-day features). "
+     "The gain is lower volatility at the same mean return; the difference is not statistically detectable. Next candidate."),
+    ("-", "Macro calendar (FOMC, CPI, jobs report nights)", "Reject",
+     "The ML strategy's jobs-report nights average -17 to -32 bp, but only 15-18 nights per period (t below 0.6)."),
 ]
-chipcls = {"Reject": "no", "Leads only": "lead", "Overnight only": "paper"}
+chipcls = {"Reject": "no", "Leads only": "lead", "Overnight only": "paper", "Candidate": "lead"}
 study_rows = "\n".join(f'<tr><td class="num">{n}</td><td>{html.escape(t)}</td><td><span class="chip {chipcls[v]}">{v}</span></td>'
                        f'<td>{html.escape(d)}</td></tr>' for n, t, v, d in studies)
 
@@ -257,7 +275,9 @@ pre {{ background: var(--panel); border: 1px solid var(--rule); padding: 14px 16
   significant after the roughly 250 variants tried in this project, it lost money in 2026H2 so far, and half of its
   return is leveraged exposure to the market's overnight drift. Every intraday rule lost money after costs. The
   small-cap overnight rules that looked strongest in the previous session were inflated by two hindsight errors,
-  found and fixed in this session.</p>
+  found and fixed in this session. News, headline sentiment, earnings timing, insider trades, short-sale volume,
+  sector effects, per-stock models and cohorts of similar stocks were tested next (studies 10-14); none clearly
+  improves on the ML ranker, and models trained per behavior cohort are the next candidate.</p>
 </header>
 
 <section>
@@ -372,6 +392,15 @@ pre {{ background: var(--panel); border: 1px solid var(--rule); padding: 14px 16
   <div class="scroll"><table>
     <thead><tr><th class="num">#</th><th>Study</th><th>Verdict</th><th>Result</th></tr></thead>
     <tbody>{study_rows}</tbody></table></div>
+</section>
+
+<section>
+  <h2>Data not used</h2>
+  <p>Options data (implied volatility, put-to-call volume, skew) is a documented predictor, but Alpaca's free
+  options history starts in 2024-02 and comes per contract (hundreds per stock), so a daily history for 1,500
+  stocks is not practical here; paid sources (OptionMetrics, ORATS, Cboe DataShop) sell it ready-made. Futures are
+  not tradable at Alpaca and the index information is already in the SPY, IWM and VIX inputs. Analyst estimate
+  revisions, order-flow and low-latency news feeds are paid products.</p>
 </section>
 
 <section>
