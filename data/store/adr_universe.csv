@@ -1,0 +1,385 @@
+ticker,country,region,kind
+AACG,China,China/HK,adr_name
+AAPG,China,China/HK,adr_name
+ABEV,Brazil,LatAm,adr_name
+ABVX,France,Europe,adr_name
+ADAG,China,China/HK,adr_name
+ADSE,Ireland,Europe,adr_name
+ADXN,Switzerland,Europe,adr_name
+AEG,Netherlands,Europe,adr_name
+AERO,Mexico,LatAm,adr_name
+AHG,China,China/HK,adr_name
+AIXI,China,China/HK,adr_name
+AKTX,United Kingdom,Europe,adr_name
+ALAR,Israel,Other,adr_name
+ALC,Switzerland,Europe,foreign_large
+AMBO,China,China/HK,adr_name
+AMBR,Hong Kong,China/HK,adr_name
+AMRN,Ireland,Europe,adr_name
+AMTD,France,Europe,adr_name
+AMX,Mexico,LatAm,foreign_large
+ANL,Singapore,Japan/APAC,adr_name
+API,China,China/HK,adr_name
+ARBK,United Kingdom,Europe,adr_name
+ARGX,Netherlands,Europe,adr_name
+ARM,United Kingdom,Europe,adr_name
+ASML,Netherlands,Europe,adr_name
+ASX,Taiwan,Japan/APAC,adr_name
+ATAT,China,China/HK,adr_name
+ATHE,Australia,Japan/APAC,adr_name
+ATHM,China,China/HK,adr_name
+AUTL,United Kingdom,Europe,adr_name
+AZN,United Kingdom,Europe,foreign_large
+AZUL,Brazil,LatAm,adr_name
+BABA,China,China/HK,adr_name
+BAK,Brazil,LatAm,adr_name
+BBAR,Argentina,LatAm,adr_name
+BBD,Brazil,LatAm,adr_name
+BBDO,Brazil,LatAm,adr_name
+BBVA,Spain,Europe,foreign_large
+BCH,Chile,LatAm,adr_name
+BCS,United Kingdom,Europe,foreign_large
+BCYC,United Kingdom,Europe,adr_name
+BDRX,United Kingdom,Europe,adr_name
+BEKE,China,China/HK,adr_name
+BHP,Australia,Japan/APAC,adr_name
+BIDU,China,China/HK,adr_name
+BILI,China,China/HK,adr_name
+BLRX,Israel,Other,adr_name
+BLTE,United States,Other,adr_name
+BMA,Argentina,LatAm,adr_name
+BNR,China,China/HK,adr_name
+BNTX,Germany,Europe,adr_name
+BP,United Kingdom,Europe,foreign_large
+BSAC,Chile,LatAm,adr_name
+BSBR,Brazil,LatAm,foreign_large
+BTI,United Kingdom,Europe,adr_name
+BUD,Belgium,Europe,adr_name
+BWAY,Israel,Other,adr_name
+BZ,China,China/HK,adr_name
+BZUN,China,China/HK,adr_name
+CAN,China,China/HK,adr_name
+CANF,Israel,Other,adr_name
+CCM,China,China/HK,adr_name
+CDLR,Denmark,Europe,adr_name
+CEPU,Argentina,LatAm,adr_name
+CHA,China,China/HK,adr_name
+CHT,Taiwan,Japan/APAC,foreign_large
+CIB,Colombia,LatAm,foreign_large
+CIG,Brazil,LatAm,adr_name
+CIG.C,Brazil,LatAm,adr_name
+CLLS,France,Europe,adr_name
+CMCM,China,China/HK,adr_name
+CMMB,Israel,Other,adr_name
+CMPS,United Kingdom,Europe,adr_name
+CNF,China,China/HK,adr_name
+COE,China,China/HK,adr_name
+CPAC,Peru,LatAm,adr_name
+CRESY,Argentina,LatAm,adr_name
+CUVL,Australia,Japan/APAC,adr_name
+CX,Mexico,LatAm,adr_name
+DAO,China,China/HK,adr_name
+DAVA,United Kingdom,Europe,adr_name
+DB,Germany,Europe,foreign_large
+DBVT,France,Europe,adr_name
+DDI,South Korea,Japan/APAC,adr_name
+DDL,China,China/HK,adr_name
+DEO,United Kingdom,Europe,foreign_large
+DOYU,China,China/HK,adr_name
+DQ,China,China/HK,adr_name
+DRD,South Africa,Other,adr_name
+DSC,China,China/HK,adr_name
+DXF,Hong Kong,China/HK,adr_name
+E,Italy,Europe,foreign_large
+EC,Colombia,LatAm,adr_name
+EDN,Argentina,LatAm,adr_name
+EDU,China,China/HK,adr_name
+EH,China,China/HK,adr_name
+ELPC,Brazil,LatAm,adr_name
+ELVR,Australia,Japan/APAC,adr_name
+EMBJ,Brazil,LatAm,foreign_large
+ENIC,Chile,LatAm,adr_name
+ENRD,Sweden,Europe,adr_name
+EQNR,Norway,Europe,foreign_large
+ERIC,Sweden,Europe,adr_name
+EVAX,Denmark,Europe,adr_name
+EVO,Germany,Europe,adr_name
+FEDU,China,China/HK,adr_name
+FENG,China,China/HK,adr_name
+FER,Netherlands,Europe,foreign_large
+FINV,United States,Other,adr_name
+FLX,China,China/HK,adr_name
+FMS,Germany,Europe,adr_name
+FMX,Mexico,LatAm,foreign_large
+FOCL,France,Europe,adr_name
+FOIL,China,China/HK,adr_name
+FORTY,Israel,Other,adr_name
+FRSX,Israel,Other,adr_name
+FUTU,Hong Kong,China/HK,adr_name
+GDS,China,China/HK,adr_name
+GFI,South Africa,Other,adr_name
+GGAL,Argentina,LatAm,adr_name
+GHG,China,China/HK,adr_name
+GMAB,Denmark,Europe,adr_name
+GMTL,United Kingdom,Europe,adr_name
+GNTA,Italy,Europe,adr_name
+GOTU,China,China/HK,adr_name
+GPCR,United States,Other,adr_name
+GRFS,Spain,Europe,adr_name
+GRVY,South Korea,Japan/APAC,adr_name
+GSK,United Kingdom,Europe,adr_name
+HCM,Hong Kong,China/HK,adr_name
+HDB,India,Japan/APAC,foreign_large
+HDL,Singapore,Japan/APAC,adr_name
+HEPS,Turkey,Other,adr_name
+HERE,China,China/HK,adr_name
+HIMX,Taiwan,Japan/APAC,adr_name
+HKD,France,Europe,adr_name
+HLN,United Kingdom,Europe,adr_name
+HMC,Japan,Japan/APAC,foreign_large
+HSAI,China,China/HK,adr_name
+HSBC,United Kingdom,Europe,foreign_large
+HTHT,China,China/HK,adr_name
+HTT,China,China/HK,adr_name
+HUIZ,China,China/HK,adr_name
+HUYA,United States,Other,adr_name
+IBN,India,Japan/APAC,foreign_large
+ICG,China,China/HK,adr_name
+IH,United States,Other,adr_name
+IHG,United Kingdom,Europe,adr_name
+IMCR,United Kingdom,Europe,adr_name
+IMMP,Australia,Japan/APAC,adr_name
+IMOS,Taiwan,Japan/APAC,adr_name
+IMRN,Australia,Japan/APAC,adr_name
+INFY,India,Japan/APAC,adr_name
+ING,Netherlands,Europe,foreign_large
+IONR,Australia,Japan/APAC,adr_name
+IPHA,France,Europe,adr_name
+IPX,United States,Other,adr_name
+IQ,China,China/HK,adr_name
+IQMX,Finland,Europe,adr_name
+ITUB,Brazil,LatAm,foreign_large
+IVA,France,Europe,adr_name
+IX,Japan,Japan/APAC,adr_name
+JD,China,China/HK,adr_name
+JF,China,China/HK,adr_name
+JFIN,China,China/HK,adr_name
+JFU,China,China/HK,adr_name
+JG,China,China/HK,adr_name
+JHX,Ireland,Europe,foreign_large
+JKS,China,China/HK,adr_name
+JMIA,Germany,Europe,adr_name
+JOYY,Singapore,Japan/APAC,adr_name
+JZ,China,China/HK,adr_name
+KB,South Korea,Japan/APAC,foreign_large
+KC,China,China/HK,adr_name
+KEP,South Korea,Japan/APAC,foreign_large
+KRKR,China,China/HK,adr_name
+KSPI,Kazakhstan,Other,adr_name
+KZIA,Australia,Japan/APAC,adr_name
+LAWR,Japan,Japan/APAC,adr_name
+LEGN,United States,Other,adr_name
+LFS,Japan,Japan/APAC,adr_name
+LGHL,China,China/HK,adr_name
+LI,China,China/HK,adr_name
+LITB,China,China/HK,adr_name
+LKFT,Belgium,Europe,adr_name
+LND,Brazil,LatAm,adr_name
+LOMA,Argentina,LatAm,adr_name
+LOT,China,China/HK,adr_name
+LPL,South Korea,Japan/APAC,adr_name
+LRE,Japan,Japan/APAC,adr_name
+LTM,Chile,LatAm,adr_name
+LU,China,China/HK,adr_name
+LUXE,Germany,Europe,adr_name
+LX,China,China/HK,adr_name
+LXEH,China,China/HK,adr_name
+LYG,United Kingdom,Europe,adr_name
+MESO,Australia,Japan/APAC,adr_name
+MFG,Japan,Japan/APAC,adr_name
+MLCO,Hong Kong,China/HK,adr_name
+MNSO,China,China/HK,adr_name
+MOGU,China,China/HK,adr_name
+MOLN,Switzerland,Europe,adr_name
+MOMO,China,China/HK,adr_name
+MREO,United Kingdom,Europe,adr_name
+MRM,Japan,Japan/APAC,adr_name
+MSC,Hong Kong,China/HK,adr_name
+MT,Luxembourg,Europe,adr_name
+MTLS,Belgium,Europe,adr_name
+MUFG,Japan,Japan/APAC,foreign_large
+MWC,Japan,Japan/APAC,adr_name
+MYND,United States,Other,adr_name
+NAAS,China,China/HK,adr_name
+NAMI,China,China/HK,adr_name
+NBP,China,China/HK,adr_name
+NCNA,United Kingdom,Europe,adr_name
+NCTY,China,China/HK,adr_name
+NGG,United Kingdom,Europe,adr_name
+NICE,Israel,Other,adr_name
+NICM,Canada,Other,adr_name
+NIO,United States,Other,adr_name
+NIPG,Sweden,Europe,adr_name
+NIU,China,China/HK,adr_name
+NMR,Japan,Japan/APAC,adr_name
+NNDM,Israel,Other,adr_name
+NOAH,China,China/HK,adr_name
+NOK,Finland,Europe,adr_name
+NTES,China,China/HK,adr_name
+NVO,Denmark,Europe,foreign_large
+NVS,Switzerland,Europe,foreign_large
+NVX,Australia,Japan/APAC,adr_name
+NWG,United Kingdom,Europe,adr_name
+NWGL,China,China/HK,adr_name
+OMAB,Mexico,LatAm,adr_name
+ONC,Switzerland,Europe,adr_name
+OPRA,Norway,Europe,adr_name
+OTLY,Sweden,Europe,adr_name
+PAC,Mexico,LatAm,foreign_large
+PAYP,Japan,Japan/APAC,adr_name
+PBR,Brazil,LatAm,adr_name
+PCLA,Japan,Japan/APAC,adr_name
+PDC,Japan,Japan/APAC,adr_name
+PDD,China,China/HK,adr_name
+PHAR,Netherlands,Europe,adr_name
+PHG,Netherlands,Europe,adr_name
+PHI,Philippines,Japan/APAC,adr_name
+PHOS,Canada,Other,adr_name
+PKX,South Korea,Japan/APAC,adr_name
+POM,China,China/HK,adr_name
+PONY,China,China/HK,adr_name
+PPBT,Israel,Other,adr_name
+PSNY,Sweden,Europe,adr_name
+PSNYW,Sweden,Europe,adr_name
+PUK,United Kingdom,Europe,foreign_large
+QFIN,China,China/HK,adr_name
+QNRX,Israel,Other,adr_name
+RADX,Australia,Japan/APAC,adr_name
+RDHL,Israel,Other,adr_name
+RDY,India,Japan/APAC,foreign_large
+RELX,United Kingdom,Europe,adr_name
+RERE,China,China/HK,adr_name
+RIO,Australia,Japan/APAC,foreign_large
+RML,Australia,Japan/APAC,adr_name
+RTO,United States,Other,adr_name
+RYAAY,Ireland,Europe,adr_name
+SAN,Spain,Europe,adr_name
+SAP,Germany,Europe,adr_name
+SBS,Brazil,LatAm,adr_name
+SBSW,South Africa,Other,adr_name
+SCAG,China,China/HK,adr_name
+SCNI,Israel,Other,adr_name
+SE,United States,Other,adr_name
+SHEL,Netherlands,Europe,adr_name
+SHG,South Korea,Japan/APAC,adr_name
+SIFY,India,Japan/APAC,adr_name
+SIM,Mexico,LatAm,adr_name
+SIMO,Taiwan,Japan/APAC,adr_name
+SKHY,South Korea,Japan/APAC,adr_name
+SKM,South Korea,Japan/APAC,foreign_large
+SLN,United Kingdom,Europe,adr_name
+SMFG,Japan,Japan/APAC,adr_name
+SNN,United Kingdom,Europe,foreign_large
+SNY,France,Europe,adr_name
+SOGP,China,China/HK,adr_name
+SOHU,China,China/HK,adr_name
+SONY,Japan,Japan/APAC,adr_name
+SQM,Chile,LatAm,foreign_large
+SQNS,France,Europe,adr_name
+SSL,South Africa,Other,adr_name
+STG,China,China/HK,adr_name
+STKH,Israel,Other,adr_name
+STLA,United Kingdom,Europe,foreign_large
+STM,Switzerland,Europe,foreign_large
+SUPV,Argentina,LatAm,adr_name
+SUZ,Brazil,LatAm,adr_name
+SVRE,Israel,Other,adr_name
+SY,China,China/HK,adr_name
+TAK,Japan,Japan/APAC,adr_name
+TAL,China,China/HK,adr_name
+TC,China,China/HK,adr_name
+TCOM,China,China/HK,adr_name
+TIGR,China,China/HK,adr_name
+TIMB,Brazil,LatAm,adr_name
+TKLF,Japan,Japan/APAC,adr_name
+TLK,Indonesia,Japan/APAC,foreign_large
+TLX,Australia,Japan/APAC,adr_name
+TM,Japan,Japan/APAC,foreign_large
+TME,United States,Other,adr_name
+TOUR,China,China/HK,adr_name
+TRIB,Ireland,Europe,adr_name
+TRVG,Germany,Europe,adr_name
+TS,Luxembourg,Europe,adr_name
+TSM,Taiwan,Japan/APAC,foreign_large
+TTE,France,Europe,foreign_large
+TURB,Spain,Europe,adr_name
+TUYA,China,China/HK,adr_name
+TX,Luxembourg,Europe,adr_name
+UBS,Switzerland,Europe,foreign_large
+UCL,Hong Kong,China/HK,adr_name
+UGP,Brazil,LatAm,adr_name
+UL,United Kingdom,Europe,adr_name
+UMC,Taiwan,Japan/APAC,foreign_large
+UXIN,China,China/HK,adr_name
+VALE,Brazil,LatAm,adr_name
+VALN,France,Europe,adr_name
+VCRE,Sweden,Europe,adr_name
+VEON,Netherlands,Europe,adr_name
+VIOT,China,China/HK,adr_name
+VIPS,China,China/HK,adr_name
+VIST,Mexico,LatAm,adr_name
+VIV,Brazil,LatAm,adr_name
+VLRS,Mexico,LatAm,adr_name
+VNET,China,China/HK,adr_name
+VOD,United Kingdom,Europe,adr_name
+VSA,China,China/HK,adr_name
+VTMX,Mexico,LatAm,adr_name
+WAVE,Israel,Other,adr_name
+WB,China,China/HK,adr_name
+WDS,Australia,Japan/APAC,adr_name
+WF,South Korea,Japan/APAC,adr_name
+WIT,India,Japan/APAC,foreign_large
+WKEY,Switzerland,Europe,adr_name
+WPP,Ireland,Europe,adr_name
+WRD,China,China/HK,adr_name
+WYHG,China,China/HK,adr_name
+XCH,Germany,Europe,adr_name
+XHG,China,China/HK,adr_name
+XNET,China,China/HK,adr_name
+XPEV,China,China/HK,adr_name
+XTLB,Israel,Other,adr_name
+XYF,China,China/HK,adr_name
+YALA,United Arab Emirates,Other,adr_name
+YB,China,China/HK,adr_name
+YI,China,China/HK,adr_name
+YJ,China,China/HK,adr_name
+YMM,China,China/HK,adr_name
+YMT,China,China/HK,adr_name
+YOUL,China,China/HK,adr_name
+YPF,Argentina,LatAm,adr_name
+YQ,China,China/HK,adr_name
+YRD,China,China/HK,adr_name
+YSG,China,China/HK,adr_name
+YXT,China,China/HK,adr_name
+ZEPP,China,China/HK,adr_name
+ZH,China,China/HK,adr_name
+ZKH,China,China/HK,adr_name
+ZLAB,China,China/HK,adr_name
+ZTO,China,China/HK,adr_name
+EWJ,,Japan/APAC,etf
+EWG,,Europe,etf
+EWU,,Europe,etf
+FXI,,China/HK,etf
+MCHI,,China/HK,etf
+EWZ,,LatAm,etf
+EWW,,LatAm,etf
+EWY,,Japan/APAC,etf
+EWT,,Japan/APAC,etf
+INDA,,Japan/APAC,etf
+EWA,,Japan/APAC,etf
+EWC,,Other,etf
+EFA,,Europe,etf
+EEM,,Other,etf
+VGK,,Europe,etf
+EWH,,China/HK,etf
+EWS,,Japan/APAC,etf

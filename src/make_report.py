@@ -292,9 +292,10 @@ pre {{ background: var(--panel); border: 1px solid var(--rule); padding: 14px 16
   small-cap overnight rules that looked strongest in the previous session were inflated by two hindsight errors,
   found and fixed in this session. News, headline sentiment, earnings timing, insider trades, short-sale volume,
   sector effects, per-stock models, cohorts of similar stocks, insider purchases, international ADRs, corporate events
-  and earnings prediction were tested next (studies 10-18); none clearly improves on the ML ranker. Four candidates
-  (behavior-cohort models, 60-day insider cluster buys, the ADR loser rule, small-cap no-news losers) are recorded
-  daily in shadow mode next to the paper account.</p>
+  and earnings prediction were tested next (studies 10-18); none clearly improves on the ML ranker. Two candidates
+  (small-cap no-news losers and the ADR loser rule) are recorded daily in shadow mode (picks logged, no orders)
+  from 2026-09-29; the behavior-cohort models and 60-day insider cluster buys still need live data feeds before
+  they can be shadowed.</p>
 </header>
 
 <section>

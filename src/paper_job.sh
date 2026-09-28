@@ -43,6 +43,7 @@ python src/hf_sync.py pull models
 python src/update_data.py daily
 python src/update_data.py earnings
 python src/paper_overnight.py reconcile || true
+python src/shadow.py score || true
 # build the panel cache and earnings features now so the 15:45 run only fetches today's bars
 python -c "import sys; sys.path.insert(0, 'src'); import ml_features as M; M.earnings_features(); print('panel ready', M.P['c'].index[-1].date())"
 # wait until 15:46 ET: SIP bars up to 15:30 are then more than 15 minutes old (free plan); MOC cutoff is 15:50
@@ -50,4 +51,6 @@ while [ "$(TZ=America/New_York date +%H%M)" -lt 1546 ]; do sleep 20; done
 echo "entry at $(TZ=America/New_York date +%T) ET, submit flag: '${SUBMIT}'"
 python src/paper_overnight.py entry $SUBMIT
 echo "entry finished at $(TZ=America/New_York date +%T) ET"
+# shadow candidates (no orders): record today's picks after the real orders are in
+python src/shadow.py record || echo "shadow record failed"
 commit_logs
