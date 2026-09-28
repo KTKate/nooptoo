@@ -49,4 +49,5 @@ python -c "import sys; sys.path.insert(0, 'src'); import ml_features as M; M.ear
 while [ "$(TZ=America/New_York date +%H%M)" -lt 1546 ]; do sleep 20; done
 echo "entry at $(TZ=America/New_York date +%T) ET, submit flag: '${SUBMIT}'"
 python src/paper_overnight.py entry $SUBMIT
+echo "entry finished at $(TZ=America/New_York date +%T) ET"
 commit_logs
