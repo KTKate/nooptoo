@@ -15,7 +15,7 @@ LOGF=logs/paper/job_${MODE}_${TODAY}.log
 exec > >(tee -a "$LOGF") 2>&1
 echo "== paper job $MODE $TODAY $(TZ=America/New_York date +%T) ET"
 
-git fetch -q origin "$BRANCH" && git checkout -q "$BRANCH" && git pull -q origin "$BRANCH"
+git fetch -q origin "$BRANCH" && git checkout -q "$BRANCH" && git -c pull.rebase=false pull -q --no-edit origin "$BRANCH"
 pip install -q -r requirements.txt huggingface_hub 2>&1 | grep -v "root user" | tail -2
 
 SESSION=$(python src/paper_overnight.py session 2>/dev/null | tail -1)
@@ -28,7 +28,7 @@ if [[ "$TODAY" > "$SUBMIT_FROM" || "$TODAY" == "$SUBMIT_FROM" ]]; then SUBMIT="-
 commit_logs() {
   git add -f logs/paper data/store 2>/dev/null
   git commit -q -m "Paper job $MODE $TODAY" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" || true
-  for i in 1 2 3 4; do git pull -q --no-edit origin "$BRANCH" && git push -q origin "$BRANCH" && break; sleep $((2**i)); done
+  for i in 1 2 3 4; do git -c pull.rebase=false pull -q --no-edit origin "$BRANCH" && git push -q origin "$BRANCH" && break; sleep $((2**i)); done
 }
 
 if [ "$MODE" = "exit" ]; then
