@@ -47,6 +47,21 @@ of the quoted half-spread per auction side. All intraday studies (0, 4-8) and th
 `--day=YYYY-MM-DD` (uses the SIP 15:40-15:45 bar). Replay of 2026-09-25: 7 of 10 picks match the backtest.
 Schedule (weekdays ET): 15:45 entry, 09:15 exit, 17:30 `update_data.py daily`. Plan and stop rules in the report.
 
+## Session 3b (2026-09-27..29): studies 10-30, ensemble adopted
+- Studies 10-30 (news, sentiment, earnings timing and prediction, insider trades, per-stock and cohort models,
+  international ADRs, corporate events, portfolio construction, stat arb, crypto, options, premarket, ETF rotation,
+  intraday features, day-session shorts, MLP) are summarized in reports/overnight_report.html (make_report.py).
+- Adopted: five-model ensemble (src/ensemble.py: pooled, pooled+behavior-group, pooled+comove-group, per-behavior,
+  per-comove models; groups in results/study14_groups.parquet). 15:45 replay (study23): Sharpe 2.30/2.21 vs 1.78/1.78.
+  Models: data/models/ens_*_<quarter>*.txt, 2024Q1..2026Q4, on Hugging Face under models/. Retrain each quarter:
+  `python src/ensemble.py train <Q> <Q>` plus the pooled `Q_START=<Q> Q_END=<Q> python src/study3_ml.py night`.
+- Paper job (src/paper_job.sh) trades `--strategy=ensemble` with fallback to `ml`; logs member picks
+  (logs/paper/members_<day>.json) and shadow candidates (src/shadow.py: small-cap no-news losers, ADR losers,
+  SPY/QQQ mean reversion).
+- Extra data: data/local/daily_long (2010-2019 daily), news, news_scored, shortvol, insider.parquet, intl, m5pre,
+  m5intl, options, crypto (all on Hugging Face except where noted in hf_sync).
+- Paper-trading session: a separate cloud session runs the jobs via scheduled triggers at 09:05 and 15:05 ET.
+
 ## Open items
 - Owner decision: approve paper submission (`--submit`) after a 2-week dry run; a scheduler is needed to run the
   15:45 / 09:15 jobs (this container is ephemeral).
