@@ -1,0 +1,265 @@
+== paper job entry 2026-09-29 15:06:48 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+Fetching 246 files:   0%|          | 0/246 [00:00<?, ?it/s]Fetching 246 files:   0%|          | 1/246 [00:00<00:51,  4.75it/s]Fetching 246 files:   1%|          | 2/246 [00:00<00:48,  5.01it/s]Fetching 246 files:   2%|▏         | 4/246 [00:00<00:31,  7.80it/s]Fetching 246 files:   5%|▍         | 12/246 [00:00<00:10, 21.56it/s]Fetching 246 files:   8%|▊         | 20/246 [00:00<00:07, 28.33it/s]Fetching 246 files:  10%|█         | 25/246 [00:01<00:06, 32.84it/s]Fetching 246 files:  12%|█▏        | 29/246 [00:01<00:06, 33.13it/s]Fetching 246 files:  14%|█▍        | 34/246 [00:01<00:06, 34.46it/s]Fetching 246 files:  15%|█▌        | 38/246 [00:01<00:05, 35.18it/s]Fetching 246 files:  18%|█▊        | 44/246 [00:01<00:05, 36.12it/s]Fetching 246 files:  20%|██        | 50/246 [00:01<00:04, 41.37it/s]Fetching 246 files:  22%|██▏       | 55/246 [00:01<00:04, 38.24it/s]Fetching 246 files:  24%|██▍       | 60/246 [00:01<00:04, 39.19it/s]Fetching 246 files:  26%|██▋       | 65/246 [00:02<00:04, 38.21it/s]Fetching 246 files:  28%|██▊       | 69/246 [00:02<00:04, 37.22it/s]Fetching 246 files:  30%|███       | 75/246 [00:02<00:04, 40.06it/s]Fetching 246 files:  33%|███▎      | 80/246 [00:02<00:04, 34.46it/s]Fetching 246 files:  35%|███▍      | 86/246 [00:02<00:05, 29.84it/s]Fetching 246 files:  38%|███▊      | 94/246 [00:02<00:04, 34.30it/s]Fetching 246 files:  41%|████▏     | 102/246 [00:03<00:03, 37.54it/s]Fetching 246 files:  43%|████▎     | 106/246 [00:03<00:04, 30.82it/s]Fetching 246 files:  46%|████▌     | 113/246 [00:03<00:03, 37.01it/s]Fetching 246 files:  48%|████▊     | 118/246 [00:03<00:03, 34.13it/s]Fetching 246 files:  50%|█████     | 123/246 [00:03<00:03, 34.88it/s]Fetching 246 files:  52%|█████▏    | 127/246 [00:03<00:03, 34.90it/s]Fetching 246 files:  54%|█████▎    | 132/246 [00:04<00:03, 31.09it/s]Fetching 246 files:  57%|█████▋    | 139/246 [00:04<00:02, 36.60it/s]Fetching 246 files:  59%|█████▊    | 144/246 [00:04<00:02, 39.46it/s]Fetching 246 files:  61%|██████    | 149/246 [00:04<00:02, 39.32it/s]Fetching 246 files:  63%|██████▎   | 156/246 [00:04<00:02, 38.60it/s]Fetching 246 files:  66%|██████▋   | 163/246 [00:04<00:01, 44.67it/s]Fetching 246 files:  68%|██████▊   | 168/246 [00:04<00:01, 44.81it/s]Fetching 246 files:  70%|███████   | 173/246 [00:05<00:01, 38.71it/s]Fetching 246 files:  73%|███████▎  | 180/246 [00:05<00:01, 40.86it/s]Fetching 246 files:  75%|███████▌  | 185/246 [00:05<00:01, 41.27it/s]Fetching 246 files:  77%|███████▋  | 190/246 [00:05<00:01, 43.05it/s]Fetching 246 files:  79%|███████▉  | 195/246 [00:05<00:01, 40.24it/s]Fetching 246 files:  81%|████████▏ | 200/246 [00:05<00:01, 38.95it/s]Fetching 246 files:  83%|████████▎ | 204/246 [00:05<00:01, 35.83it/s]Fetching 246 files:  85%|████████▍ | 209/246 [00:05<00:01, 36.89it/s]Fetching 246 files:  87%|████████▋ | 213/246 [00:06<00:01, 31.43it/s]Fetching 246 files:  89%|████████▊ | 218/246 [00:06<00:00, 32.01it/s]Fetching 246 files:  90%|█████████ | 222/246 [00:06<00:00, 28.92it/s]Fetching 246 files:  93%|█████████▎| 228/246 [00:06<00:00, 31.85it/s]Fetching 246 files:  94%|█████████▍| 232/246 [00:06<00:00, 32.93it/s]Fetching 246 files:  97%|█████████▋| 239/246 [00:06<00:00, 40.54it/s]Fetching 246 files: 100%|██████████| 246/246 [00:07<00:00, 38.11it/s]Fetching 246 files: 100%|██████████| 246/246 [00:07<00:00, 34.79it/s]
+pulled Incarnadin/nooptoo-market-data into /home/user/nooptoo/data/local
+daily: last 2026-09-25, fetching from 2026-09-11 for 5549 tickers; 0 new tickers
+
+1 Failed download:
+['AEXA']: OperationalError('database is locked')
+  0
+  150
+  300
+  450
+  600
+  750
+  900
+  1050
+  1200
+  1350
+  1500
+  1650
+  1800
+  1950
+  2100
+  2250
+  2400
+  2550
+  2700
+  2850
+  3000
+  3150
+  3300
+  3450
+  3600
+  3750
+  3900
+  4050
+  4200
+  4350
+  4500
+$SVA: possibly delisted; no price data found  (1d 2026-09-11 -> 2026-09-29)
+
+1 Failed download:
+['SVA']: possibly delisted; no price data found  (1d 2026-09-11 -> 2026-09-29)
+  4650
+  4800
+  4950
+  5100
+  5250
+  5400
+tickers with changed history (splits): ['CTNT', 'DCX', 'FBGL']
+daily updated to 2026-09-28
+earnings: fetched 30 days, 1256 rows
+      date  equity  pnl
+2026-09-23 10000.0  0.0
+2026-09-24 10000.0  0.0
+2026-09-25 10000.0  0.0
+2026-09-26 10000.0  0.0
+2026-09-29 10000.0  0.0
+nothing to score yet
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+panel ready 2026-09-28
+entry at 15:46:18 ET, submit flag: '--submit'
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+{
+ "day": "2026-09-29",
+ "strategy": "ensemble",
+ "model": "ensemble5_night_2026Q3.txt",
+ "ml_top": {
+  "ECAT": 0.97972,
+  "ASC": 0.97726,
+  "STNG": 0.97372,
+  "NAT": 0.96735,
+  "HYT": 0.96012,
+  "HESM": 0.9559,
+  "TK": 0.95498,
+  "IDT": 0.9519,
+  "ADX": 0.95129,
+  "AES": 0.94683
+ },
+ "equity": 10000.0,
+ "orders": [
+  {
+   "symbol": "ECAT",
+   "qty": 71,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ASC",
+   "qty": 54,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "STNG",
+   "qty": 12,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "NAT",
+   "qty": 126,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "HYT",
+   "qty": 128,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "HESM",
+   "qty": 26,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "TK",
+   "qty": 70,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "IDT",
+   "qty": 13,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ADX",
+   "qty": 38,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AES",
+   "qty": 67,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 9903.47
+}
+ECAT 200 {"id":"6fd63e28-0d92-4c25-a706-7255b6bcbaf7","client_order_id":"65d21c05-13a0-4741-8904-394f71a6131d","created_at":"2026-09-29T19:47:50.397998895Z","updated_at":"2026-09-29T19:47:50.398956922Z","submi
+ASC 200 {"id":"783730ee-7ebc-468d-babe-8f8f060c5d3c","client_order_id":"51d1fa17-c1d5-4c7a-89d9-b931c90369ae","created_at":"2026-09-29T19:47:50.876043519Z","updated_at":"2026-09-29T19:47:50.877110099Z","submi
+STNG 200 {"id":"23eceef7-20a8-4193-afb8-92cec0a2f36c","client_order_id":"f0c04b35-9b35-4bb2-9482-753a7791ab9c","created_at":"2026-09-29T19:47:51.296628262Z","updated_at":"2026-09-29T19:47:51.298181011Z","submi
+NAT 200 {"id":"3810e848-7dd2-42c6-b3b1-bc54181220a5","client_order_id":"5bfbe482-869d-40ec-8344-829e66cba6f9","created_at":"2026-09-29T19:47:51.73164985Z","updated_at":"2026-09-29T19:47:51.733083721Z","submit
+HYT 200 {"id":"89175c7c-39d1-4f44-b6a1-0b310eebd135","client_order_id":"321662b8-bb71-4b97-b373-38ffdb53b2d4","created_at":"2026-09-29T19:47:52.17802609Z","updated_at":"2026-09-29T19:47:52.179114142Z","submit
+HESM 200 {"id":"c4aa333a-0c03-4b65-8779-819ee1841189","client_order_id":"fdfa35db-3ecd-48b0-a388-6d0ab34e3ac8","created_at":"2026-09-29T19:47:52.590610282Z","updated_at":"2026-09-29T19:47:52.591825886Z","submi
+TK 200 {"id":"75666e2f-aa90-4d08-9064-55d6c362dc5f","client_order_id":"cf23fd00-95db-4d4c-864c-4e566902768d","created_at":"2026-09-29T19:47:52.976174584Z","updated_at":"2026-09-29T19:47:52.977573062Z","submi
+IDT 200 {"id":"a8ee75e6-f7b3-4223-b70a-c2f6053cbca4","client_order_id":"9cd4e75e-ee9b-4ed1-8544-0ca189b310d4","created_at":"2026-09-29T19:47:53.377458075Z","updated_at":"2026-09-29T19:47:53.398059157Z","submi
+ADX 200 {"id":"11c4e473-46d7-4a6f-bfd0-4f407e64a878","client_order_id":"d65bc8d0-5dc4-4a89-acfa-0de6e06e9b92","created_at":"2026-09-29T19:47:53.841504571Z","updated_at":"2026-09-29T19:47:53.842695748Z","submi
+AES 200 {"id":"b27d4f7e-5e6c-4067-aa00-e69668084ead","client_order_id":"ccfe236c-0870-425d-b8d0-06baec0e7c0a","created_at":"2026-09-29T19:47:54.269392709Z","updated_at":"2026-09-29T19:47:54.271275123Z","submi
+entry finished at 15:47:54 ET
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+{
+ "day": "2026-09-29",
+ "recorded_at": "2026-09-29 15:48:44.729953-04:00",
+ "news_window": [
+  "2026-09-28 19:45:00+00:00",
+  "2026-09-29 19:45:00+00:00"
+ ],
+ "n_news_symbols": 550,
+ "smallcap_nonews": {
+  "NCT": {
+   "loss": 0.1915,
+   "px": 1.899999976158142
+  },
+  "QNC": {
+   "loss": 0.1675,
+   "px": 1.715
+  },
+  "AIAI": {
+   "loss": 0.161,
+   "px": 3.2049999237060547
+  },
+  "WHLR": {
+   "loss": 0.1285,
+   "px": 3.390000104904175
+  },
+  "INDP": {
+   "loss": 0.1173,
+   "px": 2.859999895095825
+  },
+  "CNTN": {
+   "loss": 0.1059,
+   "px": 2.405
+  },
+  "MAAS": {
+   "loss": 0.1012,
+   "px": 15.979900360107422
+  },
+  "PEPG": {
+   "loss": 0.0939,
+   "px": 2.365
+  },
+  "EMAT": {
+   "loss": 0.0891,
+   "px": 2.915
+  },
+  "ADV": {
+   "loss": 0.0885,
+   "px": 29.13
+  }
+ },
+ "adr_loser": {
+  "VNET": {
+   "loss": 0.063,
+   "px": 5.725
+  },
+  "GPCR": {
+   "loss": 0.061,
+   "px": 32.66
+  },
+  "IVA": {
+   "loss": 0.0546,
+   "px": 3.29
+  },
+  "WRD": {
+   "loss": 0.0489,
+   "px": 5.25
+  },
+  "STLA": {
+   "loss": 0.0476,
+   "px": 4.405
+  }
+ },
+ "spy_meanrev": {
+  "SPY": {
+   "action": "flat",
+   "px": 764.21,
+   "down3": false,
+   "above5": false
+  },
+  "QQQ": {
+   "action": "flat",
+   "px": 737.86,
+   "down3": false,
+   "above5": false
+  }
+ },
+ "universe": {
+  "smallcap": 742,
+  "smallcap_priced": 742,
+  "adr": 175
+ }
+}

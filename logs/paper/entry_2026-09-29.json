@@ -1,0 +1,92 @@
+{
+ "day": "2026-09-29",
+ "strategy": "ensemble",
+ "model": "ensemble5_night_2026Q3.txt",
+ "ml_top": {
+  "ECAT": 0.97972,
+  "ASC": 0.97726,
+  "STNG": 0.97372,
+  "NAT": 0.96735,
+  "HYT": 0.96012,
+  "HESM": 0.9559,
+  "TK": 0.95498,
+  "IDT": 0.9519,
+  "ADX": 0.95129,
+  "AES": 0.94683
+ },
+ "equity": 10000.0,
+ "orders": [
+  {
+   "symbol": "ECAT",
+   "qty": 71,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ASC",
+   "qty": 54,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "STNG",
+   "qty": 12,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "NAT",
+   "qty": 126,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "HYT",
+   "qty": 128,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "HESM",
+   "qty": 26,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "TK",
+   "qty": 70,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "IDT",
+   "qty": 13,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ADX",
+   "qty": 38,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AES",
+   "qty": 67,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 9903.47
+}
