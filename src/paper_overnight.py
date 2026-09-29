@@ -1,6 +1,7 @@
 """Paper-trading runner for the overnight strategies (Alpaca PAPER account only).
 
 Strategies (--strategy=, default ml: the only one that survived the look-ahead-free tests, see reports/):
+  ensemble  the five-model average of src/ensemble.py (study 14/23), same universe and trade as ml
   ml        rank the liquid universe (price > $5, ADV > $5M) with the latest quarterly overnight LightGBM model
   smallcap  small caps (price > $2, 20d median dollar volume $1-5M): largest loss from today's open to 15:45
             (s_intraday_loser in final_series.py)
@@ -85,7 +86,7 @@ def today_intraday(tickers, day, live=True):
     return agg
 
 
-def ml_scores(P, cols, intr, day, hist):
+def ml_scores(P, cols, intr, day, hist, use_ensemble=False):
     """Overnight LightGBM scores for day from the panels cut before day plus today's intraday row."""
     import lightgbm as lgb
     import ml_features as M
@@ -116,6 +117,11 @@ def ml_scores(P, cols, intr, day, hist):
     q = f"night_{pd.Period(day, freq='Q')}.txt"
     name = q if q in models else models[-1]
     mdl = lgb.Booster(model_file=os.path.join(DATA, "models", name))
+    if use_ensemble:
+        import ensemble
+        ens = ensemble.predict(X, pd.Period(name.split("_")[1].split(".")[0], freq="Q"), pooled_model=mdl)
+        pred = pd.Series(ens["ensemble"].values, index=X.index.get_level_values(1))
+        return pred.sort_values(ascending=False), "ensemble5_" + name
     pred = pd.Series(mdl.predict(X[mdl.feature_name()]), index=X.index.get_level_values(1))
     return pred.sort_values(ascending=False), name
 
@@ -158,13 +164,13 @@ def entry(submit=False, day=None, strategy="ml"):
     hist = slice(len(P["c"]) - 260, len(P["c"]))
     liquid = [t for t in cols if P["dv"][t].iloc[-20:].median() > 5e6 and P["rawc"][t].iloc[-1] > 5]
     small = tradable(smallcap_universe(P, cols)) if strategy in ("smallcap", "combo") else []
-    need = (liquid if strategy in ("ml", "combo") else []) + small + ["SPY", "IWM"]
+    need = (liquid if strategy in ("ml", "combo", "ensemble") else []) + small + ["SPY", "IWM"]
     intr = today_intraday(sorted(set(need)), day.date(), live=not test)
     picks, rec = {}, dict(day=str(day.date()), strategy=strategy)
-    if strategy in ("ml", "combo"):
-        pred, model = ml_scores(P, cols, intr, day, hist)
+    if strategy in ("ml", "combo", "ensemble"):
+        pred, model = ml_scores(P, cols, intr, day, hist, use_ensemble=strategy == "ensemble")
         pred = pred[pred.index.isin(tradable(pred.index))]
-        n = K if strategy == "ml" else K // 2
+        n = K if strategy in ("ml", "ensemble") else K // 2
         rec.update(model=model, ml_top=pred.head(n).round(5).to_dict())
         for t in pred.head(n).index:
             picks[t] = picks.get(t, 0.0) + 1.0 / K
@@ -253,8 +259,8 @@ if __name__ == "__main__":
     submit = "--submit" in sys.argv
     day = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--day=")), None)
     strategy = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--strategy=")), "ml")
-    if strategy not in ("ml", "smallcap", "combo"):
-        raise SystemExit("--strategy must be ml, smallcap or combo")
+    if strategy not in ("ml", "smallcap", "combo", "ensemble"):
+        raise SystemExit("--strategy must be ml, ensemble, smallcap or combo")
     if what == "entry":
         entry(submit, day, strategy)
     elif what == "exit":
