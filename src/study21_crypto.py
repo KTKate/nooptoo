@@ -63,6 +63,7 @@ SERIES = {}
 def load():
     d = pd.read_parquet(os.path.join(CD, "bars_1Day.parquet"))
     d["t"] = d.t.dt.tz_convert(None).dt.normalize()
+    d = d[d.t < pd.Timestamp.now(tz="UTC").tz_localize(None).normalize()]  # drop today's partial bar
     px = d.pivot(index="t", columns="symbol", values="c").sort_index()
     dv = (d.c * d.v).groupby([d.t, d.symbol]).sum().unstack()
     h = pd.read_parquet(os.path.join(CD, "bars_1Hour.parquet"), columns=["symbol", "t", "o", "c"])

@@ -1,6 +1,7 @@
 """Fetch Alpaca crypto bars (1Hour, 1Day) for all tradable USD pairs + a latest-quote spread sample.
 Read-only market data. Uses the shared rate limiter in alpaca_data (RL.wait()).
-    python src/fetch_crypto.py bars
+    python src/fetch_crypto.py bars      # daily all pairs + hourly majors
+    python src/fetch_crypto.py hourly    # hourly majors only
     python src/fetch_crypto.py quotes [n_samples]
 """
 import os
@@ -40,8 +41,8 @@ def get(url, params):
     raise RuntimeError("request failed")
 
 
-def fetch_bars(tf):
-    syms = symbols()
+def fetch_bars(tf, syms=None):
+    syms = syms or symbols()
     rows = []
     for i in range(0, len(syms), 6):
         grp = syms[i:i + 6]
@@ -81,6 +82,7 @@ def sample_quotes(n=20, gap=30):
 if __name__ == "__main__":
     if sys.argv[1] == "bars":
         fetch_bars("1Day")
-        fetch_bars("1Hour")
-    else:
+    if sys.argv[1] in ("bars", "hourly"):
+        fetch_bars("1Hour", ["BTC/USD", "ETH/USD", "SOL/USD"])  # hourly pages are small; majors only
+    if sys.argv[1] == "quotes":
         sample_quotes(int(sys.argv[2]) if len(sys.argv) > 2 else 20)

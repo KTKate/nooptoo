@@ -150,9 +150,10 @@ def run_bars(u):
     print(u, "contracts to fetch", len(need), flush=True)
     # group by expiry so a request covers ~2 months of dates for 100 symbols
     parts = [have] if len(have) else []
+    pending = []
     for ex, g in need.groupby("expiration_date"):
         start = (ex - pd.Timedelta(days=50)).strftime("%Y-%m-%d")
-        end = min(ex + pd.Timedelta(days=1), pd.Timestamp.today().normalize()).strftime("%Y-%m-%d")
+        end = min(ex + pd.Timedelta(days=1), pd.Timestamp.today().normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
         if ex - pd.Timedelta(days=50) >= pd.Timestamp.today().normalize():
             continue
         b = fetch_bars(g.symbol.tolist(), start, end)
@@ -161,14 +162,18 @@ def run_bars(u):
             b = b[["symbol", "date", "o", "h", "l", "c", "v", "n", "vw"]]
             parts.append(b)
         if ex < pd.Timestamp.today().normalize():
-            with open(donefn, "a") as f:
-                f.write("\n".join(g.symbol) + "\n")
+            pending += list(g.symbol)
         print(u, ex.date(), len(g), len(b), flush=True)
         if len(parts) > 20:
             parts = [pd.concat(parts, ignore_index=True)]
             parts[0].to_parquet(fn, index=False)
+            with open(donefn, "a") as f:     # mark done only once the bars are on disk
+                f.write("\n".join(pending) + "\n")
+            pending = []
     if parts:
         pd.concat(parts, ignore_index=True).drop_duplicates(["symbol", "date"]).to_parquet(fn, index=False)
+        with open(donefn, "a") as f:
+            f.write("\n".join(pending) + "\n")
 
 
 def snap_quotes(u, spot):
