@@ -152,14 +152,17 @@ def run_bars(u):
     parts = [have] if len(have) else []
     for ex, g in need.groupby("expiration_date"):
         start = (ex - pd.Timedelta(days=50)).strftime("%Y-%m-%d")
-        end = (ex + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+        end = min(ex + pd.Timedelta(days=1), pd.Timestamp.today().normalize()).strftime("%Y-%m-%d")
+        if ex - pd.Timedelta(days=50) >= pd.Timestamp.today().normalize():
+            continue
         b = fetch_bars(g.symbol.tolist(), start, end)
         if len(b):
             b["date"] = pd.to_datetime(b.t).dt.tz_convert("America/New_York").dt.tz_localize(None).dt.normalize()
             b = b[["symbol", "date", "o", "h", "l", "c", "v", "n", "vw"]]
             parts.append(b)
-        with open(donefn, "a") as f:
-            f.write("\n".join(g.symbol) + "\n")
+        if ex < pd.Timestamp.today().normalize():
+            with open(donefn, "a") as f:
+                f.write("\n".join(g.symbol) + "\n")
         print(u, ex.date(), len(g), len(b), flush=True)
         if len(parts) > 20:
             parts = [pd.concat(parts, ignore_index=True)]
