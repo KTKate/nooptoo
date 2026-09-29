@@ -10,6 +10,9 @@ Candidates recorded:
                     (study 10: no-news losers rebound overnight)
   adr_loser         5 US-listed ADRs (data/store/adr_universe.csv, 20d median dollar volume > $5M, price > $2) with the
                     largest loss from the open (study 16)
+  spy_meanrev       SPY and QQQ: enter at the close after 3 down days in a row (today's close taken as the latest
+                    price), exit at the close when the price is above its 5-day average (study 27); state kept in
+                    logs/paper/shadow_state.json, scored close to close
 Not yet automated (need live data this runner does not have): behavior-cohort models (study 14, needs per-group
 models saved for live use) and 60-day insider cluster buys (study 15, needs a daily Form 4 feed).
 Prices at record time are the IEX last trade (or SIP 15:30 bar), as in paper_overnight.py; scoring uses Alpaca SIP
@@ -74,7 +77,7 @@ def record(day=None):
     liq = g.dv.apply(lambda x: x.tail(20).median())
     lastpx = g.c.last()
     adr_ok = PO.tradable([t for t in adr if liq.get(t, 0) > 5e6 and lastpx.get(t, 0) > 2])
-    intr = PO.today_intraday(sorted(set(small + adr_ok)), day.date(), live=not test)
+    intr = PO.today_intraday(sorted(set(small + adr_ok + ["SPY", "QQQ"])), day.date(), live=not test)
     since = (pd.Timestamp(f"{prev.date()} 15:45").tz_localize("America/New_York").tz_convert("UTC"))
     until = pd.Timestamp(f"{day.date()} 15:45").tz_localize("America/New_York").tz_convert("UTC")
     news = news_symbols(since) if not test else set()
@@ -82,11 +85,36 @@ def record(day=None):
     sc = loss.reindex(small).dropna()
     sc_nonews = sc[[t not in news for t in sc.index]].sort_values(ascending=False)
     ad_loss = loss.reindex(adr_ok).dropna().sort_values(ascending=False)
+    # SPY / QQQ mean reversion (study 27), state machine across days
+    st_fn = os.path.join(PO.LOG, "shadow_state.json")
+    try:
+        state = json.load(open(st_fn))
+    except (OSError, ValueError):
+        state = {}
+    mr = {}
+    for etf in ["SPY", "QQQ"]:
+        hist = P["rawc"][etf].dropna().iloc[-10:]
+        px = float(intr.p.get(etf, np.nan)) if etf in intr.index else np.nan
+        if not np.isfinite(px):
+            continue
+        closes = pd.concat([hist, pd.Series([px], index=[day])])
+        down3 = bool((closes.diff().iloc[-3:] < 0).all())
+        above5 = bool(px > closes.iloc[-5:].mean())
+        pos = state.get(etf, {}).get("in", False)
+        action = "hold" if pos else "flat"
+        if not pos and down3:
+            action, pos = "enter", True
+        elif pos and above5:
+            action, pos = "exit", False
+        state[etf] = {"in": pos, "day": str(day.date())}
+        mr[etf] = dict(action=action, px=px, down3=down3, above5=above5)
+    if not test:
+        json.dump(state, open(st_fn, "w"), indent=1)
     rec = dict(day=str(day.date()), recorded_at=str(pd.Timestamp.now(tz="America/New_York")),
                news_window=[str(since), str(until)], n_news_symbols=len(news),
                smallcap_nonews={t: dict(loss=round(float(v), 4), px=float(intr.p[t])) for t, v in sc_nonews.head(10).items()},
                adr_loser={t: dict(loss=round(float(v), 4), px=float(intr.p[t])) for t, v in ad_loss.head(5).items()},
-               universe=dict(smallcap=len(small), smallcap_priced=len(sc), adr=len(adr_ok)))
+               spy_meanrev=mr, universe=dict(smallcap=len(small), smallcap_priced=len(sc), adr=len(adr_ok)))
     fn = os.path.join(PO.LOG, f"shadow_{day.date()}{'_replay' if test else ''}.json")
     json.dump(rec, open(fn, "w"), indent=1)
     print(json.dumps(rec, indent=1))
