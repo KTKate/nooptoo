@@ -201,10 +201,35 @@ studies = [
     ("18", "Predicting the earnings reaction before the report (64,391 reports, 28 inputs)", "Reject",
      "Top 10 predicted: Sharpe 1.22/1.66/0.40; accuracy (rank correlation) falls from 0.049 to 0.014 and the sign is "
      "right 50-51% of the time."),
+    ("19", "Portfolio construction of the ML strategy: long-short, SPY hedge, weighting, keeping picks through the day, "
+     "regime filters, minimum score (21 variants)", "Reject",
+     "No variant beats equal-weight top 10 in both periods. Hedging costs about 10 bp a night; holding through the day "
+     "loses because the picks give back their overnight gains during the day."),
+    ("20", "Statistical arbitrage at auctions: industry/cluster residual reversal, pairs, overnight residuals (356 variants)",
+     "Reject", "Best residual-reversal variant 1.11/1.09 (2024-26 with 15:45 prices) but about 0 in 2020-23; deflated 0.03."),
+    ("21", "Crypto at Alpaca (0.15-0.25% fees): time of day, weekends, trend, cross-sectional momentum, lead-lag with SPY",
+     "Reject", "Daily trading costs about 0.5% per round trip. Best rule (ETH 30-day trend) deflated Sharpe 0.17."),
+    ("22", "Options premium selling (put spreads, iron condors, cash-secured puts), 2024-02..2026-09", "Reject",
+     "Best: SPY 10-delta weekly put spread, Sharpe 0.38 then 3.26, worst month -86% of capital at risk."),
+    ("23", "Five-model ensemble (pooled, per-group and group-feature models) with 15:45 features", "Adopted",
+     "Sharpe 2.30 / 2.21 (validation / holdout) vs 1.78 / 1.78, max drawdown -18% vs -24%, market-hedged 1.72 vs 1.13, "
+     "deflated 0.66 vs 0.36; +7 bp a day (t 1.4). Paper account trades it from 2026-09-29."),
+    ("24-26", "Model tuning, 2011+ training history", "Running", "Results pending."),
+    ("25", "Premarket gaps and volume, opening-auction to closing-auction day trades (41 variants)", "Reject",
+     "Gap rules fail; a short-side model works only through stocks that cannot be borrowed (see 29)."),
+    ("27", "ETF rotation, volatility management, leveraged ETFs with trend filter, SPY/QQQ mean reversion", "Candidate",
+     "Only mean reversion (buy after 3 down days) has a higher Sharpe than SPY (1.40/1.01/1.96) with lower return; "
+     "shadow-tracked."),
+    ("28", "Intraday features (15:30-15:45 and first 30 minutes) stacked on the ranker", "Candidate",
+     "Holdout 2.77 vs 1.78 but needs real-time full-market data at 15:45 (Alpaca Algo Trader Plus, $99 a month)."),
+    ("29", "Shorting predicted day losers (opening-auction short, closing-auction cover)", "Reject",
+     "1.39/2.75/4.09 on all stocks, 0.07/0.84/1.67 on easy-to-borrow stocks: the profit is in names that cannot be shorted."),
+    ("30", "Neural-network ensemble member", "Reject", "No gain in top-10 books; worse in 2024-25 (t -2.2)."),
     ("-", "Macro calendar (FOMC, CPI, jobs report nights)", "Reject",
      "The ML strategy's jobs-report nights average -17 to -32 bp, but only 15-18 nights per period (t below 0.6)."),
 ]
-chipcls = {"Reject": "no", "Leads only": "lead", "Overnight only": "paper", "Candidate": "lead"}
+chipcls = {"Reject": "no", "Leads only": "lead", "Overnight only": "paper", "Candidate": "lead", "Adopted": "paper",
+           "Running": "bench"}
 study_rows = "\n".join(f'<tr><td class="num">{n}</td><td>{html.escape(t)}</td><td><span class="chip {chipcls[v]}">{v}</span></td>'
                        f'<td>{html.escape(d)}</td></tr>' for n, t, v, d in studies)
 
