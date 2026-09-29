@@ -282,8 +282,9 @@ PERIODS = [("val", pd.Timestamp("2024-02-01"), SPLIT), ("holdout", SPLIT, pd.Tim
 
 
 # ------------------------------------------------------------------ VIX Black-Scholes secondary check
-def vix_bs(spy_raw, vix, v9, skew_short, skew_long, target, freq, take=None, W_frac=5 / 550):
-    """SPY put spreads priced with BS at sigma = VIX (VIX9D for weekly) x fitted skew ratios. MODEL, not market prices."""
+def vix_bs(spy_raw, vix, v9, a, b, target, freq, W_frac=5 / 550):
+    """SPY put spreads priced with BS at sigma = VIX (VIX9D for weekly) x (a + b * ln(K/S)/sqrt(T)), a skew line
+    fitted to 2024-26 Alpaca SPY put IVs. MODEL prices, not market prices."""
     dates = spy_raw.index
     fri = dates[dates.dayofweek == 4]
     if freq == "M":
@@ -296,16 +297,21 @@ def vix_bs(spy_raw, vix, v9, skew_short, skew_long, target, freq, take=None, W_f
             continue
         T = ((E - t).days + 0.3) / 365
         W = max(1.0, round(W_frac * S))
-        Ks = np.arange(np.floor(S * 0.7), np.floor(S), 1.0)
-        _, dl = bs(S, Ks, T, v * skew_short, "put", 0.012)
-        Ks_ = Ks[np.argmin(np.abs(np.abs(dl) - target))]
-        Kl = Ks_ - W
-        cr = bs(S, Ks_, T, v * skew_short, "put", 0.012)[0] - bs(S, Kl, T, v * skew_long, "put", 0.012)[0]
+        Ks = np.arange(np.floor(S * 0.4), np.floor(S), 1.0)
+        sig = v * np.clip(a + b * np.log(Ks / S) / np.sqrt(T), 0.5, 3.0)
+        pr, dl = bs(S, Ks, T, sig, "put", 0.012)
+        i = np.argmin(np.abs(np.abs(dl) - target))
+        j = np.argmin(np.abs(Ks - (Ks[i] - W)))
+        if j == i:
+            continue
+        cr = pr[i] - pr[j]
+        Kl = Ks[j]
+        Ks_ = Ks[i]
         cost = 2 * (0.03 + FEE)
         ST = spy_raw[E]
         payoff = max(Ks_ - ST, 0) - max(Kl - ST, 0)
         pnl = cr - payoff - cost - (0.01 if ST < Ks_ else 0)
-        rows.append(dict(entry=t, expiry=E, credit=cr, pnl=pnl, ret=pnl / (W - cr)))
+        rows.append(dict(entry=t, expiry=E, credit=cr, pnl=pnl, ret=pnl / (Ks_ - Kl - cr)))
     return pd.DataFrame(rows)
 
 
@@ -351,18 +357,20 @@ def main():
                          sharpe=r.mean() / r.std() * np.sqrt(252), worst_month=m.min(), maxdd=(e / e.cummax() - 1).min()))
     S = pd.DataFrame(summ)
     tag = "" if COST_MULT == 1 else f"_cost{COST_MULT:g}"
-    S.to_csv(os.path.join(RES, f"study22_summary{tag}.csv"), index=False)
-    pd.DataFrame(allt).to_csv(os.path.join(RES, f"study22_trades{tag}.csv"), index=False)
+    if unds:
+        S.to_csv(os.path.join(RES, f"study22_summary{tag}.csv"), index=False)
+        pd.DataFrame(allt).to_csv(os.path.join(RES, f"study22_trades{tag}.csv"), index=False)
     if COST_MULT != 1:
         return
     # VIX-BS check, skew fitted on 2024-26 SPY monthly short and long leg IVs vs VIX
     b, sp = load("SPY")
     b["vix"] = b.date.map(vix)
-    ch = b[(b.type == "put") & b.iv.notna() & b.vix.notna() & (b["T"] > 20 / 365) & (b["T"] < 40 / 365)]
-    ks = ch[(ch.delta.abs() - 0.16).abs() < 0.03]
-    rshort = (ks.iv / (ks.vix / 100)).median()
-    kl = ch[(ch.delta.abs() - 0.10).abs() < 0.03]
-    rlong = (kl.iv / (kl.vix / 100)).median()
+    ch = b[(b.type == "put") & b.iv.notna() & b.vix.notna() & (b["T"] > 4 / 365) & (b["T"] < 40 / 365)]
+    ch = ch[(ch.K < ch.S) & (ch.delta.abs() > 0.03)]
+    x = np.log(ch.K / ch.S) / np.sqrt(ch["T"])
+    y = ch.iv / (ch.vix / 100)
+    rshort, rlong = np.polyfit(x, y, 1)[::-1]          # intercept a, slope b
+    print("skew fit a=%.3f b=%.3f" % (rshort, rlong), flush=True)
     raw = pd.read_parquet(os.path.join(OPT, "underlying_SPY.parquet")).set_index("date").c.astype(float)
     raw.index = pd.to_datetime(raw.index)
     rows = []
@@ -380,7 +388,7 @@ def main():
                     rows.append(dict(model="VIX-BS", target=tg, freq=fq, period=name, n=len(x), mean_ret=x.ret.mean(),
                                      sharpe=x.ret.mean() / x.ret.std() * np.sqrt(per), win=(x.pnl > 0).mean(),
                                      worst=x.ret.min(), ann_ret=x.ret.mean() * per,
-                                     maxdd=(eq - eq.cummax()).min(), skew_short=rshort, skew_long=rlong))
+                                     maxdd=(eq - eq.cummax()).min(), skew_a=rshort, skew_b=rlong))
     # implied vs realized: VIX vs subsequent 21-day realized SPY vol
     rv = np.log(raw).diff().rolling(21).std().shift(-21) * np.sqrt(252) * 100
     x = pd.DataFrame({"vix": vix, "rv": rv}).dropna()
