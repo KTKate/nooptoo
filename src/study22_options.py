@@ -27,7 +27,7 @@ RES = os.path.join(ROOT, "results")
 SPLIT = pd.Timestamp("2025-07-01")
 R = 0.043
 QDIV = dict(SPY=0.012, QQQ=0.006, IWM=0.012, XLF=0.015, TLT=0.04, HYG=0.058, KRE=0.03, SLV=0.0)
-FEE = 0.05          # ORF ~0.023-0.027 + OCC 0.02-0.025 + TAF 0.003 (sells), per contract
+FEE = 0.05 / 100    # $0.05 per contract in option-price units; ORF ~0.023-0.027 + OCC 0.02-0.025 + TAF 0.003 (sells), per contract
 COST_MULT = float(os.environ.get("COST_MULT", "1"))
 
 
@@ -59,7 +59,10 @@ def iv(price, S, K, T, kind, q):
 def spread_model():
     fs = sorted(glob.glob(os.path.join(OPT, "snap_quotes_*.parquet")))
     d = pd.read_parquet(fs[-1])
-    d = d[(d.bid > 0) & (d.ask > 0) & (d.ask >= d.bid)]
+    d = d[(d.bid > 0) & (d.ask > 0) & (d.ask >= d.bid)].copy()
+    k = d.symbol.str[-8:].astype(int) / 1000
+    typ = d.symbol.str[-9]
+    d = d[((typ == "P") & (k < d.spot)) | ((typ == "C") & (k > d.spot))]      # OTM only
     d["mid"] = (d.bid + d.ask) / 2
     d["hs"] = (d.ask - d.bid) / 2
     edges = [0, 0.25, 0.5, 1, 2, 5, 1e9]
@@ -219,7 +222,8 @@ def run(u, b, sp, strat, target, freq, take=None, W=5.0):
 
 
 def equity(trades, dates):
-    """Daily equity with all capital committed to each trade (return on capital at risk)."""
+    """Daily P&L in units of the capital at risk, fixed (not compounded): each trade commits the same $10k as
+    its max loss (spreads) or cash collateral (CSP). Equity = 1 + cumulative return on capital at risk."""
     eq = pd.Series(np.nan, index=dates)
     E = 1.0
     last = dates[0]
@@ -228,8 +232,8 @@ def equity(trades, dates):
             continue
         eq[tr["entry"]] = E
         for d, r in tr["path"]:
-            eq[d] = E * (1 + r)
-        E = E * (1 + tr["ret"])
+            eq[d] = E + r
+        E = E + tr["ret"]
         last = tr["exit"]
     return eq.ffill().fillna(1.0)
 
@@ -238,14 +242,14 @@ def stats(eq, trades, a, b):
     e = eq[(eq.index >= a) & (eq.index < b)]
     if len(e) < 20:
         return {}
-    e = e / e.iloc[0]
-    r = e.pct_change().dropna()
+    e = e - e.iloc[0] + 1.0
+    r = e.diff().dropna()                     # daily return on capital at risk (fixed capital)
     yrs = (e.index[-1] - e.index[0]).days / 365.25
-    m = e.resample("ME").last().pct_change().dropna()
-    m = pd.concat([pd.Series([e.resample("ME").last().iloc[0] - 1]), m])
+    m = e.resample("ME").last().diff()
+    m.iloc[0] = e.resample("ME").last().iloc[0] - 1
     tr = [t for t in trades if a <= t["entry"] < b]
-    return dict(cagr=e.iloc[-1] ** (1 / yrs) - 1, sharpe=r.mean() / r.std() * np.sqrt(252) if r.std() > 0 else np.nan,
-                worst_month=m.min(), maxdd=(e / e.cummax() - 1).min(), n=len(tr),
+    return dict(ann_ret=(e.iloc[-1] - 1) / yrs, sharpe=r.mean() / r.std() * np.sqrt(252) if r.std() > 0 else np.nan,
+                worst_month=m.min(), maxdd=(e - e.cummax()).min(), n=len(tr),
                 win=np.mean([t["pnl"] > 0 for t in tr]) if tr else np.nan,
                 avg_ret=np.mean([t["ret"] for t in tr]) if tr else np.nan,
                 worst_trade=min([t["ret"] for t in tr]) if tr else np.nan,
@@ -310,7 +314,7 @@ def main():
     TAB, EDGES = spread_model()
     spy, vix, v9 = spy_bh()
     allt, summ = [], []
-    unds = [u for u in ["SPY", "QQQ", "IWM", "XLF", "TLT", "HYG", "KRE", "SLV"]
+    unds = [u for u in os.environ.get("UNDS", "SPY,QQQ,IWM,XLF,TLT,HYG,KRE,SLV").split(",")
             if os.path.exists(os.path.join(OPT, f"bars_{u}.parquet"))]
     ivfit = {}
     for u in unds:
@@ -333,7 +337,7 @@ def main():
                 if s:
                     summ.append(dict(u=u, strat=strat, target=tg, freq=fq, take=tk or 0, period=name, **s))
             allt += [{k: v for k, v in t.items() if k != "path"} for t in tr]
-            print(u, strat, tg, fq, tk, len(tr), round(summ[-1]["cagr"], 3), round(summ[-1]["sharpe"], 2), flush=True)
+            print(u, strat, tg, fq, tk, len(tr), round(summ[-1]["ann_ret"], 3), round(summ[-1]["sharpe"], 2), flush=True)
         if u == "SPY":
             # skew ratios for the VIX model: short-leg and long-leg IV / VIX at entry, 16-delta monthly
             t = pd.DataFrame([x for x in allt if x["u"] == "SPY" and x["strat"] == "PS" and x["freq"] == "M"])
@@ -343,7 +347,7 @@ def main():
         e = e / e.iloc[0]
         r = e.pct_change().dropna()
         m = e.resample("ME").last().pct_change().dropna()
-        summ.append(dict(u="SPY", strat="buy&hold", period=name, cagr=e.iloc[-1] ** (365.25 / (e.index[-1] - e.index[0]).days) - 1,
+        summ.append(dict(u="SPY", strat="buy&hold", period=name, ann_ret=e.iloc[-1] ** (365.25 / (e.index[-1] - e.index[0]).days) - 1,
                          sharpe=r.mean() / r.std() * np.sqrt(252), worst_month=m.min(), maxdd=(e / e.cummax() - 1).min()))
     S = pd.DataFrame(summ)
     tag = "" if COST_MULT == 1 else f"_cost{COST_MULT:g}"
@@ -371,12 +375,12 @@ def main():
                                ("2022", pd.Timestamp("2022-01-01"), pd.Timestamp("2023-01-01"))]:
                 x = d[(d.entry >= a) & (d.entry < z)]
                 if len(x):
-                    eq = (1 + x.ret).cumprod()
+                    eq = 1 + x.ret.cumsum()
                     per = 52 if fq == "W" else 12
                     rows.append(dict(model="VIX-BS", target=tg, freq=fq, period=name, n=len(x), mean_ret=x.ret.mean(),
                                      sharpe=x.ret.mean() / x.ret.std() * np.sqrt(per), win=(x.pnl > 0).mean(),
-                                     worst=x.ret.min(), cagr=eq.iloc[-1] ** (per / len(x)) - 1,
-                                     maxdd=(eq / eq.cummax() - 1).min(), skew_short=rshort, skew_long=rlong))
+                                     worst=x.ret.min(), ann_ret=x.ret.mean() * per,
+                                     maxdd=(eq - eq.cummax()).min(), skew_short=rshort, skew_long=rlong))
     # implied vs realized: VIX vs subsequent 21-day realized SPY vol
     rv = np.log(raw).diff().rolling(21).std().shift(-21) * np.sqrt(252) * 100
     x = pd.DataFrame({"vix": vix, "rv": rv}).dropna()
