@@ -121,6 +121,11 @@ def ml_scores(P, cols, intr, day, hist, use_ensemble=False):
         import ensemble
         ens = ensemble.predict(X, pd.Period(name.split("_")[1].split(".")[0], freq="Q"), pooled_model=mdl)
         pred = pd.Series(ens["ensemble"].values, index=X.index.get_level_values(1))
+        # log every member's top 10 (the pooled member is the previous paper model) for comparison
+        members = {m: pd.Series(ens[m].values, index=X.index.get_level_values(1)).nlargest(10).round(5).to_dict()
+                   for m in ens.columns if m != "ensemble"}
+        json.dump(dict(day=str(day.date()), members=members), open(os.path.join(LOG, f"members_{day.date()}.json"), "w"),
+                  indent=1)
         return pred.sort_values(ascending=False), "ensemble5_" + name
     pred = pd.Series(mdl.predict(X[mdl.feature_name()]), index=X.index.get_level_values(1))
     return pred.sort_values(ascending=False), name
