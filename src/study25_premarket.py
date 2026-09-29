@@ -227,6 +227,14 @@ if __name__ == "__main__":
     for k in [5, 10]:
         V[f"lgbm_long_k{k}"] = (pick(xm, xm.pred.notna(), xm.pred, 1).groupby("date").head(k), 1)
         V[f"lgbm_short_k{k}"] = (pick(xm, xm.pred.notna() & (xm.px > 10), -xm.pred, -1).groupby("date").head(k), -1)
+    # robustness of the LGBM short leg: liquid names only (easy to borrow proxy), no SSR days (prior day <= -10%)
+    liq = xm.pred.notna() & (xm.px > 10) & (xm.adv20 > 5e7) & (xm.ret1 > -0.1)
+    V["lgbm_short_k10_liq50m"] = (pick(xm, liq, -xm.pred, -1), -1)
+    V["lgbm_short_k10_liq200m"] = (pick(xm, liq & (xm.adv20 > 2e8), -xm.pred, -1), -1)
+    V["lgbm_long_k10_liq50m"] = (pick(xm, liq, xm.pred, 1), 1)
+    pk = pd.concat([V[k][0].assign(variant=k) for k in ["lgbm_short_k10", "lgbm_long_k10", "lgbm_short_k10_liq50m"]])
+    pk[["variant", "date", "ticker", "pred", "gap", "relvol", "n_news", "earn", "px", "adv20", "ret1", "R", "cost"]].to_csv(
+        os.path.join(RES, "study25_picks.csv"), index=False)
     ovn = pd.read_parquet(os.path.join(RES, "final_series.parquet"))["ml_overnight_k10"]
     rows, series = [], {}
     for name, (sel, side) in V.items():
