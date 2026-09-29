@@ -40,11 +40,20 @@ bad = (P["l"] > P["h"] * 1.0001) | (P["o"] > P["h"] * 1.02) | (P["o"] < P["l"] *
 for k in ["o", "h", "l", "c"]:
     P[k] = P[k].mask(bad)
 cols = [t for t in stock_cols(P) if t in M.cols]
+advmax = P["dv"][cols].rolling(20, min_periods=10).median().max()
+cols = [t for t in cols if advmax.get(t, 0) > 4e6]                  # others never enter the $5M universe
+print("stocks", len(cols), flush=True)
 o, h, l, c, rawc, v, dv = (P[k][cols] for k in ["o", "h", "l", "c", "rawc", "v", "dv"])
-F, mkt, adv20 = M.build(o, h, l, c, rawc, v, dv, P["c"]["SPY"], P["c"]["^VIX"], P["c"]["^VIX3M"], P["c"]["IWM"])
+spy_, vix_, vix3_, iwm_ = (P["c"][k].copy() for k in ["SPY", "^VIX", "^VIX3M", "IWM"])
+del P
+import gc
+gc.collect()
+F, mkt, adv20 = M.build(o, h, l, c, rawc, v, dv, spy_, vix_, vix3_, iwm_)
 univ = ((rawc > 5) & (adv20 > 5e6)).loc["2011-01-01":]
 X = M.features_frame({k: x.loc["2011-01-01":] for k, x in F.items()}, mkt.loc["2011-01-01":], univ)
 yN = (o.shift(-1) / c - 1).stack(future_stack=True).reindex(X.index)
+del F, h, l, v, dv
+gc.collect()
 feat = list(X.columns)
 print("rows", len(X), "features", len(feat), flush=True)
 y = yN.astype("float32")
