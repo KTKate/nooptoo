@@ -86,6 +86,14 @@ Schedule (weekdays ET): 15:45 entry, 09:15 exit, 17:30 `update_data.py daily`. P
 - Study 34/34b: selling picks early in the extended session is rejected (the extended-hours bid is 45-60 bp below
   the last trade).
 
+- 2026-09-30: no entry. The runner's background Bash call hit the default 30-minute limit at 15:36 ET. Entry routine
+  replaced: trig_01XU4bBtrahSN9wiHm4jBFM2 (same schedule and runner session, prompt requires a 90-minute timeout);
+  the old trig_01Gea964DjB4seXsUfDe9TWD is disabled. A routine's prompt can only be edited from the session it
+  posts into. Exit routine trig_01V3GdF7LauWvBPLF2gqNWjo unchanged (short job).
+- update_data.py daily: stray partial bars of 3 new tickers dated 2026-09-29 made the store look current, so 9/29 was
+  never fetched (panel ended 9/28). Fixed: the up-to-date check uses SPY's last date, and new-ticker histories drop
+  today's partial bar.
+
 ## Open items
 - Owner decision: approve paper submission (`--submit`) after a 2-week dry run; a scheduler is needed to run the
   15:45 / 09:15 jobs (this container is ephemeral).

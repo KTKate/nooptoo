@@ -112,7 +112,9 @@ def update_daily(overlap_days=10, chunk=150, tickers=None):
     if not len(st):
         print("store empty: run migrate or full download")
         return
-    last = st.date.max()
+    # the last complete date is SPY's: a stray row of one ticker (e.g. a partial bar) must not mark the store current
+    spy = st[st.ticker == "SPY"]
+    last = spy.date.max() if len(spy) else st.date.max()
     start = (last - pd.tseries.offsets.BDay(overlap_days)).strftime("%Y-%m-%d")
     if last >= last_session():
         print("daily up to date", last.date())
@@ -139,6 +141,7 @@ def update_daily(overlap_days=10, chunk=150, tickers=None):
     store.write_month("daily", fresh)
     for t in split + new_t:
         full = _yf_daily([t], HIST_START)
+        full = full[full.date <= last_session()] if len(full) else full   # no partial bar of today
         if len(full):
             store.replace_ticker("daily", t, full.drop(columns="_first"))
     store.set_meta(daily_last=str(fresh.date.max().date()))
