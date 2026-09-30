@@ -1,0 +1,72 @@
+<title>Reinvesting vs Saving</title>
+<style>
+.viz-root{color-scheme:light;--surface-1:#fcfcfb;--bg:#f4f4f2;--text-primary:#0b0b0b;--text-secondary:#52514e;--text-muted:#7a7974;--grid:#e4e3de;--series-1:#2a78d6;--series-2:#eb6834;--border:#dcdbd5}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .viz-root{color-scheme:dark;--surface-1:#1a1a19;--bg:#121211;--text-primary:#ffffff;--text-secondary:#c3c2b7;--text-muted:#8f8e86;--grid:#2c2c2a;--series-1:#3987e5;--series-2:#d95926;--border:#34332f}}
+:root[data-theme="dark"] .viz-root{color-scheme:dark;--surface-1:#1a1a19;--bg:#121211;--text-primary:#ffffff;--text-secondary:#c3c2b7;--text-muted:#8f8e86;--grid:#2c2c2a;--series-1:#3987e5;--series-2:#d95926;--border:#34332f}
+body{margin:0}
+.viz-root{background:var(--bg);color:var(--text-primary);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding-inline:16px;padding-block:28px 40px;display:grid;gap:14px}
+h1{font-size:24px;margin:0;text-wrap:balance}
+p{margin:0;max-width:68ch;color:var(--text-secondary)}
+.card{background:var(--surface-1);border:1px solid var(--border);border-radius:6px;padding:16px;position:relative}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--text-secondary)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:3px;border-radius:2px;display:inline-block}
+svg{width:100%;height:auto;display:block}
+.axis{fill:var(--text-muted);font:11px system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.lab{font:600 12px system-ui,sans-serif;fill:var(--text-primary)}
+.tip{position:absolute;pointer-events:none;background:var(--surface-1);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:12.5px;box-shadow:0 2px 8px rgba(0,0,0,.12);font-variant-numeric:tabular-nums;min-width:190px}
+.tip b{display:block;margin-bottom:4px}
+.tip .row{display:flex;justify-content:space-between;gap:12px}
+.note{font-size:13px;color:var(--text-muted)}
+details{font-size:13px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:4px 8px;border-bottom:1px solid var(--grid);text-align:right}
+th:first-child,td:first-child{text-align:left}
+.scroll{overflow-x:auto}
+</style>
+<div class="viz-root"><div class="wrap">
+<h1>$10,000 in the overnight strategy, month by month</h1>
+<p>Backtest of the single ML model, January 2024 to September 2026, net of trading costs, before taxes. Both lines show total money: trading account plus money set aside.</p>
+<div class="card">
+<div class="legend"><span><i class="sw" style="background:var(--series-1)"></i>No reinvesting: trade a fixed $10,000, gains set aside</span><span><i class="sw" style="background:var(--series-2)"></i>Half and half: each month, half of any profit saved, half reinvested</span></div>
+<svg id="c" viewBox="0 0 860 360" role="img" aria-label="Monthly account value, two series"></svg>
+<div class="tip" id="tip" hidden></div>
+</div>
+<p class="note">For comparison, reinvesting everything ends at $43,434, and holding SPY with reinvestment at about $16,700. A backtest is not a forecast: 2025 produced most of the gain, and 2026 so far is slightly negative.</p>
+<details><summary>Table</summary><div class="scroll"><table id="t"><thead><tr><th>Month end</th><th>No reinvesting</th><th>Half and half: total</th><th>of which trading</th><th>of which saved</th></tr></thead><tbody></tbody></table></div></details>
+</div></div>
+<script>
+const D=[{"m": "2023-12", "a": 10000, "b": 10000, "bt": 10000, "bs": 0}, {"m": "2024-01", "a": 10944, "b": 10975, "bt": 10488, "bs": 488}, {"m": "2024-02", "a": 12653, "b": 12787, "bt": 11394, "bs": 1394}, {"m": "2024-03", "a": 13792, "b": 14121, "bt": 12061, "bs": 2061}, {"m": "2024-04", "a": 13764, "b": 14072, "bt": 12012, "bs": 2061}, {"m": "2024-05", "a": 14606, "b": 15104, "bt": 12527, "bs": 2576}, {"m": "2024-06", "a": 14285, "b": 14670, "bt": 12094, "bs": 2576}, {"m": "2024-07", "a": 14953, "b": 15475, "bt": 12496, "bs": 2979}, {"m": "2024-08", "a": 13686, "b": 13914, "bt": 10935, "bs": 2979}, {"m": "2024-09", "a": 14768, "b": 15134, "bt": 11545, "bs": 3589}, {"m": "2024-10", "a": 14606, "b": 14932, "bt": 11343, "bs": 3589}, {"m": "2024-11", "a": 14605, "b": 14903, "bt": 11314, "bs": 3589}, {"m": "2024-12", "a": 15610, "b": 16053, "bt": 11889, "bs": 4164}, {"m": "2025-01", "a": 15905, "b": 16193, "bt": 11959, "bs": 4234}, {"m": "2025-02", "a": 17205, "b": 17824, "bt": 12774, "bs": 5049}, {"m": "2025-03", "a": 16957, "b": 17461, "bt": 12412, "bs": 5049}, {"m": "2025-04", "a": 16686, "b": 17039, "bt": 11989, "bs": 5049}, {"m": "2025-05", "a": 17727, "b": 18317, "bt": 12629, "bs": 5689}, {"m": "2025-06", "a": 18741, "b": 19564, "bt": 13252, "bs": 6312}, {"m": "2025-07", "a": 19236, "b": 20196, "bt": 13568, "bs": 6628}, {"m": "2025-08", "a": 20231, "b": 21511, "bt": 14225, "bs": 7285}, {"m": "2025-09", "a": 21278, "b": 23047, "bt": 14994, "bs": 8054}, {"m": "2025-10", "a": 25301, "b": 30168, "bt": 18554, "bs": 11614}, {"m": "2025-11", "a": 25801, "b": 31015, "bt": 18978, "bs": 12038}, {"m": "2025-12", "a": 26449, "b": 32208, "bt": 19574, "bs": 12634}, {"m": "2026-01", "a": 27925, "b": 35241, "bt": 21091, "bs": 14151}, {"m": "2026-02", "a": 27503, "b": 34310, "bt": 20160, "bs": 14151}, {"m": "2026-03", "a": 26669, "b": 32587, "bt": 18436, "bs": 14151}, {"m": "2026-04", "a": 26871, "b": 32873, "bt": 18580, "bs": 14294}, {"m": "2026-05", "a": 26474, "b": 32051, "bt": 17757, "bs": 14294}, {"m": "2026-06", "a": 26873, "b": 32636, "bt": 18049, "bs": 14586}, {"m": "2026-07", "a": 26308, "b": 31591, "bt": 17004, "bs": 14586}, {"m": "2026-08", "a": 26147, "b": 31294, "bt": 16708, "bs": 14586}, {"m": "2026-09", "a": 26232, "b": 31407, "bt": 16764, "bs": 14643}];
+const W=860,H=360,L=64,R=150,T=16,B=34;
+const svg=document.getElementById('c'),tip=document.getElementById('tip');
+const ns='http://www.w3.org/2000/svg';
+const mx=Math.max(...D.map(d=>Math.max(d.a,d.b)));
+const ymax=Math.ceil(mx/5000)*5000;
+const x=i=>L+(W-L-R)*i/(D.length-1), y=v=>T+(H-T-B)*(1-v/ymax);
+const el=(n,a)=>{const e=document.createElementNS(ns,n);for(const k in a)e.setAttribute(k,a[k]);svg.appendChild(e);return e};
+const fmt=v=>'$'+Math.round(v).toLocaleString('en-US');
+for(let v=0;v<=ymax;v+=5000){el('line',{x1:L,x2:W-R,y1:y(v),y2:y(v),stroke:'var(--grid)','stroke-width':1});const t=el('text',{x:L-8,y:y(v)+4,'text-anchor':'end',class:'axis'});t.textContent='$'+(v/1000)+'k'}
+D.forEach((d,i)=>{if(d.m.endsWith('-01')){const t=el('text',{x:x(i),y:H-B+18,'text-anchor':'middle',class:'axis'});t.textContent=d.m.slice(0,4)}});
+const line=(k,c)=>el('polyline',{points:D.map((d,i)=>x(i)+','+y(d[k])).join(' '),fill:'none',stroke:c,'stroke-width':2,'stroke-linejoin':'round'});
+line('a','var(--series-1)');line('b','var(--series-2)');
+const last=D[D.length-1];
+let ya=y(last.a),yb=y(last.b); if(Math.abs(ya-yb)<30){if(ya>yb)ya=yb+30;else yb=ya+30}
+[['b',yb,'Half and half','var(--series-2)'],['a',ya,'No reinvesting','var(--series-1)']].forEach(([k,yy,name,c])=>{
+ el('circle',{cx:x(D.length-1),cy:y(last[k]),r:4,fill:c,stroke:'var(--surface-1)','stroke-width':2});
+ const t=el('text',{x:W-R+10,y:yy,class:'lab'});t.textContent=name;
+ const v=el('text',{x:W-R+10,y:yy+15,class:'axis'});v.textContent=fmt(last[k]);});
+const cross=el('line',{x1:0,x2:0,y1:T,y2:H-B,stroke:'var(--text-muted)','stroke-width':1,visibility:'hidden'});
+const da=el('circle',{r:4,fill:'var(--series-1)',stroke:'var(--surface-1)','stroke-width':2,visibility:'hidden'});
+const db=el('circle',{r:4,fill:'var(--series-2)',stroke:'var(--surface-1)','stroke-width':2,visibility:'hidden'});
+const hit=el('rect',{x:L,y:T,width:W-L-R,height:H-T-B,fill:'transparent'});
+const mname=m=>m==='2023-12'?'Start (Jan 2, 2024)':new Date(m+'-15').toLocaleString('en-US',{month:'short',year:'numeric'});
+function show(ev){const r=svg.getBoundingClientRect();const px=(ev.clientX-r.left)*W/r.width;let i=Math.round((px-L)/(W-L-R)*(D.length-1));i=Math.max(0,Math.min(D.length-1,i));const d=D[i];
+ cross.setAttribute('x1',x(i));cross.setAttribute('x2',x(i));cross.setAttribute('visibility','visible');
+ da.setAttribute('cx',x(i));da.setAttribute('cy',y(d.a));da.setAttribute('visibility','visible');
+ db.setAttribute('cx',x(i));db.setAttribute('cy',y(d.b));db.setAttribute('visibility','visible');
+ tip.innerHTML=`<b>${mname(d.m)}</b><div class="row"><span>No reinvesting</span><span>${fmt(d.a)}</span></div><div class="row"><span>Half and half</span><span>${fmt(d.b)}</span></div><div class="row" style="color:var(--text-muted)"><span>&nbsp; trading / saved</span><span>${fmt(d.bt)} / ${fmt(d.bs)}</span></div>`;
+ tip.hidden=false;const cr=svg.parentElement.getBoundingClientRect();let left=ev.clientX-cr.left+14;if(left>cr.width-220)left=ev.clientX-cr.left-220;tip.style.left=left+'px';tip.style.top=(ev.clientY-cr.top-20)+'px';}
+hit.addEventListener('pointermove',show);hit.addEventListener('pointerleave',()=>{tip.hidden=true;[cross,da,db].forEach(e=>e.setAttribute('visibility','hidden'))});
+const tb=document.querySelector('#t tbody');D.forEach(d=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${mname(d.m)}</td><td>${fmt(d.a)}</td><td>${fmt(d.b)}</td><td>${fmt(d.bt)}</td><td>${fmt(d.bs)}</td>`;tb.appendChild(tr)});
+</script>
