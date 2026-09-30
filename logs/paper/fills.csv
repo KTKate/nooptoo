@@ -1,0 +1,3 @@
+day,symbol,side,tif,qty,fill,official,slip_bps
+2026-09-29,ADX,buy,cls,30.0,25.75,,
+2026-09-30,ADX,sell,opg,24.0,25.75,25.75,-0.0
