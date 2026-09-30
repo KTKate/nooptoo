@@ -13,6 +13,7 @@ Candidates recorded:
   spy_meanrev       SPY and QQQ: enter at the close after 3 down days in a row (today's close taken as the latest
                     price), exit at the close when the price is above its 5-day average (study 27); state kept in
                     logs/paper/shadow_state.json, scored close to close
+                    (logs/paper/shadow_meanrev.csv)
 Not yet automated (need live data this runner does not have): behavior-cohort models (study 14, needs per-group
 models saved for live use) and 60-day insider cluster buys (study 15, needs a daily Form 4 feed).
 Prices at record time are the IEX last trade (or SIP 15:30 bar), as in paper_overnight.py; scoring uses Alpaca SIP
@@ -52,6 +53,10 @@ def news_symbols(since_utc):
 
 
 def daily_raw(tickers, start, end):
+    # free plan: SIP requests must end more than 15 minutes in the past
+    lim = pd.Timestamp.now(tz="UTC") - pd.Timedelta(minutes=16)
+    end = min(pd.Timestamp(end).tz_localize("UTC") if pd.Timestamp(end).tzinfo is None else pd.Timestamp(end), lim)
+    end = end.strftime("%Y-%m-%dT%H:%M:%SZ")
     b = pd.concat([A.bars(tickers[i:i + 400], "1Day", start, end, adjustment="raw") for i in range(0, len(tickers), 400)])
     b["date"] = b.ts.dt.normalize()
     return b
@@ -124,7 +129,7 @@ def score():
     """Realized returns of every recorded shadow day whose next open exists: close(day) -> open(next day) from
     Alpaca SIP daily bars (raw prices; a split between the two dates would show as a large move and is flagged)."""
     from core import half_spread_model
-    files = sorted(f for f in os.listdir(PO.LOG) if f.startswith("shadow_") and f.endswith(".json") and "replay" not in f)
+    files = sorted(f for f in os.listdir(PO.LOG) if f.startswith("shadow_2") and f.endswith(".json") and "replay" not in f)
     rows = []
     for f in files:
         r = json.load(open(os.path.join(PO.LOG, f)))
@@ -147,6 +152,7 @@ def score():
                 ret = o1 / c0 - 1
                 rows.append(dict(day=r["day"], strategy=strat, ticker=t, close=c0, next_open=o1, ret=ret, cost=cost,
                                  net=ret - cost, flag_split=abs(np.log(o1 / c0)) > 0.4))
+    score_meanrev(files)
     d = pd.DataFrame(rows)
     if not len(d):
         print("nothing to score yet")
@@ -156,6 +162,44 @@ def score():
     s.to_csv(os.path.join(PO.LOG, "shadow_scores.csv"))
     print(s.tail(10).round(4).to_string())
     print("mean net per night (bp):", (1e4 * s.mean()).round(1).to_dict(), "nights:", s.count().to_dict())
+
+
+def score_meanrev(files):
+    """SPY/QQQ mean reversion: one trade per enter .. exit pair of recorded actions, bought and sold at the official
+    close (SIP daily bar) of those days, 1 bp cost per side. An open trade is marked at the latest close.
+    Output: logs/paper/shadow_meanrev.csv"""
+    acts = []
+    for f in files:
+        r = json.load(open(os.path.join(PO.LOG, f)))
+        for etf, a in r.get("spy_meanrev", {}).items():
+            if a["action"] in ("enter", "exit"):
+                acts.append((r["day"], etf, a["action"]))
+    if not acts:
+        return
+    first = min(a[0] for a in acts)
+    b = daily_raw(["SPY", "QQQ"], f"{first}T00:00:00Z", (pd.Timestamp.now() + pd.Timedelta(days=1)).strftime("%Y-%m-%dT00:00:00Z"))
+    rows = []
+    for etf in ["SPY", "QQQ"]:
+        x = b[b.ticker == etf].set_index("date").c.sort_index()
+        if not len(x):
+            continue
+        entry = None
+        for day, e, a in sorted(acts):
+            if e != etf:
+                continue
+            d = pd.Timestamp(day)
+            if a == "enter" and entry is None and d in x.index:
+                entry = d
+            elif a == "exit" and entry is not None and d in x.index:
+                rows.append(dict(etf=etf, entry=entry.date(), exit=d.date(), ret=x[d] / x[entry] - 1 - 2e-4, open=False))
+                entry = None
+        if entry is not None:
+            rows.append(dict(etf=etf, entry=entry.date(), exit=x.index[-1].date(),
+                             ret=x.iloc[-1] / x[entry] - 1 - 1e-4, open=True))
+    if rows:
+        m = pd.DataFrame(rows)
+        m.to_csv(os.path.join(PO.LOG, "shadow_meanrev.csv"), index=False)
+        print(m.round(4).to_string())
 
 
 if __name__ == "__main__":
