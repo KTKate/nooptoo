@@ -81,6 +81,8 @@ Schedule (weekdays ET): 15:45 entry, 09:15 exit, 17:30 `update_data.py daily`. P
   runner sends regular market orders (PAPER_ORDERS=market: buys at 15:55, sells queued for the open). The virtual
   book (`paper_overnight.py virtual`, logs/paper/virtual*.csv) scores each day's intended orders at the official
   auction prints; it is the number to compare with the backtest.
+- Blend settings (results/study33c_k_cap.csv): top 10 with at most 3 per industry 2.93 vs 2.85 uncapped; 15 or 20
+  names 2.5-2.7. Live keeps 10 names, cap 3. Study 35 (buying after-hours drops) rejected: last-trade artifacts.
 - Study 34/34b: selling picks early in the extended session is rejected (the extended-hours bid is 45-60 bp below
   the last trade).
 
