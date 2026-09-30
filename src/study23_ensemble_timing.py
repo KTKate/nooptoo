@@ -34,7 +34,8 @@ test_days = [d for d in days if d >= pd.Timestamp("2024-01-02") and d in p1545.i
 live_cols = [t for t in cols if P["dv"][t].loc["2023-06":].max() > 3e6]   # others can never pass the universe filter
 
 
-def one_day(d):
+def frame_1545(d):
+    """Feature frame for day d with the 15:45 substitution (index (date, ticker))."""
     i = days.get_loc(d)
     sl = slice(max(0, i - 260), i + 1)
     oo, hh, ll, cc, rr, vv, dd = (x[live_cols].iloc[sl].copy() for x in (o, h, l, c, rawc, v, dv))
@@ -54,9 +55,11 @@ def one_day(d):
                             iwm, earn=earn)
     last = {k: f.iloc[[-1]] for k, f in F.items()}
     univ = ((rr > 5) & (adv20 > 5e6)).iloc[[-1]] & ok.values
-    X = M.features_frame(last, mkt.iloc[[-1]], univ)
-    q = pd.Period(d, freq="Q")
-    return ensemble.predict(X, q)
+    return M.features_frame(last, mkt.iloc[[-1]], univ)
+
+
+def one_day(d):
+    return ensemble.predict(frame_1545(d), pd.Period(d, freq="Q"))
 
 
 
