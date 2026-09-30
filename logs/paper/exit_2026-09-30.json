@@ -1,0 +1,13 @@
+{
+ "day": "2026-09-30",
+ "orders": [
+  {
+   "symbol": "ADX",
+   "qty": 30,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "opg"
+  }
+ ],
+ "submitted": true
+}
