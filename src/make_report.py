@@ -228,6 +228,10 @@ studies = [
      "Moves of +2-5% by 09:00 give back about 0.6% by the open (t -12.6), but the extended-hours bid is 45-60 bp "
      "below the last trade (median half-spread about 20 bp). Sold at the real bid, every variant loses 11-43 bp per "
      "event against holding to the opening auction."),
+    ("35", "Buying after-hours drops (2-10% below the close at 17:00-20:00), selling in the next opening auction", "Reject",
+     "Measured on last trades the drops rebound 1.4-2.9% by the open (t above 20), but the last trade is not a price "
+     "anyone could buy at: in a sample of 395 events the ask was 0.4% above to 4.4% below the close (median half-spread "
+     "0.3-1.1%), and bought at the ask every group lost 1.1-1.8% on average by the open."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
