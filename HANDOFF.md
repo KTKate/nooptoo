@@ -62,6 +62,21 @@ Schedule (weekdays ET): 15:45 entry, 09:15 exit, 17:30 `update_data.py daily`. P
   m5intl, options, crypto (all on Hugging Face except where noted in hf_sync).
 - Paper-trading session: a separate cloud session runs the jobs via scheduled triggers at 09:05 and 15:05 ET.
 
+## Session 3c (2026-09-30): studies 32-33, blend adopted
+- Study 32 (src/study32_jumps.py): classifiers for overnight jumps > +5% and drops < -5% (close features plus
+  earn_tonight and news_today). Study 33 (src/study33_jump_live.py, checks in study33b_checks.py): the same models
+  scored at 15:45 and blended with the ensemble: (2 * ensemble rank + rank of P(jump) - P(drop)) / 3. Sharpe 2.80 / 2.91
+  vs 2.30 / 2.15, paired p = 0.01. Models data/models/jump_{jump,drop}_<q>.txt, 2024Q1..2026Q4, on Hugging Face.
+  Retrain each quarter: `TRAIN=1 python src/study33_jump_live.py` (trains 2024Q1..2026Q4; change the range in
+  train() for new quarters) or call study33_jump_live.train(q, q).
+- Live code: src/jumpmodel.py; `paper_overnight.py --strategy=blend` (members_<day>.json logs ensemble_top and
+  jmd_top). paper_job.sh runs blend, falls back to ensemble, then ml. The entry refuses to submit if closing-auction
+  buys are already open (protects against double orders from the fallback chain).
+- Multiprocessing after LightGBM training in the same process hangs (OpenMP after fork): train and score in separate
+  runs (study33 uses TRAIN=0 for scoring).
+- shadow.py score now also scores SPY/QQQ mean reversion (logs/paper/shadow_meanrev.csv) and clamps SIP requests to
+  16 minutes in the past (it failed before on the free plan).
+
 ## Open items
 - Owner decision: approve paper submission (`--submit`) after a 2-week dry run; a scheduler is needed to run the
   15:45 / 09:15 jobs (this container is ephemeral).

@@ -213,7 +213,17 @@ studies = [
      "Best: SPY 10-delta weekly put spread, Sharpe 0.38 then 3.26, worst month -86% of capital at risk."),
     ("23", "Five-model ensemble (pooled, per-group and group-feature models) with 15:45 features", "Adopted",
      "Sharpe 2.30 / 2.21 (validation / holdout) vs 1.78 / 1.78, max drawdown -18% vs -24%, market-hedged 1.72 vs 1.13, "
-     "deflated 0.66 vs 0.36; +7 bp a day (t 1.4). Paper account trades it from 2026-09-29."),
+     "deflated 0.66 vs 0.36; +7 bp a day (t 1.4). Paper account traded it on 2026-09-29; replaced by study 33."),
+    ("32", "Retroactive look at big overnight jumps; classifiers for jumps (> +5%) and drops (< -5%), close prices",
+     "Leads only",
+     "Of 7,250 jumps above +10% since 2020, 65% had news after 15:45 and 43% were earnings nights, so most are not "
+     "predictable at 15:45. Still, the top 10 by P(jump) held 15-24% jumps vs a 1% base rate, and ranking by "
+     "P(jump) - P(drop) beat the rank model in 2022-23, validation and holdout (1.02 / 2.43 / 2.90 vs 0.79 / 2.36 / 2.39)."),
+    ("33", "Study-32 classifiers at 15:45, blended with the ensemble (2/3 ensemble rank + 1/3 jump-minus-drop rank)",
+     "Adopted",
+     "Sharpe 2.80 / 2.91 (validation / holdout) vs 2.30 / 2.15; better in 4 of 6 half-years; 2.27 vs 1.60 without the 20 "
+     "best trades; 2.59 vs 2.33 without earnings nights; hedged 2.43 vs 1.69; at twice the cost 2.22 vs 1.52; deflated "
+     "0.91; paired bootstrap against the ensemble p = 0.01. Paper account trades it from 2026-09-30."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

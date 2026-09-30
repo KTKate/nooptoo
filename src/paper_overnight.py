@@ -1,6 +1,8 @@
 """Paper-trading runner for the overnight strategies (Alpaca PAPER account only).
 
 Strategies (--strategy=, default ml: the only one that survived the look-ahead-free tests, see reports/):
+  blend     (2 * rank of the ensemble + rank of P(jump) - P(drop)) / 3, jump/drop classifiers of study 33
+            (src/jumpmodel.py; needs the Nasdaq earnings calendar and the Alpaca news count since the last 15:45)
   ensemble  the five-model average of src/ensemble.py (study 14/23), same universe and trade as ml
   ml        rank the liquid universe (price > $5, ADV > $5M) with the latest quarterly overnight LightGBM model
   smallcap  small caps (price > $2, 20d median dollar volume $1-5M): largest loss from today's open to 15:45
@@ -43,6 +45,7 @@ import alpaca_data as A
 
 K = 10
 TRADE = "https://paper-api.alpaca.markets/v2"
+NEWS = "https://data.alpaca.markets/v1beta1/news"
 LOG = os.path.join(A.ROOT, "logs", "paper")
 os.makedirs(LOG, exist_ok=True)
 H = {"APCA-API-KEY-ID": A.KEY or "", "APCA-API-SECRET-KEY": A.SEC or ""}
@@ -86,8 +89,36 @@ def today_intraday(tickers, day, live=True):
     return agg
 
 
-def ml_scores(P, cols, intr, day, hist, use_ensemble=False):
-    """Overnight LightGBM scores for day from the panels cut before day plus today's intraday row."""
+def news_counts(since_utc, until_utc):
+    """Articles per symbol (Alpaca/Benzinga, articles tagged with 1-3 symbols, as in news_features.py) published
+    in [since, until)."""
+    p = dict(start=since_utc.strftime("%Y-%m-%dT%H:%M:%SZ"), end=until_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+             limit=50, sort="asc", include_content="false")
+    out = {}
+    for _ in range(400):
+        A.RL.wait()
+        j = A._sess().get(NEWS, params=p, timeout=60).json()
+        for n in j.get("news", []):
+            s = n.get("symbols") or []
+            if 1 <= len(s) <= 3:
+                for t in s:
+                    out[t] = out.get(t, 0) + 1
+        if not j.get("next_page_token"):
+            break
+        p["page_token"] = j["next_page_token"]
+    return pd.Series(out, dtype="float64")
+
+
+def next_trading_day(day):
+    cal = requests.get(f"{TRADE}/calendar", headers=H, timeout=30,
+                       params=dict(start=(day + pd.Timedelta(days=1)).date().isoformat(),
+                                   end=(day + pd.Timedelta(days=10)).date().isoformat())).json()
+    return pd.Timestamp(cal[0]["date"]) if cal else day + pd.offsets.BDay(1)
+
+
+def ml_scores(P, cols, intr, day, hist, use_ensemble=False, jump=False):
+    """Overnight LightGBM scores for day from the panels cut before day plus today's intraday row.
+    jump=True (with use_ensemble): study-33 blend of the ensemble and the jump/drop classifiers."""
     import lightgbm as lgb
     import ml_features as M
     from core import DATA
@@ -124,9 +155,25 @@ def ml_scores(P, cols, intr, day, hist, use_ensemble=False):
         # log every member's top 10 (the pooled member is the previous paper model) for comparison
         members = {m: pd.Series(ens[m].values, index=X.index.get_level_values(1)).nlargest(10).round(5).to_dict()
                    for m in ens.columns if m != "ensemble"}
-        json.dump(dict(day=str(day.date()), members=members), open(os.path.join(LOG, f"members_{day.date()}.json"), "w"),
-                  indent=1)
-        return pred.sort_values(ascending=False), "ensemble5_" + name
+        rec = dict(day=str(day.date()), members=members)
+        name = "ensemble5_" + name
+        if jump:
+            import jumpmodel as J
+            prev = P["c"].index[hist][-1]
+            tick = X.index.get_level_values(1)
+            et = J.earn_tonight(tick, prev, next_trading_day(day))
+            cut = lambda d: pd.Timestamp(f"{d.date()} 15:45").tz_localize("America/New_York").tz_convert("UTC")
+            news = news_counts(cut(prev), cut(day))
+            pj, jq = J.predict(X, pd.Period(day, freq="Q"), et, news)
+            pjs = pd.Series(pj.p_jump.values, index=tick)
+            pds = pd.Series(pj.p_drop.values, index=tick)
+            rec["ensemble_top"] = pred.nlargest(10).round(5).to_dict()
+            rec["jmd_top"] = (pjs - pds).nlargest(10).round(4).to_dict()
+            rec["earn_tonight_n"], rec["news_symbols_n"] = int(et.sum()), int(len(news))
+            pred = J.blend(pred, pjs, pds)
+            name = f"blend_{name}_jump{jq}"
+        json.dump(rec, open(os.path.join(LOG, f"members_{day.date()}.json"), "w"), indent=1)
+        return pred.sort_values(ascending=False), name
     pred = pd.Series(mdl.predict(X[mdl.feature_name()]), index=X.index.get_level_values(1))
     return pred.sort_values(ascending=False), name
 
@@ -188,13 +235,14 @@ def entry(submit=False, day=None, strategy="ml"):
     hist = slice(len(P["c"]) - 260, len(P["c"]))
     liquid = [t for t in cols if P["dv"][t].iloc[-20:].median() > 5e6 and P["rawc"][t].iloc[-1] > 5]
     small = tradable(smallcap_universe(P, cols)) if strategy in ("smallcap", "combo") else []
-    need = (liquid if strategy in ("ml", "combo", "ensemble") else []) + small + ["SPY", "IWM"]
+    need = (liquid if strategy in ("ml", "combo", "ensemble", "blend") else []) + small + ["SPY", "IWM"]
     intr = today_intraday(sorted(set(need)), day.date(), live=not test)
     picks, rec = {}, dict(day=str(day.date()), strategy=strategy)
-    if strategy in ("ml", "combo", "ensemble"):
-        pred, model = ml_scores(P, cols, intr, day, hist, use_ensemble=strategy == "ensemble")
+    if strategy in ("ml", "combo", "ensemble", "blend"):
+        pred, model = ml_scores(P, cols, intr, day, hist, use_ensemble=strategy in ("ensemble", "blend"),
+                                jump=strategy == "blend")
         pred = pred[pred.index.isin(tradable(pred.index))]
-        n = K if strategy in ("ml", "ensemble") else K // 2
+        n = K if strategy in ("ml", "ensemble", "blend") else K // 2
         top = cap_by_industry(pred, n)
         rec.update(model=model, ml_top=top.round(5).to_dict(), uncapped_top=pred.head(n).round(5).to_dict())
         for t in top.index:
@@ -218,9 +266,17 @@ def entry(submit=False, day=None, strategy="ml"):
     json.dump(rec, open(os.path.join(LOG, f"entry_{day.date()}{'_replay' if test else ''}.json"), "w"), indent=1)
     print(json.dumps(rec, indent=1))
     if submit and not test:
+        # guard for the fallback chain in paper_job.sh: never send a second set of closing-auction buys
+        op = requests.get(f"{TRADE}/orders", headers=H, params=dict(status="open", limit=500), timeout=30).json()
+        if isinstance(op, list) and any(o.get("time_in_force") == "cls" and o.get("side") == "buy" for o in op):
+            print("closing-auction buy orders already open; not submitting again")
+            return
         for od in orders:
-            r = requests.post(f"{TRADE}/orders", headers=H, json=od, timeout=30)
-            print(od["symbol"], r.status_code, r.text[:200])
+            try:
+                r = requests.post(f"{TRADE}/orders", headers=H, json=od, timeout=30)
+                print(od["symbol"], r.status_code, r.text[:200])
+            except requests.RequestException as e:   # do not raise: a failed run triggers the fallback strategy
+                print(od["symbol"], "order error", e)
 
 
 def exit_(submit=False):
@@ -284,8 +340,8 @@ if __name__ == "__main__":
     submit = "--submit" in sys.argv
     day = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--day=")), None)
     strategy = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--strategy=")), "ml")
-    if strategy not in ("ml", "smallcap", "combo", "ensemble"):
-        raise SystemExit("--strategy must be ml, ensemble, smallcap or combo")
+    if strategy not in ("ml", "smallcap", "combo", "ensemble", "blend"):
+        raise SystemExit("--strategy must be ml, ensemble, blend, smallcap or combo")
     if what == "entry":
         entry(submit, day, strategy)
     elif what == "exit":
