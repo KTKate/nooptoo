@@ -13,7 +13,7 @@ import os
 import numpy as np
 import pandas as pd
 import alpaca_data as A
-from core import load_panel, stock_cols, ann_stats, exec_cost_bps, RES, DATA
+from core import load_panel, stock_cols, ann_stats, exec_cost_bps, traded_close, RES, DATA
 import bt
 
 P = load_panel()
@@ -65,7 +65,7 @@ if __name__ == "__main__":
         bars.to_parquet(FN)
     # bar start + 5 minutes = bar end; price at T = last bar ending at or before T
     bars["end"] = bars.ts + pd.Timedelta(minutes=5)
-    rawc = P["rawc"][cols]
+    rawc = traded_close(P)[cols]   # the traded close (Yahoo raw closes are adjusted for later splits)
     R = (P["o"][cols].shift(-1) / P["c"][cols] - 1)
     cost = exec_cost_bps(P, "auction")[cols] + 2.5
     rec = pd.DataFrame({"day": picks.get_level_values(0), "ticker": picks.get_level_values(1)})
@@ -86,6 +86,14 @@ if __name__ == "__main__":
         rec = rec.join(px.rename(columns={"p": f"p{T}", "v": f"v{T}"}), on=["day", "ticker"])
         rec[f"r{T}"] = rec[f"p{T}"] / rec.c0 - 1
     rec = rec.dropna(subset=["hold"])
+    # a split between the close and the extended-hours print shows as a huge move that is absent from the
+    # (split-adjusted) close-to-open return; drop those events
+    bad = np.zeros(len(rec), bool)
+    for T in CK:
+        bad |= (np.abs(np.log(rec[f"p{T}"] / rec.c0)) - np.abs(np.log1p(rec.hold)) > 0.4).fillna(False).values
+    print("dropped split-like events:", int(bad.sum()))
+    rec = rec[~bad]
+    rec.to_parquet(f"{RES}/study34_rec.parquet")
     out = []
     # Q1: continuation vs fade by bucket of the move so far
     for T in CK:
