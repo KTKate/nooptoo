@@ -131,6 +131,25 @@ def ml_scores(P, cols, intr, day, hist, use_ensemble=False):
     return pred.sort_values(ascending=False), name
 
 
+def cap_by_industry(pred, n, cap=3):
+    """Top n names of pred (sorted descending) with at most cap names per industry (data/store/sectors.parquet;
+    names without an industry count as their own group). Backtest effect on the ensemble: Sharpe 2.23 -> 2.20
+    (2024-26), added to limit single-industry gap risk (for example several tankers on one night)."""
+    fn = os.path.join(A.ROOT, "data", "store", "sectors.parquet")
+    ind = pd.read_parquet(fn).drop_duplicates("ticker").set_index("ticker").industry if os.path.exists(fn) else pd.Series(dtype=str)
+    out, cnt = [], {}
+    for t in pred.index:
+        g = ind.get(t)
+        g = g if isinstance(g, str) and g else t
+        if cnt.get(g, 0) >= cap:
+            continue
+        cnt[g] = cnt.get(g, 0) + 1
+        out.append(t)
+        if len(out) == n:
+            break
+    return pred.reindex(out)
+
+
 def smallcap_universe(P, cols):
     """Small-cap tier known before the open: previous close > $2, 20d median dollar volume $1-5M."""
     adv = P["dv"][cols].iloc[-20:].median()
@@ -176,8 +195,9 @@ def entry(submit=False, day=None, strategy="ml"):
         pred, model = ml_scores(P, cols, intr, day, hist, use_ensemble=strategy == "ensemble")
         pred = pred[pred.index.isin(tradable(pred.index))]
         n = K if strategy in ("ml", "ensemble") else K // 2
-        rec.update(model=model, ml_top=pred.head(n).round(5).to_dict())
-        for t in pred.head(n).index:
+        top = cap_by_industry(pred, n)
+        rec.update(model=model, ml_top=top.round(5).to_dict(), uncapped_top=pred.head(n).round(5).to_dict())
+        for t in top.index:
             picks[t] = picks.get(t, 0.0) + 1.0 / K
     if strategy in ("smallcap", "combo"):
         sc = smallcap_scores(intr, small)
