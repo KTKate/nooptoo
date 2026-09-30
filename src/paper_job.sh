@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Scheduled paper-trading job for a fresh cloud session (Alpaca PAPER account only).
-#   bash src/paper_job.sh entry    # start ~15:05 ET: setup, update data, wait until 15:45 ET, market-on-close buys
-#   bash src/paper_job.sh exit     # start ~09:05 ET: market-on-open sells of every open position
+#   bash src/paper_job.sh entry    # start ~15:05 ET: setup, update data, wait until 15:45 ET, pick; buys at 15:55
+#   bash src/paper_job.sh exit     # start ~09:05 ET: sells of every open position, queued for the open
+# Paper orders are regular market orders (PAPER_ORDERS=market): Alpaca's paper simulator does not run auctions and
+# let 9 of 10 market-on-close orders expire on 2026-09-29. The virtual book scores the picks at official auction prints.
 # Orders are submitted only on or after SUBMIT_FROM (owner approved paper trading after a short dry run).
 # Skips holidays and early-close days. Logs go to logs/paper/ and are committed to the working branch.
 set -u
@@ -43,6 +45,7 @@ python src/hf_sync.py pull models
 python src/update_data.py daily
 python src/update_data.py earnings
 python src/paper_overnight.py reconcile || true
+python src/paper_overnight.py virtual || true
 python src/shadow.py score || true
 # build the panel cache and earnings features now so the 15:45 run only fetches today's bars
 python -c "import sys; sys.path.insert(0, 'src'); import ml_features as M; M.earnings_features(); print('panel ready', M.P['c'].index[-1].date())"

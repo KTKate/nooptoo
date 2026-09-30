@@ -46,6 +46,12 @@ import alpaca_data as A
 K = 10
 TRADE = "https://paper-api.alpaca.markets/v2"
 NEWS = "https://data.alpaca.markets/v1beta1/news"
+# Alpaca's paper simulator does not run auctions: it treats market-on-close / market-on-open orders as market orders
+# with random partial fills, and the unfilled rest expires (2026-09-29: 9 of 10 closing buys expired unfilled).
+# ORDERS=market (default here, paper only): buy with regular market orders at 15:55 ET, sell with day market orders
+# queued for the open. ORDERS=auction: market-on-close / market-on-open (the live plan). The virtual book
+# (python src/paper_overnight.py virtual) scores the intended orders at the official auction prints either way.
+ORDERS = os.environ.get("PAPER_ORDERS", "market")
 LOG = os.path.join(A.ROOT, "logs", "paper")
 os.makedirs(LOG, exist_ok=True)
 H = {"APCA-API-KEY-ID": A.KEY or "", "APCA-API-SECRET-KEY": A.SEC or ""}
@@ -268,9 +274,14 @@ def entry(submit=False, day=None, strategy="ml"):
     if submit and not test:
         # guard for the fallback chain in paper_job.sh: never send a second set of closing-auction buys
         op = requests.get(f"{TRADE}/orders", headers=H, params=dict(status="open", limit=500), timeout=30).json()
-        if isinstance(op, list) and any(o.get("time_in_force") == "cls" and o.get("side") == "buy" for o in op):
-            print("closing-auction buy orders already open; not submitting again")
+        if isinstance(op, list) and any(o.get("time_in_force") in ("cls", "day") and o.get("side") == "buy" for o in op):
+            print("buy orders already open; not submitting again")
             return
+        if ORDERS == "market":
+            for od in orders:
+                od["time_in_force"] = "day"
+            while dt.datetime.now(tz=__import__("zoneinfo").ZoneInfo("America/New_York")).strftime("%H%M") < "1555":
+                __import__("time").sleep(10)
         for od in orders:
             try:
                 r = requests.post(f"{TRADE}/orders", headers=H, json=od, timeout=30)
@@ -282,7 +293,7 @@ def entry(submit=False, day=None, strategy="ml"):
 def exit_(submit=False):
     pos = requests.get(f"{TRADE}/positions", headers=H, timeout=30).json()
     orders = [dict(symbol=p["symbol"], qty=abs(int(float(p["qty"]))), side="sell" if float(p["qty"]) > 0 else "buy",
-                   type="market", time_in_force="opg") for p in pos]
+                   type="market", time_in_force="opg" if ORDERS == "auction" else "day") for p in pos]
     rec = dict(day=str(dt.date.today()), orders=orders, submitted=submit)
     json.dump(rec, open(os.path.join(LOG, f"exit_{dt.date.today()}.json"), "w"), indent=1)
     print(json.dumps(rec, indent=1))
@@ -297,6 +308,54 @@ def session_today():
     d = dt.date.today().isoformat()
     cal = requests.get(f"{TRADE}/calendar", headers=H, params=dict(start=d, end=d), timeout=30).json()
     return (cal[0]["open"], cal[0]["close"]) if cal and cal[0]["date"] == d else None
+
+
+def virtual():
+    """Virtual book: every submitted entry (logs/paper/entry_<day>.json) scored at the official closing print of
+    that day and the official opening print of the next trading day, with the backtest auction cost (half-spread
+    model at 10% for the auction + 2.5 bp per side). Writes logs/paper/virtual.csv (per name) and virtual_days.csv."""
+    from core import half_spread_model
+    files = sorted(f for f in os.listdir(LOG) if f.startswith("entry_") and f.endswith(".json") and "replay" not in f)
+    rows = []
+    for f in files:
+        r = json.load(open(os.path.join(LOG, f)))
+        if not r.get("submitted") or not r.get("orders"):
+            continue
+        day = pd.Timestamp(r["day"])
+        tick = [o["symbol"] for o in r["orders"]]
+        d = A.bars(tick, "1Day", (day - pd.Timedelta(days=40)).strftime("%Y-%m-%dT00:00:00Z"),
+                   (pd.Timestamp.now(tz="UTC") - pd.Timedelta(minutes=16)).strftime("%Y-%m-%dT%H:%M:%SZ"), adjustment="raw")
+        d["date"] = d.ts.dt.normalize()
+        for o in r["orders"]:
+            x = d[d.ticker == o["symbol"]].set_index("date").sort_index()
+            nxt = x.index[x.index > day]
+            if day not in x.index or not len(nxt):
+                continue
+            try:
+                c0 = A._official(o["symbol"], str(day.date()), "close")[0]
+                o1 = A._official(o["symbol"], str(nxt[0].date()), "open")[0]
+            except RuntimeError:
+                continue
+            c0 = c0 if c0 == c0 else float(x.loc[day, "c"])
+            o1 = o1 if o1 == o1 else float(x.loc[nxt[0], "o"])
+            h = x.loc[x.index < day].tail(20)
+            adv = float((h.c * h.v).median())
+            vol = float(np.log(h.c / h.c.shift(1)).std())
+            cost = 2 * (1.3 + 0.1 * float(half_spread_model(adv, c0, max(vol, 1e-3), "15:45")) + 2.5) / 1e4
+            rows.append(dict(day=r["day"], symbol=o["symbol"], qty=o["qty"], close=c0, next_open=o1,
+                             ret=o1 / c0 - 1, cost=cost, pnl=o["qty"] * (o1 - c0) - cost * o["qty"] * c0,
+                             model=r.get("model", "")))
+    v = pd.DataFrame(rows)
+    if not len(v):
+        print("virtual book: nothing to score yet")
+        return
+    v.to_csv(os.path.join(LOG, "virtual.csv"), index=False)
+    g = v.groupby("day").agg(names=("symbol", "size"), gross=("ret", "mean"), cost=("cost", "mean"), pnl=("pnl", "sum"))
+    g["net"] = g.gross - g.cost
+    g["equity"] = 10000 + g.pnl.cumsum()
+    g.to_csv(os.path.join(LOG, "virtual_days.csv"))
+    print(v.round(4).to_string(index=False))
+    print(g.round(4).to_string())
 
 
 def reconcile():
@@ -344,6 +403,8 @@ if __name__ == "__main__":
         raise SystemExit("--strategy must be ml, ensemble, blend, smallcap or combo")
     if what == "entry":
         entry(submit, day, strategy)
+    elif what == "virtual":
+        virtual()
     elif what == "exit":
         exit_(submit)
     elif what == "session":
