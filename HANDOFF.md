@@ -77,6 +77,13 @@ Schedule (weekdays ET): 15:45 entry, 09:15 exit, 17:30 `update_data.py daily`. P
 - shadow.py score now also scores SPY/QQQ mean reversion (logs/paper/shadow_meanrev.csv) and clamps SIP requests to
   16 minutes in the past (it failed before on the free plan).
 
+- Paper account: Alpaca's paper simulator does not run auctions (9 of 10 MOC buys expired on 2026-09-29), so the
+  runner sends regular market orders (PAPER_ORDERS=market: buys at 15:55, sells queued for the open). The virtual
+  book (`paper_overnight.py virtual`, logs/paper/virtual*.csv) scores each day's intended orders at the official
+  auction prints; it is the number to compare with the backtest.
+- Study 34/34b: selling picks early in the extended session is rejected (the extended-hours bid is 45-60 bp below
+  the last trade).
+
 ## Open items
 - Owner decision: approve paper submission (`--submit`) after a 2-week dry run; a scheduler is needed to run the
   15:45 / 09:15 jobs (this container is ephemeral).

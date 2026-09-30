@@ -224,6 +224,10 @@ studies = [
      "Sharpe 2.80 / 2.91 (validation / holdout) vs 2.30 / 2.15; better in 4 of 6 half-years; 2.27 vs 1.60 without the 20 "
      "best trades; 2.59 vs 2.33 without earnings nights; hedged 2.43 vs 1.69; at twice the cost 2.22 vs 1.52; deflated "
      "0.91; paired bootstrap against the ensemble p = 0.01. Paper account trades it from 2026-09-30."),
+    ("34", "Selling picks early in the after-hours or pre-market session when they are already up 2-10%", "Reject",
+     "Moves of +2-5% by 09:00 give back about 0.6% by the open (t -12.6), but the extended-hours bid is 45-60 bp "
+     "below the last trade (median half-spread about 20 bp). Sold at the real bid, every variant loses 11-43 bp per "
+     "event against holding to the opening auction."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
