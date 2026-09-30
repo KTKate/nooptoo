@@ -214,7 +214,13 @@ studies = [
     ("23", "Five-model ensemble (pooled, per-group and group-feature models) with 15:45 features", "Adopted",
      "Sharpe 2.30 / 2.21 (validation / holdout) vs 1.78 / 1.78, max drawdown -18% vs -24%, market-hedged 1.72 vs 1.13, "
      "deflated 0.66 vs 0.36; +7 bp a day (t 1.4). Paper account trades it from 2026-09-29."),
-    ("24-26", "Model tuning, 2011+ training history", "Running", "Results pending."),
+    ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
+     "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
+    ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
+     "0.34 / 2.79 / 3.84 vs 0.52 / 2.72 / 2.47 (2022-23 / val / holdout); worse in 2022-23 and with 20 names."),
+    ("31", "Random-seed noise of the model", "Caveat",
+     "Five seeds of the same model: holdout Sharpe 1.66 to 2.78, validation 2.45 to 2.91 (top 10). Differences below "
+     "about 0.5 between variants are within run-to-run noise; this includes the ensemble's lead over the single model."),
     ("25", "Premarket gaps and volume, opening-auction to closing-auction day trades (41 variants)", "Reject",
      "Gap rules fail; a short-side model works only through stocks that cannot be borrowed (see 29)."),
     ("27", "ETF rotation, volatility management, leveraged ETFs with trend filter, SPY/QQQ mean reversion", "Candidate",
@@ -228,7 +234,7 @@ studies = [
     ("-", "Macro calendar (FOMC, CPI, jobs report nights)", "Reject",
      "The ML strategy's jobs-report nights average -17 to -32 bp, but only 15-18 nights per period (t below 0.6)."),
 ]
-chipcls = {"Reject": "no", "Leads only": "lead", "Overnight only": "paper", "Candidate": "lead", "Adopted": "paper",
+chipcls = {"Reject": "no", "Leads only": "lead", "Overnight only": "paper", "Candidate": "lead", "Adopted": "paper", "Caveat": "lead",
            "Running": "bench"}
 study_rows = "\n".join(f'<tr><td class="num">{n}</td><td>{html.escape(t)}</td><td><span class="chip {chipcls[v]}">{v}</span></td>'
                        f'<td>{html.escape(d)}</td></tr>' for n, t, v, d in studies)
