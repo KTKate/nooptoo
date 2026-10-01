@@ -1,0 +1,295 @@
+== paper job entry 2026-10-01 15:06:04 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+Fetching 270 files:   0%|          | 0/270 [00:00<?, ?it/s]Fetching 270 files:   1%|          | 2/270 [00:00<00:16, 15.80it/s]Fetching 270 files:   4%|▎         | 10/270 [00:00<00:05, 43.88it/s]Fetching 270 files:  23%|██▎       | 62/270 [00:00<00:00, 232.51it/s]Fetching 270 files:  40%|████      | 109/270 [00:00<00:00, 315.52it/s]Fetching 270 files:  56%|█████▌    | 150/270 [00:00<00:00, 345.25it/s]Fetching 270 files:  73%|███████▎  | 197/270 [00:00<00:00, 385.30it/s]Fetching 270 files:  88%|████████▊ | 237/270 [00:00<00:00, 386.70it/s]Fetching 270 files: 100%|██████████| 270/270 [00:00<00:00, 288.44it/s]
+pulled Incarnadin/nooptoo-market-data into /home/user/nooptoo/data/local
+daily: last 2026-09-29, fetching from 2026-09-15 for 5549 tickers; 0 new tickers
+  0
+  150
+  300
+  450
+  600
+  750
+  900
+  1050
+  1200
+  1350
+  1500
+  1650
+  1800
+  1950
+  2100
+  2250
+  2400
+  2550
+  2700
+  2850
+  3000
+  3150
+  3300
+  3450
+  3600
+  3750
+  3900
+  4050
+  4200
+  4350
+  4500
+$SVA: possibly delisted; no price data found  (1d 2026-09-15 -> 2026-10-01)
+
+1 Failed download:
+['SVA']: possibly delisted; no price data found  (1d 2026-09-15 -> 2026-10-01)
+  4650
+  4800
+  4950
+  5100
+  5250
+  5400
+tickers with changed history (splits): ['SHFS']
+daily updated to 2026-09-30
+earnings: fetched 30 days, 1334 rows
+       day symbol side tif  qty  fill  official  slip_bps
+2026-09-29    ADX  buy cls 30.0 25.75       NaN       NaN
+2026-09-30    ADX sell opg 24.0 25.75     25.75      -0.0
+mean slippage vs official print (bp, positive = worse): 0.0
+      date   equity   pnl
+2026-09-25 10000.00  0.00
+2026-09-26 10000.00  0.00
+2026-09-29 10000.00  0.00
+2026-09-30  9998.79 -1.21
+2026-10-01  9999.48  0.69
+       day symbol  qty  close  next_open     ret   cost     pnl                      model
+2026-09-29   ECAT   71  13.97      14.00  0.0021 0.0009  1.2213 ensemble5_night_2026Q3.txt
+2026-09-29    ASC   54  18.44      18.69  0.0136 0.0009 12.5885 ensemble5_night_2026Q3.txt
+2026-09-29   STNG   12  83.57      85.72  0.0257 0.0009 24.9225 ensemble5_night_2026Q3.txt
+2026-09-29    NAT  126   7.98       8.09  0.0138 0.0009 12.9698 ensemble5_night_2026Q3.txt
+2026-09-29    HYT  128   7.81       7.84  0.0038 0.0009  2.9522 ensemble5_night_2026Q3.txt
+2026-09-29   HESM   26  37.63      37.91  0.0074 0.0008  6.4735 ensemble5_night_2026Q3.txt
+2026-09-29     TK   70  14.11      14.25  0.0099 0.0009  8.8644 ensemble5_night_2026Q3.txt
+2026-09-29    IDT   13  75.56      75.18 -0.0050 0.0010 -5.9037 ensemble5_night_2026Q3.txt
+2026-09-29    ADX   38  25.71      25.75  0.0016 0.0009  0.6100 ensemble5_night_2026Q3.txt
+2026-09-29    AES   67  14.86      14.87  0.0007 0.0008 -0.1537 ensemble5_night_2026Q3.txt
+            names   gross    cost      pnl     net      equity
+day                                                           
+2026-09-29     10  0.0074  0.0009  64.5449  0.0065  10064.5449
+strategy    adr_loser  smallcap_nonews
+day                                   
+2026-09-29     0.0219           -0.005
+mean net per night (bp): {'adr_loser': 218.5, 'smallcap_nonews': -49.5} nights: {'adr_loser': 1, 'smallcap_nonews': 1}
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+panel ready 2026-09-30
+entry at 15:46:03 ET, submit flag: '--submit'
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+{
+ "day": "2026-10-01",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "NKTR": 0.99744,
+  "SA": 0.99641,
+  "UMAC": 0.99334,
+  "SCTX": 0.99193,
+  "EQX": 0.98873,
+  "FRVO": 0.98719,
+  "TDAY": 0.98181,
+  "OCUL": 0.97937,
+  "ELE": 0.97899,
+  "JBL": 0.97835
+ },
+ "uncapped_top": {
+  "NKTR": 0.99744,
+  "SA": 0.99641,
+  "UMAC": 0.99334,
+  "SCTX": 0.99193,
+  "EQX": 0.98873,
+  "FRVO": 0.98719,
+  "TDAY": 0.98181,
+  "OCUL": 0.97937,
+  "ELE": 0.97899,
+  "PPTA": 0.97861
+ },
+ "equity": 9999.36,
+ "orders": [
+  {
+   "symbol": "NKTR",
+   "qty": 21,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SA",
+   "qty": 36,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "UMAC",
+   "qty": 46,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SCTX",
+   "qty": 58,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "EQX",
+   "qty": 92,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "FRVO",
+   "qty": 70,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "TDAY",
+   "qty": 143,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "OCUL",
+   "qty": 136,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ELE",
+   "qty": 54,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "JBL",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 9828.89
+}
+NKTR 200 {"id":"eaab79ff-88a6-4c33-8d54-8db57265cbc6","client_order_id":"fbc98748-815c-4f9d-9eb1-d69bbf92ada3","created_at":"2026-10-01T19:55:02.445943313Z","updated_at":"2026-10-01T19:55:02.447431145Z","submi
+SA 200 {"id":"5ba4c7d0-dd47-475d-89c3-d6fd0d5bd3f8","client_order_id":"daaaf40d-4339-4fc7-b559-081d2a73d2fb","created_at":"2026-10-01T19:55:02.861595025Z","updated_at":"2026-10-01T19:55:02.888816528Z","submi
+UMAC 200 {"id":"3dfb4288-cf74-4555-bb47-701586cc41aa","client_order_id":"2708b31b-bcf5-40fb-83c3-c1f33c2585e4","created_at":"2026-10-01T19:55:03.31284806Z","updated_at":"2026-10-01T19:55:03.314018996Z","submit
+SCTX 200 {"id":"460b03d4-30c9-4d21-8b48-0f0d2cd58bde","client_order_id":"8e462d62-4bd3-4528-80f5-c8062ffe5541","created_at":"2026-10-01T19:55:03.785223488Z","updated_at":"2026-10-01T19:55:03.786883608Z","submi
+EQX 200 {"id":"f86fbb1d-bf02-4b83-a76d-967a18ac493b","client_order_id":"6bcc85dd-34e7-450c-b7fa-8c12f96395e6","created_at":"2026-10-01T19:55:04.19769485Z","updated_at":"2026-10-01T19:55:04.265773559Z","submit
+FRVO 200 {"id":"fe501904-e400-401d-9439-42be6104c3a2","client_order_id":"2a0c07eb-1c97-403e-96fe-aaef93a692c0","created_at":"2026-10-01T19:55:04.674821645Z","updated_at":"2026-10-01T19:55:04.683005181Z","submi
+TDAY 200 {"id":"a1bcc583-2572-4b98-8156-162d6521a0c8","client_order_id":"d0671cbe-989b-4dfd-842e-832d1e4190be","created_at":"2026-10-01T19:55:05.171659017Z","updated_at":"2026-10-01T19:55:05.172743313Z","submi
+OCUL 200 {"id":"980c72f4-28fc-4d4c-a254-bad75211cbb3","client_order_id":"30f257f2-5dae-479d-be16-8187b8868eb8","created_at":"2026-10-01T19:55:05.631730409Z","updated_at":"2026-10-01T19:55:05.633048526Z","submi
+ELE 200 {"id":"9100da44-efed-45e0-a2ba-017b7b411ac1","client_order_id":"2ea78469-4c1d-4545-ade6-f82f0e75623b","created_at":"2026-10-01T19:55:06.011444514Z","updated_at":"2026-10-01T19:55:06.012410643Z","submi
+JBL 200 {"id":"991b823b-ce01-4a98-85ba-077dc74dc53b","client_order_id":"5d0dcb90-a789-48ae-8705-c7454e05edce","created_at":"2026-10-01T19:55:06.441324779Z","updated_at":"2026-10-01T19:55:06.442444639Z","submi
+entry finished at 15:55:06 ET
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+{
+ "day": "2026-10-01",
+ "recorded_at": "2026-10-01 15:56:05.755573-04:00",
+ "news_window": [
+  "2026-09-30 19:45:00+00:00",
+  "2026-10-01 19:45:00+00:00"
+ ],
+ "n_news_symbols": 559,
+ "smallcap_nonews": {
+  "HOST": {
+   "loss": 0.2,
+   "px": 3.8
+  },
+  "VIVO": {
+   "loss": 0.1576,
+   "px": 3.1
+  },
+  "VOGX": {
+   "loss": 0.1542,
+   "px": 19.97
+  },
+  "GLND": {
+   "loss": 0.1434,
+   "px": 4.33
+  },
+  "MF": {
+   "loss": 0.1193,
+   "px": 14.90999984741211
+  },
+  "WW": {
+   "loss": 0.1168,
+   "px": 13.69
+  },
+  "GRML": {
+   "loss": 0.0991,
+   "px": 9.045
+  },
+  "TARA": {
+   "loss": 0.0948,
+   "px": 2.77
+  },
+  "TRDA": {
+   "loss": 0.0886,
+   "px": 5.76
+  },
+  "ITG": {
+   "loss": 0.0865,
+   "px": 7.08
+  }
+ },
+ "adr_loser": {
+  "MLCO": {
+   "loss": 0.073,
+   "px": 4.125
+  },
+  "GPCR": {
+   "loss": 0.0668,
+   "px": 29.18
+  },
+  "TIGR": {
+   "loss": 0.0656,
+   "px": 4.27
+  },
+  "GDS": {
+   "loss": 0.061,
+   "px": 29.775
+  },
+  "AERO": {
+   "loss": 0.0521,
+   "px": 14.92
+  }
+ },
+ "spy_meanrev": {
+  "SPY": {
+   "action": "flat",
+   "px": 764.17,
+   "down3": false,
+   "above5": false
+  },
+  "QQQ": {
+   "action": "flat",
+   "px": 742.32,
+   "down3": false,
+   "above5": true
+  }
+ },
+ "universe": {
+  "smallcap": 742,
+  "smallcap_priced": 742,
+  "adr": 176
+ }
+}

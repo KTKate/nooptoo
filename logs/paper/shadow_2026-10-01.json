@@ -1,0 +1,92 @@
+{
+ "day": "2026-10-01",
+ "recorded_at": "2026-10-01 15:56:05.755573-04:00",
+ "news_window": [
+  "2026-09-30 19:45:00+00:00",
+  "2026-10-01 19:45:00+00:00"
+ ],
+ "n_news_symbols": 559,
+ "smallcap_nonews": {
+  "HOST": {
+   "loss": 0.2,
+   "px": 3.8
+  },
+  "VIVO": {
+   "loss": 0.1576,
+   "px": 3.1
+  },
+  "VOGX": {
+   "loss": 0.1542,
+   "px": 19.97
+  },
+  "GLND": {
+   "loss": 0.1434,
+   "px": 4.33
+  },
+  "MF": {
+   "loss": 0.1193,
+   "px": 14.90999984741211
+  },
+  "WW": {
+   "loss": 0.1168,
+   "px": 13.69
+  },
+  "GRML": {
+   "loss": 0.0991,
+   "px": 9.045
+  },
+  "TARA": {
+   "loss": 0.0948,
+   "px": 2.77
+  },
+  "TRDA": {
+   "loss": 0.0886,
+   "px": 5.76
+  },
+  "ITG": {
+   "loss": 0.0865,
+   "px": 7.08
+  }
+ },
+ "adr_loser": {
+  "MLCO": {
+   "loss": 0.073,
+   "px": 4.125
+  },
+  "GPCR": {
+   "loss": 0.0668,
+   "px": 29.18
+  },
+  "TIGR": {
+   "loss": 0.0656,
+   "px": 4.27
+  },
+  "GDS": {
+   "loss": 0.061,
+   "px": 29.775
+  },
+  "AERO": {
+   "loss": 0.0521,
+   "px": 14.92
+  }
+ },
+ "spy_meanrev": {
+  "SPY": {
+   "action": "flat",
+   "px": 764.17,
+   "down3": false,
+   "above5": false
+  },
+  "QQQ": {
+   "action": "flat",
+   "px": 742.32,
+   "down3": false,
+   "above5": true
+  }
+ },
+ "universe": {
+  "smallcap": 742,
+  "smallcap_priced": 742,
+  "adr": 176
+ }
+}
