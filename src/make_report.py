@@ -236,6 +236,11 @@ studies = [
      "Jump-minus-drop top 10 at close prices: 1.08 / 3.08 / 3.20 vs 1.02 / 2.43 / 2.90 without the extra inputs "
      "(2022-23 / validation / holdout), +8.9 bp a day, p = 0.06; worse in 2023 and 2025. Needs the sentiment model and "
      "FINRA files in the 15:46 run. Not adopted; retest with more data."),
+    ("37", "Point-in-time fundamentals from SEC filings (market cap, EV/sales, P/E, FCF yield, margins, growth, "
+     "stock compensation, cash, book value) as model inputs", "Reject",
+     "Rank model: +0.8 bp a day (p = 0.39). Jump/drop model: 0.53 / 3.76 / 3.34 vs 1.02 / 2.43 / 2.90 (2022-23 / "
+     "validation / holdout), +8.8 bp a day, p = 0.08, worse in 2022-23. Each input carries under 0.5% of the "
+     "model's split gain: fundamentals change once a quarter and say little about one night."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
