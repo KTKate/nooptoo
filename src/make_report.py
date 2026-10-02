@@ -241,6 +241,11 @@ studies = [
      "Rank model: +0.8 bp a day (p = 0.39). Jump/drop model: 0.53 / 3.76 / 3.34 vs 1.02 / 2.43 / 2.90 (2022-23 / "
      "validation / holdout), +8.8 bp a day, p = 0.08, worse in 2022-23. Each input carries under 0.5% of the "
      "model's split gain: fundamentals change once a quarter and say little about one night."),
+    ("38", "Analyst price targets (230k headlines: target gap, raises/cuts) and announcements (guidance, buybacks, "
+     "CEO/CFO changes) as model inputs and as event trades", "Reject",
+     "Rank model -1.5 bp a day (p = 0.71); jump/drop model 1.09 / 2.53 / 3.00 vs 1.02 / 2.43 / 2.90, +4.5 bp (p = 0.23). "
+     "Event test, next night vs SPY: raised guidance +21 bp in 2020-23 (t 6.7) but +1.6 bp in 2024-26; cut guidance "
+     "-24 then -9 bp; buybacks, executive changes and target changes below trading costs."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
