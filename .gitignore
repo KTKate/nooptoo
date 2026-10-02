@@ -14,3 +14,5 @@ results/study34_rec.parquet
 results/study34b_quotes.parquet
 results/study35_events.parquet
 results/study36_pred.parquet
+results/study37_pred.parquet
+results/study38_pred.parquet
