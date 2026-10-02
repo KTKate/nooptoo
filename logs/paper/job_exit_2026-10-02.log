@@ -1,0 +1,89 @@
+== paper job exit 2026-10-02 09:06:32 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-02",
+ "orders": [
+  {
+   "symbol": "ELE",
+   "qty": 54,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "EQX",
+   "qty": 92,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRVO",
+   "qty": 70,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "JBL",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NKTR",
+   "qty": 21,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "OCUL",
+   "qty": 136,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SA",
+   "qty": 36,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SCTX",
+   "qty": 58,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TDAY",
+   "qty": 143,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "UMAC",
+   "qty": 46,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+ELE 200 {"id":"313ef01c-df71-4b66-84b0-3be14e022e9e","client_order_id":"e84d5ae0-f55c-4969-b205-8d58fea39c90","created_at":"2026-10-02T13:06:50.225190963Z","updated_at":"2026-10-02T13:06:50.225895019Z","submi
+EQX 200 {"id":"a4461505-7179-432d-a693-5d97c403e6a0","client_order_id":"ecde794e-3edd-4b47-ac35-e4cb8355ec0d","created_at":"2026-10-02T13:06:50.648674265Z","updated_at":"2026-10-02T13:06:50.649408326Z","submi
+FRVO 200 {"id":"22d43562-d045-47d1-bc44-ed21ae629eac","client_order_id":"f2db7a9b-9625-4778-8bdb-89d298be47fe","created_at":"2026-10-02T13:06:51.07564026Z","updated_at":"2026-10-02T13:06:51.076239489Z","submit
+JBL 200 {"id":"248014f3-ca93-48b6-bc40-9d20376afd05","client_order_id":"7a1073fe-e97a-434a-9170-edc421be6b4c","created_at":"2026-10-02T13:06:51.598961601Z","updated_at":"2026-10-02T13:06:51.599655391Z","submi
+NKTR 200 {"id":"9ca6889c-392e-402b-8d5d-5351aa226fc1","client_order_id":"e72d23e1-b588-4032-b478-d2f0b7fe6547","created_at":"2026-10-02T13:06:52.088051183Z","updated_at":"2026-10-02T13:06:52.088768378Z","submi
+OCUL 200 {"id":"c5a89dc3-5ff3-4d58-bcae-2f0200399836","client_order_id":"305f904e-01ef-4bb0-b16d-11b19fe9fd34","created_at":"2026-10-02T13:06:52.444774693Z","updated_at":"2026-10-02T13:06:52.446419721Z","submi
+SA 200 {"id":"ea644918-016a-4130-b38b-e88cb21d83ac","client_order_id":"7ab062c2-3d31-473a-9a93-9dc6e11d1511","created_at":"2026-10-02T13:06:52.845498675Z","updated_at":"2026-10-02T13:06:52.846288951Z","submi
+SCTX 200 {"id":"4113fd41-434e-4952-9d26-b93cbd6120c9","client_order_id":"08f7a7da-fdaf-49ac-914b-271020282770","created_at":"2026-10-02T13:06:53.280701276Z","updated_at":"2026-10-02T13:06:53.281339363Z","submi
+TDAY 200 {"id":"4cb37f2d-2951-433c-88b8-a9197eb04e2d","client_order_id":"92aa1f60-2194-43f9-bfb4-1d85445df193","created_at":"2026-10-02T13:06:53.718040421Z","updated_at":"2026-10-02T13:06:53.71899266Z","submit
+UMAC 200 {"id":"f3e1608d-236a-42a2-b5eb-732debb5e2b8","client_order_id":"c355e166-c091-436d-9659-286754002355","created_at":"2026-10-02T13:06:54.132496983Z","updated_at":"2026-10-02T13:06:54.133153888Z","submi
