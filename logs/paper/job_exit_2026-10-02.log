@@ -87,3 +87,5 @@ SA 200 {"id":"ea644918-016a-4130-b38b-e88cb21d83ac","client_order_id":"7ab062c2-
 SCTX 200 {"id":"4113fd41-434e-4952-9d26-b93cbd6120c9","client_order_id":"08f7a7da-fdaf-49ac-914b-271020282770","created_at":"2026-10-02T13:06:53.280701276Z","updated_at":"2026-10-02T13:06:53.281339363Z","submi
 TDAY 200 {"id":"4cb37f2d-2951-433c-88b8-a9197eb04e2d","client_order_id":"92aa1f60-2194-43f9-bfb4-1d85445df193","created_at":"2026-10-02T13:06:53.718040421Z","updated_at":"2026-10-02T13:06:53.71899266Z","submit
 UMAC 200 {"id":"f3e1608d-236a-42a2-b5eb-732debb5e2b8","client_order_id":"c355e166-c091-436d-9659-286754002355","created_at":"2026-10-02T13:06:54.132496983Z","updated_at":"2026-10-02T13:06:54.133153888Z","submi
+remote: This repository moved. Please use the new location:        
+remote:   https://github.com/KTKate/nooptoo.git        
