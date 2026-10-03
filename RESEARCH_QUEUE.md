@@ -10,11 +10,15 @@ same universe's average (src/horizon_lib.py).
 ## Running
 - 39: 5-day ML with price / fundamentals / analyst inputs (weekly rebalance)
 - 40: 20-day ML, same inputs (monthly rebalance)
-- 41: drift after announcements (guidance, buybacks, executive changes, target changes), 1-60 days
-- 42: post-earnings drift by EPS surprise and earnings-day reaction, 20 and 60 days
-- 43: monthly factor portfolios (value, quality, growth, analyst, momentum, low volatility)
+
+## Done
+- 41 Reject: no announcement drift in both periods; guidance cuts trail over 60 days in 2024-26 (avoid filter)
+- 42 Reject: no post-earnings drift; worst earnings reactions keep falling ~20 days in 2024-26 (avoid filter)
+- 43 Candidate: low EV/sales top 20 strong in 2020-23 (t 2.7), weak in 2024-26 (t 0.6); combos failed out of sample
 
 ## Next
+- 43b: low EV/sales without financials, sector-neutral version, and as an input to the 20-day model
+- 59: avoid filters from 41/42 (guidance cut, worst earnings reaction) applied to the overnight blend and the 20-day model
 - 44: multi-day reversal after large non-news drops (3-10 day holds, liquid stocks)
 - 45: sector and industry rotation with ETFs: momentum, aggregated fundamentals and analyst revisions
 - 46: pre-earnings positioning: buy 5 days before reports with rising targets / high target gap

@@ -246,6 +246,19 @@ studies = [
      "Rank model -1.5 bp a day (p = 0.71); jump/drop model 1.09 / 2.53 / 3.00 vs 1.02 / 2.43 / 2.90, +4.5 bp (p = 0.23). "
      "Event test, next night vs SPY: raised guidance +21 bp in 2020-23 (t 6.7) but +1.6 bp in 2024-26; cut guidance "
      "-24 then -9 bp; buybacks, executive changes and target changes below trading costs."),
+    ("41", "Drift 1-60 days after announcements (guidance, buybacks, executive changes, analyst target changes)", "Reject",
+     "No event type has |t| >= 2 in both 2020-23 and 2024-26. Buybacks +1.5% over 60 days in 2020-23 (t 2.6) but "
+     "-0.5% in 2024-26. Guidance cuts trail by 2.5% over 60 days in 2024-26 (t -3.1): an avoid filter at most. "
+     "Tradable versions: net Sharpe 0.5-0.9 vs SPY 0.62 / 1.27."),
+    ("42", "Post-earnings drift by EPS surprise and earnings-window reaction, 20- and 60-day holds", "Reject",
+     "No monotone drift: both extreme EPS quintiles slightly positive; top-minus-bottom on the reaction is negative "
+     "over 60 days (reversal, not drift). Worst reactions keep falling for 20 days in 2024-26 (-1.2%, t -3.4): an "
+     "avoid filter. Tradable top quintile: net Sharpe 0.4-1.0 vs SPY 0.62 / 1.27."),
+    ("43", "Monthly long-only factor portfolios: value, quality, growth, analyst targets, momentum, low volatility",
+     "Candidate",
+     "Low EV/sales top 20: +2.3% a month over the universe in 2020-23 (t 2.7) but +0.4% (t 0.6) in 2024-26; net "
+     "Sharpe 0.99 / 0.95 vs SPY 0.62 / 1.27. The combination chosen on 2020-23 (value + low stock compensation) fell "
+     "to -0.2% (top quintile) in 2024-26. About 230 variants tried across studies 41-43."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

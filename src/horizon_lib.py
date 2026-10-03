@@ -5,7 +5,7 @@ side = core.exec_cost_bps(P, "auction") + 2.5 bp, charged on the names that chan
 Survivorship: the daily panel only contains tickers that still trade in 2026 (no delisted names), which inflates
 multi-week returns of risky stocks. Results are therefore reported as excess over the equal-weight average of the
 same tradable universe on the same days (that average carries the same bias), and the universe is restricted to
-liquid names (traded close > $5, 20-day median dollar volume > $20M by default).
+liquid names (traded close, extended before 2023-12 by TPX, > $5, 20-day median dollar volume > $20M by default).
 """
 import numpy as np
 import pandas as pd
@@ -16,13 +16,17 @@ cols = stock_cols(P)
 days = P["c"].index
 C = P["c"][cols]
 TC = traded_close(P)[cols]
+# traded close exists from 2023-12 only; earlier, scale the Yahoo close by each ticker's traded/Yahoo ratio on its
+# first traded-close day (fixes later splits, not splits during 2020-23)
+_raw = P["rawc"][cols].astype("float64")
+TPX = TC.fillna(_raw * (TC / _raw.where(_raw > 0)).bfill().iloc[0].fillna(1.0))
 ADV = P["dv"][cols].rolling(20).median()
 COST = (exec_cost_bps(P, "auction")[cols] + 2.5) / 1e4
 SPY = P["c"]["SPY"]
 
 
 def universe(min_px=5, min_adv=20e6):
-    return (TC > min_px) & (ADV > min_adv) & C.notna()
+    return (TPX > min_px) & (ADV > min_adv) & C.notna()
 
 
 def fwd(h):
