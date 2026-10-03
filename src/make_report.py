@@ -255,8 +255,8 @@ studies = [
      "over 60 days (reversal, not drift). Worst reactions keep falling for 20 days in 2024-26 (-1.2%, t -3.4): an "
      "avoid filter. Tradable top quintile: net Sharpe 0.4-1.0 vs SPY 0.62 / 1.27."),
     ("43", "Monthly long-only factor portfolios: value, quality, growth, analyst targets, momentum, low volatility",
-     "Candidate",
-     "Low EV/sales top 20: +2.3% a month over the universe in 2020-23 (t 2.7) but +0.4% (t 0.6) in 2024-26; net "
+     "Reject",
+     "Outside the intraday/intraweek scope (monthly holds); not pursued. Low EV/sales top 20: +2.3% a month over the universe in 2020-23 (t 2.7) but +0.4% (t 0.6) in 2024-26; net "
      "Sharpe 0.99 / 0.95 vs SPY 0.62 / 1.27. The combination chosen on 2020-23 (value + low stock compensation) fell "
      "to -0.2% (top quintile) in 2024-26. About 230 variants tried across studies 41-43."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",

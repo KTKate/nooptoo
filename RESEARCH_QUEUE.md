@@ -1,36 +1,47 @@
 # Research queue
 
+Scope (owner, 2026-10-03): intraday and intraweek strategies only. Holding periods from minutes up to 5 trading days.
+Monthly or longer holds are out of scope.
+
 Target: about 5 studies per trading day. Each study gets a script `src/studyNN_*.py` with a docstring (question, data,
 design, output), a CSV in `results/`, and a row in `src/make_report.py` with a verdict. Rules that apply to every study:
-point-in-time data only, auction costs + 2.5 bp per side, walk-forward or a held-out period, paired comparison
-against the current strategy where one exists, and a search for data errors before believing a large result.
+point-in-time data only, auction costs + 2.5 bp per side (quoted spreads for non-auction trades), walk-forward or a
+held-out period, paired comparison against the current strategy where one exists, and a search for data errors before
+believing a large result. Live constraint: the free Alpaca plan has real-time IEX data and 15-minute-delayed SIP, so a
+signal needed before 15:30 must work with IEX or with data older than 15 minutes.
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
 ## Running
 - 39: 5-day ML with price / fundamentals / analyst inputs (weekly rebalance)
-- 40: 20-day ML, same inputs (monthly rebalance)
 
 ## Done
-- 41 Reject: no announcement drift in both periods; guidance cuts trail over 60 days in 2024-26 (avoid filter)
-- 42 Reject: no post-earnings drift; worst earnings reactions keep falling ~20 days in 2024-26 (avoid filter)
-- 43 Candidate: low EV/sales top 20 strong in 2020-23 (t 2.7), weak in 2024-26 (t 0.6); combos failed out of sample
+- 40 (20-day ML) stopped: out of scope
+- 41 Reject: no announcement drift; at 1-5 days nothing above costs; guidance cuts trail later (avoid filter)
+- 42 Reject: no post-earnings drift; worst earnings reactions keep falling for days (avoid filter)
+- 43 out of scope (monthly): low EV/sales top 20 strong in 2020-23, weak in 2024-26
 
-## Next
-- 43b: low EV/sales without financials, sector-neutral version, and as an input to the 20-day model
-- 59: avoid filters from 41/42 (guidance cut, worst earnings reaction) applied to the overnight blend and the 20-day model
-- 44: multi-day reversal after large non-news drops (3-10 day holds, liquid stocks)
-- 45: sector and industry rotation with ETFs: momentum, aggregated fundamentals and analyst revisions
-- 46: pre-earnings positioning: buy 5 days before reports with rising targets / high target gap
-- 47: insider cluster buying (study 15 candidate) combined with value and quality filters, 60-day holds
-- 48: S&P 500 addition candidates: eligible by market cap and profitability but not yet in the index
-- 49: FINRA bi-monthly short interest (% of float, days to cover) and squeeze setups, multi-week
-- 50: seasonality: turn of month, pre-holiday, options expiration week, by weekday, for stocks and ETFs
-- 51: lead-lag: large-cap moves predicting smaller same-industry stocks over the next 1-5 days
-- 52: cross-asset signals (rates, dollar, oil, gold, bitcoin) for sector ETFs over 1-20 days
-- 53: capital split between the overnight blend and the best multi-day strategy (combined Sharpe, drawdown)
-- 54: dividend-related: ex-dividend run-up and drop, special dividends
-- 55: volatility regime switching for the overnight strategy (VIX term structure, realized vol)
-- 56: post-IPO and lockup-expiry effects (lockup dates from IPO date + 180 days)
-- 57: pairs within industries chosen by fundamental similarity, multi-day reversion
-- 58: earnings-call timing: report time of day and day of week vs reaction drift
+## Next (intraday: open to close, or within the session)
+- 60: day-session long model (buy at the opening auction, sell at the closing auction) with all inputs: price,
+  news since the previous close, analyst targets, fundamentals, premarket move; long side only (study 29 found the
+  short side works only in hard-to-borrow names)
+- 61: opening-30-minute momentum: does the 09:30-10:00 return predict 10:00-16:00 or the last 30 minutes, for stocks
+  and for SPY/QQQ (market intraday momentum literature); entry with IEX real-time data
+- 62: gap fill vs gap continuation by gap size, news, earnings, and premarket volume, exits at fixed times (10:30,
+  12:00, close)
+- 63: intraday lead-lag: sector ETF or industry leader moves in the first hour predicting laggards by the close
+- 64: last-hour effects: 15:00-16:00 return vs the day's move, imbalance-like proxies from 15:30-15:45 volume
+- 65: day-of-week and time-of-day patterns for the overnight blend (skip or size by weekday, holiday weeks)
+
+## Next (intraweek: 1-5 trading days)
+- 44: reversal after large non-news drops, entry at the close, exits after 1-5 days
+- 46: pre-earnings run-up: buy 1-5 days before reports, sell before the report
+- 47: insider cluster buys, 1-5 day holds after the Form 4 filing
+- 48: S&P 500 additions: candidates and announced additions, 1-5 days around announcement and effective date
+- 49: short squeeze setups (high short volume ratio + news + price breakout), 1-5 day holds
+- 50: weekly patterns: Monday open to Friday close, turn of month, pre-holiday, options expiration week
+- 52: cross-asset moves (rates, dollar, oil, gold, bitcoin) predicting sector ETFs over 1-5 days
+- 53: holding the overnight picks for 2-3 nights or through the next day: does the edge continue or reverse
+- 57: pairs within industries, 1-5 day reversion of the spread
+- 59: avoid filters from 41/42 (guidance cut, worst earnings reaction) applied to the overnight blend
+- 66: weekly ML (study 39) combined with the overnight blend: capital split, combined Sharpe and drawdown
