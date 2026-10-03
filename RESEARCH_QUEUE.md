@@ -16,6 +16,9 @@ same universe's average (src/horizon_lib.py).
 - 61-62: opening momentum, gaps (background agent)
 
 ## Done
+- 53 Reject: holding longer loses in each day session; picks rise at night and fall in the day for several days
+- 68 Candidate: day-session short of the picks (easy to borrow) +20-26 bp/day; with the overnight blend at quarter
+  size Sharpe 3.04 vs 2.85; shadow-tracked (shadow.py day_short)
 - 39 Reject: weekly ML weak (t up to 1.3); fundamentals/analyst inputs made it worse
 - 60 Candidate: day-session long model 4-21 bp/day net, Sharpe 0.4-1.3 (2024-26); test combined with the overnight blend
 - 40 (20-day ML) stopped: out of scope
@@ -43,8 +46,10 @@ same universe's average (src/horizon_lib.py).
 - 49: short squeeze setups (high short volume ratio + news + price breakout), 1-5 day holds
 - 50: weekly patterns: Monday open to Friday close, turn of month, pre-holiday, options expiration week
 - 52: cross-asset moves (rates, dollar, oil, gold, bitcoin) predicting sector ETFs over 1-5 days
-- 53: holding the overnight picks for 2-3 nights or through the next day: does the edge continue or reverse
 - 57: pairs within industries, 1-5 day reversion of the spread
 - 59: avoid filters from 41/42 (guidance cut, worst earnings reaction) applied to the overnight blend
+- 69: night-2 re-entry: buy yesterday's picks again at today's close (night 2 earned +24-28 bp over the universe)
+- 70: day-session short candidates beyond our picks: stocks with the largest overnight gains (night/day reversal),
+  easy to borrow only, with a borrow-fee model
 - 67: overnight blend + day-session model on the same capital (margin account): combined Sharpe, drawdown, turnover
 - 66: weekly ML (study 39) combined with the overnight blend: capital split, combined Sharpe and drawdown

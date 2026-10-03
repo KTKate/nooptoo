@@ -14,6 +14,9 @@ Candidates recorded:
                     price), exit at the close when the price is above its 5-day average (study 27); state kept in
                     logs/paper/shadow_state.json, scored close to close
                     (logs/paper/shadow_meanrev.csv)
+  day_short         the overnight entry's picks (logs/paper/entry_<day>.json) that Alpaca lists as easy to borrow and
+                    shortable right now: short at the next opening auction, cover at its closing auction (study 68;
+                    the backtest favours a quarter-size short next to the overnight longs), scored open -> close
 Not yet automated (need live data this runner does not have): behavior-cohort models (study 14, needs per-group
 models saved for live use) and 60-day insider cluster buys (study 15, needs a daily Form 4 feed).
 Prices at record time are the IEX last trade (or SIP 15:30 bar), as in paper_overnight.py; scoring uses Alpaca SIP
@@ -115,11 +118,21 @@ def record(day=None):
         mr[etf] = dict(action=action, px=px, down3=down3, above5=above5)
     if not test:
         json.dump(state, open(st_fn, "w"), indent=1)
+    # day-session short of tonight's overnight picks (study 68): easy-to-borrow status from the live asset endpoint
+    ds = {}
+    efn = os.path.join(PO.LOG, f"entry_{day.date()}.json")
+    if os.path.exists(efn):
+        for o in json.load(open(efn)).get("orders", []):
+            try:
+                a = requests.get(f"{PO.TRADE}/assets/{o['symbol']}", headers=PO.H, timeout=15).json()
+                ds[o["symbol"]] = dict(etb=bool(a.get("easy_to_borrow")), shortable=bool(a.get("shortable")))
+            except (requests.RequestException, ValueError):
+                ds[o["symbol"]] = dict(etb=None, shortable=None)
     rec = dict(day=str(day.date()), recorded_at=str(pd.Timestamp.now(tz="America/New_York")),
                news_window=[str(since), str(until)], n_news_symbols=len(news),
                smallcap_nonews={t: dict(loss=round(float(v), 4), px=float(intr.p[t])) for t, v in sc_nonews.head(10).items()},
                adr_loser={t: dict(loss=round(float(v), 4), px=float(intr.p[t])) for t, v in ad_loss.head(5).items()},
-               spy_meanrev=mr, universe=dict(smallcap=len(small), smallcap_priced=len(sc), adr=len(adr_ok)))
+               spy_meanrev=mr, day_short=ds, universe=dict(smallcap=len(small), smallcap_priced=len(sc), adr=len(adr_ok)))
     fn = os.path.join(PO.LOG, f"shadow_{day.date()}{'_replay' if test else ''}.json")
     json.dump(rec, open(fn, "w"), indent=1)
     print(json.dumps(rec, indent=1))
@@ -152,6 +165,27 @@ def score():
                 ret = o1 / c0 - 1
                 rows.append(dict(day=r["day"], strategy=strat, ticker=t, close=c0, next_open=o1, ret=ret, cost=cost,
                                  net=ret - cost, flag_split=abs(np.log(o1 / c0)) > 0.4))
+    for f in files:                                  # day_short: next session open -> close, short side
+        r = json.load(open(os.path.join(PO.LOG, f)))
+        day = pd.Timestamp(r["day"])
+        tick = [t for t, v in (r.get("day_short") or {}).items() if v.get("etb") and v.get("shortable")]
+        if not tick:
+            continue
+        b = daily_raw(tick, (day - pd.Timedelta(days=40)).strftime("%Y-%m-%dT00:00:00Z"),
+                      (day + pd.Timedelta(days=6)).strftime("%Y-%m-%dT00:00:00Z"))
+        for t in tick:
+            x = b[b.ticker == t].set_index("date").sort_index()
+            nxt = x.loc[x.index > day]
+            if not len(nxt):
+                continue
+            o1, c1 = float(nxt.iloc[0]["o"]), float(nxt.iloc[0]["c"])
+            hist = x.loc[x.index <= day].tail(20)
+            adv = float((hist.c * hist.v).median())
+            vol = float(np.log(hist.c / hist.c.shift(1)).std())
+            cost = 2 * (1.3 + 0.1 * float(half_spread_model(adv, o1, max(vol, 1e-3), "15:45")) + 2.5) / 1e4
+            ret = -(c1 / o1 - 1)
+            rows.append(dict(day=r["day"], strategy="day_short", ticker=t, close=o1, next_open=c1, ret=ret, cost=cost,
+                             net=ret - cost, flag_split=abs(np.log(c1 / o1)) > 0.4))
     score_meanrev(files)
     d = pd.DataFrame(rows)
     if not len(d):

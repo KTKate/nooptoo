@@ -266,6 +266,14 @@ studies = [
      "analyst and fundamental inputs, 2024-26", "Candidate",
      "Top 10 earns 12-30 bp a day gross (SPY day session 1-3 bp), 4-21 bp net; Sharpe 0.4-1.3 depending on inputs "
      "and period (all inputs: 0.64 / 0.95). Weak alone; to test combined with the overnight blend (margin account)."),
+    ("53", "Holding the overnight picks longer: next day session, second and third nights", "Reject",
+     "Over the universe, the top 10 gain 47-51 bp on night 1, lose 42-57 bp in the next day session (t -2.5 to -4.1), "
+     "gain 24-28 bp on night 2 and lose again on day 2. Selling at the open is right; the day-session fall is study 68."),
+    ("68", "Shorting the overnight picks during the next day session (short at the opening auction, cover at the close)",
+     "Candidate",
+     "Easy-to-borrow picks only (today's list, optimistic): +26 / +20 bp a day net, Sharpe 1.44 / 1.14, max drawdown "
+     "-43%. Correlation with the overnight leg 0.07. Overnight blend + quarter-size day short: Sharpe 3.04 vs 2.85, max "
+     "drawdown -22% vs -21% (size chosen from 5 values). Needs a margin account; shadow-tracked from 2026-10-05."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

@@ -74,6 +74,7 @@ for q in pd.period_range("2024Q3", "2026Q3", freq="Q"):
         m = lgb.train(pr, lgb.Dataset(x.loc[tr, f], x.y[tr]), num_boost_round=300)
         x.loc[te, "p_" + k] = m.predict(x.loc[te, f])
     print(q, flush=True)
+x[["date", "ticker", "R", "cost", "px", "adv20"] + ["p_" + k for k in sets]].to_parquet(f"{RES}/study60_pred.parquet")
 liq = (x.px > 5) & (x.adv20 > 5e6)
 rows = []
 for k in sets:
