@@ -13,16 +13,18 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running
-- 39: 5-day ML with price / fundamentals / analyst inputs (weekly rebalance)
+- 61-62: opening momentum, gaps (background agent)
 
 ## Done
+- 39 Reject: weekly ML weak (t up to 1.3); fundamentals/analyst inputs made it worse
+- 60 Candidate: day-session long model 4-21 bp/day net, Sharpe 0.4-1.3 (2024-26); test combined with the overnight blend
 - 40 (20-day ML) stopped: out of scope
 - 41 Reject: no announcement drift; at 1-5 days nothing above costs; guidance cuts trail later (avoid filter)
 - 42 Reject: no post-earnings drift; worst earnings reactions keep falling for days (avoid filter)
 - 43 out of scope (monthly): low EV/sales top 20 strong in 2020-23, weak in 2024-26
 
 ## Next (intraday: open to close, or within the session)
-- 60: day-session long model (buy at the opening auction, sell at the closing auction) with all inputs: price,
+- (done) 60: day-session long model (buy at the opening auction, sell at the closing auction) with all inputs: price,
   news since the previous close, analyst targets, fundamentals, premarket move; long side only (study 29 found the
   short side works only in hard-to-borrow names)
 - 61: opening-30-minute momentum: does the 09:30-10:00 return predict 10:00-16:00 or the last 30 minutes, for stocks
@@ -44,4 +46,5 @@ same universe's average (src/horizon_lib.py).
 - 53: holding the overnight picks for 2-3 nights or through the next day: does the edge continue or reverse
 - 57: pairs within industries, 1-5 day reversion of the spread
 - 59: avoid filters from 41/42 (guidance cut, worst earnings reaction) applied to the overnight blend
+- 67: overnight blend + day-session model on the same capital (margin account): combined Sharpe, drawdown, turnover
 - 66: weekly ML (study 39) combined with the overnight blend: capital split, combined Sharpe and drawdown

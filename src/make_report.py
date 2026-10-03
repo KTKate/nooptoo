@@ -259,6 +259,13 @@ studies = [
      "Outside the intraday/intraweek scope (monthly holds); not pursued. Low EV/sales top 20: +2.3% a month over the universe in 2020-23 (t 2.7) but +0.4% (t 0.6) in 2024-26; net "
      "Sharpe 0.99 / 0.95 vs SPY 0.62 / 1.27. The combination chosen on 2020-23 (value + low stock compensation) fell "
      "to -0.2% (top quintile) in 2024-26. About 230 variants tried across studies 41-43."),
+    ("39", "5-day (weekly) ML model with price, fundamentals and analyst inputs, top 20, weekly rebalance", "Reject",
+     "Price inputs: -0.33% / +0.20% / +0.55% a week over the universe (2022-23 / 2024-25H1 / 2025H2-26, t -1.0 to 1.3); "
+     "adding fundamentals or analyst inputs lowered every period."),
+    ("60", "Day-session long model (opening auction to closing auction) with premarket, news, previous-close price, "
+     "analyst and fundamental inputs, 2024-26", "Candidate",
+     "Top 10 earns 12-30 bp a day gross (SPY day session 1-3 bp), 4-21 bp net; Sharpe 0.4-1.3 depending on inputs "
+     "and period (all inputs: 0.64 / 0.95). Weak alone; to test combined with the overnight blend (margin account)."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
