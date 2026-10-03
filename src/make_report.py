@@ -312,6 +312,12 @@ studies = [
      "choice. Pooled-score thresholds are worse (0.7-2.5). Study 19 found the same for other construction rules. "
      "73b, walk-forward choice each quarter on all earlier data: 2.87 vs 2.70 for the fixed top 10 (2024Q3-2026Q3); "
      "since 2025Q4 it always picks the threshold. Candidate."),
+    ("74", "Earnings day, before the report: the day session of the report day (after-close reporters) or of the day "
+     "before (pre-open reporters), split by sector, sentiment, prior surprise, revisions, run-up, size", "Reject",
+     "Average -2 / +4 bp vs the universe (2020-23 / 2024-26) against 9 bp of auction costs; 91 split cells correlate "
+     "0.32 between periods and agree in sign 44% of the time. Rules chosen on 2020-23: Sharpe -0.65, 0.41, 0.27 in "
+     "2024-26. Leads: more target raises than cuts in the prior 20 days (+14 bp in 2024-26, t 3-4, +3-5 bp before); "
+     "Friday sessions (+30 bp both periods, ~500 events each). Report timing inferred (94% agreement with stated times)."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

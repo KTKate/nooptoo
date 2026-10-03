@@ -13,10 +13,10 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running
-- 74: earnings-day session before the report (sector, sentiment, prior surprise, revisions) (agent)
 - 75: disclosed trades: insiders, Congress, 13D activists, 1-5 days and around earnings (agent)
 
 ## Done
+- 74 Reject: no pre-report day-session pattern survives out of sample; leads: target raises before report, Fridays
 - 73 Reject: fixed top 10 beats variable counts in the selection period; jump threshold (~9 names) a lead
 - 70 Reject: shorting the biggest overnight gainers in the day session is weak (Sharpe ~0.6, about zero in 2020-23)
 - 44 Reject: no 1-5 day reversal after drops; no-news drops keep falling
@@ -45,6 +45,7 @@ same universe's average (src/horizon_lib.py).
 - 64: last-hour effects: 15:00-16:00 return vs the day's move, imbalance-like proxies from 15:30-15:45 volume
 
 ## Next (intraweek: 1-5 trading days)
+- 76: cohort models by earnings behavior and news reaction (clusters on past reactions), as extra ensemble members
 - 72: short isolated no-news drops below -10% for 2-5 days (study 44 lead), with borrow limits, fresh cut-offs
 - 46: pre-earnings run-up: buy 1-5 days before reports, sell before the report
 - 47: insider cluster buys, 1-5 day holds after the Form 4 filing
