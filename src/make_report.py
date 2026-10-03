@@ -304,6 +304,11 @@ studies = [
      "No reversal: drops below -10% without news keep falling (-2.0% over 3 days in 2024-26, t -3.0). The only "
      "rebound is overnight and is already in the blend (15% of its picks are such drops). Lead: shorting isolated "
      "no-news drops for 2-5 days (2024-26 only, cut-offs chosen after the first run)."),
+    ("73", "Variable number of stocks for the blend: fixed 5/10/15/20, absolute thresholds on the jump or pooled "
+     "score (cash on weak nights), rank-weighted top 20", "Reject",
+     "Fixed top 10: 2.80 / 2.91. In 2024-25H1 (selection period) no rule beats it; the jump-minus-drop > 0.059 rule "
+     "(about 9 names, sometimes cash) is 2.65 there but 3.73 in 2025H2-26: a lead to recheck with more data, not a "
+     "choice. Pooled-score thresholds are worse (0.7-2.5). Study 19 found the same for other construction rules."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

@@ -13,8 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running
+- 74: earnings-day session before the report (sector, sentiment, prior surprise, revisions) (agent)
+- 75: disclosed trades: insiders, Congress, 13D activists, 1-5 days and around earnings (agent)
 
 ## Done
+- 73 Reject: fixed top 10 beats variable counts in the selection period; jump threshold (~9 names) a lead
 - 70 Reject: shorting the biggest overnight gainers in the day session is weak (Sharpe ~0.6, about zero in 2020-23)
 - 44 Reject: no 1-5 day reversal after drops; no-news drops keep falling
 - 67 Candidate: blend + half-size day-session long model, Sharpe 2.56 / 3.09 vs 2.41 / 2.91; margin needed
