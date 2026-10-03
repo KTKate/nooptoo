@@ -50,6 +50,9 @@ same universe's average (src/horizon_lib.py).
 - 76: cohort models by earnings behavior and news reaction (clusters on past reactions), as extra ensemble members
 - 72: short isolated no-news drops below -10% for 2-5 days (study 44 lead), with borrow limits, fresh cut-offs
 - 46: pre-earnings run-up: buy 1-5 days before reports, sell before the report
+- 79: trade the overnight reaction to after-close insider buy filings in the extended session: buy 5-15 minutes
+  after the EDGAR acceptance time at the real after-hours ask (SIP quotes), sell at the next open or close; needs
+  a live EDGAR poll if it works
 - 78: live Form 4 feed (EDGAR XML from 2026-04) for a shadow test of insider buys > 5% of ADV; insider features
   (recent buy, size) as inputs to the day-session and jump models
 - 48: S&P 500 additions: candidates and announced additions, 1-5 days around announcement and effective date
