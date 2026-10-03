@@ -274,6 +274,16 @@ studies = [
      "Easy-to-borrow picks only (today's list, optimistic): +26 / +20 bp a day net, Sharpe 1.44 / 1.14, max drawdown "
      "-43%. Correlation with the overnight leg 0.07. Overnight blend + quarter-size day short: Sharpe 3.04 vs 2.85, max "
      "drawdown -22% vs -21% (size chosen from 5 values). Needs a margin account; shadow-tracked from 2026-10-05."),
+    ("61", "First 30 minutes predicting the rest of the day or the last 30 minutes (SPY/QQQ and the 500 most traded "
+     "stocks, 1-minute data from 2019-07)", "Reject",
+     "SPY/QQQ slopes t 1.7-2.3 in 2020-23, near zero in 2024-26; best ETF rule net Sharpe 0.15 / 0.12 vs buy-and-hold "
+     "0.7-1.3. Cross-section: best gross +6-7 bp a day against about 22 bp of costs. 124 variants."),
+    ("62", "Gap fill vs continuation by gap size, catalyst (earnings, news, none) and premarket volume; entries at the "
+     "open, 09:35, 09:45; exits 10:30, 12:00, close", "Reject",
+     "All 09:35/09:45 entries lose after 39-43 bp round trips, and gross returns change sign between periods. One "
+     "consistent cell: shorting premarket gap-ups above 10% at the opening auction, +31-71 bp an event (t 2.3-2.6), but "
+     "easy-to-borrow only it is Sharpe 0.55 / 1.20 vs SPY 0.62 / 1.30, with squeeze drawdowns. Same night/day "
+     "reversal as study 68; folded into study 70. 864 cells per period."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

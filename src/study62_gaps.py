@@ -15,11 +15,13 @@ Splits of the events
                      before and 09:30
               news : no such earnings event, >= 1 Benzinga article (any) for the symbol in [prev 16:00, 09:30)
               none : no article in that window and no earnings
-  premarket   pm_lo / pm_hi : premarket volume 07:00-09:25 as a fraction of 20-day average daily volume, below / above
+  premarket   pm_lo / pm_hi : premarket volume 07:00-09:25 (bars starting before 09:25) as a fraction of 20-day average daily volume, below / above
               the median of 2020-23 events (threshold fixed on 2020-23, applied to 2024-26)
-Entries: open  = opening auction (market-on-open). The official gap is not known when a MOO order must be sent, so
-                 this entry buckets events by the PREMARKET gap (09:25 bar close / previous close) instead; events are
-                 still drawn from days whose official gap is >= 2% (small selection on the open; see caveats).
+Entries: open  = opening auction (market-on-open). The official gap is not known when a MOO order must be sent (~09:28),
+                 so this entry buckets events by the PREMARKET gap (last trade before 09:25 / previous close) instead;
+                 events are still drawn from days whose official gap is >= 2% (small selection on the open).
+         open_sip910 = the same with the last trade before 09:10, which is what 15-minute-delayed SIP shows at 09:25
+                 (the free Alpaca plan; IEX real-time premarket trades are sparse).
          09:35 = close of the 09:30-09:35 bar, 09:45 = close of the 09:40-09:45 bar (official gap known by then).
 Exits: 10:30, 12:00 (continuous market), close (closing auction).
 Both sides for every event: long and short (for a gap up, long = continuation, short = fade).
@@ -28,11 +30,15 @@ time of day (09:35/12:00 calibration points, 09:45 and 10:30 interpolated) + 2 b
 Shorts: no borrow fee intraday, but locate availability (easy to borrow) is not knowable historically, and a stock
 already >= 10% below its previous close is under the short-sale (uptick) rule -> short results are an upper bound.
 
+Sanity filters: the Alpaca first trade must be within 3% of the official open (and ticker-months within 1% in the
+median), and every regular-session price used must lie inside the Yahoo day's low-high range (+-1%).
 Statistics per cell: events, mean gross/net bps per event, median net, hit rate, t of the mean computed on daily
 averages (events on the same day are not independent), and the Sharpe of a portfolio that splits capital equally
 among the day's events (cash on days without events), against SPY buy and hold.
 
     python src/study62_gaps.py            # writes results/study62_gaps.csv
+    S62_EVENTS=/path/ev.parquet python src/study62_gaps.py              # also saves the event-level returns
+    S62_EVENTS=/path/ev.parquet python src/study62_gaps.py checkopen    # official opening cross vs Yahoo open
 """
 import os
 import sys
@@ -74,9 +80,11 @@ def load_bars():
         hm = (d.ts.dt.hour * 100 + d.ts.dt.minute).values
         d["date"] = d.ts.dt.normalize()
         k = ["date", "ticker"]
-        pre = d[hm < 930]
+        pre = d[hm < 925]                      # bars starting 07:00 .. 09:20: trades before 09:25
         gp = pre.groupby(k)
         x = pd.DataFrame({"pre_v": gp.v.sum(), "pre_last": gp.c.last()})
+        pre2 = d[hm < 910]                     # trades before 09:10: what 15-minute-delayed SIP shows at 09:25
+        x = x.join(pre2.groupby(k).c.last().rename("pre_last910"), how="outer")
         for h, col, fld in [(930, "a_o", "o"), (930, "p0935", "c"), (940, "p0945", "c"), (1025, "p1030", "c"),
                             (1155, "p1200", "c")]:
             x = x.join(d[hm == h].set_index(k)[fld].rename(col), how="outer")
@@ -101,7 +109,7 @@ def overnight_news(ev_idx):
     ok = i < len(days)
     i = np.where(ok, i, 0)
     ok &= ts.values >= start[i]
-    earn = d.headline.fillna("").str.contains(r"(?i)(\bEPS\b|earnings|results|revenue|sales)", regex=True).values
+    earn = d.headline.fillna("").str.contains(r"(?i)(?:\bEPS\b|earnings|results|revenue|sales)", regex=True).values
     dd = pd.DataFrame({"date": pd.DatetimeIndex(days)[i[ok]], "ticker": d.sym.values[ok], "earn_h": earn[ok]})
     g = dd.groupby(["date", "ticker"])
     out = pd.DataFrame({"n_news": g.size(), "n_earn_h": g.earn_h.sum()}).reindex(ev_idx).fillna(0)
@@ -121,6 +129,8 @@ def build_events():
     ev["pc"] = stack(PC_DIV[cols], "pc", idx)
     ev["o_s"] = stack(O_S[cols], "o_s", idx)
     ev["close"] = stack(P["rawc"][cols], "close", idx)
+    ev["lo_s"] = stack((P["l"] / F)[cols], "lo_s", idx)
+    ev["hi_s"] = stack((P["h"] / F)[cols], "hi_s", idx)
     ev["advsh"] = stack(P["v"][cols].rolling(20, min_periods=10).mean().shift(1), "advsh", idx)
     for nm, panel in [("c_auc", auction_cost_bps(PT)), ("c_0935", cont_cost_bps(PT, "09:35")),
                       ("c_0945", cont_cost_bps(PT, "09:45")), ("c_1030", cont_cost_bps(PT, "10:30")),
@@ -136,6 +146,13 @@ def build_events():
     tm = ev.groupby([ev.index.get_level_values(0).to_period("M"), ev.index.get_level_values(1)]).dif.transform("median")
     ok = has & (ev.dif < 0.03) & (tm < 0.01) & ev.close.notna() & ev.pc.notna()
     print("dropped by consistency filter", int((has & ~ok).sum()), flush=True)
+    # every regular-session price used must lie inside the Yahoo day range (+-1%): catches bad prints and
+    # Alpaca/Yahoo symbol or split mismatches in the later bars
+    inside = pd.Series(True, index=ev.index)
+    for k in ["p0935", "p0945", "p1030", "p1200"]:
+        inside &= ev[k].isna() | ((ev[k] >= 0.99 * ev.lo_s) & (ev[k] <= 1.01 * ev.hi_s))
+    print("dropped: intraday price outside the Yahoo day range", int((ok & ~inside).sum()), flush=True)
+    ok &= inside
     ev = ev[ok].copy()
     # catalysts
     E = store.read("earnings")
@@ -157,6 +174,7 @@ def build_events():
     ev["pm"] = np.where(ev.pmrel > thr, "pm_hi", "pm_lo")
     print("premarket volume threshold (median 2020-23, fraction of ADV):", round(thr, 4), flush=True)
     ev["gpre"] = ev.pre_last / ev.pc - 1
+    ev["gpre910"] = ev.pre_last910 / ev.pc - 1
     return ev
 
 
@@ -173,7 +191,8 @@ def main():
         st = ann_stats(spy.loc[a:b])
         rows.append(dict(period=per, entry="bench", exit="SPY_buy_hold", side="long", direction="", size="",
                          split="", n=st["n"], sharpe=st["sharpe"], tstat=st["tstat"]))
-    entries = {"open": ("o_s", "c_auc", "gpre"), "09:35": ("p0935", "c_0935", "gap"), "09:45": ("p0945", "c_0945", "gap")}
+    entries = {"open": ("o_s", "c_auc", "gpre"), "open_sip910": ("o_s", "c_auc", "gpre910"),
+               "09:35": ("p0935", "c_0935", "gap"), "09:45": ("p0945", "c_0945", "gap")}
     exits = {"10:30": ("p1030", "c_1030"), "12:00": ("p1200", "c_1200"), "close": ("close", "c_auc")}
     out_events = []
     for en, (pin, cin, gcol) in entries.items():
@@ -185,7 +204,7 @@ def main():
             r = ev[pout] / ev[pin] - 1
             cost = (ev[cin] + ev[cout]) / 1e4
             ok = valid_g & r.notna() & cost.notna()
-            df = pd.DataFrame({"date": ev.index.get_level_values(0), "r": r.values, "cost": cost.values,
+            df = pd.DataFrame({"date": ev.index.get_level_values(0), "ticker": ev.index.get_level_values(1), "r": r.values, "cost": cost.values,
                                "size": sz.values, "direction": direc, "cat": ev["cat"].values, "pm": ev["pm"].values})[ok.values]
             df["entry"], df["exit"] = en, ex
             out_events.append(df)
@@ -226,15 +245,63 @@ def main():
     print("\ncategory counts (09:35 entry, close exit):")
     x = E[(E.entry == "09:35") & (E.exit == "close")]
     print(pd.crosstab([x["size"], x.direction], [x.date.dt.year >= 2024, x.cat]))
-    for en in ["open", "09:35"]:
+    for en in ["open", "open_sip910", "09:35", "09:45"]:
         for ex in ["10:30", "12:00", "close"]:
             y = res[(res.entry == en) & (res.exit == ex) & (res.split == "all")]
             v = y.pivot_table(index=["direction", "size", "side"], columns="period", values=["net_bps", "t_daily", "sharpe"])
             print(f"\n== entry {en} exit {ex} (all events)")
-            print(v[[("net_bps", "2020-23"), ("t_daily", "2020-23"), ("sharpe", "2020-23"),
-                     ("net_bps", "2024-26"), ("t_daily", "2024-26"), ("sharpe", "2024-26")]].round(2).to_string())
+            want = [(m, p) for p in ["2020-23", "2024-26"] for m in ["net_bps", "t_daily", "sharpe"]]
+            print(v[[c for c in want if c in v.columns]].round(2).to_string())
     print(res[res.entry == "bench"][["period", "sharpe"]])
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" and len(sys.argv) == 1:
     main()
+
+
+def check_open(n_per=250, seed=0):
+    """Is Yahoo's open the price a market-on-open order gets? For a random sample of premarket gap-ups > 10%
+    (the one cell that looks profitable), fetch the primary-exchange opening cross from SIP trades (condition 'O')
+    and recompute the open -> close short with it. Not cached (data/local/auctions.parquet belongs to other studies)."""
+    import alpaca_data as A
+    from s6162_common import traded_price
+    ev_fn = os.environ["S62_EVENTS"]
+    E = pd.read_parquet(ev_fn)
+    x = E[(E.entry == "open") & (E.exit == "close") & (E.direction == "up") & (E["size"] == ">10%")].copy()
+    rng = np.random.default_rng(seed)
+    parts = []
+    for a, b in [("2020-01-01", "2023-12-31"), ("2024-01-01", "2026-12-31")]:
+        y = x[(x.date >= a) & (x.date <= b)]
+        parts.append(y.iloc[rng.choice(len(y), min(n_per, len(y)), replace=False)])
+    s = pd.concat(parts)
+    fac = (traded_price(P) / P["rawc"])
+    rows = []
+    for _, r in s.iterrows():
+        sym = r.ticker.replace("-", ".")
+        try:
+            off, first = A._official(sym, r.date.strftime("%Y-%m-%d"), "open")
+        except RuntimeError:
+            off, first = np.nan, np.nan
+        f = fac.at[r.date, r.ticker]
+        o_y = (O_S.at[r.date, r.ticker]) * f            # Yahoo open in traded units
+        c_y = P["rawc"].at[r.date, r.ticker] * f
+        rows.append(dict(date=r.date, ticker=r.ticker, o_yahoo=o_y, o_official=off, first_trade=first, close=c_y,
+                         r_yahoo=c_y / o_y - 1, r_official=c_y / off - 1 if off == off else np.nan, cost=r.cost))
+    out = pd.DataFrame(rows)
+    out["diff_bps"] = 1e4 * (out.o_official / out.o_yahoo - 1)
+    print("official open found:", out.o_official.notna().sum(), "of", len(out))
+    print("official / Yahoo open - 1 (bps):", out.diff_bps.describe(percentiles=[.05, .25, .5, .75, .95]).round(1).to_dict())
+    if os.environ.get("S62_CHECK_OUT"):
+        out.to_csv(os.environ["S62_CHECK_OUT"], index=False)
+    bad = out.diff_bps.abs() > 2000
+    print("pairs with |official/Yahoo - 1| > 20% (split/symbol mismatch, excluded below):", int(bad.sum()))
+    for lab, m in [("2020-23", out.date < "2024-01-01"), ("2024-26", out.date >= "2024-01-01")]:
+        z = out[m & out.o_official.notna() & ~bad]
+        print(lab, "n", len(z), "short net bps, Yahoo open:", round(1e4 * (-z.r_yahoo - z.cost).mean(), 1),
+              " official open:", round(1e4 * (-z.r_official - z.cost).mean(), 1),
+              " median diff bps:", round(z.diff_bps.median(), 1))
+    return out
+
+
+if __name__ == "__main__" and len(sys.argv) > 1 and sys.argv[1] == "checkopen":
+    check_open()

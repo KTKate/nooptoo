@@ -25,7 +25,8 @@ B. Cross-section, the 500 most traded stocks each day (lagged 20-day median doll
    mom_long (long top 10), rev_long (long bottom 10), each among: all, in_play (09:30-10:00 volume >= 2 x its
    20-day mean), news (>= 1 Benzinga article from 16:00 the day before to 10:00), no_news.
    Alpaca/Yahoo consistency: stock-days whose Alpaca 09:30 open or last price differ from the Yahoo open/close
-   by more than 3% are dropped (split timing, bad prints), and ticker-months with median disagreement > 0.5%.
+   by more than 3% are dropped (split timing, bad prints), and ticker-months with median disagreement > 0.5%;
+   the 10:00 and 15:30 prices must lie inside the Yahoo day's low-high range (+-1%).
 
 Costs per side: entry in continuous trading = quote-model half-spread at that time of day (core.half_spread_model;
 10:00 interpolated between the 09:35 and 12:00 calibration points, 15:30 ~ the 15:45 point) + 2 bp slippage +
@@ -155,7 +156,7 @@ def part_a():
 
 
 # ================================================================== B. cross-section
-def load_xs():
+def load_xs(keep=None):
     """Per stock-day a_o (first trade 09:30), p1000 (last trade before 10:00), v30 (09:30-10:00 volume),
     e1530 (first trade at/after 15:30), a_last (last trade before 16:00). 2020-23 from m30s61 (30-minute bars),
     2024+ from m5snap (5-minute bars, same windows)."""
@@ -176,6 +177,8 @@ def load_xs():
         if not fn.endswith(".parquet") or fn[:7] < "2024-01":
             continue
         d = pd.read_parquet(os.path.join(d0, fn), columns=["ts", "ticker", "o", "c", "v"])
+        if keep is not None:
+            d = d[d.ticker.isin(keep)]
         hm = d.ts.dt.hour * 100 + d.ts.dt.minute
         d["date"] = d.ts.dt.normalize()
         first = d[hm < 1000]
@@ -212,7 +215,11 @@ def news_counts(days, cols, cut_hm=(10, 0)):
 
 
 def part_b():
-    W = load_xs()
+    sc = stock_cols(P)
+    adv0 = P["dv"][sc].rolling(20, min_periods=10).median().shift(1)
+    rk0 = adv0.where(PT["rawc"][sc].shift(1) > 5).rank(axis=1, ascending=False)
+    keep = set((rk0.loc["2024-01-01":] <= 520).any().pipe(lambda s: s[s].index))   # m5snap names ever near the top 500
+    W = load_xs(keep)
     cols = sorted(set(stock_cols(P)) & set(W["a_o"].columns))
     days = P["c"].index[(P["c"].index >= "2020-01-02") & (P["c"].index <= W["a_o"].index.max())]
     W = {k: v.reindex(index=days, columns=cols) for k, v in W.items()}
@@ -225,11 +232,13 @@ def part_b():
     # consistency filter
     dif = np.maximum((W["a_o"] / o_s - 1).abs(), (W["a_last"] / close - 1).abs())
     tm = dif.groupby(dif.index.to_period("M")).transform("median")
-    ok = (dif < 0.03) & (tm < 0.005) & W["p1000"].notna() & W["e1530"].notna()
+    lo_s, hi_s = (P["l"] / F)[cols].reindex(days), (P["h"] / F)[cols].reindex(days)
+    inside = lambda q: (q >= 0.99 * lo_s) & (q <= 1.01 * hi_s)      # price inside the Yahoo day range
+    ok = (dif < 0.03) & (tm < 0.005) & inside(W["p1000"]) & inside(W["e1530"])
     print("cross-section: stock-days with bars", int(W["a_o"].notna().sum().sum()), "kept", int(ok.sum().sum()), flush=True)
     rk = adv.where(px > 5).rank(axis=1, ascending=False)
     E = (rk <= 500) & ok
-    print("eligible per day", E.sum(1).describe().round(0).to_dict(), flush=True)
+    print("eligible per day", E.sum(axis=1).describe().round(0).to_dict(), flush=True)
     s_pc = W["p1000"] / pc - 1
     s_o = W["p1000"] / W["a_o"] - 1          # Alpaca first trade -> 10:00 (same source)
     rvol = W["v30"] / W["v30"].rolling(20, min_periods=10).mean().shift(1)
@@ -242,7 +251,7 @@ def part_b():
     spy = P["c"]["SPY"].pct_change().reindex(days)
     add_rows("B_bench", "SPY|buy_hold_close_to_close", spy)
     for tn, y in tgt.items():
-        Wt = E.astype(float).div(E.sum(1).replace(0, np.nan), axis=0).fillna(0)
+        Wt = E.astype(float).div(E.sum(axis=1).replace(0, np.nan), axis=0).fillna(0)
         r = bt.run(Wt, y.where(E), (cin[tn] + cout) / 2)          # cost per side split as (in+out)/2, round trip
         add_rows("B_bench", f"universe_ew_always_long_{tn}", r.net, r.gross)
     info = []
@@ -253,7 +262,7 @@ def part_b():
             for per, a, b in PER:
                 x = ic.loc[a:b].dropna()
                 rows.append(dict(part="B_ic", variant=f"{sn}->{tn}", period=per, n_days=len(x), ic=x.mean(),
-                                 nw_t=x.mean() / x.std() * np.sqrt(len(x))))
+                                 tstat=x.mean() / x.std() * np.sqrt(len(x))))
         for tn, y in tgt.items():
             cside = (cin[tn] + cout) / 2
             for fn, Ef in filt.items():
@@ -293,4 +302,4 @@ if __name__ == "__main__":
             print(v[cols_].round(2).to_string())
     x = df[df.part == "B_ic"]
     if len(x):
-        print(x.pivot_table(index="variant", columns="period", values=["ic", "nw_t"]).round(3))
+        print(x.pivot_table(index="variant", columns="period", values=["ic", "tstat"]).round(3))

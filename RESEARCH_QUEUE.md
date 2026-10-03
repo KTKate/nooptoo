@@ -13,9 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running
-- 61-62: opening momentum, gaps (background agent)
 
 ## Done
+- 61 Reject: opening-30-minute momentum gone in 2024-26; cross-section far below costs
+- 62 Reject: gap fills/continuations lose after costs; premarket gap-up >10% short at the open is the only
+  consistent cell (borrow-limited; part of study 70)
 - 53 Reject: holding longer loses in each day session; picks rise at night and fall in the day for several days
 - 68 Candidate: day-session short of the picks (easy to borrow) +20-26 bp/day; with the overnight blend at quarter
   size Sharpe 3.04 vs 2.85; shadow-tracked (shadow.py day_short)
@@ -30,10 +32,6 @@ same universe's average (src/horizon_lib.py).
 - (done) 60: day-session long model (buy at the opening auction, sell at the closing auction) with all inputs: price,
   news since the previous close, analyst targets, fundamentals, premarket move; long side only (study 29 found the
   short side works only in hard-to-borrow names)
-- 61: opening-30-minute momentum: does the 09:30-10:00 return predict 10:00-16:00 or the last 30 minutes, for stocks
-  and for SPY/QQQ (market intraday momentum literature); entry with IEX real-time data
-- 62: gap fill vs gap continuation by gap size, news, earnings, and premarket volume, exits at fixed times (10:30,
-  12:00, close)
 - 63: intraday lead-lag: sector ETF or industry leader moves in the first hour predicting laggards by the close
 - 64: last-hour effects: 15:00-16:00 return vs the day's move, imbalance-like proxies from 15:30-15:45 volume
 - 65: day-of-week and time-of-day patterns for the overnight blend (skip or size by weekday, holiday weeks)
