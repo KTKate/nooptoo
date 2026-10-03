@@ -7,9 +7,10 @@ Data (downloaded by the fetch steps, cached in $STUDY75_CACHE, default /tmp/stud
           shares owned after, 10b5-1 checkbox (AFF10B5ONE, from 2023-04) and a footnote 10b5-1 mention.
   accept  EDGAR acceptance timestamps (data.sec.gov/submissions/CIK*.json of each issuer, incl. older pages), joined to
           Form 4 filings by accession number. Gives the exact public time of each filing.
-  idx     EDGAR full-index form.idx per quarter: Schedule 13D / 13G (and amendments) with filing date. Each filing is
-          listed under both the subject company and the filer; the subject is the CIK that maps to a panel ticker
-          (data/local/sec/company_tickers.json); filings where both map are resolved from the filing header.
+  13D/G   Schedule 13D / 13G (+ amendments, incl. the 'SCHEDULE 13D' form names used since 2024-12) from the same
+          issuer submission lists (subject company = the panel issuer listing the filing; listed heavy filers such as
+          BlackRock or State Street, > 300 schedule filings, excluded; see schedule_filings). EDGAR full-index
+          form.idx lists each filing once (under filer OR subject), so it is only a coverage check.
   house   House Clerk financial disclosure index (disclosures-clerk.house.gov, yearly ZIP with XML), periodic
           transaction reports (PTR) parsed from the electronically filed PDFs (ticker in parentheses, type P/S,
           trade date, notification date, amount range). Scanned (hand-written) PTRs cannot be parsed and are skipped.
@@ -23,9 +24,7 @@ Timing (no look-ahead):
           Returns measured from that entry point E: to the next close (day session if E is an open), to close +1, +2,
           +5 trading days; also the overnight right after a post-close filing (close d -> open d+1, not tradable, it is
           the 'news' reaction) and the auction-to-auction version from the close of d (filing evening).
-  13D/13G: event = filing date d (filings accepted after 17:30 get the next business day's date, and those accepted
-          16:00-17:30 carry date d), so the first safe entry is the open of d+1. Reaction (close d-1 -> open d+1) is
-          reported but is not tradable.
+  13D/13G: event = acceptance timestamp, same entry rule as Form 4.
   Congress: event = PTR notification (filing) date d, assumed public after the close; entry open of d+1.
 Excess return = stock return minus the equal-weight mean of the liquid universe over the same window (same entry
 type: open-to-close windows vs open-to-close mean, etc.). t-stats: per event date means, Newey-West lag h
@@ -361,6 +360,7 @@ COSTV = H.COST.values.astype("float64")
 MCAP = pd.read_pickle(os.path.join(ROOT, "data", "local", "fundamentals_panels.pkl"))["market_cap"] \
     .reindex(index=DAYS, columns=COLS).ffill(limit=10).shift(1).values
 VARIANTS = []                # every (source, variant) tried, for the count
+EVS = {}
 
 
 def _bench(num_kind, i0, h):
@@ -392,6 +392,56 @@ def bench_vec(kind, h):
     return _BC[key]
 
 
+_GB, _CELL = {}, None
+
+
+def _cells():
+    global _CELL
+    if _CELL is None:
+        on = np.vstack([np.full((1, C.shape[1]), np.nan), O[1:] / C[:-1] - 1])
+        on = np.where(U5, on, np.nan)
+        adv = np.where(U5, ADVL, np.nan)
+        rq = pd.DataFrame(on).rank(axis=1, pct=True).values
+        ra = pd.DataFrame(adv).rank(axis=1, pct=True).values
+        cell = np.where(np.isfinite(rq) & np.isfinite(ra), np.minimum((rq * 5).astype(int), 4) * 3 +
+                        np.minimum((np.nan_to_num(ra) * 3).astype(int), 2), -1)
+        _CELL = (cell, on, adv)
+    return _CELL
+
+
+def cell_of(i, c):
+    """Gap quintile x ADV tercile cell of (day i, column c) using the universe breakpoints of day i; events outside
+    the universe get the cell from their rank against the universe."""
+    cell, on, adv = _cells()
+    out = cell[i, c].copy()
+    miss = out < 0
+    if miss.any():
+        g = O[i[miss], c[miss]] / C[i[miss] - 1, c[miss]] - 1
+        a = ADVL[i[miss], c[miss]]
+        q = np.array([np.nanmean(on[d] <= x) for d, x in zip(i[miss], g)])
+        r = np.array([np.nanmean(adv[d] <= x) for d, x in zip(i[miss], a)])
+        o2 = np.minimum((np.nan_to_num(q) * 5).astype(int), 4) * 3 + np.minimum((np.nan_to_num(r) * 3).astype(int), 2)
+        o2[~(np.isfinite(g) & np.isfinite(a))] = -1
+        out[miss] = o2
+    return out
+
+
+def gap_bench(h):
+    if h not in _GB:
+        cell = _cells()[0]
+        G = np.full((ND, 15), np.nan)
+        for d in range(1, ND - h):
+            r = C[d + h] / O[d] - 1
+            ok = (cell[d] >= 0) & np.isfinite(r)
+            if ok.sum() < 100:
+                continue
+            s = np.bincount(cell[d][ok], weights=r[ok], minlength=15)
+            n = np.bincount(cell[d][ok], minlength=15)
+            G[d] = np.where(n > 0, s / np.maximum(n, 1), np.nan)
+        _GB[h] = G
+    return _GB[h]
+
+
 def event_returns(ev):
     """ev: DataFrame with ci (column index), oi (entry day index for an OPEN entry, i.e. the first open after the
     event is public). Adds excess returns: on (close oi-1 -> open oi), o{h} (open oi -> close oi+h), c{h}
@@ -406,6 +456,15 @@ def event_returns(ev):
         ev[f"o{h}"] = C[i + h, c] / O[i, c] - 1 - bench_vec("o", h)[i]
         if h > 0:
             ev[f"c{h}"] = C[i + h, c] / C[i, c] - 1 - bench_vec("c", h)[i]
+    # gap- and size-matched control for the open entries: universe stocks in the same overnight-return quintile x
+    # ADV tercile on the entry day (does the effect exceed generic gap continuation of similar stocks?)
+    for h in (0, 1, 5):
+        G = gap_bench(h)
+        cell = cell_of(i, c)
+        ok = cell >= 0
+        v = np.full(len(i), np.nan)
+        v[ok] = C[i[ok] + h, c[ok]] / O[i[ok], c[ok]] - 1 - G[i[ok], cell[ok]]
+        ev[f"g{h}"] = v
     ev["cost"] = COSTV[i - 1, c]
     ev["date"] = DAYS[i]
     ev["ret20"] = C[i - 1, c] / C[np.maximum(i - 21, 0), c] - 1      # stock return over the 20 days before entry
@@ -414,8 +473,10 @@ def event_returns(ev):
     return ev
 
 
-def summarize(ev, source, variant, rows, cols=("on", "o0", "o1", "o2", "o5", "c1", "c2", "c5"), univ="u5"):
+def summarize(ev, source, variant, rows, cols=("on", "o0", "o1", "o2", "o5", "c1", "c2", "c5", "g0", "g1", "g5"),
+              univ="u5"):
     VARIANTS.append((source, variant, univ))
+    EVS[(source, variant)] = ev
     e = ev[ev[univ]]
     for p, a, b in PERIODS + (("all", "2020-01-01", "2026-12-31"),):
         s = e[(e.date >= a) & (e.date <= b)]
@@ -423,7 +484,7 @@ def summarize(ev, source, variant, rows, cols=("on", "o0", "o1", "o2", "o5", "c1
             x = s[[col, "date"]].dropna()
             if len(x) < 20:
                 continue
-            h = int(col[1:]) if col[1:].isdigit() else 0
+            h = int(re.sub(r"\D", "", col) or 0)
             m, t, nd = nw_t(x.groupby("date")[col].mean(), h + 1)
             rows.append(dict(section="event", source=source, variant=variant, univ=univ, ret=col, period=p,
                              n=len(x), n_dates=nd, mean_bp=1e4 * x[col].mean(), date_mean_bp=1e4 * m, t=t,
@@ -439,6 +500,7 @@ def ct_trades(ev, col, max_names=20):
     ev = ev.sort_values("oi")
     legs = {}       # day -> list of (gross leg, bench leg, cost)
     held = np.zeros(ND, dtype=int)
+    entries = np.zeros(ND)
     rv = np.vstack([np.full((1, C.shape[1]), np.nan), C[1:] / C[:-1] - 1])
     ds = C / O - 1
     bc = np.nanmean(np.where(U5, rv, np.nan), axis=1)
@@ -453,6 +515,7 @@ def ct_trades(ev, col, max_names=20):
             continue
         held[a:b + 1] += 1
         taken += 1
+        entries[i] += 1
         cst = 0.0002 if not np.isfinite(cst) else cst
         for d in range(a, b + 1):
             if d == a and kind == "o":
@@ -468,6 +531,7 @@ def ct_trades(ev, col, max_names=20):
     df = pd.DataFrame(out, index=DAYS, columns=["n", "gross", "bench", "cost"])
     df["net"] = df.gross - df.cost
     df["excess_net"] = (df.net - df.bench).where(df.n > 0)
+    df["entries"] = entries
     df.attrs["trades"] = taken
     return df
 
@@ -483,7 +547,7 @@ def ct_stats(df, a, b):
                 net_sharpe=sr, xs_net_bp_day=1e4 * m if np.isfinite(m) else np.nan, xs_t=t,
                 xs_sharpe=xe.mean() / xe.std() * np.sqrt(252) if len(xe) > 20 else np.nan,
                 spy_ann=(1 + H.SPY.pct_change().loc[a:b]).prod() ** (1 / yrs) - 1 if yrs else np.nan,
-                trades_yr=x.n.diff().clip(lower=0).sum() / yrs if yrs else np.nan)
+                trades_yr=x.entries.sum() / yrs if yrs else np.nan, avg_names=x.n[x.n > 0].mean())
 
 
 # ------------------------------------------------------------------ insiders
@@ -623,8 +687,8 @@ def run_insiders(rows, ctrows):
     E["o0"] = rv(C[ti, ci], O[ti, ci]) - bench_vec("o", 0)[ti]
     E["on1"] = rv(O[ti + 1, ci], C[ti, ci]) - bench_vec("on", 0)[ti + 1]
     E["d1"] = rv(C[ti + 1, ci], O[ti + 1, ci]) - bench_vec("o", 0)[ti + 1]
-    E["c2"] = rv(C[ti + 1, ci], C[ti - 1, ci]) - bench_vec("c", 2)[ti - 1]       # close t-1 -> close t+1 (tradable)
-    E["c5"] = rv(C[ti + 4, ci], C[ti - 1, ci]) - bench_vec("c", 5)[ti - 1]
+    E["c2e"] = rv(C[ti + 1, ci], C[ti - 1, ci]) - bench_vec("c", 2)[ti - 1]       # close t-1 -> close t+1 (tradable)
+    E["c5e"] = rv(C[ti + 4, ci], C[ti - 1, ci]) - bench_vec("c", 5)[ti - 1]
     E["p1"] = rv(C[ti + 6, ci], C[ti + 1, ci]) - bench_vec("c", 5)[ti + 1]       # 5 days after the window
     f2 = f[f.fdi >= 0].copy()
     f2["pub_i"] = np.where(f2.timing == "post", f2.fdi + 1, f2.fdi)              # first close at/after publication
@@ -645,34 +709,97 @@ def run_insiders(rows, ctrows):
             out.append(int(((arr >= lo) & (arr <= t - 1)).sum()))
         return np.array(out)
     E["nb"], E["ns"] = count("b"), count("s")
-    ecols = ("on", "o0", "on1", "d1", "c2", "c5", "p1")
+    ecols = ("on", "o0", "on1", "d1", "c2e", "c5e", "p1")
     for k, e in {"earn_all": E, "earn_buy30": E[E.nb > 0], "earn_sell30_nonplan": E[E.ns > 0],
                  "earn_none30": E[(E.nb == 0) & (E.ns == 0)], "earn_buy_only": E[(E.nb > 0) & (E.ns == 0)],
                  "earn_sell_only": E[(E.ns > 0) & (E.nb == 0)]}.items():
         summarize(e, "insider_earn", k, rows, cols=ecols)
-    # long-short within reports: buy30 minus sell30, per report date pooled by month
-    return dict(B=B, S=S, E=E, split=split)
+    intraday_reaction(f[f.code == "P"], rows, "insider", "buy_filed_intra")
+    intraday_reaction(f[(f.code == "S") & ~f.plan], rows, "insider", "sell_nonplan_filed_intra")
+    return dict(B=B, S=S, E=E, split=split, f=f)
+
+
+# ------------------------------------------------------------------ intraday reaction (60-minute bars, 2023-10+)
+def intraday_reaction(f, rows, source, label):
+    """Filings accepted during the session (09:30-15:30 ET) of a trading day d: buy at the open of the first 60-minute
+    bar starting after the acceptance, measure to the close of d and to the close of d+1. Excess vs the mean of all
+    universe tickers with bars over the same window (same day, same entry bar)."""
+    I = store.read("intra60", start="2023-10")[["ts", "ticker", "o", "c"]]
+    I = I[I.ticker.isin(set(COLS))]
+    I["day"] = I.ts.dt.tz_localize(None).dt.normalize()
+    I["bar"] = (I.ts.dt.hour * 60 + I.ts.dt.minute - 570) // 60                 # 0 = 09:30 bar .. 6 = 15:30 bar
+    Op = I.pivot_table(index=["day", "bar"], columns="ticker", values="o")
+    last = I.sort_values("ts").groupby(["day", "ticker"]).c.last().unstack()
+    VARIANTS.append((source, label + "_intraday60", "u5"))
+    x = f[(f.timing == "intra") & (f.ts >= "2023-10-27")].copy()
+    x["bar"] = np.ceil((x.ts.dt.hour * 60 + x.ts.dt.minute + x.ts.dt.second / 60 - 570) / 60).astype(int)
+    x = x[x.bar <= 6]
+    x["day"] = x.ts.dt.normalize()
+    x = x.drop_duplicates(["ticker", "day"])
+    out = []
+    for r in x.itertuples():
+        key = (r.day, r.bar)
+        if key not in Op.index or r.ticker not in Op.columns or r.day not in last.index:
+            continue
+        o = Op.at[key, r.ticker]
+        cl = last.at[r.day, r.ticker]
+        if not (np.isfinite(o) and np.isfinite(cl) and o > 0):
+            continue
+        d = r.fdi
+        u = U5[d] if d >= 0 else None
+        ou = Op.loc[key]
+        cu = last.loc[r.day]
+        rr = (cu / ou - 1).reindex(COLS).values
+        bm = np.nanmean(np.where(u, rr, np.nan)) if u is not None else np.nan
+        nxt = C[d + 1, r.ci] / C[d, r.ci] if d + 1 < ND else np.nan
+        bnx = bench_vec("c", 1)[d]
+        out.append(dict(date=r.day, ticker=r.ticker, u5=bool(U5[d, r.ci]) if d >= 0 else False,
+                        x_close=cl / o - 1 - bm, x_next=(cl / o) * nxt - 1 - ((1 + bm) * (1 + bnx) - 1)))
+    df = pd.DataFrame(out)
+    if not len(df):
+        return
+    df = df[df.u5]
+    for col in ("x_close", "x_next"):
+        for p, a, b in (("2023-10..", "2023-10-01", "2026-12-31"),):
+            m, t, nd = nw_t(df.groupby("date")[col].mean(), 2)
+            rows.append(dict(section="event", source=source, variant=label + "_intraday60", univ="u5", ret=col,
+                             period=p, n=len(df), n_dates=nd, mean_bp=1e4 * df[col].mean(), date_mean_bp=1e4 * m,
+                             t=t, hit=(df[col] > 0).mean()))
+    print(label, "intraday events", len(df), flush=True)
 
 
 # ------------------------------------------------------------------ 13D / 13G
+def schedule_filings():
+    """Schedule 13D/13G filings with their subject company, from the issuers' EDGAR submission lists (a filing is
+    listed for both the filer and the subject). Heavy filers (listed asset managers/banks such as BlackRock, State
+    Street: > 300 schedule filings in their list) are never taken as the subject; a filing listed for two non-heavy
+    panel issuers is ambiguous and dropped. The full-index form.idx lists each filing only once (under the filer or
+    the subject), so it is used only as a coverage check."""
+    a = pd.read_parquet(os.path.join(CACHE, "accept", "accept.parquet"))
+    a = a[a.form.str.contains("13")].drop_duplicates(["acc", "issuer"])
+    a["ts"] = pd.to_datetime(a.accepted, errors="coerce", utc=True).dt.tz_convert("America/New_York").dt.tz_localize(None)
+    cnt = a.groupby("issuer").size()
+    heavy = set(cnt[cnt > 300].index)
+    a = a[~a.issuer.isin(heavy)]
+    a = a[a.groupby("acc").issuer.transform("nunique") == 1]
+    f4 = load_form4()
+    f4 = f4[f4.ticker.isin(set(COLS))].dropna(subset=["issuer"])
+    f4["issuer"] = f4.issuer.astype(int)
+    i2t = f4.sort_values("filed").groupby("issuer").ticker.last()
+    a["ticker"] = a.issuer.map(i2t)
+    a["date"] = a.ts.dt.normalize()
+    print("schedule filings: heavy filers dropped", len(heavy), " kept", len(a), flush=True)
+    return a
+
+
 def run_13d(rows):
-    d = resolve_13d()
-    d["date"] = pd.to_datetime(d.date)
-    d["acc"] = d.file.str.extract(r"(\d{10}-\d{2}-\d{6})")[0]
-    try:
-        a = accept_times()
-        d = d.merge(a[["acc", "ts"]], on="acc", how="left")
-    except Exception:
-        d["ts"] = pd.NaT
+    d = schedule_filings()
     d["ci"] = COLS.get_indexer(d.ticker)
     d = d[d.ci >= 0]
     d["base"] = d.form.str.replace("SCHEDULE", "SC").str.replace("/A", "")
     d["amend"] = d.form.str.endswith("/A")
-    # conservative timing: without a timestamp, the filing date may include 16:00-17:30 acceptances -> next open
-    oi_ts, timing, _ = entry_index(d.ts.values, d.date.values)
-    oi_nots = DAYS.searchsorted(d.date.values, side="right")
-    d["oi"] = np.where(d.ts.notna(), oi_ts, oi_nots)
-    d["timing"] = np.where(d.ts.notna(), timing, "date_only")
+    d = d[d.ts.notna()]
+    d["oi"], d["timing"], _ = entry_index(d.ts.values, d.date.values)
     cov = d.groupby([d.date.dt.year, "form"]).size().unstack()
     print(cov, flush=True)
     print("13D/G with timestamp:", d.ts.notna().mean().round(3), flush=True)
@@ -691,6 +818,10 @@ def run_13d(rows):
             summarize(ev[ev.timing == "pre"], "13dg", "13D_initial_pre_open", rows)
             summarize(ev[ev.timing == "intra"], "13dg", "13D_initial_intraday", rows)
             summarize(ev[ev.ret20 < -0.10], "13dg", "13D_initial_after_drop", rows)
+    x = d[(d.base == "SC 13D") & ~d.amend].copy()
+    di = DAYS.searchsorted(x.date.values)
+    x["fdi"] = np.where((di < ND) & (DAYS[np.minimum(di, ND - 1)].values == x.date.values), di, -1)
+    intraday_reaction(x, rows, "13dg", "13D_initial_filed_intra")
     return out
 
 
@@ -739,6 +870,39 @@ def run_house(rows):
     return out
 
 
+# ------------------------------------------------------------------ tradable rules
+TRADE_COLS = ("o0", "o1", "o2", "o5", "c1", "c2", "c5")
+
+
+def tradable(R, rows, k=3):
+    """Pick up to k long rules on 2020-23 among buy-type disclosures (insider/Congress buys, 13D/13G, earnings after
+    buys; highest Newey-West t of the per-date mean excess, positive after round-trip cost, n_dates >= 100, one
+    subset per window, U5 universe), then run them as calendar-time portfolios (<= 20 names) in both periods."""
+    e = R[(R.section == "event") & (R.univ == "u5") & (R.period == "2020-23") & R.ret.isin(TRADE_COLS + ("c2e", "c5e"))
+          & (R.n_dates >= 100) & (R.date_mean_bp > 0)].copy()
+    e = e[~e.variant.str.contains("sell")]                            # long rules follow buy-type disclosures only
+    e["net_bp"] = e.date_mean_bp - e.cost_rt_bp
+    e = e[e.net_bp > 0].sort_values("t", ascending=False).drop_duplicates(["source", "variant"])
+    e = e.drop_duplicates("ret")                                       # one rule per holding window
+    picks = e.head(k)
+    print("rules picked on 2020-23:\n", picks[["source", "variant", "ret", "n", "date_mean_bp", "cost_rt_bp", "t"]], flush=True)
+    for r in picks.itertuples():
+        ev = EVS[(r.source, r.variant)]
+        ev = ev[ev.u5]
+        col = r.ret
+        if col in ("c2e", "c5e"):                                        # earnings: from the close of t-1
+            ev = ev.assign(oi=ev.oi - 1)
+            col = col[:2]
+        df = ct_trades(ev, col)
+        last = str(ev.date.max().date())                                  # data end of the source (Form 4: 2026-03)
+        for p, a, b in PERIODS:
+            b = min(b, last)
+            st = ct_stats(df, a, b)
+            rows.append(dict(section="tradable", source=r.source, variant=r.variant, univ="u5", ret=r.ret, period=p,
+                             **st))
+            print(r.source, r.variant, r.ret, p, {k2: round(v, 3) for k2, v in st.items()}, flush=True)
+
+
 # ------------------------------------------------------------------ main
 if __name__ == "__main__":
     rows, ctrows = [], []
@@ -748,7 +912,11 @@ if __name__ == "__main__":
     if os.path.exists(os.path.join(CACHE, "house", "ptr.parquet")):
         res["house"] = run_house(rows)
     R = pd.DataFrame(rows)
-    pd.to_pickle(res, os.path.join(CACHE, "events.pkl"))
+    tradable(R, rows)
+    R = pd.DataFrame(rows)
+    R["n_variants_total"] = len(set(VARIANTS))
+    R.to_csv(os.path.join(RES, "study75_disclosed_trades.csv"), index=False)
+    pd.to_pickle({k: v for k, v in res.items() if k != "ins"}, os.path.join(CACHE, "events.pkl"))
     R.to_csv(os.path.join(CACHE, "event_rows.csv"), index=False)
     ev = R[R.section == "event"]
     pv = ev[ev.period != "all"].pivot_table(index=["source", "variant", "univ", "ret"], columns="period",
