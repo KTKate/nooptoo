@@ -296,6 +296,14 @@ studies = [
     ("67", "Overnight blend plus the study-60 day-session long model on the same capital (margin account)", "Candidate",
      "Half-size day leg (all inputs): Sharpe 2.56 / 3.09 vs 2.41 / 2.91 for the blend alone (2024H2-25H1 / 2025H2-26), "
      "max drawdown -23% vs -21%; full size worse. Correlation of the legs -0.07. Size chosen from 3 values."),
+    ("70", "Day-session shorts of the largest overnight gainers (premarket ranking at 09:25), 90 variants", "Reject",
+     "Easy-to-borrow top 10: +9 bp a day net, Sharpe 0.56 (2024-26), max drawdown -37%; about zero in 2020-23 with a "
+     "premarket ranking (the official-gap version earns more only by knowing the open). Only 4.8% overlap with the "
+     "blend's picks; quarter-size next to the blend adds 0.02-0.1 Sharpe. Study 68 (our own picks) is stronger."),
+    ("44", "Reversal 1-5 days after large drops, with and without news", "Reject",
+     "No reversal: drops below -10% without news keep falling (-2.0% over 3 days in 2024-26, t -3.0). The only "
+     "rebound is overnight and is already in the blend (15% of its picks are such drops). Lead: shorting isolated "
+     "no-news drops for 2-5 days (2024-26 only, cut-offs chosen after the first run)."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

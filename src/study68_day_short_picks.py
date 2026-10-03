@@ -33,7 +33,7 @@ cost = (exec_cost_bps(P, "auction")[cols].shift(-1) + 2.5).reindex_like(W)
 a = pd.read_parquet(f"{DATA}/local/alpaca_assets_active.parquet")
 etb = set(a.symbol[a.easy_to_borrow.astype(bool) & a.shortable.astype(bool)])
 etbm = pd.DataFrame(np.broadcast_to(np.array([t in etb for t in cols]), W.shape), index=W.index, columns=cols)
-fee = pd.DataFrame(np.where(etbm, 0.0, 0.30 / 252 * 1e4), index=W.index, columns=cols)   # bp per day
+fee = pd.DataFrame(np.where(etbm, 0.0, 0.30 / 252 * 1e4 / 2), index=W.index, columns=cols)   # bp per day, halved: bt.run charges cost per side twice
 picked = W > 0
 variants = {"all_picks": picked, "etb": picked & etbm, "etb_no_gapdown10": picked & etbm & (night > -0.10),
             "etb_rose_overnight": picked & etbm & (night > 0)}

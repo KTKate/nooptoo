@@ -13,9 +13,10 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running
-- 70: day-session shorts of the biggest overnight gainers; 44: reversal after large non-news drops (background agent)
 
 ## Done
+- 70 Reject: shorting the biggest overnight gainers in the day session is weak (Sharpe ~0.6, about zero in 2020-23)
+- 44 Reject: no 1-5 day reversal after drops; no-news drops keep falling
 - 67 Candidate: blend + half-size day-session long model, Sharpe 2.56 / 3.09 vs 2.41 / 2.91; margin needed
 - 69 Reject: second-night re-entry lowers Sharpe (2.35 vs 2.85)
 - 59 Reject: guidance-cut and earnings-reaction filters do not improve the blend
@@ -41,7 +42,7 @@ same universe's average (src/horizon_lib.py).
 - 64: last-hour effects: 15:00-16:00 return vs the day's move, imbalance-like proxies from 15:30-15:45 volume
 
 ## Next (intraweek: 1-5 trading days)
-- 44: reversal after large non-news drops, entry at the close, exits after 1-5 days
+- 72: short isolated no-news drops below -10% for 2-5 days (study 44 lead), with borrow limits, fresh cut-offs
 - 46: pre-earnings run-up: buy 1-5 days before reports, sell before the report
 - 47: insider cluster buys, 1-5 day holds after the Form 4 filing
 - 48: S&P 500 additions: candidates and announced additions, 1-5 days around announcement and effective date
@@ -49,8 +50,6 @@ same universe's average (src/horizon_lib.py).
 - 50: weekly patterns: Monday open to Friday close, turn of month, pre-holiday, options expiration week
 - 52: cross-asset moves (rates, dollar, oil, gold, bitcoin) predicting sector ETFs over 1-5 days
 - 57: pairs within industries, 1-5 day reversion of the spread
-- 70: day-session short candidates beyond our picks: stocks with the largest overnight gains (night/day reversal),
-  easy to borrow only, with a borrow-fee model
 - 71: full day cycle on one account: overnight blend long + day-session long model + quarter-size day short of the
   picks (studies 33, 60, 68), with margin and settlement rules
 - 66: weekly ML (study 39) combined with the overnight blend: capital split, combined Sharpe and drawdown
