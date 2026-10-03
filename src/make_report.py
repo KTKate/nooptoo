@@ -293,6 +293,9 @@ studies = [
      "Monday-night entries are the weakest weekday in both periods (+18 and +5 bp vs +33 to +93 bp for Tuesday to "
      "Thursday) but still positive (t 0.6); skipping them gives Sharpe 2.97 vs 2.85 and lower return. Month-end and "
      "weekend effects change sign between periods (14-68 nights per cell)."),
+    ("67", "Overnight blend plus the study-60 day-session long model on the same capital (margin account)", "Candidate",
+     "Half-size day leg (all inputs): Sharpe 2.56 / 3.09 vs 2.41 / 2.91 for the blend alone (2024H2-25H1 / 2025H2-26), "
+     "max drawdown -23% vs -21%; full size worse. Correlation of the legs -0.07. Size chosen from 3 values."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
