@@ -16,7 +16,8 @@ A. SPY and QQQ, 1-minute SIP bars (data/local/m1, 2019-06 .. 2026-09). Price at 
      lo      long if signal > 0, else cash (cash account)
      big_ls  long/short only when |signal| > 70th percentile of |signal| over the previous 250 days
    each on all days and on high-volume days (09:30-10:00 volume > 1.2 x its 20-day mean).
-B. Cross-section, the 500 most traded stocks each day (lagged 20-day median dollar volume, price > $5),
+B. Cross-section, the 500 most traded stocks each day (lagged 20-day median dollar volume, traded price > $5;
+   in 2020-23 limited to the names fetched, whose top-500 list used Yahoo's split-adjusted close for the $5 test),
    30-minute SIP bars (data/local/m30s61, fetched by src/s6162_common.py). Price at 10:00 = close of the
    09:30-10:00 bar (the last trade before 10:00; no extra minute of delay is available on 30-minute bars).
    Last half hour entry = open of the 15:30 bar. Exit = official close.
@@ -46,14 +47,15 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import alpaca_data as A
 import bt
 from core import load_panel, stock_cols, ann_stats, RES
-from s6162_common import cont_cost_bps, auction_cost_bps
+from s6162_common import cont_cost_bps, auction_cost_bps, with_traded_price
 
 PER = [("2020-23", "2019-07-01", "2023-12-31"), ("2024-26", "2024-01-01", "2026-09-30"),
        ("val", "2024-01-01", "2025-06-30"), ("oos", "2025-07-01", "2026-09-30")]
 P = load_panel()
-C_AUC = auction_cost_bps(P)
-C_1000 = cont_cost_bps(P, "10:00")
-C_1530 = cont_cost_bps(P, "15:30")
+PT = with_traded_price(P)                                  # real price levels (filters, cost model)
+C_AUC = auction_cost_bps(PT)
+C_1000 = cont_cost_bps(PT, "10:00")
+C_1530 = cont_cost_bps(PT, "15:30")
 F = P["c"] / P["rawc"]                                     # Yahoo dividend factor (adjusted / split-only)
 PC_DIV = P["rawc"].shift(1) * F.shift(1) / F               # previous close, dividend-adjusted, split-only units
 O_S = P["o"] / F                                           # official open, split-only units
@@ -153,7 +155,10 @@ def part_a():
 
 
 # ================================================================== B. cross-section
-def load_m30():
+def load_xs():
+    """Per stock-day a_o (first trade 09:30), p1000 (last trade before 10:00), v30 (09:30-10:00 volume),
+    e1530 (first trade at/after 15:30), a_last (last trade before 16:00). 2020-23 from m30s61 (30-minute bars),
+    2024+ from m5snap (5-minute bars, same windows)."""
     parts = []
     d0 = os.path.join(A.LOCAL, "m30s61")
     for fn in sorted(os.listdir(d0)):
@@ -164,14 +169,29 @@ def load_m30():
         d["date"] = d.ts.dt.normalize()
         a = d[hm == 930].set_index(["date", "ticker"])
         b = d[hm == 1530].set_index(["date", "ticker"])
-        x = pd.DataFrame({"a_o": a.o, "p1000": a.c, "v30": a.v}).join(
-            pd.DataFrame({"e1530": b.o, "a_last": b.c}), how="outer")
+        parts.append(pd.DataFrame({"a_o": a.o, "p1000": a.c, "v30": a.v}).join(
+            pd.DataFrame({"e1530": b.o, "a_last": b.c}), how="outer"))
+    d0 = os.path.join(A.LOCAL, "m5snap")
+    for fn in sorted(os.listdir(d0)):
+        if not fn.endswith(".parquet") or fn[:7] < "2024-01":
+            continue
+        d = pd.read_parquet(os.path.join(d0, fn), columns=["ts", "ticker", "o", "c", "v"])
+        hm = d.ts.dt.hour * 100 + d.ts.dt.minute
+        d["date"] = d.ts.dt.normalize()
+        first = d[hm < 1000]
+        g = first.groupby(["date", "ticker"])
+        x = pd.DataFrame({"v30": g.v.sum()})
+        x["a_o"] = first[hm[hm < 1000] == 930].set_index(["date", "ticker"]).o
+        x["p1000"] = first[hm[hm < 1000] == 955].set_index(["date", "ticker"]).c
+        late = d[hm >= 1530]
+        x = x.join(pd.DataFrame({"e1530": late[hm[hm >= 1530] == 1530].set_index(["date", "ticker"]).o,
+                                 "a_last": late.groupby(["date", "ticker"]).c.last()}), how="outer")
         parts.append(x)
     x = pd.concat(parts)
-    x = x.reset_index()
+    x = x[~x.index.duplicated(keep="last")].reset_index()
     x["ticker"] = x.ticker.str.replace(".", "-", regex=False)
-    W = {k: x.pivot(index="date", columns="ticker", values=k) for k in ["a_o", "p1000", "v30", "e1530", "a_last"]}
-    return W
+    print("cross-section bars:", len(x), "stock-days", x.date.min().date(), x.date.max().date(), flush=True)
+    return {k: x.pivot(index="date", columns="ticker", values=k) for k in ["a_o", "p1000", "v30", "e1530", "a_last"]}
 
 
 def news_counts(days, cols, cut_hm=(10, 0)):
@@ -192,13 +212,13 @@ def news_counts(days, cols, cut_hm=(10, 0)):
 
 
 def part_b():
-    W = load_m30()
+    W = load_xs()
     cols = sorted(set(stock_cols(P)) & set(W["a_o"].columns))
     days = P["c"].index[(P["c"].index >= "2020-01-02") & (P["c"].index <= W["a_o"].index.max())]
     W = {k: v.reindex(index=days, columns=cols) for k, v in W.items()}
     rs = lambda k: P[k][cols].reindex(days)
     adv = P["dv"][cols].rolling(20, min_periods=10).median().shift(1).reindex(days)
-    px = P["rawc"][cols].shift(1).reindex(days)
+    px = PT["rawc"][cols].shift(1).reindex(days)
     close = rs("rawc")
     o_s = O_S[cols].reindex(days)
     pc = PC_DIV[cols].reindex(days)

@@ -1,17 +1,22 @@
-"""Shared data fetch and cost helpers for studies 61 and 62.
+"""Shared data fetch and cost helpers for studies 61 and 62 (read-only Alpaca market data, SIP, split-adjusted
+as of the fetch date, bar START times in New York time).
 
-Data (read-only Alpaca market data, SIP, split-adjusted as of the fetch date).
+  python src/s6162_common.py m30    # study 61: 30-minute bars for 09:30-10:00 and 15:30-16:00, the 500 most traded
+                                    #   stocks of each day (lagged 20d median dollar volume, price > $5), 2020-01 ..
+                                    #   2023-12 -> data/local/m30s61/  (2024+ comes from the existing m5snap set)
+  python src/s6162_common.py gaps   # study 62: 5-minute bars 07:00-09:50, 10:25-10:30 and 11:55-12:00 for every
+                                    #   (stock, day) with an opening gap >= 2% in the liquid universe (ADV > $20M,
+                                    #   price > $5), 2020-01 .. latest -> data/local/m5s62/
 
-  python src/s6162_common.py m30     # study 61: 30-minute bars 09:30-16:00, liquid stocks (top 500 by ADV on
-                                    #   any day 2020-01..latest), every trading day -> data/local/m30s61/
-  python src/s6162_common.py gaps    # study 62: 5-minute bars 07:00-16:00 for every (stock, day) with an
-                                    #   opening gap >= 2% in the liquid universe -> data/local/m5s62/
-
-Yahoo class-share tickers (BRK-B) are requested in Alpaca form (BRK.B) and stored in Alpaca form; readers map back.
-Both fetches are incremental (done_<ds>.parquet) and can be re-run after an interruption.
+Alpaca paginates multi-symbol bar requests by about 10,000 underlying 1-minute bars, so the cost of a fetch is
+proportional to symbol-minutes; hence narrow windows and per-day ticker lists. Yahoo class-share tickers (BRK-B) are
+requested in Alpaca form (BRK.B) and stored in Alpaca form; readers map back. Progress is tracked per day in
+done_<ds>.parquet (column 'month' holds the day), so a fetch can be re-run after an interruption.
 """
 import os
 import sys
+import time
+from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 import pandas as pd
@@ -23,6 +28,30 @@ from core import load_panel, stock_cols
 A.RL = A.RateLimiter(150)          # leave headroom for any other process sharing the account limit
 
 
+def traded_price(P):
+    """Price as traded on each day: Yahoo's 'raw' close is adjusted for every later split (a later 1:50 reverse
+    split makes 2020 prices 50x too high), so multiply back the splits dated after each day
+    (data/local/events/splits_yf.csv, yfinance, ratio = new shares per old share)."""
+    from core import DATA
+    s = pd.read_csv(os.path.join(DATA, "local", "events", "splits_yf.csv"), parse_dates=["date"])
+    days = P["rawc"].index
+    fac = pd.DataFrame(1.0, index=days, columns=P["rawc"].columns)
+    for t, g in s[s.ticker.isin(fac.columns)].groupby("ticker"):
+        f = np.ones(len(days))
+        for d, r in zip(g.date, g.ratio):
+            f[days < d] *= r
+        fac[t] = f
+    return (P["rawc"] * fac).astype("float32")
+
+
+def with_traded_price(P):
+    """Copy of the panel dict whose 'rawc' is the traded price (dollar volume 'dv' is unchanged: it is already
+    rawc x split-adjusted volume), so the core cost model sees real price levels."""
+    Q = dict(P)
+    Q["rawc"] = traded_price(P)
+    return Q
+
+
 def liquid_masks(P):
     cols = stock_cols(P)
     adv = P["dv"][cols].rolling(20, min_periods=10).median().shift(1)
@@ -30,28 +59,63 @@ def liquid_masks(P):
     return cols, adv, px
 
 
+def fetch_daylists(ds, daylists, windows, timeframe, workers=3, chunk=200):
+    """daylists: {day (Timestamp): [alpaca symbols]}. Fetch `windows` (list of (HH:MM, HH:MM)) for those symbols."""
+    dn = A.done_pairs(ds)
+    have = set(dn.month)
+    todo = {d: v for d, v in daylists.items() if d.strftime("%Y-%m-%d") not in have and len(v)}
+    print(ds, "days to fetch", len(todo), "symbol-days", sum(len(v) for v in todo.values()), flush=True)
+    by_month = {}
+    for d in sorted(todo):
+        by_month.setdefault(d.strftime("%Y-%m"), []).append(d)
+    for m, dl in by_month.items():
+        t0 = time.time()
+        jobs = []
+        for d in dl:
+            tk = sorted(todo[d])
+            for wa, wb in windows:
+                ta = pd.Timestamp(f"{d.date()} {wa}").tz_localize("America/New_York").tz_convert("UTC")
+                tb = pd.Timestamp(f"{d.date()} {wb}").tz_localize("America/New_York").tz_convert("UTC")
+                for i in range(0, len(tk), chunk):
+                    jobs.append((tk[i:i + chunk], ta.strftime("%Y-%m-%dT%H:%M:%SZ"), tb.strftime("%Y-%m-%dT%H:%M:%SZ")))
+        with ThreadPoolExecutor(workers) as ex:
+            parts = list(ex.map(lambda j: A.bars(j[0], timeframe, j[1], j[2]), jobs))
+        parts = [p for p in parts if len(p)]
+        os.makedirs(os.path.join(A.LOCAL, ds), exist_ok=True)
+        fn = os.path.join(A.LOCAL, ds, f"{m}.parquet")
+        if parts:
+            new = pd.concat(parts, ignore_index=True)
+            if os.path.exists(fn):
+                new = pd.concat([pd.read_parquet(fn), new], ignore_index=True)
+            new = new.drop_duplicates(["ts", "ticker"], keep="last")
+            new.sort_values(["ticker", "ts"]).to_parquet(fn, compression="zstd", index=False)
+        dn = pd.concat([dn, pd.DataFrame({"ticker": "*", "month": [d.strftime("%Y-%m-%d") for d in dl]})],
+                       ignore_index=True)
+        dn.to_parquet(A._done_fn(ds), index=False)
+        print(ds, m, sum(len(p) for p in parts), f"{time.time() - t0:.0f}s", flush=True)
+
+
 def m30():
     P = load_panel()
     cols, adv, px = liquid_masks(P)
     rk = adv.where(px > 5).rank(axis=1, ascending=False)
-    tick = sorted((rk.loc["2020-01-01":] <= 500).any().pipe(lambda s: s[s].index))
-    tick = [t.replace("-", ".") for t in tick]
-    print("m30 tickers", len(tick), flush=True)
-    A.fetch_windows("m30s61", start="2020-01", end=P["c"].index[-1].strftime("%Y-%m"),
-                    windows=(("09:30", "16:00"),), tickers=tick, timeframe="30Min", chunk=700, workers=3)
+    top = (rk <= 500).loc["2020-01-01":"2023-12-31"]
+    daylists = {d: [t.replace("-", ".") for t in row.index[row.values]] for d, row in top.iterrows()}
+    fetch_daylists("m30s61", daylists, [("09:30", "10:00"), ("15:30", "16:00")], "30Min")
+
+
+def gap_mask(P):
+    cols, adv, px = liquid_masks(P)
+    gap = P["o"][cols] / P["c"][cols].shift(1) - 1
+    return ((adv > 2e7) & (px > 5) & (gap.abs() >= 0.02)).loc["2020-01-01":]
 
 
 def gaps():
     P = load_panel()
-    cols, adv, px = liquid_masks(P)
-    gap = P["o"][cols] / P["c"][cols].shift(1) - 1
-    m = (adv > 2e7) & (px > 5) & (gap.abs() >= 0.02)
-    m = m.loc["2020-01-01":]
-    s = m.stack()
-    s = s[s]
-    pairs = [(t.replace("-", "."), d) for d, t in s.index]
-    print("gap pairs", len(pairs), flush=True)
-    A.fetch_pairs(pairs, ds="m5s62", timeframe="5Min", workers=3, a="07:00", b="16:00")
+    m = gap_mask(P)
+    m = m[m.index <= pd.Timestamp.today().normalize() - pd.Timedelta(days=1)]
+    daylists = {d: [t.replace("-", ".") for t in row.index[row.values]] for d, row in m.iterrows()}
+    fetch_daylists("m5s62", daylists, [("07:00", "09:50"), ("10:25", "10:30"), ("11:55", "12:00")], "5Min", workers=6)
 
 
 # ------------------------------------------------------------------ costs at any time of day
