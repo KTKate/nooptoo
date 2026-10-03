@@ -318,6 +318,13 @@ studies = [
      "0.32 between periods and agree in sign 44% of the time. Rules chosen on 2020-23: Sharpe -0.65, 0.41, 0.27 in "
      "2024-26. Leads: more target raises than cuts in the prior 20 days (+14 bp in 2024-26, t 3-4, +3-5 bp before); "
      "Friday sessions (+30 bp both periods, ~500 events each). Report timing inferred (94% agreement with stated times)."),
+    ("75", "Disclosed trades over 0-5 days: insider Form 4 (exact filing times), House members' transaction reports, "
+     "13D/13G stakes, and insider trades before earnings", "Candidate",
+     "Insider buys: the next day session after an after-close filing adds +14 to +20 bp over the universe in both "
+     "periods (t 3.0-5.4; CEO/CFO and > $250k buys +26 to +33 bp), after a +70 to +160 bp overnight jump that cannot "
+     "be traded at the auctions. After costs the broad rule falls from Sharpe 1.43 (2020-23) to 0.44 (2024-26Q1); a buy "
+     "> 5% of ADV rule holds (0.99 / 1.31) but averages 3 names and was picked from ~60 subsets. Sells, Congress "
+     "(no effect, t < 2.5), 13D (overnight jump then reversal) and the earnings link (signs flip) rejected."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

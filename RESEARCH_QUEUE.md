@@ -13,9 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running
-- 75: disclosed trades: insiders, Congress, 13D activists, 1-5 days and around earnings (agent)
+- 77: earnings-event models with small leaves; interaction analysis of the overnight models (agent)
 
 ## Done
+- 75 Candidate (weak): insider buys after after-close filings +14-20 bp next session (t 3-5, both periods), thin after
+  costs; Congress, 13D, sells, earnings link rejected
 - 74 Reject: no pre-report day-session pattern survives out of sample; leads: target raises before report, Fridays
 - 73 Reject: fixed top 10 beats variable counts in the selection period; jump threshold (~9 names) a lead
 - 70 Reject: shorting the biggest overnight gainers in the day session is weak (Sharpe ~0.6, about zero in 2020-23)
@@ -48,7 +50,8 @@ same universe's average (src/horizon_lib.py).
 - 76: cohort models by earnings behavior and news reaction (clusters on past reactions), as extra ensemble members
 - 72: short isolated no-news drops below -10% for 2-5 days (study 44 lead), with borrow limits, fresh cut-offs
 - 46: pre-earnings run-up: buy 1-5 days before reports, sell before the report
-- 47: insider cluster buys, 1-5 day holds after the Form 4 filing
+- 78: live Form 4 feed (EDGAR XML from 2026-04) for a shadow test of insider buys > 5% of ADV; insider features
+  (recent buy, size) as inputs to the day-session and jump models
 - 48: S&P 500 additions: candidates and announced additions, 1-5 days around announcement and effective date
 - 49: short squeeze setups (high short volume ratio + news + price breakout), 1-5 day holds
 - 50: weekly patterns: Monday open to Friday close, turn of month, pre-holiday, options expiration week
