@@ -284,6 +284,15 @@ studies = [
      "consistent cell: shorting premarket gap-ups above 10% at the opening auction, +31-71 bp an event (t 2.3-2.6), but "
      "easy-to-borrow only it is Sharpe 0.55 / 1.20 vs SPY 0.62 / 1.30, with squeeze drawdowns. Same night/day "
      "reversal as study 68; folded into study 70. 864 cells per period."),
+    ("69", "Buying the overnight picks again for a second night (today's top 10 plus yesterday's)", "Reject",
+     "Sharpe 2.35 vs 2.85 for today's top 10; yesterday's picks alone 1.37; today's top 20 2.63."),
+    ("59", "Avoid filters on the blend: no guidance cut in 20 days, no earnings reaction below -10% in 20 days", "Reject",
+     "Sharpe 2.85 / 2.63 / 2.61 (guidance filter / earnings filter / both) vs 2.85 without filters."),
+    ("65", "Calendar effects on the blend: weekday, nights before weekends and holidays, month end, options expiration",
+     "Leads only",
+     "Monday-night entries are the weakest weekday in both periods (+18 and +5 bp vs +33 to +93 bp for Tuesday to "
+     "Thursday) but still positive (t 0.6); skipping them gives Sharpe 2.97 vs 2.85 and lower return. Month-end and "
+     "weekend effects change sign between periods (14-68 nights per cell)."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

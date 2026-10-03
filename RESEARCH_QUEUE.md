@@ -13,8 +13,12 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running
+- 70: day-session shorts of the biggest overnight gainers; 44: reversal after large non-news drops (background agent)
 
 ## Done
+- 69 Reject: second-night re-entry lowers Sharpe (2.35 vs 2.85)
+- 59 Reject: guidance-cut and earnings-reaction filters do not improve the blend
+- 65 Leads only: Monday-night entries weakest in both periods but still positive; skipping: Sharpe 2.97 vs 2.85
 - 61 Reject: opening-30-minute momentum gone in 2024-26; cross-section far below costs
 - 62 Reject: gap fills/continuations lose after costs; premarket gap-up >10% short at the open is the only
   consistent cell (borrow-limited; part of study 70)
@@ -34,7 +38,6 @@ same universe's average (src/horizon_lib.py).
   short side works only in hard-to-borrow names)
 - 63: intraday lead-lag: sector ETF or industry leader moves in the first hour predicting laggards by the close
 - 64: last-hour effects: 15:00-16:00 return vs the day's move, imbalance-like proxies from 15:30-15:45 volume
-- 65: day-of-week and time-of-day patterns for the overnight blend (skip or size by weekday, holiday weeks)
 
 ## Next (intraweek: 1-5 trading days)
 - 44: reversal after large non-news drops, entry at the close, exits after 1-5 days
@@ -45,8 +48,6 @@ same universe's average (src/horizon_lib.py).
 - 50: weekly patterns: Monday open to Friday close, turn of month, pre-holiday, options expiration week
 - 52: cross-asset moves (rates, dollar, oil, gold, bitcoin) predicting sector ETFs over 1-5 days
 - 57: pairs within industries, 1-5 day reversion of the spread
-- 59: avoid filters from 41/42 (guidance cut, worst earnings reaction) applied to the overnight blend
-- 69: night-2 re-entry: buy yesterday's picks again at today's close (night 2 earned +24-28 bp over the universe)
 - 70: day-session short candidates beyond our picks: stocks with the largest overnight gains (night/day reversal),
   easy to borrow only, with a borrow-fee model
 - 67: overnight blend + day-session model on the same capital (margin account): combined Sharpe, drawdown, turnover
