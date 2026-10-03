@@ -273,7 +273,8 @@ studies = [
      "Candidate",
      "Easy-to-borrow picks only (today's list, optimistic): +26 / +20 bp a day net, Sharpe 1.44 / 1.14, max drawdown "
      "-43%. Correlation with the overnight leg 0.07. Overnight blend + quarter-size day short: Sharpe 3.04 vs 2.85, max "
-     "drawdown -22% vs -21% (size chosen from 5 values). Needs a margin account; shadow-tracked from 2026-10-05."),
+     "drawdown -22% vs -21% (size chosen from 5 values). Needs a margin account; paper-traded from 2026-10-05 "
+     "(short 2.5% of equity per easy-to-borrow pick at 09:31, covered at 15:55)."),
     ("61", "First 30 minutes predicting the rest of the day or the last 30 minutes (SPY/QQQ and the 500 most traded "
      "stocks, 1-minute data from 2019-07)", "Reject",
      "SPY/QQQ slopes t 1.7-2.3 in 2020-23, near zero in 2024-26; best ETF rule net Sharpe 0.15 / 0.12 vs buy-and-hold "
@@ -308,7 +309,9 @@ studies = [
      "score (cash on weak nights), rank-weighted top 20", "Reject",
      "Fixed top 10: 2.80 / 2.91. In 2024-25H1 (selection period) no rule beats it; the jump-minus-drop > 0.059 rule "
      "(about 9 names, sometimes cash) is 2.65 there but 3.73 in 2025H2-26: a lead to recheck with more data, not a "
-     "choice. Pooled-score thresholds are worse (0.7-2.5). Study 19 found the same for other construction rules."),
+     "choice. Pooled-score thresholds are worse (0.7-2.5). Study 19 found the same for other construction rules. "
+     "73b, walk-forward choice each quarter on all earlier data: 2.87 vs 2.70 for the fixed top 10 (2024Q3-2026Q3); "
+     "since 2025Q4 it always picks the threshold. Candidate."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

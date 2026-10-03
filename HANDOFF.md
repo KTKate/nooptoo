@@ -94,6 +94,13 @@ Schedule (weekdays ET): 15:45 entry, 09:15 exit, 17:30 `update_data.py daily`. P
   never fetched (panel ended 9/28). Fixed: the up-to-date check uses SPY's last date, and new-ticker histories drop
   today's partial bar.
 
+- From 2026-10-05 the paper account also runs the study-68 day short (quarter size, 2.5% of equity per
+  easy-to-borrow pick of the previous night): paper_job.sh exit -> paper_overnight.py dayshort (waits until 09:31,
+  shorts after the longs are sold); entry() covers shorts at 15:55 before buying. Exit routine moved to 09:17 ET
+  (trig_01V3GdF7LauWvBPLF2gqNWjo). Paper accounts are margin accounts (4x, shorting enabled).
+- Study 73b: walk-forward choice of the stock count (fixed 5/10/15/20 or jump-minus-drop threshold) 2.87 vs fixed
+  top 10 2.70 (2024Q3-2026Q3); recent quarters choose the threshold (~9 names). Candidate, not adopted.
+
 ## Open items
 - Owner decision: approve paper submission (`--submit`) after a 2-week dry run; a scheduler is needed to run the
   15:45 / 09:15 jobs (this container is ephemeral).

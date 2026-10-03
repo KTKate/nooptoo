@@ -282,6 +282,9 @@ def entry(submit=False, day=None, strategy="ml"):
                 od["time_in_force"] = "day"
             while dt.datetime.now(tz=__import__("zoneinfo").ZoneInfo("America/New_York")).strftime("%H%M") < "1555":
                 __import__("time").sleep(10)
+            n = cover_shorts()                       # study 68 day shorts are bought back before the new longs
+            if n:
+                print("covered", n, "day shorts")
         for od in orders:
             try:
                 r = requests.post(f"{TRADE}/orders", headers=H, json=od, timeout=30)
@@ -301,6 +304,80 @@ def exit_(submit=False):
         for od in orders:
             r = requests.post(f"{TRADE}/orders", headers=H, json=od, timeout=30)
             print(od["symbol"], r.status_code, r.text[:200])
+
+
+DAY_SHORT_W = 0.025          # study 68: quarter-size day short, 1/10 of equity x 0.25 per easy-to-borrow pick
+
+
+def _now_et():
+    return dt.datetime.now(tz=__import__("zoneinfo").ZoneInfo("America/New_York"))
+
+
+def day_short(submit=False):
+    """Study 68 (paper): after the overnight longs are sold at the open, short yesterday's picks that Alpaca lists
+    as easy to borrow and shortable, 2.5% of equity each, with market orders from 09:31 ET; entry() covers them at
+    15:55 before buying the next night's stocks. Logs logs/paper/dayshort_<today>.json."""
+    import time
+    files = sorted(f for f in os.listdir(LOG) if f.startswith("entry_") and f.endswith(".json") and "replay" not in f)
+    files = [f for f in files if f < f"entry_{dt.date.today()}"]
+    if not files:
+        print("no previous entry"); return
+    r = json.load(open(os.path.join(LOG, files[-1])))
+    picks = [o["symbol"] for o in r.get("orders", [])]
+    while _now_et().strftime("%H%M") < "0931":
+        time.sleep(10)
+    for _ in range(60):                          # wait until the overnight longs are sold (paper fills 09:30-09:34)
+        pos = requests.get(f"{TRADE}/positions", headers=H, timeout=30).json()
+        if not any(p["symbol"] in picks and float(p["qty"]) > 0 for p in pos) or _now_et().strftime("%H%M") >= "0945":
+            break
+        time.sleep(10)
+    eq = float(account()["equity"])
+    snap = A.get("snapshots", dict(symbols=",".join(picks), feed="iex")) if picks else {}
+    orders, skipped = [], {}
+    for t in picks:
+        a = requests.get(f"{TRADE}/assets/{t}", headers=H, timeout=15).json()
+        px = ((snap.get(t) or {}).get("latestTrade") or {}).get("p")
+        if not (a.get("easy_to_borrow") and a.get("shortable")):
+            skipped[t] = "not easy to borrow"; continue
+        if any(p["symbol"] == t and float(p["qty"]) != 0 for p in pos):
+            skipped[t] = "position still open"; continue
+        qty = int(eq * DAY_SHORT_W // px) if px else 0
+        if qty < 1:
+            skipped[t] = "no price or qty 0"; continue
+        orders.append(dict(symbol=t, qty=qty, side="sell", type="market", time_in_force="day"))
+    rec = dict(day=str(dt.date.today()), from_entry=files[-1], equity=eq, orders=orders, skipped=skipped,
+               submitted=submit, at=str(_now_et()))
+    json.dump(rec, open(os.path.join(LOG, f"dayshort_{dt.date.today()}.json"), "w"), indent=1)
+    print(json.dumps(rec, indent=1))
+    if submit:
+        for od in orders:
+            try:
+                q = requests.post(f"{TRADE}/orders", headers=H, json=od, timeout=30)
+                print(od["symbol"], q.status_code, q.text[:200])
+            except requests.RequestException as e:
+                print(od["symbol"], "order error", e)
+
+
+def cover_shorts():
+    """Buy back every short position with market orders and wait (up to 60 s) until they are filled."""
+    import time
+    pos = requests.get(f"{TRADE}/positions", headers=H, timeout=30).json()
+    shorts = [p for p in pos if float(p["qty"]) < 0]
+    for p in shorts:
+        od = dict(symbol=p["symbol"], qty=abs(int(float(p["qty"]))), side="buy", type="market", time_in_force="day")
+        try:
+            q = requests.post(f"{TRADE}/orders", headers=H, json=od, timeout=30)
+            print("cover", p["symbol"], q.status_code, q.text[:120])
+        except requests.RequestException as e:
+            print("cover", p["symbol"], "order error", e)
+    for _ in range(12):
+        if not shorts:
+            break
+        time.sleep(5)
+        pos = requests.get(f"{TRADE}/positions", headers=H, timeout=30).json()
+        if not any(float(p["qty"]) < 0 for p in pos):
+            break
+    return len(shorts)
 
 
 def session_today():
@@ -407,6 +484,8 @@ if __name__ == "__main__":
         virtual()
     elif what == "exit":
         exit_(submit)
+    elif what == "dayshort":
+        day_short(submit)
     elif what == "session":
         print(session_today())
     elif what == "reconcile":
