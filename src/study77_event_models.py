@@ -38,7 +38,10 @@ quarter, test when >= 3,000 training events.
 Variants: sample (gap timing; headline timing) x window (pre; through) x inputs (price only; full) x target (rank;
 raw, gap sample only), plus 'through' with full inputs but price rows of t-1 (full_lag1: no close-of-t prices in the
 inputs, guards against closing-auction microstructure) and, as a baseline, the current pooled overnight models
-(data/models/night_<q>.txt, 2024Q1+) scored on the same events.
+(data/models/night_<q>.txt, 2024Q1+) scored on the same events. Added after the first run (the quarter-rank models
+spent splits on market-level inputs that move whole days, which the daily book cannot use): target 'dayrank' (rank
+among the same day's events, days with >= 3 events) for price and full inputs, and the one-input rule 'fade the
+opening gap' (prediction = -gap_t) for the pre window.
 Evaluation: rank IC per test quarter, mean within-day IC (days with >= 5 events) (Spearman of prediction vs excess return); books: each day with >= 5 events take
 the top / bottom 20% of that day's predictions (at most 10 names), 10% weight each, cash otherwise; shorts only
 in names on Alpaca's current easy-to-borrow list (today's list: flatters the past); costs per side
@@ -217,6 +220,9 @@ def walk_forward(x, feats, ycol, target):
         xt = x[tr]
         if target == "rank":
             y = xt.groupby("q")[ycol].rank(pct=True) - 0.5
+        elif target == "dayrank":                      # rank among the same day's events (what the book uses)
+            y = xt.groupby("tdate")[ycol].rank(pct=True) - 0.5
+            y = y.where(xt.groupby("tdate")[ycol].transform("size") >= 3, 0.0)
         else:
             lo, hi = xt[ycol].quantile([0.01, 0.99])
             y = xt[ycol].clip(lo, hi)
@@ -247,9 +253,11 @@ def books(x, p, rcol, mcol):
     y["Sh"] = (rkl <= k) & (k >= 1) & y.etb
     y["cost"] = 2 * y.cost_a / 1e4
     dd = alld[(alld >= y.tdate.min()) & (alld <= S.END)]
-    res = {}
+    res, trades = {}, []
     for side, col, sg in [("long", "L", 1), ("short", "Sh", -1)]:
         z = y[y[col]]
+        trades.append(pd.DataFrame({"side": side, "tdate": z.tdate, "symbol": z.symbol, "ex_s": sg * (z[rcol] - z[mcol]),
+                                    "net_s": sg * z[rcol] - z.cost}))
         g = z.groupby("tdate")
         gross = (0.1 * sg * z[rcol]).groupby(z.tdate).sum().reindex(dd).fillna(0)
         cost = (0.1 * z.cost).groupby(z.tdate).sum().reindex(dd).fillna(0)
@@ -259,7 +267,36 @@ def books(x, p, rcol, mcol):
                                   "tr_net": (sg * z[rcol] - z.cost).groupby(z.tdate).sum().reindex(dd).fillna(0),
                                   "tr_ex": (sg * (z[rcol] - z[mcol])).groupby(z.tdate).sum().reindex(dd).fillna(0)})
     res["ls"] = res["long"] + res["short"]
+    tr = pd.concat(trades)
+    res["trades"] = pd.concat([tr, tr.assign(side="ls")])
     return res
+
+
+def tail_stats(t):
+    """Trade-level robustness: median, 1%-trimmed mean of the signed excess, share of net P&L from the best 10."""
+    e = t.ex_s.sort_values()
+    k = int(0.01 * len(e))
+    trim = e.iloc[k:len(e) - k].mean() if len(e) > 20 else np.nan
+    tot = t.net_s.sum()
+    top10 = t.net_s.nlargest(10).sum() / tot if tot > 0 else np.nan
+    return dict(ex_med_bp=1e4 * e.median(), ex_trim_bp=1e4 * trim, top10_share=top10,
+                net_ex_top10_bp=1e4 * (tot - t.net_s.nlargest(10).sum()) / max(len(t) - 10, 1))
+
+
+PRED = {}
+
+
+def single_feature_ic(x, sample):
+    """Within-day IC of single inputs the models rank highly (sign as is), for reference."""
+    for win, ycol, fl in [("pre", "ex", ["gap_t", "pre_r1", "pre_hi250", "pre_vol20", "p_react"]),
+                          ("through", "ex_on", ["thr_intra1", "thr_r1", "thr_hi250", "thr_r250_20", "thr_vol20",
+                                                "p_react", "sent_today"])]:
+        for f in fl:
+            for per, a0, b0 in PER:
+                icd, t, nd = ic_daily(x, x[f], ycol, a0, b0)
+                emit("single_ic", sample=sample, window=win, features=f, period=per, ic_daily=icd, ic_daily_t=t,
+                     ic_days=nd)
+                print("single", sample, win, f, per, f"dIC {icd:.4f} t {t:.2f}", flush=True)
 
 
 def main():
@@ -281,11 +318,15 @@ def main():
             cov = np.isfinite(x[cols_].astype(float)).mean()
             print(sample, f, "inputs", len(cols_), "lowest coverage:", cov.sort_values().head(5).round(2).to_dict(),
                   flush=True)
+        single_feature_ic(x, sample)
         specs = []
         for (win, fs), feats in FS.items():
             for target in (["rank", "raw"] if sample == "gap" and fs != "full_lag1" else ["rank"]):
                 specs.append((win, fs, target, feats))
+            if fs in ("price", "full"):               # added after the first run: within-day rank target
+                specs.append((win, fs, "dayrank", feats))
         specs.append(("through", "pooled_night_model", "none", None))
+        specs.append(("pre", "rule_minus_gap", "none", "rule"))     # one-input baseline: fade the opening gap
         for win, fs, target, feats in specs:
             ycol, rcol, mcol = ("ex", "r", "mkt") if win == "pre" else ("ex_on", "r_on", "mkt_on")
             if True:
@@ -293,11 +334,14 @@ def main():
                 tag = f"{sample}|{win}|{fs}|{target}"
                 if feats is None:
                     p, imp = pooled_pred(x, pf), None
+                elif feats == "rule":
+                    p, imp = (-x.gap_t).where(x.q >= x.q.min() + 4), None    # from 2021Q1, about the models' start
                 else:
                     p, imp = walk_forward(x, feats, ycol, target)
                 ic = ic_by_q(x, p, ycol)
                 for _, r in ic.iterrows():
                     emit("ic_q", sample=sample, window=win, features=fs, target=target, quarter=r.q, n=r.n, ic=r.ic)
+                PRED[tag] = p.values
                 b = books(x, p, rcol, mcol)
                 for per, a0, b0 in PER:
                     icp = ic[(ic.date >= a0) & (ic.date <= b0)]
@@ -315,18 +359,21 @@ def main():
                             continue
                         s, sh = ann_stats(d.net), ann_stats(d.net_h)
                         ntr = d.n.sum()
+                        tt = b["trades"]
+                        ts_ = tail_stats(tt[(tt.side == side) & (tt.tdate >= a0) & (tt.tdate <= b0)])
                         emit("book", sample=sample, window=win, features=fs, target=target, period=per, side=side,
                              trades=int(ntr), days_active=int((d.n > 0).sum()), avg_names=d.n[d.n > 0].mean(),
                              gross_bp_tr=1e4 * (d.tr_net.sum() + d.cost.sum() / 0.1) / ntr,
                              net_bp_tr=1e4 * d.tr_net.sum() / ntr, ex_bp_tr=1e4 * d.tr_ex.sum() / ntr,
                              cost_bp_rt=1e4 * (d.cost.sum() / 0.1) / ntr, ann_ret=s["ann_ret"], sharpe=s["sharpe"],
-                             t=s["tstat"], maxdd=s["maxdd"], sharpe_hedged=sh["sharpe"], maxdd_hedged=sh["maxdd"])
+                             t=s["tstat"], maxdd=s["maxdd"], sharpe_hedged=sh["sharpe"], maxdd_hedged=sh["maxdd"], **ts_)
                         line.append(f"{side}: net {1e4 * d.tr_net.sum() / ntr:.0f}bp/tr ex {1e4 * d.tr_ex.sum() / ntr:.0f}"
+                                    f" med {ts_['ex_med_bp']:.0f} trim {ts_['ex_trim_bp']:.0f} top10 {ts_['top10_share']:.2f}"
                                     f" SR {s['sharpe']:.2f} SRh {sh['sharpe']:.2f} n {int(ntr)}")
                     print(" | ".join(line), flush=True)
                 for yr in range(2020, 2027):
                     for side in ["long", "short", "ls"]:
-                        d = b[side].loc[str(yr)]
+                        d = b[side].loc[f"{yr}-01-01":f"{yr}-12-31"]
                         if d.n.sum() == 0:
                             continue
                         s_ = ann_stats(d.net)
@@ -338,6 +385,9 @@ def main():
                         emit("importance", sample=sample, window=win, features=fs, target=target, rank=rk + 1,
                              feature=k, share=v)
                 pd.DataFrame(ROWS).to_csv(OUT, index=False)
+        pd.DataFrame(PRED).assign(symbol=x.symbol.values, tdate=x.tdate.values, ex=x.ex.values,
+                                  ex_on=x.ex_on.values).to_parquet(os.path.join(DATA, "local", f"study77_pred_{sample}.parquet"))
+        PRED.clear()
         # reference: all-event averages (excess) per period
         for per, a0, b0 in PER:
             y = x[(x.tdate >= a0) & (x.tdate <= b0)]
@@ -345,8 +395,9 @@ def main():
                 m, t, n = S.cl_t(y[ycol], y.tdate)
                 emit("data", sample=sample, target=ycol, period=per, n=n, mean_bp=1e4 * m, t_cl=t)
         del x
-    emit("count", n=nvar, note="model variants (sample x window x features x target); each scored with IC + 3 books "
-                               "x 3 periods; hyperparameters pre-specified, not tuned")
+    emit("count", n=nvar, note="variants incl. 2 baselines (pooled night model, fade-the-gap rule); each scored with "
+                               "IC + 3 books x 3 periods; plus 24 single-input daily ICs; hyperparameters pre-specified; "
+                               "built in 3 runs (12 variants, then + full_lag1 / pooled baseline, then + dayrank / rule)")
     pd.DataFrame(ROWS).to_csv(OUT, index=False)
     print("variants", nvar, "saved", OUT, flush=True)
 

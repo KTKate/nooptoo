@@ -13,9 +13,10 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running
-- 77: earnings-event models with small leaves; interaction analysis of the overnight models (agent)
 
 ## Done
+- 77 Candidate: earnings-event model for the reaction overnight, Sharpe 0.9-2.2 in all periods with close inputs;
+  falls to 0.2-0.5 with previous-day inputs, so it needs the 15:45 rebuild (study 80); pre-report session rejected
 - 75 Candidate (weak): insider buys after after-close filings +14-20 bp next session (t 3-5, both periods), thin after
   costs; Congress, 13D, sells, earnings link rejected
 - 74 Reject: no pre-report day-session pattern survives out of sample; leads: target raises before report, Fridays
@@ -47,6 +48,8 @@ same universe's average (src/horizon_lib.py).
 - 64: last-hour effects: 15:00-16:00 return vs the day's move, imbalance-like proxies from 15:30-15:45 volume
 
 ## Next (intraweek: 1-5 trading days)
+- 80: rebuild study 77's earnings-event model with 15:45 inputs (study 23 frame) for 2024-26; long-only top quintile
+  in liquid names; if it holds, add as a second overnight book on report nights
 - 76: cohort models by earnings behavior and news reaction (clusters on past reactions), as extra ensemble members
 - 72: short isolated no-news drops below -10% for 2-5 days (study 44 lead), with borrow limits, fresh cut-offs
 - 46: pre-earnings run-up: buy 1-5 days before reports, sell before the report

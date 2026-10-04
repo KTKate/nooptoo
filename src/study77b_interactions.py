@@ -32,6 +32,8 @@ NS = int(os.environ.get("NS", "20000"))
 CH = 1000
 MODELS = ["night_2026Q3", "jump_jump_2026Q3", "jump_drop_2026Q3"]
 # MODEL=<name> computes one model into a part file (run the three in parallel); MERGE=1 combines the parts
+MKT = {"spy1", "spy5", "spy20", "vix", "vix_chg5", "vix_term", "iwm_spy5", "dow", "tom"}
+EARN = {"days_to_e", "days_since_e", "last_surp", "earn_tonight"}
 PART = os.path.join(DATA, "local", "study77b_part_{}.pkl")   # intermediate (git-ignored)
 
 
@@ -112,6 +114,17 @@ def summarize():
                          note="share = pure main effects / total; 1-share = pairwise interactions"))
         rows.append(dict(model=name, kind="stability", feature="half-sample", share=stab, value=len(top0 & top1),
                          note="spearman of pair strengths between sample halves; value = top-15 pair overlap"))
+        # interaction share by group: stock x market-level inputs, market x market, stock x stock, any earnings input
+        fa = np.array(f)
+        mi, mj = np.isin(fa[iu[0]], list(MKT)), np.isin(fa[iu[1]], list(MKT))
+        ee = np.isin(fa[iu[0]], list(EARN)) | np.isin(fa[iu[1]], list(EARN))
+        pv_ = 2 * acc[iu]
+        for g, m_ in [("stock x market", mi ^ mj), ("market x market", mi & mj), ("stock x stock", ~mi & ~mj),
+                      ("pairs with an earnings input", ee), ("top-15 pairs", np.isin(np.arange(len(pv_)),
+                                                                                   np.argsort(-pv_)[:15]))]:
+            rows.append(dict(model=name, kind="pair_group", feature=g, share=pv_[m_].sum() / tot, value=pv_[m_].sum()))
+        rows.append(dict(model=name, kind="main_group", feature="earnings inputs (main)",
+                         share=diag[np.isin(fa, list(EARN))].sum() / tot))
         o = np.argsort(-diag)
         pcs = main_pc / main_pc.sum()
         for rk, i in enumerate(o[:15]):

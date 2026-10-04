@@ -325,6 +325,15 @@ studies = [
      "be traded at the auctions. After costs the broad rule falls from Sharpe 1.43 (2020-23) to 0.44 (2024-26Q1); a buy "
      "> 5% of ADV rule holds (0.99 / 1.31) but averages 3 names and was picked from ~60 subsets. Sells, Congress "
      "(no effect, t < 2.5), 13D (overnight jump then reversal) and the earnings link (signs flip) rejected."),
+    ("77", "Models trained only on earnings events (small leaves, all inputs incl. insiders and fundamentals): the "
+     "day session before the report and the reaction overnight; plus SHAP interactions of the overnight models",
+     "Candidate",
+     "Reaction overnight, long-short top/bottom 20% of the day's reporters: +23 to +59 bp a trade net, Sharpe 0.9-2.2 in "
+     "2020-21, 2022-23 and 2024-26, positive every year; the pooled overnight model has no edge on these events. Big "
+     "caveat: inputs use the close (the entry price); with the previous day's inputs it falls to Sharpe 0.2-0.5, so a "
+     "15:45 rebuild must confirm it. Day session before the report: no model beats fading the opening gap. SHAP: the "
+     "overnight model's interactions are mostly stock inputs x market regime (39% of attribution), spread over ~1,400 "
+     "pairs. 26 variants."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
