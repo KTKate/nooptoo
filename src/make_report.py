@@ -334,6 +334,12 @@ studies = [
      "15:45 rebuild must confirm it. Day session before the report: no model beats fading the opening gap. SHAP: the "
      "overnight model's interactions are mostly stock inputs x market regime (39% of attribution), spread over ~1,400 "
      "pairs. 26 variants."),
+    ("80", "Study 77's earnings-night model scored with 15:45 inputs (the live decision time), 2024-01..2026-09",
+     "Candidate",
+     "Most of the edge survives: headline-timed sample, long-only top quintile of liquid reporters Sharpe 1.24 "
+     "(close inputs 1.37), long-short 0.73 (0.94); random picks 0.0 / -0.4. All profit is in the long leg; 2026 "
+     "weakest (0.7); within-day IC t 1.5. Added to the blend at 25% on report nights: Sharpe 2.93 vs 2.85 (small). The "
+     "gap-timed sample looks better (combined 3.1-3.2) but selects events with hindsight. Next: live shadow test."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

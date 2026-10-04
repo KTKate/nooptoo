@@ -13,11 +13,12 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-04)
-- 80: earnings-event model rebuilt with 15:45 inputs (agent)
 - 79: extended-hours buys after after-close insider filings; 46: pre-earnings run-up 1-5 days (agent)
 - 63: intraday lead-lag within industries; 64: last-hour continuation and 15:30-15:45 volume (agent)
 
 ## Done
+- 80 Candidate: earnings-night model holds at 15:45 (long-only liquid Sharpe 1.24 vs 1.37 with close inputs);
+  adds ~0.1 Sharpe to the blend at 25% on report nights; shorts lose
 - 77 Candidate: earnings-event model for the reaction overnight, Sharpe 0.9-2.2 in all periods with close inputs;
   falls to 0.2-0.5 with previous-day inputs, so it needs the 15:45 rebuild (study 80); pre-report session rejected
 - 75 Candidate (weak): insider buys after after-close filings +14-20 bp next session (t 3-5, both periods), thin after
@@ -51,8 +52,8 @@ same universe's average (src/horizon_lib.py).
 - 64: last-hour effects: 15:00-16:00 return vs the day's move, imbalance-like proxies from 15:30-15:45 volume
 
 ## Next (intraweek: 1-5 trading days)
-- 80: rebuild study 77's earnings-event model with 15:45 inputs (study 23 frame) for 2024-26; long-only top quintile
-  in liquid names; if it holds, add as a second overnight book on report nights
+- 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
+  in shadow.py, long-only top quintile, scored at official prints
 - 76: cohort models by earnings behavior and news reaction (clusters on past reactions), as extra ensemble members
 - 72: short isolated no-news drops below -10% for 2-5 days (study 44 lead), with borrow limits, fresh cut-offs
 - 46: pre-earnings run-up: buy 1-5 days before reports, sell before the report
