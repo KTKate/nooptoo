@@ -350,6 +350,16 @@ studies = [
      "Volume surges: no closing edge; SIP volume is not available before 16:00 on the free plan. Best re-rank of the "
      "blend 3.10 vs 2.85 but paired t 0.97 (best of 32). Side lead: top 10 day gainers held overnight, Sharpe "
      "1.45 / 1.36 (below the blend; overlap not checked). Found and removed Yahoo spin-off scale errors in 2020."),
+    ("79", "Buying after-close insider-buy filings in the after-hours session (5-30 minutes after EDGAR acceptance, at "
+     "the real SIP ask), exit at the next open or close", "Reject",
+     "Median after-hours spread 2.5-3.2% and the ask already 2.4-2.5% above the close: -4% a trade overall. Only "
+     "names with a spread <= 50 bp at order time (13% of events) gain, and mostly through the next-day drift study 75 "
+     "already buys at the open (+27 / +67 bp to the next close; overnight part +7 / +12 bp). Needs paid real-time SIP "
+     "quotes and holds ~1 name on a third of nights."),
+    ("46", "Pre-earnings run-up: buy 1-5 days before a report, sell at the last close before it", "Reject",
+     "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
+     "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
+     "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

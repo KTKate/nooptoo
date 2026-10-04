@@ -13,9 +13,10 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-04)
-- 79: extended-hours buys after after-close insider filings; 46: pre-earnings run-up 1-5 days (agent)
 
 ## Done
+- 79 Reject: after-hours spreads (~3%) erase the insider-filing jump; tight-spread subset tiny
+- 46 Reject: pre-earnings drift only in 2024-26 (+20 bp/5 days, +35 with target raises); recheck in 2027
 - 63 Reject: industry lead-lag 1-3 bp gross vs ~26 bp costs
 - 64 Reject: last-hour continuation, volume surges and last-30-minute re-ranking add nothing after costs
 - 80 Candidate: earnings-night model holds at 15:45 (long-only liquid Sharpe 1.24 vs 1.37 with close inputs);
@@ -46,6 +47,8 @@ same universe's average (src/horizon_lib.py).
 - 43 out of scope (monthly): low EV/sales top 20 strong in 2020-23, weak in 2024-26
 
 ## Next (intraday: open to close, or within the session)
+- 82: check whether the Yahoo spin-off price-scale errors found in study 64 (about 5% of large-stock days in 2020)
+  affect the overnight model's training data and backtests
 - (done) 60: day-session long model (buy at the opening auction, sell at the closing auction) with all inputs: price,
   news since the previous close, analyst targets, fundamentals, premarket move; long side only (study 29 found the
   short side works only in hard-to-borrow names)
@@ -55,10 +58,6 @@ same universe's average (src/horizon_lib.py).
   in shadow.py, long-only top quintile, scored at official prints
 - 76: cohort models by earnings behavior and news reaction (clusters on past reactions), as extra ensemble members
 - 72: short isolated no-news drops below -10% for 2-5 days (study 44 lead), with borrow limits, fresh cut-offs
-- 46: pre-earnings run-up: buy 1-5 days before reports, sell before the report
-- 79: trade the overnight reaction to after-close insider buy filings in the extended session: buy 5-15 minutes
-  after the EDGAR acceptance time at the real after-hours ask (SIP quotes), sell at the next open or close; needs
-  a live EDGAR poll if it works
 - 78: live Form 4 feed (EDGAR XML from 2026-04) for a shadow test of insider buys > 5% of ADV; insider features
   (recent buy, size) as inputs to the day-session and jump models
 - 48: S&P 500 additions: candidates and announced additions, 1-5 days around announcement and effective date

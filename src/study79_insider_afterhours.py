@@ -134,6 +134,10 @@ H = S75.H
 DAYS, ND, COLS = S75.DAYS, S75.ND, S75.COLS
 C, O, PX = S75.C, S75.O, S75.PX                                    # adjusted close/open, traded close (study41)
 COSTV, U5, ADVL = S75.COSTV, S75.U5, S75.ADVL
+# traded close of d: Alpaca raw close (2023-12+), else Yahoo raw close with later splits multiplied back
+# (s6162_common.traded_price; study 41's traded_px misses splits inside 2020-23)
+from s6162_common import traded_price                              # noqa: E402
+TCL = H.TC.fillna(traded_price(H.P)[H.cols]).astype("float64").values
 PERIODS = (("2020-23", "2020-01-01", "2023-12-31"), ("2024-26", "2024-01-01", "2026-12-31"))
 
 
@@ -154,7 +158,7 @@ def build_events():
     ev["u5"] = U5[i, c]                                             # liquid universe known before day d
     ev["adv"] = ADVL[i, c]
     ev["value_adv"] = ev.value / ev.adv
-    ev["tclose"] = PX[i, c]                                         # traded close of d
+    ev["tclose"] = TCL[i, c]                                        # traded close of d
     return ev
 
 
@@ -273,7 +277,8 @@ def returns(ev):
     ev["cost_x"] = np.nan_to_num(COSTV[i, c], nan=0.002)            # auction exit cost incl. 2.5 bp
     ev["r_close_on"] = o1 / C[i, c] - 1                            # reference: from the closing auction (impossible)
     ev["r_close_cc"] = c1 / C[i, c] - 1
-    lp = ev.last_pre.values * fac
+    lpr = ev.last_pre.values
+    lp = np.where(np.abs(np.log(lpr / ev.tclose.values)) < 0.5, lpr * fac, np.nan)     # drop bad prints
     ev["r_lastpre_on"] = o1 / lp - 1
     ev["on_b"], ev["cc_b"], ev["spy_on"], ev["spy_cc"] = on_b, cc_b, spy_on, spy_cc
     for k in DELAYS:
@@ -295,7 +300,7 @@ def returns(ev):
         # optimistic entries (fill not guaranteed): at the quote midpoint, or at the last trade at or before T
         em = np.where(ok, (a + b_) / 2 * fac * (1 + 2.5e-4), np.nan)
         lt = ev[f"last{k}"].values
-        el = np.where(ok & (lt > 0), lt * fac * (1 + 2.5e-4), np.nan)
+        el = np.where(ok & (lt > 0) & (np.abs(np.log(lt / ev.tclose.values)) < 0.5), lt * fac * (1 + 2.5e-4), np.nan)
         ev[f"mid_on{k}"] = o1 / em - 1 - ev.cost_x - on_b
         ev[f"last_on{k}"] = o1 / el - 1 - ev.cost_x - on_b
         ev[f"mid_cc{k}"] = c1 / em - 1 - ev.cost_x - cc_b
