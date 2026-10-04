@@ -12,7 +12,10 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running
+## Running (batch 2026-10-04)
+- 80: earnings-event model rebuilt with 15:45 inputs (agent)
+- 79: extended-hours buys after after-close insider filings; 46: pre-earnings run-up 1-5 days (agent)
+- 63: intraday lead-lag within industries; 64: last-hour continuation and 15:30-15:45 volume (agent)
 
 ## Done
 - 77 Candidate: earnings-event model for the reaction overnight, Sharpe 0.9-2.2 in all periods with close inputs;
