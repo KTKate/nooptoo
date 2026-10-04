@@ -14,9 +14,10 @@ same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-04)
 - 79: extended-hours buys after after-close insider filings; 46: pre-earnings run-up 1-5 days (agent)
-- 63: intraday lead-lag within industries; 64: last-hour continuation and 15:30-15:45 volume (agent)
 
 ## Done
+- 63 Reject: industry lead-lag 1-3 bp gross vs ~26 bp costs
+- 64 Reject: last-hour continuation, volume surges and last-30-minute re-ranking add nothing after costs
 - 80 Candidate: earnings-night model holds at 15:45 (long-only liquid Sharpe 1.24 vs 1.37 with close inputs);
   adds ~0.1 Sharpe to the blend at 25% on report nights; shorts lose
 - 77 Candidate: earnings-event model for the reaction overnight, Sharpe 0.9-2.2 in all periods with close inputs;
@@ -48,8 +49,6 @@ same universe's average (src/horizon_lib.py).
 - (done) 60: day-session long model (buy at the opening auction, sell at the closing auction) with all inputs: price,
   news since the previous close, analyst targets, fundamentals, premarket move; long side only (study 29 found the
   short side works only in hard-to-borrow names)
-- 63: intraday lead-lag: sector ETF or industry leader moves in the first hour predicting laggards by the close
-- 64: last-hour effects: 15:00-16:00 return vs the day's move, imbalance-like proxies from 15:30-15:45 volume
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45

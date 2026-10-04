@@ -36,7 +36,9 @@ Costs per side: entry in continuous trading at 10:30 = s6162_common.cont_cost_bp
   spread interpolated between the 09:35 and 12:00 calibration points + 2 bp slippage + 0.3 bp fees + 2.5 bp); exit in
   the closing auction = exec_cost_bps(P, "auction") + 2.5 bp. Intraday shorts pay no borrow fee (top-1000 names; a
   locate is assumed available, today's easy-to-borrow list is not knowable historically).
-Data checks: the 10:30 signal and entry prices must lie inside the Yahoo day's low-high range (+-1%) and within 2% of
+Data checks: Alpaca's split-adjusted daily close (data/local/d1s63.parquet) must be within 1% of the Yahoo close on
+  the day and within 0.2% in the ticker-month median (drops spin-off-adjusted Yahoo histories such as T, GE, MMM);
+  the 10:30 signal and entry prices must lie inside the Yahoo day's low-high range (+-1%) and within 2% of
   each other; ticker-months with a median entry/signal gap above 0.5% are dropped.
 Free plan: all inputs are prices at 10:30 (no volume), available in real time from the IEX feed (IEX quotes and
   trades for liquid names track the SIP closely); runnable on the free plan.
@@ -155,6 +157,15 @@ def main():
     gap = (W["e1030"] / W["p1030"] - 1).abs()
     tm = gap.groupby(gap.index.to_period("M")).transform("median")
     ok = inside(W["p1030"]) & inside(W["e1030"]) & (gap < 0.02) & (tm < 0.005) & close.notna() & o_s.notna()
+    # price-scale check: Alpaca's split-adjusted daily close vs the Yahoo close (Yahoo also adjusts for spin-offs,
+    # e.g. T, GE, MMM in 2020-22, which would turn close / Alpaca entry into a fake return)
+    d1 = pd.read_parquet(os.path.join(A.LOCAL, "d1s63.parquet"))
+    ac = d1.assign(date=d1.date.astype("datetime64[ns]")).pivot(index="date", columns="ticker", values="c")
+    ratio = (ac.reindex(index=days, columns=cols) / close - 1).abs()
+    rm = ratio.groupby(ratio.index.to_period("M")).transform("median")
+    scale_ok = (ratio < 0.01) & (rm < 0.002)
+    print("price-scale check drops", int((ok & ~scale_ok).sum().sum()), "of", int(ok.sum().sum()), flush=True)
+    ok &= scale_ok
     print("stock-days with bars", int(W["p1030"].notna().sum().sum()), "kept", int(ok.sum().sum()), flush=True)
 
     adv = P["dv"][cols].rolling(20, min_periods=10).median().shift(1).reindex(days)

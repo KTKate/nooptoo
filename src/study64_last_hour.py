@@ -234,6 +234,11 @@ def part_stocks(P, PT, F, C, snap_all):
     adv = adv0[cols].reindex(days)
     rk = adv.where(PT["rawc"][cols].shift(1).reindex(days) > 5).rank(axis=1, ascending=False)
     U = (rk <= 500) & ok
+    U = U[U.sum(axis=1) >= 100]                                  # drop days without intraday data (e.g. the last day)
+    days = U.index
+    W = {k: v.reindex(days) for k, v in W.items()}
+    close, o_s, pc = close.reindex(days), o_s.reindex(days), pc.reindex(days)
+    ok = ok.reindex(days)
     print("universe per day", U.sum(1).describe().round(0).to_dict(), flush=True)
     for k in ["p1500", "e1500", "p1530", "e1530", "p1545", "e1545"]:
         print(k, "missing share in U", round(float((W[k].isna() & U).sum().sum() / U.sum().sum()), 4))
@@ -301,6 +306,7 @@ def part_stocks(P, PT, F, C, snap_all):
             ic_rows(f"a|{sn}{T}->night", s, night, U)
             book(f"a|{sn}{T}->close", s, y, U, (cin[T] + cout) / 2)
             book(f"a|{sn}{T}->close+night", s, y_night, U, (cin[T] + cout_next) / 2)
+            book(f"a|{sn}{T}->night_auction", s, night, U, (cout + cout_next) / 2)
     print("part a done", flush=True)
 
     # ---------------- (b) volume surge 15:30-15:45
@@ -381,6 +387,14 @@ def part_blend(P, F, snap):
            [("day1545", day1545), ("r3045", r3045), ("surge", surge)]}
     print("blend top-20 coverage of last-30-minute signals", cov, flush=True)
     base = bt.run(top10.astype(float) / 10, night, cside)
+
+    def paired(vn, a_, b_):
+        """Daily net difference vs the baseline top 10: mean (bp) and t."""
+        dd = (a_ - b_).dropna()
+        for per, a, b in PER[1:]:
+            z = dd.loc[a:b]
+            rows.append(dict(part="blend_paired", variant=vn, period=per, n_days=len(z), net_bps_active=1e4 * z.mean(),
+                             tstat=z.mean() / z.std() * np.sqrt(len(z)) if z.std() > 0 else np.nan))
     add_rows("blend", "baseline_top10", base.net, base.gross, extra=dict(coverage_top20=np.nan))
     # IC within the top 20
     sigs = {"day1545": day1545, "r3045": r3045, "surge_signed": np.sign(r3045) * np.log(surge.clip(lower=1e-3)),
@@ -409,15 +423,18 @@ def part_blend(P, F, snap):
                 Wn = (sc.rank(axis=1, ascending=False, method="first") <= 10).astype(float) / 10
                 r = bt.run(Wn, night, cside)
                 overlap = float(((Wn > 0) & top10).sum(1).mean())
-                add_rows("blend", f"rerank_top20|{'+' if sign > 0 else '-'}{nm}|lam{lam}", r.net, r.gross,
-                         extra=dict(avg_overlap_with_top10=overlap))
+                vn = f"rerank_top20|{'+' if sign > 0 else '-'}{nm}|lam{lam}"
+                add_rows("blend", vn, r.net, r.gross, extra=dict(avg_overlap_with_top10=overlap))
+                paired(vn, r.net, base.net)
         # drop rule: skip baseline picks in the worst signal quintile of the top 20 (cash instead)
         for sign in [1, -1]:
             q = s.where(top20).rank(axis=1, pct=True)
             bad = (q <= 0.2) if sign > 0 else (q > 0.8)
             Wn = (top10 & ~bad.fillna(False)).astype(float) / 10
             r = bt.run(Wn, night, cside)
-            add_rows("blend", f"skip_top10_if_{'low' if sign > 0 else 'high'}_{nm}", r.net, r.gross)
+            vn = f"skip_top10_if_{'low' if sign > 0 else 'high'}_{nm}"
+            add_rows("blend", vn, r.net, r.gross)
+            paired(vn, r.net, base.net)
     print("blend done", flush=True)
 
 
@@ -449,7 +466,7 @@ def main():
         c_ = [(v, p) for v in vals for p in ["2020-23", "2024-26"] if (v, p) in t]
         print("\n==", part)
         print(t[c_].round(3 if part in ("etf_reg", "ic") else 2).to_string())
-    for part, vals in [("blend", ["sharpe", "net_bps_active"]), ("blend_ic", ["ic", "tstat", "net_bps_active"])]:
+    for part, vals in [("blend", ["sharpe", "net_bps_active"]), ("blend_paired", ["net_bps_active", "tstat"]), ("blend_ic", ["ic", "tstat", "net_bps_active"])]:
         x = df[df.part == part]
         t = pv(x, vals)
         c_ = [(v, p) for v in vals for p in ["2024-26", "val", "oos"] if (v, p) in t]

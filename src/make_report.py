@@ -340,6 +340,16 @@ studies = [
      "(close inputs 1.37), long-short 0.73 (0.94); random picks 0.0 / -0.4. All profit is in the long leg; 2026 "
      "weakest (0.7); within-day IC t 1.5. Added to the blend at 25% on report nights: Sharpe 2.93 vs 2.85 (small). The "
      "gap-timed sample looks better (combined 3.1-3.2) but selects events with hindsight. Next: live shadow test."),
+    ("63", "Intraday lead-lag: industry ETF or leader first-hour moves predicting laggards from 10:30 to the close",
+     "Reject",
+     "Gross effect 1-3 bp per 1% leader move (t 2.5-3.6 in 2020-23, weaker in 2024-26) against ~26 bp round-trip "
+     "costs; all 108 rules net negative in both periods (best Sharpe -0.4 / -0.6). 144 rules incl. placebo."),
+    ("64", "Last hour: day move continuing into the close, 15:30-15:45 volume surges, last-30-minute re-ranking of the "
+     "blend's top 20", "Reject",
+     "Stocks slightly reverse into the close (IC -0.01 to -0.02), 0.5-3 bp gross vs ~14 bp costs; ETFs no effect. "
+     "Volume surges: no closing edge; SIP volume is not available before 16:00 on the free plan. Best re-rank of the "
+     "blend 3.10 vs 2.85 but paired t 0.97 (best of 32). Side lead: top 10 day gainers held overnight, Sharpe "
+     "1.45 / 1.36 (below the blend; overlap not checked). Found and removed Yahoo spin-off scale errors in 2020."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
