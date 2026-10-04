@@ -231,7 +231,7 @@ def fetch_quotes(ev):
     todo = ev[[(t, x) not in key for t, x in zip(ev.ticker, ev.t0)]].sort_values("t0", ascending=False)
     print("quote events todo", len(todo), "of", len(ev), flush=True)
     rows, parts = [], [have] if len(have) else []
-    with ThreadPoolExecutor(2) as ex:
+    with ThreadPoolExecutor(int(os.environ.get("STUDY79_THREADS", "2"))) as ex:
         for n, r in enumerate(ex.map(lambda a: quotes_one(*a), zip(todo.ticker, todo.t0, todo.date))):
             rows.append(r)
             if n % 250 == 249:
