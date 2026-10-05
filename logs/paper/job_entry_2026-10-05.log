@@ -1,0 +1,379 @@
+== paper job entry 2026-10-05 15:06:50 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+Fetching 270 files:   0%|          | 0/270 [00:00<?, ?it/s]Fetching 270 files:   1%|          | 2/270 [00:00<00:16, 16.04it/s]Fetching 270 files:   1%|▏         | 4/270 [00:00<00:16, 16.09it/s]Fetching 270 files:   4%|▍         | 11/270 [00:00<00:08, 29.79it/s]Fetching 270 files:  11%|█         | 29/270 [00:00<00:03, 76.61it/s]Fetching 270 files:  28%|██▊       | 76/270 [00:00<00:00, 194.75it/s]Fetching 270 files:  48%|████▊     | 129/270 [00:00<00:00, 294.98it/s]Fetching 270 files:  68%|██████▊   | 183/270 [00:00<00:00, 368.23it/s]Fetching 270 files:  89%|████████▊ | 239/270 [00:00<00:00, 417.83it/s]Fetching 270 files: 100%|██████████| 270/270 [00:01<00:00, 232.60it/s]
+pulled Incarnadin/nooptoo-market-data into /home/user/nooptoo/data/local
+daily: last 2026-10-01, fetching from 2026-09-17 for 5549 tickers; 0 new tickers
+  0
+  150
+  300
+  450
+  600
+  750
+  900
+  1050
+  1200
+  1350
+  1500
+  1650
+  1800
+  1950
+  2100
+  2250
+  2400
+  2550
+  2700
+  2850
+  3000
+  3150
+  3300
+  3450
+  3600
+  3750
+  3900
+  4050
+  4200
+$SGMT: possibly delisted; no price data found  (1d 2026-09-17 -> 2026-10-05)
+
+1 Failed download:
+['SGMT']: possibly delisted; no price data found  (1d 2026-09-17 -> 2026-10-05)
+  4350
+  4500
+$SVA: possibly delisted; no price data found  (1d 2026-09-17 -> 2026-10-05)
+
+1 Failed download:
+['SVA']: possibly delisted; no price data found  (1d 2026-09-17 -> 2026-10-05)
+  4650
+  4800
+  4950
+  5100
+  5250
+$ZWS: possibly delisted; no price data found  (1d 2026-09-17 -> 2026-10-05)
+
+1 Failed download:
+['ZWS']: possibly delisted; no price data found  (1d 2026-09-17 -> 2026-10-05)
+  5400
+tickers with changed history (splits): ['RETO', 'ZCMD']
+daily updated to 2026-10-02
+earnings: fetched 32 days, 2384 rows
+       day symbol side tif  qty  fill  official  slip_bps
+2026-09-29    ADX  buy cls 30.0 25.75       NaN       NaN
+2026-09-30    ADX sell opg 24.0 25.75     25.75      -0.0
+mean slippage vs official print (bp, positive = worse): 0.0
+      date   equity   pnl
+2026-09-29 10000.00  0.00
+2026-09-30  9998.79 -1.21
+2026-10-01  9999.48  0.69
+2026-10-02 10005.58  6.10
+2026-10-03 10055.05 49.47
+       day symbol  qty   close  next_open     ret   cost      pnl                                       model
+2026-09-29   ECAT   71  13.970      14.00  0.0021 0.0009   1.2213                  ensemble5_night_2026Q3.txt
+2026-09-29    ASC   54  18.440      18.69  0.0136 0.0009  12.5885                  ensemble5_night_2026Q3.txt
+2026-09-29   STNG   12  83.570      85.72  0.0257 0.0009  24.9225                  ensemble5_night_2026Q3.txt
+2026-09-29    NAT  126   7.980       8.09  0.0138 0.0009  12.9698                  ensemble5_night_2026Q3.txt
+2026-09-29    HYT  128   7.810       7.84  0.0038 0.0009   2.9522                  ensemble5_night_2026Q3.txt
+2026-09-29   HESM   26  37.630      37.91  0.0074 0.0008   6.4735                  ensemble5_night_2026Q3.txt
+2026-09-29     TK   70  14.110      14.25  0.0099 0.0009   8.8644                  ensemble5_night_2026Q3.txt
+2026-09-29    IDT   13  75.560      75.18 -0.0050 0.0010  -5.9037                  ensemble5_night_2026Q3.txt
+2026-09-29    ADX   38  25.710      25.75  0.0016 0.0009   0.6100                  ensemble5_night_2026Q3.txt
+2026-09-29    AES   67  14.860      14.87  0.0007 0.0008  -0.1537                  ensemble5_night_2026Q3.txt
+2026-10-01   NKTR   21  46.990      47.11  0.0026 0.0009   1.6346 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01     SA   36  27.250      27.82  0.0209 0.0010  19.5382 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01   UMAC   46  21.780      22.23  0.0207 0.0009  19.8195 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01   SCTX   58  17.175      17.50  0.0189 0.0012  17.6623 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01    EQX   92  10.820      11.06  0.0222 0.0009  21.2315 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01   FRVO   70  14.460      14.53  0.0048 0.0008   4.0513 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01   TDAY  143   7.060       7.17  0.0156 0.0009  14.8197 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01   OCUL  136   7.290       7.40  0.0151 0.0009  14.0705 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01    ELE   54  18.370      18.81  0.0240 0.0010  22.7495 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01    JBL    3 299.790     303.70  0.0130 0.0009  10.9168 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   FIGR   35  28.530      28.45 -0.0028 0.0008  -3.6381 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02    GEN   45  21.990      21.99  0.0000 0.0008  -0.8065 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   QMCO   29  34.500      34.50  0.0000 0.0010  -0.9547 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   ELMT   45  22.130      22.13  0.0000 0.0011  -1.1451 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02    BXC   13  73.640      72.62 -0.0139 0.0012 -14.4219 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   WOLF   28  35.280      34.04 -0.0351 0.0009 -35.6262 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   KLRA   97  10.390      10.48  0.0087 0.0009   7.7804 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   PPTA   49  20.380      20.38  0.0000 0.0009  -0.9229 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   CCXI   83  11.990      12.08  0.0075 0.0009   6.6026 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02     NG  153   6.550       6.59  0.0061 0.0009   5.2054 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+            names   gross    cost       pnl     net      equity
+day                                                            
+2026-09-29     10  0.0074  0.0009   64.5449  0.0065  10064.5449
+2026-10-01     10  0.0158  0.0009  146.4939  0.0148  10211.0388
+2026-10-02     10 -0.0030  0.0010  -37.9270 -0.0039  10173.1118
+strategy    adr_loser  smallcap_nonews
+day                                   
+2026-09-29     0.0219          -0.0050
+2026-10-01     0.0056           0.0066
+2026-10-02     0.0125           0.0033
+mean net per night (bp): {'adr_loser': 133.2, 'smallcap_nonews': 16.4} nights: {'adr_loser': 3, 'smallcap_nonews': 3}
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+panel ready 2026-10-02
+entry at 15:46:05 ET, submit flag: '--submit'
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+{
+ "day": "2026-10-05",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "ALVO": 0.99987,
+  "BRUN": 0.99643,
+  "BETA": 0.99336,
+  "DFH": 0.99081,
+  "ACMR": 0.98966,
+  "RDW": 0.9894,
+  "FRVO": 0.98838,
+  "DKNG": 0.98621,
+  "AADX": 0.98621,
+  "SPHR": 0.98494
+ },
+ "uncapped_top": {
+  "ALVO": 0.99987,
+  "BRUN": 0.99643,
+  "BETA": 0.99336,
+  "DFH": 0.99081,
+  "ACMR": 0.98966,
+  "RDW": 0.9894,
+  "FRVO": 0.98838,
+  "DKNG": 0.98621,
+  "AADX": 0.98621,
+  "SPHR": 0.98494
+ },
+ "equity": 9888.93,
+ "orders": [
+  {
+   "symbol": "ALVO",
+   "qty": 162,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 68,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "BETA",
+   "qty": 48,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "DFH",
+   "qty": 101,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ACMR",
+   "qty": 13,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "RDW",
+   "qty": 96,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "FRVO",
+   "qty": 73,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "DKNG",
+   "qty": 50,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AADX",
+   "qty": 85,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SPHR",
+   "qty": 8,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 9727.86
+}
+cover BXC 200 {"id":"25fd9362-84e3-4371-8071-15adf429b5a0","client_order_id":"78b6fa34-1147-4dca-b964-8befa381b810","created_at":"2026
+cover CCXI 200 {"id":"c66fff3b-2080-4889-b33e-e6163b0956be","client_order_id":"cc0f11fd-9cd0-48dc-aeb3-3a68fb32e7b7","created_at":"2026
+cover FIGR 200 {"id":"50564643-5c6e-4836-8c2c-d440f5a708e8","client_order_id":"60db549e-8b82-4400-b527-c9861dbc6a54","created_at":"2026
+cover GEN 200 {"id":"31f2c659-5be0-43c4-87df-858db7e3928d","client_order_id":"6b4f7e6b-8a83-468f-b5a0-4bc36d42508f","created_at":"2026
+cover KLRA 200 {"id":"86fc2cf8-8b88-4321-ae74-6aee5fb2addd","client_order_id":"3e294aff-419f-4ff7-b427-6463140e1f7c","created_at":"2026
+cover NG 200 {"id":"ab01dd8f-9e46-4833-945d-848ecd1f30bf","client_order_id":"fc24d995-7333-44fc-ad09-2608bbc6ee32","created_at":"2026
+cover PPTA 200 {"id":"214e473c-4494-481e-8359-dc547b84d521","client_order_id":"04b5db61-6d15-4c3e-83c2-5797a61c3bd8","created_at":"2026
+cover QMCO 200 {"id":"b25f2f57-c5e5-46fa-9c71-7ad9893f4459","client_order_id":"3f5c9eba-b2cf-4d57-ac25-1714973e734d","created_at":"2026
+cover WOLF 200 {"id":"f3914be5-8a7e-4f6b-b3c5-2a4b995dff6b","client_order_id":"2d53c2f4-62af-4f3f-8fb0-984fdd5f86e1","created_at":"2026
+covered 9 day shorts
+ALVO 200 {"id":"35e6b0f4-daed-48ac-bf06-8af809b9247f","client_order_id":"95b07779-e7fb-4846-a35c-8d98438a6344","created_at":"2026-10-05T19:55:35.893377644Z","updated_at":"2026-10-05T19:55:35.894439798Z","submi
+BRUN 200 {"id":"1902a2f9-e2b5-4d36-aeb6-cfde764058c1","client_order_id":"8a696ff3-446a-4493-97d2-a84e949056f5","created_at":"2026-10-05T19:55:36.320786743Z","updated_at":"2026-10-05T19:55:36.322612081Z","submi
+BETA 200 {"id":"94c67f05-7ab2-4075-a94f-149274bf0b9d","client_order_id":"3560c6bd-600f-4669-b0d5-2ecd136a9fe0","created_at":"2026-10-05T19:55:36.763904755Z","updated_at":"2026-10-05T19:55:36.765155902Z","submi
+DFH 200 {"id":"86000b7d-6882-4544-8c0e-e8739b9af491","client_order_id":"db6f5464-143e-4841-99e0-ab230da87ae0","created_at":"2026-10-05T19:55:37.167957319Z","updated_at":"2026-10-05T19:55:37.170027714Z","submi
+ACMR 200 {"id":"78c9dab7-b36a-4f15-8438-f7a18aabacac","client_order_id":"948abc08-e997-47a9-a438-cf64bbd06361","created_at":"2026-10-05T19:55:37.613708271Z","updated_at":"2026-10-05T19:55:37.615208831Z","submi
+RDW 200 {"id":"7345c598-dd00-42e6-a2a9-12bf395797e6","client_order_id":"2a5df25b-966c-46bf-82b6-e88e15757eab","created_at":"2026-10-05T19:55:38.180580125Z","updated_at":"2026-10-05T19:55:38.182280576Z","submi
+FRVO 200 {"id":"2f60c4f4-d6ee-4b4c-b4fb-ff20ef0dcc2a","client_order_id":"9c1e84e9-e1bb-4ffc-9e9f-66944e0e2931","created_at":"2026-10-05T19:55:38.505176804Z","updated_at":"2026-10-05T19:55:38.50672716Z","submit
+DKNG 200 {"id":"d612ca83-40c2-4b71-bd73-58f9682da945","client_order_id":"b157b76a-7289-4981-8075-86eecb8cf82f","created_at":"2026-10-05T19:55:38.935802808Z","updated_at":"2026-10-05T19:55:38.950685272Z","submi
+AADX 200 {"id":"99f602aa-62aa-491b-aad9-d274d89963bb","client_order_id":"97a3e7b1-e17d-42dd-ac38-bef4ff9c3e0b","created_at":"2026-10-05T19:55:39.387937015Z","updated_at":"2026-10-05T19:55:39.394287Z","submitte
+SPHR 200 {"id":"c684d51e-5810-42d3-b063-8b8da0a02fe3","client_order_id":"e1fb69f3-76d3-40e4-89d8-a7240ce9775e","created_at":"2026-10-05T19:55:39.839653835Z","updated_at":"2026-10-05T19:55:39.842144682Z","submi
+entry finished at 15:55:40 ET
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+{
+ "day": "2026-10-05",
+ "recorded_at": "2026-10-05 15:56:45.327748-04:00",
+ "news_window": [
+  "2026-10-02 19:45:00+00:00",
+  "2026-10-05 19:45:00+00:00"
+ ],
+ "n_news_symbols": 651,
+ "smallcap_nonews": {
+  "NNNN": {
+   "loss": 0.1607,
+   "px": 4.699999809265137
+  },
+  "HOST": {
+   "loss": 0.1598,
+   "px": 3.049999952316284
+  },
+  "XRPN": {
+   "loss": 0.1295,
+   "px": 38.3
+  },
+  "VOGX": {
+   "loss": 0.1153,
+   "px": 17.03
+  },
+  "YDES": {
+   "loss": 0.1124,
+   "px": 7.01230001449585
+  },
+  "XTND": {
+   "loss": 0.1076,
+   "px": 2.945
+  },
+  "ENTX": {
+   "loss": 0.0917,
+   "px": 2.625
+  },
+  "EARN": {
+   "loss": 0.0893,
+   "px": 3.67
+  },
+  "MF": {
+   "loss": 0.0797,
+   "px": 14.079999923706055
+  },
+  "FAC": {
+   "loss": 0.0777,
+   "px": 5.46
+  }
+ },
+ "adr_loser": {
+  "SLN": {
+   "loss": 0.0443,
+   "px": 10.15
+  },
+  "IMOS": {
+   "loss": 0.0421,
+   "px": 77.455
+  },
+  "HIMX": {
+   "loss": 0.0386,
+   "px": 14.7
+  },
+  "VALE": {
+   "loss": 0.0377,
+   "px": 14.165
+  },
+  "UGP": {
+   "loss": 0.0354,
+   "px": 7.775
+  }
+ },
+ "spy_meanrev": {
+  "SPY": {
+   "action": "flat",
+   "px": 774.42,
+   "down3": false,
+   "above5": true
+  },
+  "QQQ": {
+   "action": "flat",
+   "px": 755.34,
+   "down3": false,
+   "above5": true
+  }
+ },
+ "day_short": {
+  "ALVO": {
+   "etb": false,
+   "shortable": false
+  },
+  "BRUN": {
+   "etb": true,
+   "shortable": true
+  },
+  "BETA": {
+   "etb": true,
+   "shortable": true
+  },
+  "DFH": {
+   "etb": true,
+   "shortable": true
+  },
+  "ACMR": {
+   "etb": true,
+   "shortable": true
+  },
+  "RDW": {
+   "etb": true,
+   "shortable": true
+  },
+  "FRVO": {
+   "etb": true,
+   "shortable": true
+  },
+  "DKNG": {
+   "etb": true,
+   "shortable": true
+  },
+  "AADX": {
+   "etb": true,
+   "shortable": true
+  },
+  "SPHR": {
+   "etb": true,
+   "shortable": true
+  }
+ },
+ "universe": {
+  "smallcap": 737,
+  "smallcap_priced": 737,
+  "adr": 176
+ }
+}
