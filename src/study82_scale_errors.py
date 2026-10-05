@@ -214,6 +214,9 @@ def main():
     E.to_csv(os.path.join(SCR, "study82_breaks.csv"), index=False) if SCR else None
     print("\nscale breaks (stable both sides):", len(E), "tickers", E.ticker.nunique())
     print(E.groupby(["side", "yahoo_split_listed", "in_univ"]).size().to_string())
+    for _, g in E[E.in_univ].iterrows():
+        add("break_in_univ", g.ticker, period=str(g.date.date()), side=g.side, shift_pct=g.shift_pct,
+            yahoo_cc_pct=g.yahoo_cc_pct, alpaca_cc_pct=g.alpaca_cc_pct, yahoo_split_listed=g.yahoo_split_listed)
     for (sd, ys), g in E.groupby(["side", "yahoo_split_listed"]):
         add("breaks", f"{sd}, yahoo split listed={ys}", n=len(g), n_in_univ=int(g.in_univ.sum()),
             median_abs_shift_pct=float(g.shift_pct.abs().median()), tickers=g.ticker.nunique())
@@ -262,7 +265,18 @@ def main():
         share=float(offn.sum().sum() / tu.sum().sum()),
         share_night_differs_gt_10bp=float((dS[offn] > 0.001).sum().sum() / max(offn.sum().sum(), 1)),
         median_abs_night_diff_bp=1e4 * float(dS[offn].stack().median()))
+    # how big is the offset where it is off, and is the 'all' basis just a dividend-convention difference?
+    aoff = (kA - 1).abs() > TH
+    clean = (k - 1).abs() < 0.001
+    add("extent", "all-basis off > 0.5% while split-basis within 0.1% (dividend convention, top500 2020-23)",
+        period="2020-23", scope="top500",
+        share=float((aoff & clean & top500).loc["2020":"2023"].sum().sum() /
+                    (clean & top500).loc["2020":"2023"].sum().sum()))
     lk = np.log(k).abs().loc["2020":"2023"]
+    for lo_, hi_ in [(0.005, 0.02), (0.02, 0.05), (0.05, 0.2), (0.2, 10)]:
+        m = (np.expm1(lk) > lo_ - 1e-12) & (np.expm1(lk) <= hi_) & tu
+        add("train_2020_23", f"off-scale rows with |k-1| in ({lo_}, {hi_}]", n=int(m.sum().sum()),
+            share=float(m.sum().sum() / tu.sum().sum()), tickers=int(m.any().sum()))
     add("train_2020_23", "rows with lpx feature off by > 0.5% (|log k|)", n=int(((lk > np.log1p(TH)) & tu).sum().sum()),
         share=float(((lk > np.log1p(TH)) & tu).sum().sum() / tu.sum().sum()),
         mean_abs_log_off=float(lk[(lk > np.log1p(TH)) & tu].stack().mean()))
@@ -340,6 +354,24 @@ def main():
         bm = Wm & ((Rn.reindex(index=pr.index) - nA.reindex(index=pr.index, columns=pcols)).abs() > 0.01)
         add("ml_overnight_k10", "picks on Yahoo-side scale-step nights", n=int(hm.sum().sum()), n_picks=int(Wm.sum().sum()))
         add("ml_overnight_k10", "picks with |Yahoo-Alpaca-all| > 1%", n=int(bm.sum().sum()), n_picks=int(Wm.sum().sum()))
+
+    # final_series small/mid-cap tiers (study 8/9 timing; price filter on the traded close as in final_series.py):
+    # how exposed are they to scale breaks and to Yahoo/Alpaca night disagreements?
+    from core import traded_close
+    tpx = traded_close(P)[cols].shift(1).reindex(days)
+    adv_f = dv.rolling(20, min_periods=10).median().shift(1)
+    tiers = {"final_series tierS (px>2, adv 1-5M)": (tpx > 2) & (adv_f > 1e6) & (adv_f <= 5e6),
+             "final_series tierM (px>5, adv 5-50M)": (tpx > 5) & (adv_f > 5e6) & (adv_f <= 5e7)}
+    for nm, tm in tiers.items():
+        m = tm.loc["2024":"2026-09"] & nY.loc["2024":"2026-09"].notna()
+        hb = hit.loc["2024":"2026-09"] & m
+        hb2 = hitY.loc["2024":"2026-09"] & m
+        bg = ((nY - nA).abs() > 0.01).loc["2024":"2026-09"] & m & nA.loc["2024":"2026-09"].notna()
+        add("final_series_tiers", nm, n=int(m.sum().sum()), n_break_nights=int(hb.sum().sum()),
+            n_yahoo_side_steps=int(hb2.sum().sum()), n_night_disagree_gt_1pct=int(bg.sum().sum()),
+            share_night_disagree=float(bg.sum().sum() / max(m.sum().sum(), 1)),
+            mean_yahoo_bp_on_disagree=1e4 * float(nY.loc["2024":"2026-09"][bg].stack().mean()) if bg.any().any() else np.nan,
+            mean_alpaca_all_bp_on_disagree=1e4 * float(nA.loc["2024":"2026-09"][bg].stack().mean()) if bg.any().any() else np.nan)
 
     # ---------------------------------------------------------------- (2b) universe filters
     kc = k.ffill(limit=5)
