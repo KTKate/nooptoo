@@ -1,0 +1,75 @@
+{
+ "day": "2026-10-05",
+ "from_entry": "entry_2026-10-02.json",
+ "equity": 9929.84,
+ "orders": [
+  {
+   "symbol": "FIGR",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "GEN",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "QMCO",
+   "qty": 7,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BXC",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "WOLF",
+   "qty": 7,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "KLRA",
+   "qty": 24,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PPTA",
+   "qty": 12,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CCXI",
+   "qty": 20,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NG",
+   "qty": 38,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "ELMT": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-10-05 09:35:40.821285-04:00"
+}
