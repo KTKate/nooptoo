@@ -91,15 +91,21 @@ def piv(d, k, idx, cols):
     return d.pivot(index="date", columns="ticker", values=k).reindex(index=idx, columns=cols).astype("float64")
 
 
-def shift_events(k):
-    """Level shifts of the ratio k between close t-1 and close t (day t flagged): median of k over t..t+4 vs over
-    t-5..t-1 differs by more than TH, and k_t / k_{t-1} itself moves by more than TH."""
+def shift_events(k, stab=0.002):
+    """Scale breaks of the ratio k = Yahoo / Alpaca between close t-1 and close t (day t flagged).
+    The 5-day median of log k over t..t+4 must differ from the one over t-5..t-1 by more than TH, the step
+    log k_t - log k_{t-1} must be at least half that shift, and k must be *stable* on both sides (the range of
+    log k inside each window below `stab`), so that day-to-day close disagreements on thin names (Yahoo last
+    trade vs the official close) are not counted as scale breaks. Returns (flag, shift size in logs)."""
     lk = np.log(k)
     pre = lk.rolling(5, min_periods=3).median().shift(1)
     post = lk[::-1].rolling(5, min_periods=3).median()[::-1]
+    rng = lambda x: x.rolling(5, min_periods=3).max() - x.rolling(5, min_periods=3).min()
+    tight = (rng(lk).shift(1) < stab) & (rng(lk[::-1])[::-1] < stab)
+    sh = post - pre
     step = lk - lk.ffill().shift(1)
-    ev = ((post - pre).abs() > np.log1p(TH)) & (step.abs() > np.log1p(TH))
-    return ev, (post - pre)
+    ev = (sh.abs() > np.log1p(TH)) & (step.abs() > 0.5 * sh.abs()) & tight
+    return ev.fillna(False), sh
 
 
 def runs(flag, k, top):
@@ -186,44 +192,48 @@ def main():
     for _, r in R.head(60).iterrows():
         add("period", r.ticker, period=f"{r.start}..{r.end}", n_ticker_days=int(r.n_days),
             ratio=r.median_ratio, days_in_top500=r.days_in_top500)
-    # level-shift events
+    # scale breaks and their direction: at a break, either Yahoo restated its history (so Alpaca's own series
+    # shows the uncompensated spin-off price drop and Yahoo's does not -> Yahoo is the economically right one and
+    # our returns are fine) or the Yahoo series itself steps (a restatement only partly applied in data/store ->
+    # a fake return in our panel).
     spl = pd.read_csv(os.path.join(LOC, "events", "splits_yf.csv"), parse_dates=["date"])
     spl["ticker"] = spl.ticker.str.replace(".", "-", regex=False)
     yspl = set(zip(spl.ticker, spl.date))
     ev, mag = shift_events(k)
-    evA, magA = shift_events(kA)
     univ1 = univ.shift(1).fillna(False).astype(bool)
+    rY = np.log(raw / raw.shift(1))                                  # Yahoo raw close-to-close
+    rA = np.log(sc / sc.shift(1))                                    # Alpaca split close-to-close
     E = []
-    for nm, e, mg in [("split", ev, mag), ("all", evA, magA)]:
-        s = e.loc["2019-07":].stack()
-        s = s[s]
-        for (d, t) in s.index:
-            E.append(dict(basis=nm, date=d, ticker=t, log_shift=float(mg.at[d, t]),
-                          yahoo_split_listed=(t, d) in yspl,
-                          open_on_new_scale=bool(abs(np.log(ko.at[d, t] / k.at[d, t])) < 0.003)
-                          if pd.notna(ko.at[d, t]) else np.nan,
-                          in_univ=bool(univ1.at[d, t])))
+    s_ = ev.loc["2019-07":].stack()
+    for (d, t) in s_[s_].index:
+        ry, ra, sh = float(rY.at[d, t]), float(rA.at[d, t]), float(mag.at[d, t])
+        E.append(dict(date=d, ticker=t, shift_pct=100 * np.expm1(sh), yahoo_cc_pct=100 * np.expm1(ry),
+                      alpaca_cc_pct=100 * np.expm1(ra), side="yahoo_steps" if abs(ry) > abs(ra) else "alpaca_steps",
+                      yahoo_split_listed=(t, d) in yspl, in_univ=bool(univ1.at[d, t])))
     E = pd.DataFrame(E)
-    print("\nlevel-shift events:", E.groupby("basis").size().to_dict())
-    print(E.groupby(["basis", "yahoo_split_listed", "in_univ"]).size().to_string())
-    for (b_, ys), g in E.groupby(["basis", "yahoo_split_listed"]):
-        add("events", f"{b_} basis, yahoo split listed={ys}", n=len(g), n_in_univ=int(g.in_univ.sum()),
-            share_open_on_new_scale=float(g.open_on_new_scale.mean()),
-            median_abs_shift=float(np.expm1(g.log_shift.abs()).median()), tickers=g.ticker.nunique())
-    print(E[E.in_univ].sort_values("date").to_string(max_rows=120))
-    # spin-off-type Yahoo splits (non-integer, non-reciprocal ratios) since 2019-07
+    E.to_csv(os.path.join(SCR, "study82_breaks.csv"), index=False) if SCR else None
+    print("\nscale breaks (stable both sides):", len(E), "tickers", E.ticker.nunique())
+    print(E.groupby(["side", "yahoo_split_listed", "in_univ"]).size().to_string())
+    for (sd, ys), g in E.groupby(["side", "yahoo_split_listed"]):
+        add("breaks", f"{sd}, yahoo split listed={ys}", n=len(g), n_in_univ=int(g.in_univ.sum()),
+            median_abs_shift_pct=float(g.shift_pct.abs().median()), tickers=g.ticker.nunique())
+    print("\nbreaks in the training universe, largest first:")
+    print(E[E.in_univ].reindex(E[E.in_univ].shift_pct.abs().sort_values(ascending=False).index)
+          .head(45).round(3).to_string(index=False))
+    # spin-off-type Yahoo splits (ratios that are not simple split fractions) since 2019-07
     s2 = spl[(spl.date >= "2019-07-01")]
     r2 = s2.ratio.values
     nonint = ~np.isclose(r2 * 2, np.round(r2 * 2)) & ~np.isclose(1 / r2, np.round(1 / r2)) & \
         ~np.isclose(r2 * 3, np.round(r2 * 3))
     frac = s2[nonint]
-    add("events", "Yahoo non-integer split ratios listed 2019-07+ (spin-off type)", n=len(frac),
+    add("breaks", "Yahoo non-integer split ratios listed 2019-07+ (spin-off type)", n=len(frac),
         tickers=frac.ticker.nunique(), n_in_univ=int(sum(bool(univ1.at[d, t]) for t, d in zip(frac.ticker, frac.date)
                                                      if t in univ1.columns and d in univ1.index)))
 
     # ---------------------------------------------------------------- (2a) nights with a scale change
     # night t -> t+1 is hit when an event (either basis) is dated t+1
-    hit = (ev | evA).shift(-1).fillna(False).astype(bool)
+    hit = ev.shift(-1).fillna(False).astype(bool)
+    hitY = (ev & (rY.abs() > rA.abs())).shift(-1).fillna(False).astype(bool)   # Yahoo-side step: real fake return
     nY = yo.shift(-1) / yc - 1                                      # the model's night return (Yahoo)
     nA = ao.shift(-1) / ac - 1                                      # Alpaca 'all'
     nS = so.shift(-1) / sc - 1                                      # Alpaca split only
@@ -236,12 +246,22 @@ def main():
     th = hit.loc["2020":"2023"] & tu
     big = (dis > 0.01).loc["2020":"2023"] & tu & nA.loc["2020":"2023"].notna()
     add("train_2020_23", "stock-nights in training universe", n=int(tu.sum().sum()))
-    add("train_2020_23", "nights with a scale change (event at t+1)", n=int(th.sum().sum()),
+    add("train_2020_23", "nights with a Yahoo-side scale step (fake return)", n=int((hitY.loc["2020":"2023"] & tu).sum().sum()))
+    add("train_2020_23", "nights with a scale change (break at t+1)", n=int(th.sum().sum()),
         mean_yahoo_bp=1e4 * float(nY.loc["2020":"2023"][th].stack().mean()),
         mean_alpaca_all_bp=1e4 * float(nA.loc["2020":"2023"][th].stack().mean()),
         mean_alpaca_split_bp=1e4 * float(nS.loc["2020":"2023"][th].stack().mean()))
     add("train_2020_23", "nights |Yahoo - Alpaca-all| > 1%", n=int(big.sum().sum()),
         share=float(big.sum().sum() / tu.sum().sum()))
+    # a constant factor cancels in returns: on persistently off-scale ticker-days (not at a break), how far do the
+    # Yahoo and Alpaca-split night returns actually differ?
+    off = ((km - 1).abs() > TH) & k.notna()
+    offn = off.loc["2020":"2023"] & tu & ~hit.loc["2020":"2023"] & nS.loc["2020":"2023"].notna()
+    dS = (nY - nS).abs().loc["2020":"2023"]
+    add("train_2020_23", "nights on a persistently off-scale ticker-period", n=int(offn.sum().sum()),
+        share=float(offn.sum().sum() / tu.sum().sum()),
+        share_night_differs_gt_10bp=float((dS[offn] > 0.001).sum().sum() / max(offn.sum().sum(), 1)),
+        median_abs_night_diff_bp=1e4 * float(dS[offn].stack().median()))
     lk = np.log(k).abs().loc["2020":"2023"]
     add("train_2020_23", "rows with lpx feature off by > 0.5% (|log k|)", n=int(((lk > np.log1p(TH)) & tu).sum().sum()),
         share=float(((lk > np.log1p(TH)) & tu).sum().sum() / tu.sum().sum()),
@@ -263,13 +283,16 @@ def main():
     W = bt.select_topk(S, S.notna(), 10)
     al = lambda X: X.reindex(index=S.index, columns=pcols)
     hitb, nAb, nSb, kb = al(hit).fillna(False).astype(bool), al(nA), al(nS), al(k)
+    hitYb = al(hitY).fillna(False).astype(bool)
     picked = W > 0
     print("blend picks without Alpaca bars:", int((picked & kb.isna()).sum().sum()), "of", int(picked.sum().sum()))
     base = bt.run(W, Rn, C).net
     variants = {"base (published)": Rn}
     hp = picked & hitb
-    variants["drop scale-change nights (cash)"] = Rn.where(~hitb, 0.0)
-    variants["correct scale-change nights with Alpaca-all"] = Rn.where(~hitb | nAb.isna(), nAb)
+    variants["drop scale-break nights (cash)"] = Rn.where(~hitb, 0.0)
+    variants["drop Yahoo-side scale-step nights (cash)"] = Rn.where(~hitYb, 0.0)
+    variants["correct Yahoo-side scale-step nights with Alpaca-split"] = Rn.where(~hitYb | nSb.isna(), nSb)
+    variants["correct scale-break nights with Alpaca-all"] = Rn.where(~hitb | nAb.isna(), nAb)
     disb = (Rn - nAb).abs()
     bad = (disb > 0.01) & nAb.notna()
     variants["replace every night |Yahoo-Alpaca-all| > 1% with Alpaca-all"] = Rn.where(~bad, nAb)
@@ -277,7 +300,8 @@ def main():
     kbm = np.exp(np.log(kb).rolling(21, center=True, min_periods=10).median())
     offscale = ((kbm - 1).abs() > TH)
     variants["drop picks on an off-scale period (cash)"] = Rn.where(~offscale, 0.0)
-    print("blend picks on scale-change nights:", int(hp.sum().sum()), "| |Y-A|>1%:", int((picked & bad).sum().sum()),
+    print("blend picks on scale-break nights:", int(hp.sum().sum()), "| Yahoo-side steps:",
+          int((picked & hitYb).sum().sum()), "| |Y-A|>1%:", int((picked & bad).sum().sum()),
           "| on off-scale periods:", int((picked & offscale).sum().sum()))
     lst = []
     for d, t in zip(*np.where(hp.values)):
@@ -295,7 +319,8 @@ def main():
             st = ann_stats(r.loc[a:b])
             add("blend", nm, period=per, sharpe=st["sharpe"], ann_ret=st["ann_ret"], net_bp=1e4 * r.loc[a:b].mean(),
                 diff_vs_base_bp=1e4 * (r - base).loc[a:b].mean())
-    for nm, m in [("scale-change nights", hp), ("|Yahoo-Alpaca-all| > 1%", picked & bad),
+    for nm, m in [("scale-break nights", hp), ("Yahoo-side scale-step nights", picked & hitYb),
+                  ("|Yahoo-Alpaca-all| > 1%", picked & bad),
                   ("off-scale periods", picked & offscale)]:
         x = (W * Rn).where(m).sum(1)
         add("blend_contrib", nm, n=int(m.loc["2024":"2026-09"].sum().sum()),
@@ -311,9 +336,9 @@ def main():
         pr = pd.read_parquet(fn)["pred"].unstack()
         pr = pr.reindex(index=pr.index[pr.index >= "2024-01-02"], columns=pcols)
         Wm = bt.select_topk(pr, pr.notna(), 10) > 0
-        hm = Wm & hit.reindex(index=pr.index, columns=pcols).fillna(False).astype(bool)
+        hm = Wm & hitY.reindex(index=pr.index, columns=pcols).fillna(False).astype(bool)
         bm = Wm & ((Rn.reindex(index=pr.index) - nA.reindex(index=pr.index, columns=pcols)).abs() > 0.01)
-        add("ml_overnight_k10", "picks on scale-change nights", n=int(hm.sum().sum()), n_picks=int(Wm.sum().sum()))
+        add("ml_overnight_k10", "picks on Yahoo-side scale-step nights", n=int(hm.sum().sum()), n_picks=int(Wm.sum().sum()))
         add("ml_overnight_k10", "picks with |Yahoo-Alpaca-all| > 1%", n=int(bm.sum().sum()), n_picks=int(Wm.sum().sum()))
 
     # ---------------------------------------------------------------- (2b) universe filters
