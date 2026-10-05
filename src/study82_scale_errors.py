@@ -253,7 +253,8 @@ def main():
     add("train_2020_23", "nights with a scale change (break at t+1)", n=int(th.sum().sum()),
         mean_yahoo_bp=1e4 * float(nY.loc["2020":"2023"][th].stack().mean()),
         mean_alpaca_all_bp=1e4 * float(nA.loc["2020":"2023"][th].stack().mean()),
-        mean_alpaca_split_bp=1e4 * float(nS.loc["2020":"2023"][th].stack().mean()))
+        mean_alpaca_split_bp=1e4 * float(nS.loc["2020":"2023"][th].stack().mean()),
+        max_abs_yahoo_bp=1e4 * float(nY.loc["2020":"2023"][th].abs().stack().max()))
     add("train_2020_23", "nights |Yahoo - Alpaca-all| > 1%", n=int(big.sum().sum()),
         share=float(big.sum().sum() / tu.sum().sum()))
     # a constant factor cancels in returns: on persistently off-scale ticker-days (not at a break), how far do the
