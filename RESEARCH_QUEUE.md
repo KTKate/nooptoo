@@ -13,11 +13,13 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-05)
-- 82: Yahoo price-scale errors vs Alpaca, effect on the blend; 50: weekly calendar patterns (agent)
 - 76: cohorts by earnings and news reaction; 72: short isolated no-news drops, pre-registered (agent)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 82 Caveat: Yahoo spin-off scale errors cancel in returns; no result changes; cent-rounded penny prices make the
+  blend backtest slightly conservative (2.85 -> 2.93 corrected)
+- 50 Reject: calendar windows do not beat SPY after costs; pre-holiday day +18-21 bp but only ~9 days a year
 - 79 Reject: after-hours spreads (~3%) erase the insider-filing jump; tight-spread subset tiny
 - 46 Reject: pre-earnings drift only in 2024-26 (+20 bp/5 days, +35 with target raises); recheck in 2027
 - 63 Reject: industry lead-lag 1-3 bp gross vs ~26 bp costs
@@ -50,8 +52,6 @@ same universe's average (src/horizon_lib.py).
 - 43 out of scope (monthly): low EV/sales top 20 strong in 2020-23, weak in 2024-26
 
 ## Next (intraday: open to close, or within the session)
-- 82: check whether the Yahoo spin-off price-scale errors found in study 64 (about 5% of large-stock days in 2020)
-  affect the overnight model's training data and backtests
 - (done) 60: day-session long model (buy at the opening auction, sell at the closing auction) with all inputs: price,
   news since the previous close, analyst targets, fundamentals, premarket move; long side only (study 29 found the
   short side works only in hard-to-borrow names)
@@ -65,7 +65,6 @@ same universe's average (src/horizon_lib.py).
   (recent buy, size) as inputs to the day-session and jump models
 - 48: S&P 500 additions: candidates and announced additions, 1-5 days around announcement and effective date
 - 49: short squeeze setups (high short volume ratio + news + price breakout), 1-5 day holds
-- 50: weekly patterns: Monday open to Friday close, turn of month, pre-holiday, options expiration week
 - 52: cross-asset moves (rates, dollar, oil, gold, bitcoin) predicting sector ETFs over 1-5 days
 - 57: pairs within industries, 1-5 day reversion of the spread
 - 71: full day cycle on one account: overnight blend long + day-session long model + quarter-size day short of the

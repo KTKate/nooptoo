@@ -27,6 +27,9 @@ Rules (long only)
   ex_<window>               buy-and-hold except during that window (for the windows above that are not weekday
                             fragments), i.e. "avoid the bad window"
   bh                        buy and hold (one entry)
+Reported per rule and period: net Sharpe and annual return of the (part-time) rule, the share of segments it is
+long, net and gross basis points per live day, and short_net_bp_per_live_day = what the same window pays shorted
+(-gross - cost), to tell a real negative window from a cost artefact.
 Periods 2020-23 and 2024-26 (to 2026-09). A rule "beats SPY" when its net Sharpe exceeds SPY buy-and-hold's in both
 periods; annual return is shown too (a part-time rule usually earns less in total).
 
@@ -161,7 +164,8 @@ def rule_returns(r_on, r_id, cost, name):
     c_on = np.r_[cost[0], cost[:-1]]
     paid = sw[0::2] * c_on + sw[1::2] * cost
     g = (1 + np.where(on, r_on, 0)) * (1 + np.where(idm, r_id, 0)) - 1
-    return pd.Series(np.nan_to_num(g) - np.nan_to_num(paid), index=days), on | idm
+    return (pd.Series(np.nan_to_num(g) - np.nan_to_num(paid), index=days), on | idm,
+            pd.Series(np.nan_to_num(g), index=days))
 
 
 def segs_etf(t):
@@ -188,7 +192,7 @@ rows = []
 
 def evaluate(inst, r_on, r_id, cost):
     for name in RULES:
-        r, live = rule_returns(r_on, r_id, cost, name)
+        r, live, gr = rule_returns(r_on, r_id, cost, name)
         live = pd.Series(live, index=days)
         for per, a, b in PER:
             x = r.loc[a:b]
@@ -198,6 +202,9 @@ def evaluate(inst, r_on, r_id, cost):
                              in_market=float(lv.mean()), sharpe=st["sharpe"], ann_ret=st["ann_ret"],
                              ann_vol=st["ann_vol"], maxdd=st["maxdd"],
                              net_bp_per_live_day=1e4 * x[lv].mean() if lv.any() else np.nan,
+                             gross_bp_per_live_day=1e4 * gr.loc[a:b][lv].mean() if lv.any() else np.nan,
+                             short_net_bp_per_live_day=1e4 * (-2 * gr.loc[a:b][lv].mean() + x[lv].mean())
+                             if lv.any() else np.nan,
                              t_live_day=(x[lv].mean() / x[lv].std() * np.sqrt(lv.sum())) if lv.sum() > 2 else np.nan))
 
 

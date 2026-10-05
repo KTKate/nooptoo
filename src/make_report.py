@@ -360,6 +360,17 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("82", "Data check: Yahoo price-scale errors (spin-off adjustments) vs Alpaca prices, and their effect on results",
+     "Caveat",
+     "Real in price levels (5.7% of 2020 top-500 stock-days, 47 tickers 2020-23) but constant within Yahoo's own series, "
+     "so they cancel in returns; only 11 true breaks, touching 5 of 1.95M training nights and 0 of 6,850 blend picks. "
+     "No published result changes. A separate defect: 12 blend picks in sub-dollar names with cent-rounded Yahoo "
+     "prices; correcting them raises the blend from 2.85 to 2.93, so the published number is conservative."),
+    ("50", "Weekly and monthly calendar windows (Monday-Friday, weekend, turn of month, pre-holiday, options "
+     "expiration) for SPY, QQQ, IWM, DIA, 11 sector ETFs and the liquid stock basket, and for the blend", "Reject",
+     "No rule beats SPY buy-and-hold on return in both periods; 3 of 384 cells beat it on Sharpe (pre-holiday days in "
+     "XLU/XLRE, 28-37 days per period), about what chance gives. Pre-holiday close-to-close is consistently positive "
+     "(+18 to +21 bp, ~9 days a year). Turn of month and options expiration flip sign between periods."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
