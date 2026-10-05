@@ -12,7 +12,10 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-04)
+## Running (batch 2026-10-05)
+- 82: Yahoo price-scale errors vs Alpaca, effect on the blend; 50: weekly calendar patterns (agent)
+- 76: cohorts by earnings and news reaction; 72: short isolated no-news drops, pre-registered (agent)
+- 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
 - 79 Reject: after-hours spreads (~3%) erase the insider-filing jump; tight-spread subset tiny
