@@ -371,6 +371,16 @@ studies = [
      "No rule beats SPY buy-and-hold on return in both periods; 3 of 384 cells beat it on Sharpe (pre-holiday days in "
      "XLU/XLRE, 28-37 days per period), about what chance gives. Pre-holiday close-to-close is consistently positive "
      "(+18 to +21 bp, ~9 days a year). Turn of month and options expiration flip sign between periods."),
+    ("76", "Cohort models from how stocks react to earnings and news (yearly clusters on 9 reaction traits), as inputs "
+     "and as per-cohort models", "Reject",
+     "Cohort inputs: 1.24 / 2.10 / 2.40 vs 0.79 / 2.36 / 2.39 for the baseline (2022-23 / 2024-25H1 / 2025H2-26), "
+     "-0.13 over 2024-26 (p 0.65). Per-cohort models swing (0.60 then 3.32). Added to the ensemble: +0.05 to +0.10 "
+     "over adding a plain member (p 0.3), all in 2025H2-26. Clusters weak (silhouette 0.10-0.13)."),
+    ("72", "Shorting isolated no-news drops of 10%+ (pre-registered: 15:45 signal, easy-to-borrow only, 2-5 day "
+     "holds)", "Reject",
+     "Primary rule (short at the next close, hold 3 days): +76 bp a trade in 2020-23 (t 0.6), -122 bp in 2024-26; "
+     "Sharpe -0.71. The short-sale restriction blocks same-day entry. Post hoc: the effect sits in names hard to borrow "
+     "today (+1,157 bp, 45 trades in 2024-26), which needs point-in-time borrow data to be believed."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

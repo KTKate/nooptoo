@@ -13,10 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-05)
-- 76: cohorts by earnings and news reaction; 72: short isolated no-news drops, pre-registered (agent)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 76 Reject: reaction cohorts help 2022-23 only; per-cohort models unstable; ensemble gain not significant
+- 72 Reject: pre-registered drop-short rule loses in 2024-26; effect only in hard-to-borrow names (needs borrow data)
 - 82 Caveat: Yahoo spin-off scale errors cancel in returns; no result changes; cent-rounded penny prices make the
   blend backtest slightly conservative (2.85 -> 2.93 corrected)
 - 50 Reject: calendar windows do not beat SPY after costs; pre-holiday day +18-21 bp but only ~9 days a year
@@ -59,8 +60,6 @@ same universe's average (src/horizon_lib.py).
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
   in shadow.py, long-only top quintile, scored at official prints
-- 76: cohort models by earnings behavior and news reaction (clusters on past reactions), as extra ensemble members
-- 72: short isolated no-news drops below -10% for 2-5 days (study 44 lead), with borrow limits, fresh cut-offs
 - 78: live Form 4 feed (EDGAR XML from 2026-04) for a shadow test of insider buys > 5% of ADV; insider features
   (recent buy, size) as inputs to the day-session and jump models
 - 48: S&P 500 additions: candidates and announced additions, 1-5 days around announcement and effective date
