@@ -12,10 +12,14 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-05)
+## Running (batch 2026-10-06)
+- 48: S&P 500 additions and candidates; 49: short-squeeze setups (agent)
+- 52: cross-asset signals for sector ETFs; 57: fundamental-similarity pairs (agent)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 71 Candidate: blend + half-size day long + quarter-size day short, Sharpe 2.80 / 3.31 vs 2.42 / 2.91; margin and
+  premarket data needed
 - 76 Reject: reaction cohorts help 2022-23 only; per-cohort models unstable; ensemble gain not significant
 - 72 Reject: pre-registered drop-short rule loses in 2024-26; effect only in hard-to-borrow names (needs borrow data)
 - 82 Caveat: Yahoo spin-off scale errors cancel in returns; no result changes; cent-rounded penny prices make the
@@ -66,6 +70,5 @@ same universe's average (src/horizon_lib.py).
 - 49: short squeeze setups (high short volume ratio + news + price breakout), 1-5 day holds
 - 52: cross-asset moves (rates, dollar, oil, gold, bitcoin) predicting sector ETFs over 1-5 days
 - 57: pairs within industries, 1-5 day reversion of the spread
-- 71: full day cycle on one account: overnight blend long + day-session long model + quarter-size day short of the
-  picks (studies 33, 60, 68), with margin and settlement rules
-- 66: weekly ML (study 39) combined with the overnight blend: capital split, combined Sharpe and drawdown
+- 83: day-session long model (study 60) with premarket data only up to 09:10 (what the free plan delivers at 09:25)
+  and with IEX-only premarket prices; if it holds, paper-trade it next to the day short

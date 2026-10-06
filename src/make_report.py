@@ -381,6 +381,11 @@ studies = [
      "Primary rule (short at the next close, hold 3 days): +76 bp a trade in 2020-23 (t 0.6), -122 bp in 2024-26; "
      "Sharpe -0.71. The short-sale restriction blocks same-day entry. Post hoc: the effect sits in names hard to borrow "
      "today (+1,157 bp, 45 trades in 2024-26), which needs point-in-time borrow data to be believed."),
+    ("71", "Full day cycle on one margin account: overnight blend + day-session long model (study 60) + day short of "
+     "the picks (study 68)", "Candidate",
+     "Sizes chosen on 2024H2-25H1 from 9 (half-size day long, quarter-size day short): Sharpe 2.80 vs 2.42 there and "
+     "3.31 vs 2.91 in 2025H2-26; max drawdown -24% vs -21%; yearly return 247% vs 177% (2024H2-26). The day legs "
+     "correlate -0.48. Needs a margin account and premarket prices at 09:25 (free plan: SIP 15 minutes late)."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
