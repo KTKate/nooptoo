@@ -402,6 +402,35 @@ def added_soon(T_d, j, lo=-2, hi=5):
     return bool(((x.ann - T_d).dt.days.between(lo, hi)).any())
 
 
+# 'actual' quarterly dates: the Friday on which that month's market-cap changes were announced, if any within
+# 10 days of the rule date (the date is hindsight; the rule date is the tradable one)
+mc_ann = EVALL[EVALL.mcap_change.astype(bool) & EVALL.ann.notna()].ann.dt.normalize().unique()
+qa = []
+for d in qf:
+    near = [x for x in mc_ann if abs((x - d).days) <= 10 and pd.Timestamp(x).dayofweek == 4]
+    qa.append(pd.Timestamp(min(near, key=lambda x: abs((x - d).days))) if near else d)
+print("actual quarterly dates differing from the rule:", [(a.date(), b.date()) for a, b in zip(qf, qa) if a != b])
+
+_top20 = {}
+
+
+def top20_at(T):
+    T_i = alld.searchsorted(T)
+    if T not in _top20:
+        idx, _ = candidates(T_i, T_i - 5)
+        _top20[T] = set(idx[:20])
+    return _top20[T]
+
+
+def perennial(d_f):
+    """top-20 candidates at each of the 4 previous quarterly rule dates (before d_f) and never added: S&P has
+    passed them over for a year (MLPs, foreign domicile, low float, ...). Uses past information only."""
+    prev = [T for T in qf if T < d_f - pd.Timedelta(days=3)][-4:]
+    if len(prev) < 4:
+        return set()
+    return set.intersection(*[top20_at(T) for T in prev])
+
+
 BW = {"pre5": (-5, "c", 0, "c"), "pre10": (-10, "c", 0, "c"), "pre3": (-3, "c", 0, "c"),
       "ann_night": (0, "c", 1, "o"), "pre4_through_night": (-4, "c", 1, "o"), "post5": (0, "c", 5, "c")}
 
@@ -415,42 +444,46 @@ def run_dates(Ts, label):
         for wn, (da, ka, db, kb) in BW.items():
             f_i = T_i + da
             idx, thr = candidates(T_i, f_i)
+            per_ = perennial(alld[f_i])
+            fresh = np.array([j for j in idx if j not in per_], dtype=int)
             um = UNIV[f_i]
             bm = bench(T_i + da, ka, T_i + db, kb, um)
             sy = spy_win(T_i + da, ka, T_i + db, kb)
             r = win(T_i + da, ka, T_i + db, kb)
             cost = COST[T_i + da] + COST[T_i + db]
-            sel = {"top5": idx[:5], "top10": idx[:10], "top20": idx[:20],
-                   "rank21_50": idx[20:50],
+            sel = {"top5": idx[:5], "top10": idx[:10], "top20": idx[:20], "rank21_50": idx[20:50],
+                   "fresh_top5": fresh[:5], "fresh_top10": fresh[:10],
                    "above_min": idx[MCAP[f_i, idx] >= thr] if np.isfinite(thr) else idx[:0]}
             for g, js in sel.items():
                 js = js[np.isfinite(r[js])]
                 if len(js) == 0:
                     continue
-                hits = [added_soon(T, j) for j in js]
+                hits = np.array([added_soon(T, j) for j in js])
                 rr = np.clip(r[js], -0.9, 3.0)
-                out.append(dict(T=T, label=label, window=wn, group=g, n=len(js), raw=rr.mean(), x=rr.mean() - bm,
-                                xs=rr.mean() - sy, net_s=rr.mean() - cost[js].mean() - sy, hit=np.mean(hits),
-                                x_nonhit=np.mean(rr[~np.array(hits)]) - bm if (~np.array(hits)).any() else np.nan,
-                                x_hit=np.mean(rr[np.array(hits)]) - bm if np.any(hits) else np.nan,
+                out.append(dict(Td=T, label=label, window=wn, group=g, n=len(js), raw=rr.mean(), x=rr.mean() - bm,
+                                xs=rr.mean() - sy, net_s=rr.mean() - cost[js].mean() - sy, hit=hits.mean(),
+                                x_nonhit=np.mean(rr[~hits]) - bm if (~hits).any() else np.nan,
+                                x_hit=np.mean(rr[hits]) - bm if hits.any() else np.nan,
                                 names=",".join(cols[j] for j in js[:10]) if wn == "pre5" else ""))
     return pd.DataFrame(out)
 
 
-QD = run_dates(qf, "quarterly")
+QD = run_dates(qf, "quarterly_rule")
+QA = run_dates(sorted(set(qa)), "quarterly_actual")
 fr = [d for d in alld[(alld >= "2020-01-01") & (alld <= END - pd.Timedelta(days=10))] if d.dayofweek == 4]
-qi = np.array([alld.searchsorted(d) for d in qf])
+qi = np.array([alld.searchsorted(d) for d in qf + qa])
 pl = [d for d in fr if np.min(np.abs(qi - alld.searchsorted(d))) >= 10]
 PD = run_dates(pl, "placebo_fridays")
-print("quarterly dates:", QD.T.nunique(), "placebo dates:", PD.T.nunique(), flush=True)
-print("\ntop-10 candidates on the pre5 formation day (first and last 4 quarterly dates):")
-x = QD[(QD.window == "pre5") & (QD.group == "top10")]
-print(pd.concat([x.head(4), x.tail(4)])[["T", "hit", "names"]].to_string())
+print("quarterly dates:", QD.Td.nunique(), "placebo dates:", PD.Td.nunique(), flush=True)
+for g in ["top10", "fresh_top10"]:
+    print(f"\n{g} candidates on the pre5 formation day (quarterly rule dates):")
+    x = QD[(QD.window == "pre5") & (QD.group == g)]
+    print(x[["Td", "hit", "names"]].to_string())
 
-for lab, D in [("quarterly", QD), ("placebo_fridays", PD)]:
+for lab, D in [("quarterly_rule", QD), ("quarterly_actual", QA), ("placebo_fridays", PD)]:
     for (wn, g), y in D.groupby(["window", "group"]):
         for per, a_, b_ in PER + [("all", "2020-01-01", "2026-12-31")]:
-            z = y[(y.T >= a_) & (y.T <= b_)]
+            z = y[(y.Td >= a_) & (y.Td <= b_)]
             if len(z) < 3:
                 continue
             hold = BW[wn][2] - BW[wn][0]
@@ -463,7 +496,7 @@ for lab, D in [("quarterly", QD), ("placebo_fridays", PD)]:
                              excess_hit_bp=1e4 * z.x_hit.mean()))
 
 # tradable book: top N at the close of T-5 to the close of T (or open T+1 from close T-4)
-for g, n in [("top5", 5), ("top10", 10), ("top20", 20)]:
+for g, n in [("top5", 5), ("top10", 10), ("top20", 20), ("fresh_top5", 5), ("fresh_top10", 10)]:
     for wn, (da, ka, db, kb) in [("pre5", BW["pre5"]), ("pre4_through_night", BW["pre4_through_night"])]:
         trades = []
         for T in qf:
@@ -471,13 +504,16 @@ for g, n in [("top5", 5), ("top10", 10), ("top20", 20)]:
             if T_i + 6 >= N or alld[T_i] != T or T_i < 260:
                 continue
             idx, _ = candidates(T_i, T_i + da)
+            if g.startswith("fresh"):
+                pr = perennial(alld[T_i + da])
+                idx = np.array([j for j in idx if j not in pr], dtype=int)
             for j in idx[:n]:
                 trades.append((T_i + da, ka, T_i + db, kb, j, 1, 0))
         s, acc = book(trades, slots=n, w=1.0 / n)
         for per, a_, b_ in PER:
             x = s.loc[a_:b_].loc[:END]
             st = ann_stats(x)
-            ROWS.append(dict(part="b_book", group=f"quarterly_{g}", period=per, window=wn, n=len(acc),
+            ROWS.append(dict(part="b_book", group=f"quarterly_rule_{g}", period=per, window=wn, n=len(acc),
                              book_net_bp_day=1e4 * x.mean(), book_sharpe=st["sharpe"], book_maxdd=st["maxdd"],
                              book_ann=st["ann_ret"], invested=float((x != 0).mean()),
                              spy_sharpe=ann_stats(spyd.loc[a_:b_].loc[:END])["sharpe"]))
