@@ -13,10 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-06)
-- 48: S&P 500 additions and candidates; 49: short-squeeze setups (agent)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 48 Reject: S&P additions' gain is the untradable announcement-night jump; candidate lists do not predict
+- 49 Reject: short-squeeze setups fail out of sample; short volume adds nothing to the overnight rise
 - 52 Reject: cross-asset lead-lag for sector ETFs below costs; no rule beats SPY
 - 57 Reject: fundamental-similarity pairs gross 4-16 bp vs ~17 bp costs
 - 71 Candidate: blend + half-size day long + quarter-size day short, Sharpe 2.80 / 3.31 vs 2.42 / 2.91; margin and
@@ -67,7 +68,5 @@ same universe's average (src/horizon_lib.py).
   in shadow.py, long-only top quintile, scored at official prints
 - 78: live Form 4 feed (EDGAR XML from 2026-04) for a shadow test of insider buys > 5% of ADV; insider features
   (recent buy, size) as inputs to the day-session and jump models
-- 48: S&P 500 additions: candidates and announced additions, 1-5 days around announcement and effective date
-- 49: short squeeze setups (high short volume ratio + news + price breakout), 1-5 day holds
 - 83: day-session long model (study 60) with premarket data only up to 09:10 (what the free plan delivers at 09:25)
   and with IEX-only premarket prices; if it holds, paper-trade it next to the day short

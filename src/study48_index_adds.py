@@ -27,7 +27,11 @@
     pending addition already announced. Ranked by market cap; top 5 / 10 / 20, and 'above_min' = all with a market
     cap above the 20th percentile of the caps of stocks added in the previous 2 years (a data-driven stand-in for
     S&P's published minimum, which changed several times).
-    Announcement days T: first Friday of Mar/Jun/Sep/Dec (quarterly rebalance; checked against the data). Windows:
+    'fresh_*' also drops perennial names: top-20 candidates at each of the 4 previous quarterly dates and never
+    added (MLPs, foreign domicile, low float, ...; past information only).
+    Announcement days T: first Friday of Mar/Jun/Sep/Dec (quarterly rebalance; 'quarterly_rule', tradable) and
+    'quarterly_actual' (the Friday on which that month's market-cap changes were announced when within 10 days of
+    the rule date: hindsight on the date, 2 of 25 differ). Windows:
     pre5 close T-5 -> close T (formation at T-5), pre10 close T-10 -> close T, ann_night close T -> open T+1,
     post5 close T -> close T+5. Placebo: the same construction on every other Friday at least 10 trading days away
     from a quarterly announcement. Excess vs the liquid universe, t over announcement dates; hit rate = share of
@@ -461,7 +465,7 @@ def run_dates(Ts, label):
                 hits = np.array([added_soon(T, j) for j in js])
                 rr = np.clip(r[js], -0.9, 3.0)
                 out.append(dict(Td=T, label=label, window=wn, group=g, n=len(js), raw=rr.mean(), x=rr.mean() - bm,
-                                xs=rr.mean() - sy, net_s=rr.mean() - cost[js].mean() - sy, hit=hits.mean(),
+                                xspy=rr.mean() - sy, net_s=rr.mean() - cost[js].mean() - sy, hit=hits.mean(),
                                 x_nonhit=np.mean(rr[~hits]) - bm if (~hits).any() else np.nan,
                                 x_hit=np.mean(rr[hits]) - bm if hits.any() else np.nan,
                                 names=",".join(cols[j] for j in js[:10]) if wn == "pre5" else ""))
@@ -490,7 +494,7 @@ for lab, D in [("quarterly_rule", QD), ("quarterly_actual", QA), ("placebo_frida
             ROWS.append(dict(part="b_candidates", group=f"{lab}_{g}", period=per, window=wn, n=int(z.n.sum()),
                              n_dates=len(z), hold_days=hold, raw_bp=1e4 * z.raw.mean(), excess_bp=1e4 * z.x.mean(),
                              excess_datew_bp=1e4 * z.x.mean(), excess_med_bp=1e4 * z.x.median(), t_date=nw_t(z.x.values),
-                             hit=float((z.x > 0).mean()), vs_spy_bp=1e4 * z.xs.mean(), t_vs_spy=nw_t(z.xs.values),
+                             hit=float((z.x > 0).mean()), vs_spy_bp=1e4 * z.xspy.mean(), t_vs_spy=nw_t(z.xspy.values),
                              net_vs_spy_bp=1e4 * z.net_s.mean(), t_net_vs_spy=nw_t(z.net_s.values),
                              add_hit_rate=z.hit.mean(), excess_nonhit_bp=1e4 * z.x_nonhit.mean(),
                              excess_hit_bp=1e4 * z.x_hit.mean()))

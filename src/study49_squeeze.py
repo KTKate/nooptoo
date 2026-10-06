@@ -23,8 +23,8 @@ Statistics: excess = event return - equal-weight mean of the same return over th
 Tradable book: up to 10 names at 10% each (cash otherwise), entered at the close of t from that day's events
 (highest short_z first for A, largest r first for B and refs), held to the exit; cost per side auction
 (core.exec_cost_bps on traded prices) + 2.5 bp. Net bp/day, Sharpe, max drawdown, vs SPY buy and hold.
-Selection: at most 2 (setup, universe, exit) cells chosen on 2020-23 only (highest book net Sharpe among cells with
->= 100 events and t_date > 2), then read on 2024-26.
+Selection: at most 2 (setup, universe, exit) cells chosen on 2020-23 only (highest book net Sharpe among A/B cells,
+not the references, with >= 100 events and t_date > 2), then read on 2024-26.
 Overlap: share of events that are in the overnight blend's top 10 on the same evening (study 68 score, 2024+).
 Periods: 2020-23, 2024-26, 2024H1-25H1, 2025H2-26 (to 2026-09-25, end of the news archive).
 Output: results/study49_squeeze.csv
@@ -51,7 +51,7 @@ alld = P["c"].index
 N = len(alld)
 ci = {t: i for i, t in enumerate(cols)}
 o, c = P["o"][cols].astype("float64"), P["c"][cols].astype("float64")
-v = P["v"][cols].astype("float64")
+v = P["v"][cols].astype("float32")
 
 s = pd.read_csv(os.path.join(DATA, "local", "events", "splits_yf.csv"), parse_dates=["date"])
 s = s[s.ticker.isin(cols)]
@@ -91,17 +91,19 @@ pos = (NN > 0) & (SE > 0)
 anyn = NN > 0
 
 SET = {}
+negSZ, negr = -SZ, -r
 for z in [1.5, 2, 3]:
     for nn, nm in [("pos", pos), ("any", anyn), ("none", None)]:
         m = (SZ > z) & brk
         if nm is not None:
             m &= nm
-        SET[f"A_z>{z}_brk_news{nn}"] = (m, -SZ)
+        SET[f"A_z>{z}_brk_news{nn}"] = (m, negSZ)
 for rn, rm in [("sr>p90", SR.gt(sr90, axis=0)), ("sr>0.6", SR > 0.6)]:
     for up in [0.05, 0.10]:
-        SET[f"B_{rn}_r>{int(up * 100)}%"] = (rm & (r > up), -r)
-SET["ref_breakout"] = (brk, -r)
-SET["ref_r>5%"] = (r > 0.05, -r)
+        SET[f"B_{rn}_r>{int(up * 100)}%"] = (rm & (r > up), negr)
+SET["ref_breakout"] = (brk, negr)
+SET["ref_r>5%"] = (r > 0.05, negr)
+del SE, NN, vr, hi20, v
 
 
 def nw_t(x, lags):
@@ -217,7 +219,8 @@ def main():
             print(un, sn, "done", flush=True)
     res = pd.DataFrame(rows)
     # selection on 2020-23
-    d = res[(res.period == "2020-23") & (res.n_events >= 100) & (res.t_date > 2)].sort_values("book_sharpe",
+    d = res[(res.period == "2020-23") & (res.n_events >= 100) & (res.t_date > 2) & ~res.setup.str.startswith("ref")
+            ].sort_values("book_sharpe",
                                                                                                ascending=False)
     chosen = d.head(2)[["setup", "univ", "exit"]].values.tolist()
     res["chosen"] = [([a, b, e] in chosen) for a, b, e in zip(res.setup, res.univ, res.exit)]

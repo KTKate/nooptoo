@@ -394,6 +394,15 @@ studies = [
     ("57", "Pairs within industries chosen by fundamental similarity, 1-5 day spread reversion", "Reject",
      "Gross 4-16 bp a trade against ~17 bp of round-trip costs; best 2020-23 variant (Sharpe 0.59) is -0.23 in "
      "2024-26; median of 60 variants negative; worse than study 20's correlation pairs."),
+    ("48", "S&P 500 additions and deletions at 1-5 days, and buying likely additions before quarterly announcements",
+     "Reject",
+     "The gain is the announcement-night jump (+196 / +561 bp, t 4.1 / 7.1), which cannot be traded at the auctions. "
+     "After the first open: +50 to +148 bp, t below 1.5; books Sharpe 0.07-0.52 vs SPY 0.62 / 1.27. Candidate lists "
+     "predict additions poorly (10-20% hit) and do no better than placebo Fridays. Deletions: nothing."),
+    ("49", "Short-squeeze setups: FINRA short-volume ratio or z-score plus breakouts, big up days and news, 1-5 days",
+     "Reject",
+     "No setup has t > 2 in both periods; the one rule chosen on 2020-23 (+11.5 bp, t 2.3) is -2 bp a day in 2024-26 "
+     "(Sharpe -0.20). What remains is the generic overnight rise after up days, already in the blend. 180 cells."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",
