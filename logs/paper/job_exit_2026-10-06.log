@@ -1,0 +1,173 @@
+== paper job exit 2026-10-06 09:19:23 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-06",
+ "orders": [
+  {
+   "symbol": "AADX",
+   "qty": 85,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ACMR",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ALVO",
+   "qty": 162,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BETA",
+   "qty": 48,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 68,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DFH",
+   "qty": 101,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DKNG",
+   "qty": 50,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRVO",
+   "qty": 73,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "RDW",
+   "qty": 96,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SPHR",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AADX 200 {"id":"82519038-eea8-415b-9207-7ef78932fb26","client_order_id":"4e669d22-0f2f-442e-a8f1-3e872ce66dd3","created_at":"2026-10-06T13:19:41.295459185Z","updated_at":"2026-10-06T13:19:41.296704062Z","submi
+ACMR 200 {"id":"d4394bf2-3c3c-4791-a0ed-c5fe2219e253","client_order_id":"e0d0d4fa-83fc-4877-9b8c-b27f6cceafb5","created_at":"2026-10-06T13:19:41.714865129Z","updated_at":"2026-10-06T13:19:41.715626661Z","submi
+ALVO 200 {"id":"5f8a340d-7f39-4988-9190-4a67548adbf8","client_order_id":"a28d9166-1d5b-4b2e-ba7c-1d31e30227e0","created_at":"2026-10-06T13:19:42.13414959Z","updated_at":"2026-10-06T13:19:42.135312314Z","submit
+BETA 200 {"id":"248e38c7-0029-4a55-b578-8602b7815b48","client_order_id":"4db77e0d-071b-4745-9e9e-c04d122ebdcb","created_at":"2026-10-06T13:19:42.58689349Z","updated_at":"2026-10-06T13:19:42.592583706Z","submit
+BRUN 200 {"id":"6611db23-4123-422a-9679-93ea91fdeae0","client_order_id":"b84c82f0-1bcd-44ae-8fe9-41dedb235a06","created_at":"2026-10-06T13:19:43.065221678Z","updated_at":"2026-10-06T13:19:43.066011763Z","submi
+DFH 200 {"id":"b02c4c7e-e7de-4336-88a3-b3505a212cd9","client_order_id":"b6ff2f62-4887-47ed-a52d-99b543bfe98c","created_at":"2026-10-06T13:19:43.55537933Z","updated_at":"2026-10-06T13:19:43.556140582Z","submit
+DKNG 200 {"id":"3f906381-4c0e-4057-bf36-07dc8e6a37cf","client_order_id":"41de6268-1cc3-4387-861c-b68ae08b5279","created_at":"2026-10-06T13:19:43.990500137Z","updated_at":"2026-10-06T13:19:43.991260648Z","submi
+FRVO 200 {"id":"c965b424-261e-464f-bb67-ce65fb3521b2","client_order_id":"7b03b076-d4cd-42c2-96e5-284b649652d1","created_at":"2026-10-06T13:19:44.435519211Z","updated_at":"2026-10-06T13:19:44.436327423Z","submi
+RDW 200 {"id":"b92e8bad-c7fa-45e1-a685-6f59eb576030","client_order_id":"2334c7db-d49f-4abf-9e51-fa16b6d5459f","created_at":"2026-10-06T13:19:44.844469572Z","updated_at":"2026-10-06T13:19:44.845273287Z","submi
+SPHR 200 {"id":"34a20dd0-0e86-40f7-bd92-c2952f1418d2","client_order_id":"51313710-b302-4543-946c-03f69795278d","created_at":"2026-10-06T13:19:45.327993894Z","updated_at":"2026-10-06T13:19:45.328873974Z","submi
+{
+ "day": "2026-10-06",
+ "from_entry": "entry_2026-10-05.json",
+ "equity": 10016.98,
+ "orders": [
+  {
+   "symbol": "BRUN",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BETA",
+   "qty": 12,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DFH",
+   "qty": 25,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ACMR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "RDW",
+   "qty": 23,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRVO",
+   "qty": 17,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DKNG",
+   "qty": 12,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AADX",
+   "qty": 21,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SPHR",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "ALVO": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-10-06 09:34:11.303326-04:00"
+}
+BRUN 200 {"id":"a7158e55-66eb-4fba-8fc6-72cf6e58eb05","client_order_id":"101bafa2-420a-4bd7-90ae-763b72eef845","created_at":"2026-10-06T13:34:11.843373804Z","updated_at":"2026-10-06T13:34:11.855939913Z","submi
+BETA 200 {"id":"ef8285e4-3c19-4fd2-9aa6-5206606eaf99","client_order_id":"4da356e7-78f1-4c0d-8bd6-825ace4caf75","created_at":"2026-10-06T13:34:12.330711646Z","updated_at":"2026-10-06T13:34:12.331723794Z","submi
+DFH 200 {"id":"9dd6adb2-50f0-4035-bd6a-d8cdbc57f275","client_order_id":"2246e309-edf6-445f-be46-5b935709aa6e","created_at":"2026-10-06T13:34:12.782643268Z","updated_at":"2026-10-06T13:34:12.783718852Z","submi
+ACMR 200 {"id":"41bf898b-411a-42ad-931b-9eaa8a2d8e1a","client_order_id":"bb23f98a-0297-4f81-abaa-bc6c83ca277a","created_at":"2026-10-06T13:34:13.227988451Z","updated_at":"2026-10-06T13:34:13.255108601Z","submi
+RDW 200 {"id":"717896ee-0f66-4cb9-8553-1f20b787dae0","client_order_id":"3fb73e0b-8f98-4701-9908-4d485aad69ea","created_at":"2026-10-06T13:34:13.687294485Z","updated_at":"2026-10-06T13:34:13.755180304Z","submi
+FRVO 200 {"id":"5c9460a8-37e8-4fd6-a395-f2b8350b74dc","client_order_id":"58f17b6d-f3ff-4f59-8ab4-35ab96eae9bb","created_at":"2026-10-06T13:34:14.253302052Z","updated_at":"2026-10-06T13:34:14.254492518Z","submi
+DKNG 200 {"id":"985b0075-7615-4c4e-80df-8802e6b30082","client_order_id":"5f1fd4c7-1df6-43cc-bb9c-deceb7425b3e","created_at":"2026-10-06T13:34:14.789498222Z","updated_at":"2026-10-06T13:34:14.792932714Z","submi
+AADX 200 {"id":"25666812-67d1-4417-a6dd-9e7ecd4b35ba","client_order_id":"5f63eb28-77e8-4f9d-80a3-8fa6c5085e32","created_at":"2026-10-06T13:34:15.197170985Z","updated_at":"2026-10-06T13:34:15.199783705Z","submi
+SPHR 200 {"id":"37ff4f83-62b3-4b55-93b3-c5c42cbef710","client_order_id":"356dc26e-f29d-4adf-8bf2-fcecdfac0cda","created_at":"2026-10-06T13:34:15.629691761Z","updated_at":"2026-10-06T13:34:15.645973945Z","submi
