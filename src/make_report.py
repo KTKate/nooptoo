@@ -386,6 +386,14 @@ studies = [
      "Sizes chosen on 2024H2-25H1 from 9 (half-size day long, quarter-size day short): Sharpe 2.80 vs 2.42 there and "
      "3.31 vs 2.91 in 2025H2-26; max drawdown -24% vs -21%; yearly return 247% vs 177% (2024H2-26). The day legs "
      "correlate -0.48. Needs a margin account and premarket prices at 09:25 (free plan: SIP 15 minutes late)."),
+    ("52", "Cross-asset signals (rates, dollar, oil, gold, credit, bitcoin, VIX) for sector ETFs: next night, next day "
+     "session, 1-5 days, with 15:45 and 09:25 timing", "Reject",
+     "6,720 regressions: only 13 of 1,680 excess cells have |t| > 2 with the same sign in both periods, 5-38 bp per "
+     "standard deviation against 8-16 bp of costs. Rules chosen on 2021-23: excess over SPY not significant in "
+     "either period; net Sharpe 0.84-1.36 in 2024-26 vs SPY 1.30."),
+    ("57", "Pairs within industries chosen by fundamental similarity, 1-5 day spread reversion", "Reject",
+     "Gross 4-16 bp a trade against ~17 bp of round-trip costs; best 2020-23 variant (Sharpe 0.59) is -0.23 in "
+     "2024-26; median of 60 variants negative; worse than study 20's correlation pairs."),
     ("24", "Model settings and target tuning, chosen on 2022-23 only", "Reject",
      "Chosen settings: 2.56 / 1.89 vs default 2.36 / 2.42; single changes (market-adjusted target, 600 rounds) mixed."),
     ("26", "Training history from 2011 instead of 2020 (backfilled daily data)", "Reject",

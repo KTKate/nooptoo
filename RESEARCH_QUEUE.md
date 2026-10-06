@@ -14,10 +14,11 @@ same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-06)
 - 48: S&P 500 additions and candidates; 49: short-squeeze setups (agent)
-- 52: cross-asset signals for sector ETFs; 57: fundamental-similarity pairs (agent)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 52 Reject: cross-asset lead-lag for sector ETFs below costs; no rule beats SPY
+- 57 Reject: fundamental-similarity pairs gross 4-16 bp vs ~17 bp costs
 - 71 Candidate: blend + half-size day long + quarter-size day short, Sharpe 2.80 / 3.31 vs 2.42 / 2.91; margin and
   premarket data needed
 - 76 Reject: reaction cohorts help 2022-23 only; per-cohort models unstable; ensemble gain not significant
@@ -68,7 +69,5 @@ same universe's average (src/horizon_lib.py).
   (recent buy, size) as inputs to the day-session and jump models
 - 48: S&P 500 additions: candidates and announced additions, 1-5 days around announcement and effective date
 - 49: short squeeze setups (high short volume ratio + news + price breakout), 1-5 day holds
-- 52: cross-asset moves (rates, dollar, oil, gold, bitcoin) predicting sector ETFs over 1-5 days
-- 57: pairs within industries, 1-5 day reversion of the spread
 - 83: day-session long model (study 60) with premarket data only up to 09:10 (what the free plan delivers at 09:25)
   and with IEX-only premarket prices; if it holds, paper-trade it next to the day short
