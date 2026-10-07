@@ -1,0 +1,159 @@
+== paper job exit 2026-10-07 09:19:27 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-07",
+ "orders": [
+  {
+   "symbol": "AMKR",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "APMD",
+   "qty": 53,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 65,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CAMT",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "EROC",
+   "qty": 73,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HUT",
+   "qty": 10,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "STX",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SYRE",
+   "qty": 12,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "WDC",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AMKR 200 {"id":"9605cec3-9c69-4409-9cb4-334420e2f3ff","client_order_id":"c44ae959-e7cd-4287-b1f4-9c2fb3e0c30a","created_at":"2026-10-07T13:19:48.918174418Z","updated_at":"2026-10-07T13:19:48.918754178Z","submi
+APMD 200 {"id":"8b33f15e-415f-4aae-a961-23e8db7f6d67","client_order_id":"df87403e-fcc9-4c41-b7bd-07519a8e25db","created_at":"2026-10-07T13:19:49.403449303Z","updated_at":"2026-10-07T13:19:49.405866959Z","submi
+BRUN 200 {"id":"c144e701-6209-480b-b7c4-66f65d5282e6","client_order_id":"57572f2e-e5f8-4015-993f-44ae899f5b5f","created_at":"2026-10-07T13:19:49.890998738Z","updated_at":"2026-10-07T13:19:49.891814092Z","submi
+CAMT 200 {"id":"823a9dc1-ac7d-4ec6-8914-0bacdcfa47e1","client_order_id":"69390b78-0db0-474a-88ec-c77a7d63420d","created_at":"2026-10-07T13:19:50.434898022Z","updated_at":"2026-10-07T13:19:50.437295288Z","submi
+EROC 200 {"id":"665beffb-a1c0-45e7-a24d-6cb63444e7e5","client_order_id":"d49c490b-9aba-4925-a41f-b678088a179a","created_at":"2026-10-07T13:19:50.87031714Z","updated_at":"2026-10-07T13:19:50.880038533Z","submit
+HUT 200 {"id":"61b8e170-9b1f-4b9c-b0b9-ab76395e5414","client_order_id":"2df08562-02d7-4598-aa3c-735497d76694","created_at":"2026-10-07T13:19:51.338199965Z","updated_at":"2026-10-07T13:19:51.339000526Z","submi
+MRVL 200 {"id":"ca17f552-6a87-4f7f-a59b-df6acd9d5a4b","client_order_id":"8196225e-1143-41e0-a5de-9e34c413c0aa","created_at":"2026-10-07T13:19:51.827355911Z","updated_at":"2026-10-07T13:19:51.828120928Z","submi
+STX 200 {"id":"d180dcc3-3d5a-49c5-a6e7-a265c56ae535","client_order_id":"87c947e7-1ec5-44f5-b802-93c5244b27c0","created_at":"2026-10-07T13:19:52.281195291Z","updated_at":"2026-10-07T13:19:52.281826427Z","submi
+SYRE 200 {"id":"cc01de86-69a3-41b2-ad15-1caf5b4af748","client_order_id":"8473e3e3-0d37-4ce5-96e8-865f9d28fe9e","created_at":"2026-10-07T13:19:53.025624549Z","updated_at":"2026-10-07T13:19:53.02869183Z","submit
+WDC 200 {"id":"a058a3b3-c5c1-4c21-bfa4-42e92e9bdc6b","client_order_id":"8eaec6e2-b0b9-451b-8d9e-b6e25b8fd1ef","created_at":"2026-10-07T13:19:53.565224893Z","updated_at":"2026-10-07T13:19:53.566236721Z","submi
+{
+ "day": "2026-10-07",
+ "from_entry": "entry_2026-10-06.json",
+ "equity": 9809.63,
+ "orders": [
+  {
+   "symbol": "APMD",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HUT",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SYRE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "EROC",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 16,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AMKR",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CAMT",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "MRVL": "no price or qty 0",
+  "STX": "no price or qty 0",
+  "WDC": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-07 09:34:19.769215-04:00"
+}
+APMD 200 {"id":"1d28e15c-cf82-4e55-97f3-bc071db1cf77","client_order_id":"ddc045b4-4526-490e-8a82-ff40768ee1f8","created_at":"2026-10-07T13:34:20.305843336Z","updated_at":"2026-10-07T13:34:20.30681883Z","submit
+HUT 200 {"id":"d86a20f2-b4c1-42a9-9901-0bb4083ee5ac","client_order_id":"368ade7e-16eb-43a3-8647-417e1e25fd05","created_at":"2026-10-07T13:34:20.812783787Z","updated_at":"2026-10-07T13:34:20.815006731Z","submi
+SYRE 200 {"id":"f0166610-1242-4294-be1c-ae19e466f249","client_order_id":"104a569b-d43e-4006-92b6-cc2b2f2546aa","created_at":"2026-10-07T13:34:21.28522662Z","updated_at":"2026-10-07T13:34:21.286468182Z","submit
+EROC 200 {"id":"86f05fc4-d2ec-4a8c-88b0-e8e3d3db6121","client_order_id":"c52bc880-6f8d-4956-bc9d-d81af8c39c6a","created_at":"2026-10-07T13:34:21.736669272Z","updated_at":"2026-10-07T13:34:21.737808941Z","submi
+BRUN 200 {"id":"8f487bbf-7676-4053-9443-8019285ec573","client_order_id":"0608bea8-1c7a-4dd7-a019-8bdb6fbb925b","created_at":"2026-10-07T13:34:22.016978771Z","updated_at":"2026-10-07T13:34:22.018351951Z","submi
+AMKR 200 {"id":"f27ca949-ca2b-4cf5-add2-ab03272939a6","client_order_id":"807db143-d91f-448b-9432-77384a754ed8","created_at":"2026-10-07T13:34:22.302945747Z","updated_at":"2026-10-07T13:34:22.309353349Z","submi
+CAMT 200 {"id":"d938af34-7dae-45b9-a7bd-5649ca30039b","client_order_id":"a662226f-c8ba-41b7-bc5d-07d4faee6a62","created_at":"2026-10-07T13:34:22.758854699Z","updated_at":"2026-10-07T13:34:22.760635681Z","submi

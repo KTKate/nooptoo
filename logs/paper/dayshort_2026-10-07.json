@@ -1,0 +1,63 @@
+{
+ "day": "2026-10-07",
+ "from_entry": "entry_2026-10-06.json",
+ "equity": 9809.63,
+ "orders": [
+  {
+   "symbol": "APMD",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HUT",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SYRE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "EROC",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 16,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AMKR",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CAMT",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "MRVL": "no price or qty 0",
+  "STX": "no price or qty 0",
+  "WDC": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-07 09:34:19.769215-04:00"
+}
