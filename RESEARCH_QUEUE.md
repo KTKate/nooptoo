@@ -12,7 +12,11 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-06)
+## Running (batch 2026-10-07)
+- 83: day-session long model with free-plan premarket data (SIP to 09:10 plus IEX)
+- 85: day-short entry and exit timing (09:31 market order vs opening auction; 15:55 cover vs closing auction)
+- 86: stop rules for the day short (cover a name after a fixed intraday loss)
+- 87: selling the overnight longs later than the open (09:31, 09:45, 10:00) instead of at the opening auction
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
@@ -68,5 +72,3 @@ same universe's average (src/horizon_lib.py).
   in shadow.py, long-only top quintile, scored at official prints
 - 78: live Form 4 feed (EDGAR XML from 2026-04) for a shadow test of insider buys > 5% of ADV; insider features
   (recent buy, size) as inputs to the day-session and jump models
-- 83: day-session long model (study 60) with premarket data only up to 09:10 (what the free plan delivers at 09:25)
-  and with IEX-only premarket prices; if it holds, paper-trade it next to the day short
