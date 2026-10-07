@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("83", "Day-session long model (study 60) with the premarket data the free plan delivers: SIP bars to 09:10, "
+     "optionally IEX trades 09:10-09:25", "Candidate",
+     "SIP to 09:10 costs about 2 bp a day on the top-10 book (t -0.40): Sharpe 0.61 / 0.70 vs 0.64 / 0.95. In the "
+     "study-71 cycle 2.82 / 3.21 vs 2.80 / 3.31. Adding IEX trades scored 0.90 / 1.52 but the gain is not significant "
+     "(t 1.1-1.6), only 4% of stock-days have an IEX trade, and most of the gain comes from picks without one (model "
+     "noise). Works on the free plan; like the day short it buys in the opening auction, so paper fills will be worse."),
     ("85", "Day-short timing: opening auction vs 09:31-10:00 market orders to enter; closing auction vs 15:55 to "
      "cover (1-minute SIP bars for 6,850 pick-days)", "Caveat",
      "The picks fall 18 bp by 09:31 and 33 bp by 09:35 while SPY is flat, so 60-75% of the short's gross edge is gone "

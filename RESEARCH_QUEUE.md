@@ -13,10 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-07)
-- 83: day-session long model with free-plan premarket data (SIP to 09:10 plus IEX)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 83 Candidate: day-session long model loses only ~2 bp/day with SIP data cut at 09:10 (free plan); cycle Sharpe
+  2.82 / 3.21 vs 2.80 / 3.31; IEX trades add nothing reliable; needs opening-auction entry (live account)
 - 85 Caveat: day short works only entered in the opening auction; picks fall 18 bp by 09:31 and 33 bp by 09:35, so
   the paper timing (09:31 entry) loses 45-52 bp a name; covering at 15:55 is fine on price
 - 86 Reject: stops on the day short cost more mean than they save; only a loose 8% name stop is neutral
