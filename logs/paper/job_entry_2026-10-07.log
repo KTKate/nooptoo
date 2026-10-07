@@ -1,0 +1,389 @@
+== paper job entry 2026-10-07 15:06:29 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+Fetching 270 files:   0%|          | 0/270 [00:00<?, ?it/s]Fetching 270 files:   1%|          | 2/270 [00:00<00:13, 19.80it/s]Fetching 270 files:   2%|▏         | 6/270 [00:00<00:14, 18.55it/s]Fetching 270 files:   6%|▌         | 16/270 [00:00<00:07, 34.80it/s]Fetching 270 files:  19%|█▊        | 50/270 [00:00<00:01, 115.08it/s]Fetching 270 files:  32%|███▏      | 86/270 [00:00<00:01, 181.39it/s]Fetching 270 files:  45%|████▍     | 121/270 [00:00<00:00, 228.63it/s]Fetching 270 files:  58%|█████▊    | 157/270 [00:00<00:00, 260.65it/s]Fetching 270 files:  69%|██████▉   | 186/270 [00:01<00:00, 196.30it/s]Fetching 270 files:  78%|███████▊  | 210/270 [00:01<00:00, 177.87it/s]Fetching 270 files:  91%|█████████ | 245/270 [00:01<00:00, 215.03it/s]Fetching 270 files: 100%|██████████| 270/270 [00:01<00:00, 179.06it/s]
+pulled Incarnadin/nooptoo-market-data into /home/user/nooptoo/data/local
+daily: last 2026-10-05, fetching from 2026-09-21 for 5549 tickers; 0 new tickers
+  0
+  150
+  300
+  450
+  600
+  750
+  900
+  1050
+  1200
+  1350
+  1500
+  1650
+  1800
+  1950
+  2100
+  2250
+  2400
+  2550
+  2700
+  2850
+  3000
+  3150
+  3300
+  3450
+  3600
+  3750
+  3900
+  4050
+  4200
+  4350
+  4500
+  4650
+  4800
+  4950
+  5100
+  5250
+  5400
+tickers with changed history (splits): ['GCDT', 'ITOC', 'SUGP']
+daily updated to 2026-10-06
+earnings: fetched 30 days, 2982 rows
+       day symbol side tif  qty  fill  official  slip_bps
+2026-09-29    ADX  buy cls 30.0 25.75       NaN       NaN
+2026-09-30    ADX sell opg 24.0 25.75     25.75      -0.0
+mean slippage vs official print (bp, positive = worse): 0.0
+      date   equity     pnl
+2026-10-01  9999.48    0.69
+2026-10-02 10005.58    6.10
+2026-10-03 10055.05   49.47
+2026-10-06  9904.79 -150.26
+2026-10-07 10029.55  124.76
+       day symbol  qty   close  next_open     ret   cost      pnl                                       model
+2026-09-29   ECAT   71  13.970      14.00  0.0021 0.0009   1.2213                  ensemble5_night_2026Q3.txt
+2026-09-29    ASC   54  18.440      18.69  0.0136 0.0009  12.5885                  ensemble5_night_2026Q3.txt
+2026-09-29   STNG   12  83.570      85.72  0.0257 0.0009  24.9225                  ensemble5_night_2026Q3.txt
+2026-09-29    NAT  126   7.980       8.09  0.0138 0.0009  12.9698                  ensemble5_night_2026Q3.txt
+2026-09-29    HYT  128   7.810       7.84  0.0038 0.0009   2.9522                  ensemble5_night_2026Q3.txt
+2026-09-29   HESM   26  37.630      37.91  0.0074 0.0008   6.4735                  ensemble5_night_2026Q3.txt
+2026-09-29     TK   70  14.110      14.25  0.0099 0.0009   8.8644                  ensemble5_night_2026Q3.txt
+2026-09-29    IDT   13  75.560      75.18 -0.0050 0.0010  -5.9037                  ensemble5_night_2026Q3.txt
+2026-09-29    ADX   38  25.710      25.75  0.0016 0.0009   0.6100                  ensemble5_night_2026Q3.txt
+2026-09-29    AES   67  14.860      14.87  0.0007 0.0008  -0.1537                  ensemble5_night_2026Q3.txt
+2026-10-01   NKTR   21  46.990      47.11  0.0026 0.0009   1.6346 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01     SA   36  27.250      27.82  0.0209 0.0010  19.5382 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01   UMAC   46  21.780      22.23  0.0207 0.0009  19.8195 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01   SCTX   58  17.175      17.50  0.0189 0.0012  17.6623 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01    EQX   92  10.820      11.06  0.0222 0.0009  21.2315 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01   FRVO   70  14.460      14.53  0.0048 0.0008   4.0513 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01   TDAY  143   7.060       7.17  0.0156 0.0009  14.8197 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01   OCUL  136   7.290       7.40  0.0151 0.0009  14.0705 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01    ELE   54  18.370      18.81  0.0240 0.0010  22.7495 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-01    JBL    3 299.790     303.70  0.0130 0.0009  10.9168 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   FIGR   35  28.530      28.45 -0.0028 0.0008  -3.6381 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02    GEN   45  21.990      21.99  0.0000 0.0008  -0.8065 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   QMCO   29  34.500      34.50  0.0000 0.0010  -0.9547 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   ELMT   45  22.130      22.13  0.0000 0.0011  -1.1451 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02    BXC   13  73.640      72.62 -0.0139 0.0012 -14.4219 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   WOLF   28  35.280      34.04 -0.0351 0.0009 -35.6262 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   KLRA   97  10.390      10.48  0.0087 0.0009   7.7804 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   PPTA   49  20.380      20.38  0.0000 0.0009  -0.9229 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02   CCXI   83  11.990      12.08  0.0075 0.0009   6.6026 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-02     NG  153   6.550       6.59  0.0061 0.0009   5.2054 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-05   ALVO  162   6.110       6.07 -0.0065 0.0010  -7.4399 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-05   BRUN   68  14.330      15.53  0.0837 0.0009  80.6913 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-05   BETA   48  20.700      20.87  0.0082 0.0009   7.2936 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-05    DFH  101   9.890      10.00  0.0111 0.0009  10.1813 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-05   ACMR   13  76.170      77.04  0.0114 0.0009  10.3716 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-05    RDW   96  10.430      10.55  0.0115 0.0009  10.6630 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-05   FRVO   73  13.460      13.60  0.0104 0.0008   9.3989 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-05   DKNG   50  19.600      19.55 -0.0026 0.0008  -3.2948 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-05   AADX   85  11.510      11.55  0.0035 0.0009   2.5310 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-05   SPHR    8 110.800     110.31 -0.0044 0.0009  -4.7292 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-06   APMD   53  18.650      18.66  0.0005 0.0011  -0.5294 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-06   MRVL    3 287.010     280.91 -0.0213 0.0008 -18.9832 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-06    STX    1 805.630     784.49 -0.0262 0.0008 -21.8110 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-06    HUT   10  92.220      89.20 -0.0327 0.0008 -30.9835 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-06    WDC    2 411.040     401.08 -0.0242 0.0008 -20.5881 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-06   SYRE   12  80.110      78.91 -0.0150 0.0009 -15.2383 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-06   EROC   73  13.710      13.27 -0.0321 0.0009 -33.0298 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-06   BRUN   65  15.170      14.70 -0.0310 0.0009 -31.4738 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-06   AMKR   18  53.390      51.90 -0.0279 0.0008 -27.6347 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+2026-10-06   CAMT    6 154.550     150.29 -0.0276 0.0011 -26.5457 blend_ensemble5_night_2026Q4.txt_jump2026Q4
+            names   gross    cost       pnl     net      equity
+day                                                            
+2026-09-29     10  0.0074  0.0009   64.5449  0.0065  10064.5449
+2026-10-01     10  0.0158  0.0009  146.4939  0.0148  10211.0388
+2026-10-02     10 -0.0030  0.0010  -37.9270 -0.0039  10173.1118
+2026-10-05     10  0.0126  0.0009  115.6669  0.0117  10288.7787
+2026-10-06     10 -0.0237  0.0009 -226.8174 -0.0246  10061.9612
+strategy    adr_loser  day_short  smallcap_nonews
+day                                              
+2026-09-29     0.0219        NaN          -0.0050
+2026-10-01     0.0056        NaN           0.0066
+2026-10-02     0.0125        NaN           0.0033
+2026-10-05     0.0120     0.0030          -0.0026
+2026-10-06    -0.0102     0.0029          -0.0049
+mean net per night (bp): {'adr_loser': 83.5, 'day_short': 29.3, 'smallcap_nonews': -5.1} nights: {'adr_loser': 5, 'day_short': 2, 'smallcap_nonews': 5}
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+panel ready 2026-10-06
+entry at 15:46:15 ET, submit flag: '--submit'
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+{
+ "day": "2026-10-07",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "SITM": 0.99795,
+  "MXL": 0.99449,
+  "CYD": 0.99385,
+  "TSEM": 0.99308,
+  "BRUN": 0.99218,
+  "ABSI": 0.99167,
+  "ACMR": 0.9909,
+  "COHR": 0.98783,
+  "TTMI": 0.98783,
+  "MEI": 0.98642
+ },
+ "uncapped_top": {
+  "SITM": 0.99795,
+  "MXL": 0.99449,
+  "CYD": 0.99385,
+  "TSEM": 0.99308,
+  "BRUN": 0.99218,
+  "ABSI": 0.99167,
+  "ACMR": 0.9909,
+  "UCTT": 0.98847,
+  "COHR": 0.98783,
+  "TTMI": 0.98783
+ },
+ "equity": 9817.93,
+ "orders": [
+  {
+   "symbol": "SITM",
+   "qty": 1,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "MXL",
+   "qty": 9,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "CYD",
+   "qty": 34,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 70,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ABSI",
+   "qty": 107,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ACMR",
+   "qty": 13,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "COHR",
+   "qty": 2,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "TTMI",
+   "qty": 7,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "MEI",
+   "qty": 65,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 8797.99
+}
+cover AMKR 200 {"id":"f0db5c21-3200-426e-b04a-07a5895eb169","client_order_id":"a0ddd6a4-e87d-4b61-aac9-9d4482090713","created_at":"2026
+cover APMD 200 {"id":"21124d17-2ac7-44e3-8580-f75f0c4bfa4e","client_order_id":"80778788-80b8-40c6-b2df-3d6394c1788e","created_at":"2026
+cover BRUN 200 {"id":"5890d5b6-76ef-48c4-8e47-2443f1076cf7","client_order_id":"37802f7e-e15d-4241-8113-aefa0c43b5f8","created_at":"2026
+cover CAMT 200 {"id":"477cd860-9d75-4891-97e0-2f6a16d508bd","client_order_id":"fda1e1ad-070f-4903-8bda-86e28e49af94","created_at":"2026
+cover EROC 200 {"id":"c9a2658f-6f39-4623-8d80-5dfd8880c2c3","client_order_id":"43a98721-052c-44ad-b0c7-bb8fa6092c7b","created_at":"2026
+cover HUT 200 {"id":"4f89275b-88bd-438b-aa04-210d6e82cefa","client_order_id":"c8b80ce9-82b6-4622-8650-1cd96c1a2e5f","created_at":"2026
+cover SYRE 200 {"id":"29c02705-9eb5-429d-bf1f-a07b78ee06d6","client_order_id":"74d650aa-8b20-4727-9328-13e95a4a7c39","created_at":"2026
+covered 7 day shorts
+SITM 200 {"id":"dbb8cee9-ea67-46f0-acec-f5228ca878f3","client_order_id":"a15e4765-b389-43b7-b918-817274f84438","created_at":"2026-10-07T19:55:26.499904858Z","updated_at":"2026-10-07T19:55:26.500934343Z","submi
+MXL 200 {"id":"87be469a-7c81-4ab2-9eec-0bec2b35da17","client_order_id":"38afd49b-610e-47e9-882a-7f6e6f1beaff","created_at":"2026-10-07T19:55:26.987696253Z","updated_at":"2026-10-07T19:55:26.988859998Z","submi
+CYD 200 {"id":"3e6d70f7-d6e3-4c7f-bbc0-9446a9c74858","client_order_id":"ac99b3be-fa16-47ee-ac0f-20edc01be7d2","created_at":"2026-10-07T19:55:27.383929699Z","updated_at":"2026-10-07T19:55:27.387361907Z","submi
+TSEM 200 {"id":"c91a1940-068d-455c-a9b5-b159f9b01afc","client_order_id":"fd2811f8-8b17-401e-ac7c-cfbaa48e95ea","created_at":"2026-10-07T19:55:27.812802595Z","updated_at":"2026-10-07T19:55:27.816056696Z","submi
+BRUN 200 {"id":"50969bbb-f2b6-4829-8202-e5aab31087f7","client_order_id":"6bc2beea-e76d-403c-9ae6-c0bddd5b1ae8","created_at":"2026-10-07T19:55:28.256856062Z","updated_at":"2026-10-07T19:55:28.257882662Z","submi
+ABSI 200 {"id":"ae8a93aa-e8e3-4710-9cd6-df2242c4970b","client_order_id":"2ad4cbdc-28a1-4d3e-80c9-59c498a66f9d","created_at":"2026-10-07T19:55:28.940471686Z","updated_at":"2026-10-07T19:55:28.941706788Z","submi
+ACMR 200 {"id":"70c1b01f-0f60-408d-b895-efe75f5eb264","client_order_id":"8ffefde8-79cf-4e2f-8bfe-7084178f47ba","created_at":"2026-10-07T19:55:29.370924061Z","updated_at":"2026-10-07T19:55:29.372236499Z","submi
+COHR 200 {"id":"2085c962-1456-4611-b7f3-ae9ede2cb355","client_order_id":"13d92772-bcbc-43ff-87d4-cd9da08e5ad7","created_at":"2026-10-07T19:55:29.814542455Z","updated_at":"2026-10-07T19:55:29.830384939Z","submi
+TTMI 200 {"id":"ddea3701-b135-43e6-9da3-73cd1e8ff706","client_order_id":"2fcf9146-2c66-4bba-8801-6404cafac556","created_at":"2026-10-07T19:55:30.291126518Z","updated_at":"2026-10-07T19:55:30.292198877Z","submi
+MEI 200 {"id":"8bec9fbb-b188-420e-919e-e665568cfc0a","client_order_id":"ce708dd2-1513-4d09-badf-e8dfe7e899c7","created_at":"2026-10-07T19:55:30.722453966Z","updated_at":"2026-10-07T19:55:30.72428978Z","submit
+entry finished at 15:55:30 ET
+/usr/local/lib/python3.11/dist-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: divide by zero encountered in log
+  result = func(self.values, **kwargs)
+{
+ "day": "2026-10-07",
+ "recorded_at": "2026-10-07 15:57:02.841524-04:00",
+ "news_window": [
+  "2026-10-06 19:45:00+00:00",
+  "2026-10-07 19:45:00+00:00"
+ ],
+ "n_news_symbols": 618,
+ "smallcap_nonews": {
+  "SDEV": {
+   "loss": 0.1728,
+   "px": 2.705
+  },
+  "AVAT": {
+   "loss": 0.1211,
+   "px": 1.67
+  },
+  "INDP": {
+   "loss": 0.1128,
+   "px": 2.28
+  },
+  "NFE": {
+   "loss": 0.0829,
+   "px": 4.98
+  },
+  "PUSA": {
+   "loss": 0.0815,
+   "px": 2.535
+  },
+  "MF": {
+   "loss": 0.0756,
+   "px": 11.0
+  },
+  "VUZI": {
+   "loss": 0.0739,
+   "px": 2.695
+  },
+  "QMLS": {
+   "loss": 0.0689,
+   "px": 5.68
+  },
+  "MEDS": {
+   "loss": 0.0645,
+   "px": 2.9
+  },
+  "DBGI": {
+   "loss": 0.0642,
+   "px": 4.369999885559082
+  }
+ },
+ "adr_loser": {
+  "FMS": {
+   "loss": 0.078,
+   "px": 20.745
+  },
+  "BBAR": {
+   "loss": 0.0467,
+   "px": 12.955
+  },
+  "ITUB": {
+   "loss": 0.0396,
+   "px": 9.71
+  },
+  "IPX": {
+   "loss": 0.0387,
+   "px": 15.785
+  },
+  "EMBJ": {
+   "loss": 0.036,
+   "px": 71.565
+  }
+ },
+ "spy_meanrev": {
+  "SPY": {
+   "action": "flat",
+   "px": 777.48,
+   "down3": false,
+   "above5": true
+  },
+  "QQQ": {
+   "action": "flat",
+   "px": 758.07,
+   "down3": false,
+   "above5": true
+  }
+ },
+ "day_short": {
+  "SITM": {
+   "etb": true,
+   "shortable": true
+  },
+  "MXL": {
+   "etb": true,
+   "shortable": true
+  },
+  "CYD": {
+   "etb": false,
+   "shortable": false
+  },
+  "TSEM": {
+   "etb": true,
+   "shortable": true
+  },
+  "BRUN": {
+   "etb": true,
+   "shortable": true
+  },
+  "ABSI": {
+   "etb": true,
+   "shortable": true
+  },
+  "ACMR": {
+   "etb": true,
+   "shortable": true
+  },
+  "COHR": {
+   "etb": true,
+   "shortable": true
+  },
+  "TTMI": {
+   "etb": true,
+   "shortable": true
+  },
+  "MEI": {
+   "etb": true,
+   "shortable": true
+  }
+ },
+ "universe": {
+  "smallcap": 745,
+  "smallcap_priced": 745,
+  "adr": 176
+ }
+}
