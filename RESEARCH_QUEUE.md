@@ -73,6 +73,11 @@ same universe's average (src/horizon_lib.py).
   news? Could a 09:30 limit-on-open order (live account only) capture the auction price?
 - 89: shadow-score the day short at auction prints only (live account plan) and compare with the paper fills
 
+- 90: bad-night filter: can anything known at 15:45 (index and sector moves that day, VIX change, picks' beta and
+  sector overlap, scheduled macro or earnings events overnight) predict the ~10% of nights the blend loses 2%+?
+  Quick check 2026-10-07: hedging with SPY/IWM/QQQ/SMH lowers Sharpe (2.43-2.76 vs 2.85) and barely changes the
+  worst nights; the picks' overnight beta to SPY is about 2
+
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
   in shadow.py, long-only top quintile, scored at official prints
