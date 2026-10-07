@@ -360,6 +360,22 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("85", "Day-short timing: opening auction vs 09:31-10:00 market orders to enter; closing auction vs 15:55 to "
+     "cover (1-minute SIP bars for 6,850 pick-days)", "Caveat",
+     "The picks fall 18 bp by 09:31 and 33 bp by 09:35 while SPY is flat, so 60-75% of the short's gross edge is gone "
+     "by 09:35. Auction to auction: +29 / +25 bp a name net. Paper timing (09:31-36 entry, 15:55 cover): -52 / -45 bp "
+     "a name with the time-of-day cost model, +10 / +5 even at auction costs. Covering at 15:55 is 1.5-3 bp better "
+     "than the closing auction on price. The short only works entered in the opening auction (needs a live account)."),
+    ("86", "Stops on the day short: 3/5/8% per name (1-minute or 5-minute checks) and 1-3% book stops", "Reject",
+     "Tight stops cut the worst day from -17% to -3 to -5% of the book but lose 25-60% of the mean; later-period Sharpe "
+     "falls to 0.6-0.9 from 1.17. Only an 8% per-name stop on 5-minute checks holds in both periods (+0.06 / +0.11 "
+     "Sharpe, drawdown still -38%). With paper timing every stop makes results worse."),
+    ("87", "Selling the overnight longs after the open (09:31, 09:35, 09:45, 10:00) instead of in the opening auction",
+     "Reject",
+     "The picks reverse at once: -15 to -23 bp in the first minute, -32 to -35 bp by 09:35, SPY flat. Every later "
+     "sell time loses, even at auction costs. The paper account's 09:30-34 market sells cost about 27 bp a name from "
+     "the price fall plus about 57 bp under the cost model, so paper fills understate the blend; the virtual book "
+     "(auction prints) is the comparable figure."),
     ("82", "Data check: Yahoo price-scale errors (spin-off adjustments) vs Alpaca prices, and their effect on results",
      "Caveat",
      "Real in price levels (5.7% of 2020 top-500 stock-days, 47 tickers 2020-23) but constant within Yahoo's own series, "

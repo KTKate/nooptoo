@@ -14,12 +14,13 @@ same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-07)
 - 83: day-session long model with free-plan premarket data (SIP to 09:10 plus IEX)
-- 85: day-short entry and exit timing (09:31 market order vs opening auction; 15:55 cover vs closing auction)
-- 86: stop rules for the day short (cover a name after a fixed intraday loss)
-- 87: selling the overnight longs later than the open (09:31, 09:45, 10:00) instead of at the opening auction
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 85 Caveat: day short works only entered in the opening auction; picks fall 18 bp by 09:31 and 33 bp by 09:35, so
+  the paper timing (09:31 entry) loses 45-52 bp a name; covering at 15:55 is fine on price
+- 86 Reject: stops on the day short cost more mean than they save; only a loose 8% name stop is neutral
+- 87 Reject: selling longs after the open loses 15-35 bp a name before costs; keep the opening auction
 - 48 Reject: S&P additions' gain is the untradable announcement-night jump; candidate lists do not predict
 - 49 Reject: short-squeeze setups fail out of sample; short volume adds nothing to the overnight rise
 - 52 Reject: cross-asset lead-lag for sector ETFs below costs; no rule beats SPY
@@ -66,6 +67,10 @@ same universe's average (src/horizon_lib.py).
 - (done) 60: day-session long model (buy at the opening auction, sell at the closing auction) with all inputs: price,
   news since the previous close, analyst targets, fundamentals, premarket move; long side only (study 29 found the
   short side works only in hard-to-borrow names)
+
+- 88: opening-minute dynamics of the picks: does the first-minute fall depend on the premarket move, spread or
+  news? Could a 09:30 limit-on-open order (live account only) capture the auction price?
+- 89: shadow-score the day short at auction prints only (live account plan) and compare with the paper fills
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
