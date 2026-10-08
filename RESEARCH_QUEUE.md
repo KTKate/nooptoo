@@ -14,10 +14,11 @@ same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-08)
 - 88: opening-minute dynamics of the picks (what drives the first-minute fall)
-- 78: insider purchases (Form 4) as inputs to the jump and day-session models; live feed check
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 78 Reject: insider inputs add nothing reliable to the day model, blend or pooled model; purchases disclosed
+  before the open +7 then +20 bp in the day (unstable); EDGAR Atom feed ~40 s latency
 - 90 Reject: nothing known at 15:45 predicts the 2%+ losing nights in both periods (98 rules, logistic AUC 0.56);
   lead: halve when any pick is tech hardware (found after seeing the holdout)
 - 91 Reject: volatility-scaled weights lose on 2024-25H1; book scaling +0.08 on holdout at 84% size (t 1.1)
