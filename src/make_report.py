@@ -360,6 +360,23 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("90", "Bad-night filter: skip or halve the blend when 15:45 conditions (index and SMH moves, VIX, realized "
+     "volatility, picks' beta and concentration, earnings and macro events, weekday) predict a 2%+ loss", "Reject",
+     "No input separates bad nights in both periods. The rule chosen on 2024-25H1 (halve when SMH's day is in its "
+     "bottom fifth) gives 3.26 vs 2.80 there but 2.82 vs 2.91 on the holdout; 16% of 98 one-input rules beat the "
+     "holdout baseline. Walk-forward logistic model AUC 0.56-0.57, lowers Sharpe. Lead (picked after seeing the "
+     "holdout): halve when any pick is tech hardware, 3.09 / 3.20, drawdown -12% vs -21%; needs a fresh test."),
+    ("91", "Volatility-scaled sizes: 1/vol and equal-risk weights per name, or a smaller book after volatile nights",
+     "Reject",
+     "Every variant is below the baseline on 2024-25H1 (2.23-2.67 vs 2.80). The chosen one (book scaled by trailing "
+     "20-night volatility) gives 2.99 vs 2.91 on the holdout at 84% average size (t 1.1). Per-name weighting mostly "
+     "cuts the big small-cap winners."),
+    ("92", "Broader concentration caps: per sector (2-4), a combined tech-hardware group (2-3), and a 60-day "
+     "correlation cap", "Reject",
+     "Sector cap 3, chosen on 2024-25H1 (3.30 vs 2.80, mostly from a few single names), gives 2.79 vs 2.91 on the "
+     "holdout (t -1.06). Tech-hardware caps 2.70-2.89 and correlation caps 2.69-2.82 on the holdout. Replacing "
+     "correlated names with lower-ranked ones costs more on average than it saves on bad nights. The live 3-per-"
+     "industry cap is neutral (2.92 vs 2.85 over 2024-26, all from one night)."),
     ("83", "Day-session long model (study 60) with the premarket data the free plan delivers: SIP bars to 09:10, "
      "optionally IEX trades 09:10-09:25", "Candidate",
      "SIP to 09:10 costs about 2 bp a day on the top-10 book (t -0.40): Sharpe 0.61 / 0.70 vs 0.64 / 0.95. In the "

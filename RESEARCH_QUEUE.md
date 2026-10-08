@@ -13,14 +13,15 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-08)
-- 90: bad-night filter (15:45 market, sector, VIX, overlap and event conditions)
-- 91: volatility-scaled position sizes for the blend (smaller weights on the most volatile picks)
-- 92: broader concentration caps (sector instead of industry; a cap on chip/storage/hardware names together)
 - 88: opening-minute dynamics of the picks (what drives the first-minute fall)
 - 78: insider purchases (Form 4) as inputs to the jump and day-session models; live feed check
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 90 Reject: nothing known at 15:45 predicts the 2%+ losing nights in both periods (98 rules, logistic AUC 0.56);
+  lead: halve when any pick is tech hardware (found after seeing the holdout)
+- 91 Reject: volatility-scaled weights lose on 2024-25H1; book scaling +0.08 on holdout at 84% size (t 1.1)
+- 92 Reject: sector, tech-hardware and correlation caps do not hold on the holdout; live industry cap is neutral
 - 89 Done as a tool: src/week_dayshort.py scores the paper day short at fills and at auction prints each week
 - 83 Candidate: day-session long model loses only ~2 bp/day with SIP data cut at 09:10 (free plan); cycle Sharpe
   2.82 / 3.21 vs 2.80 / 3.31; IEX trades add nothing reliable; needs opening-auction entry (live account)
@@ -74,6 +75,9 @@ same universe's average (src/horizon_lib.py).
 - (done) 60: day-session long model (buy at the opening auction, sell at the closing auction) with all inputs: price,
   news since the previous close, analyst targets, fundamentals, premarket move; long side only (study 29 found the
   short side works only in hard-to-borrow names)
+
+- 93: fresh test of "halve the book when any pick is tech hardware" (study 90 lead) on nights after 2026-10-08,
+  scored from the paper picks at auction prints; decide in 2027 Q1
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
