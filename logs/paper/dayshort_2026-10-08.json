@@ -1,0 +1,63 @@
+{
+ "day": "2026-10-08",
+ "from_entry": "entry_2026-10-07.json",
+ "equity": 9570.71,
+ "orders": [
+  {
+   "symbol": "MXL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CYD",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 17,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ABSI",
+   "qty": 26,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ACMR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TTMI",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MEI",
+   "qty": 16,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "SITM": "no price or qty 0",
+  "TSEM": "no price or qty 0",
+  "COHR": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-08 09:33:38.895953-04:00"
+}
