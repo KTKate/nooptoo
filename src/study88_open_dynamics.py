@@ -10,17 +10,20 @@ or at the last premarket price?
 
 Data: picks, pairs, 1-minute SIP bars (data/local/m1s85), price mapping and costs from study 85
 (src/study85_87_open_execution.py: build_pairs, cost_grid, stats_rows). New: the official opening cross of every
-pick on its sell day, fetched here from Alpaca SIP trades ('O' print on the primary exchange: price, size, venue, and
-the trades printed before it) into data/local/auctions88.parquet. Premarket move and volume, overnight news count and
-earnings flags from study 25's cache (data/local/m5pre/_study25_features.pkl; 91% of pairs); earnings also from
+pick on its sell day, fetched here from Alpaca SIP trades ('O' print from the listing exchange: price, size, venue,
+and the trades printed before it) into data/local/auctions88.parquet. Other venues also print 'O' for their own
+opening trade (345 pairs first matched a Nasdaq/TRF/Amex 'O' before the NYSE cross; refetched with the venue
+required); pairs with no listing-venue cross by 09:45 (3%) are dropped. Premarket move and volume, overnight news
+count and earnings flags from study 25's cache (data/local/m5pre/_study25_features.pkl; 91% of pairs); earnings also from
 store.read("earnings") for all pairs; ADV, 20-day volatility, traded price from the daily panel; the universe's
 open -> 09:35 move per stock-day from data/local/m5snap (5-minute bars) for each stock's past tendency.
 
 Data correction found here: study 85 anchors the bars at the first trade of the day and treats it as the opening
 auction, and the daily panel's open (Yahoo) is used as the auction price in studies 33/68/85-87. Both are often the
 first trade, which prints before the primary exchange's cross (NYSE crosses seconds after 09:30) and is on average
-above it. All returns from the open here are measured from the official cross: r_hhmm = bar price at hh:mm / cross - 1,
-night = cross / prior close - 1, r_day = closing auction / cross - 1 (pairs whose cross was not found are dropped).
+above it (mean +8 bp, 2024-01..2025-06 +5 bp, 2025-07..2026-09 +11 bp; Yahoo's open equals the first trade in 82% of
+pairs, the cross in 61%). All returns from the open here are measured from the official cross:
+r_hhmm = bar price at hh:mm / cross - 1, night = cross / prior close - 1, r_day = closing auction / cross - 1 (pairs whose cross was not found are dropped).
 
 Design: (1) quintile buckets (discrete inputs: categories) of each input by period, mean return from the cross to
 09:31 / 09:35 / 10:00, 10:00 -> close and cross -> close, t-stats clustered by pick day; univariate slopes on the
@@ -59,9 +62,20 @@ AUC_FN = os.path.join(A.LOCAL, "auctions88.parquet")
 
 
 # ------------------------------------------------------------------ fetch: opening cross print per pick
-def _open_cross(t, day):
-    """Primary-exchange opening cross ('O' print) for ticker t on day: price, size, time, exchange, plus the
-    first regular trade price and the share volume printed before the cross (all venues, 09:30 onward)."""
+PRIMARY = {"NASDAQ": "Q", "NYSE": "N", "AMEX": "A", "ARCA": "P", "BATS": "Z"}
+
+
+def listing_venue():
+    """Ticker (Alpaca style) -> SIP code of its listing exchange (Alpaca asset lists)."""
+    a = pd.concat([pd.read_parquet(os.path.join(A.LOCAL, f"alpaca_assets_{k}.parquet")) for k in ["active", "inactive"]])
+    a = a.drop_duplicates("symbol")
+    return dict(zip(a.symbol, a.exchange.map(PRIMARY)))
+
+
+def _open_cross(t, day, venue=None):
+    """Primary-exchange opening cross ('O' print, from the listing venue when known: other venues also print 'O'
+    for their own opening trade, e.g. a Nasdaq 'O' a second before the NYSE cross) for ticker t on day: price,
+    size, time, exchange, plus the first regular trade price and the share volume printed before the cross."""
     wins = [("09:30:00", "09:30:20"), ("09:30:20", "09:32:00"), ("09:32:00", "09:45:00")]
     first, pre_sz = np.nan, 0
     for wa, wb in wins:
@@ -72,7 +86,7 @@ def _open_cross(t, day):
             j = A.get("trades", p)
             for x in (j.get("trades") or {}).get(t, []):
                 c = x.get("c", [])
-                if "O" in c:
+                if "O" in c and (venue is None or x.get("x") == venue):
                     return dict(open_px=x["p"], open_sz=x["s"], open_ts=x["t"], open_x=x.get("x"), first_px=first,
                                 pre_sz=pre_sz)
                 if not set(c) & {"I", "T", "U", "Z"}:
@@ -90,15 +104,20 @@ def fetch():
     pk = S85.pick_list()
     pk = pk[pk.tdate <= pd.Timestamp("2026-09-30")]
     want = pd.DataFrame({"ticker": pk.symbol.str.replace("-", ".", regex=False).values, "date": pk.tdate.values})
-    have = pd.read_parquet(AUC_FN) if os.path.exists(AUC_FN) else pd.DataFrame(columns=["ticker", "date"])
+    have = pd.read_parquet(AUC_FN) if os.path.exists(AUC_FN) else pd.DataFrame(columns=["ticker", "date", "open_x"])
     have["date"] = pd.to_datetime(have["date"])
+    ven = listing_venue()
+    # refetch pairs whose 'O' print came from a venue other than the listing exchange (first fetch took any venue)
+    bad = have.open_x.notna() & have.ticker.map(ven).notna() & (have.open_x != have.ticker.map(ven))
+    print("pairs with a non-listing-venue 'O' print, refetched:", int(bad.sum()), flush=True)
+    have = have[~bad]
     todo = want.merge(have[["ticker", "date"]], how="left", indicator=True)
     todo = list(todo[todo._merge == "left_only"][["ticker", "date"]].itertuples(index=False, name=None))
     print("pairs to fetch", len(todo), flush=True)
 
     def one(r):
         try:
-            d = _open_cross(r[0], r[1].strftime("%Y-%m-%d"))
+            d = _open_cross(r[0], r[1].strftime("%Y-%m-%d"), ven.get(r[0]))
         except RuntimeError as e:
             print("err", r, e, flush=True)
             d = dict(open_px=np.nan, open_sz=np.nan, open_ts=None, open_x=None, first_px=np.nan, pre_sz=np.nan)
@@ -260,7 +279,9 @@ def build():
         for k in ["r0931", "r0935", "r0945", "r1000"]:
             pk[k + "_bar"] = pk[k]
             pk[k] = (1 + pk[k]) * (1 + pk.anchor_vs_cross) - 1   # from the official cross (NaN if not found)
-        pk["cross_found"] = pk.open_px.notna()
+        lv = pk.symbol.str.replace("-", ".", regex=False).map(listing_venue())
+        same_v = (pk.open_x.astype(object) == lv.astype(object)).fillna(False).astype(bool)
+        pk["cross_found"] = (pk.open_px.notna() & (lv.isna() | same_v)).astype(bool)
         pk["open_vs_pm"] = (1 + pk.open_vs_pm) / (1 + pk.anchor_vs_cross) - 1    # cross vs last premarket trade
         # Yahoo open (used for 'night' and the backtest's sell price) vs the official cross, in traded prices
         tc = traded_close(P)[cols]
@@ -276,7 +297,7 @@ def build():
     else:
         pk["cross_found"] = True
     pk["r1000_close"] = (1 + pk.r_close) / (1 + pk.r1000) - 1
-    pk["use"] = pk.bars_ok & pk.cross_found & pk.night.notna()
+    pk["use"] = (pk.bars_ok & pk.cross_found & pk.night.notna()).astype(bool)
     assert len(pk) == n, "merge duplicated rows"
     return pk.reset_index(drop=True), C, N
 
@@ -488,7 +509,7 @@ def limit_on_open(pk, C):
 
 def checks(pk):
     ok = pk.use.values
-    print("pairs", len(pk), "bars ok", pk.bars_ok.mean().round(4), "cross found", pk.cross_found.mean().round(4),
+    print("pairs", len(pk), "bars ok", pk.bars_ok.mean().round(4), "cross found", round(float(pk.cross_found.mean()), 4),
           "used", ok.mean().round(4), "premarket features", pk.has_pm.mean().round(3), "etb", pk.etb.mean().round(3))
     for k in ["r0931", "r0935", "r1000", "r0931_bar", "r0935_bar", "r1000_bar", "r_close", "night", "open_vs_pm",
               "pm_gap", "anchor_vs_cross", "yahoo_open_vs_cross"]:

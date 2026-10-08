@@ -13,10 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-08)
-- 88: opening-minute dynamics of the picks (what drives the first-minute fall)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 88 Caveat: panel open = first trade, 3.5 / 12 bp above the official cross for the picks, so overnight backtests
+  are too high by that much (blend roughly 2.6 / 2.2); no trading use of the post-open fall survives
 - 78 Reject: insider inputs add nothing reliable to the day model, blend or pooled model; purchases disclosed
   before the open +7 then +20 bp in the day (unstable); EDGAR Atom feed ~40 s latency
 - 90 Reject: nothing known at 15:45 predicts the 2%+ losing nights in both periods (98 rules, logistic AUC 0.56);
@@ -79,6 +80,10 @@ same universe's average (src/horizon_lib.py).
 
 - 93: fresh test of "halve the book when any pick is tech hardware" (study 90 lead) on nights after 2026-10-08,
   scored from the paper picks at auction prints; decide in 2027 Q1
+
+- 94: rescore the blend and the main candidates (67, 68, 71, 80) at official opening crosses for every pick
+  (data/local/auctions88.parquet covers the blend picks); check whether the bias holds outside the picks and whether
+  it changes any earlier comparison between variants
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45

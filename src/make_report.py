@@ -360,6 +360,15 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("88", "Opening minutes of the picks: what drives the fall after the opening cross, and trading uses (short "
+     "subsets, holding longs past the open, limit-on-open sells); data check of the open price", "Caveat",
+     "Data correction: the daily panel's open is usually the day's first trade, not the official opening cross, and "
+     "for the picks it is 3.5 / 12 bp above the cross (checked twice), so every overnight backtest that sells at the "
+     "panel open is too high by about that much (blend Sharpe roughly 2.6 / 2.2 instead of 2.80 / 2.91; the virtual "
+     "book already uses the cross). From the cross the picks fall 10-11 bp by 09:31 and 24-28 bp by 09:35; cheap, "
+     "thinly traded, gapped-up names with heavy premarket volume fall most. No trading use survives: holding longs "
+     "past the open, covering the short early and limit-on-open sells all lose; shorting only predicted fallers is "
+     "noisy and earns less per day."),
     ("78", "Insider trades (Form 4, by acceptance time) as inputs to the day-session model, the blend and a pooled "
      "overnight model; live EDGAR feed check", "Reject",
      "Day-session model: +2.4 bp/day (t 0.3) then -5.7 bp (t -1.0); insider inputs get 0.2-0.35% of the model's "
