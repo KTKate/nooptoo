@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("78", "Insider trades (Form 4, by acceptance time) as inputs to the day-session model, the blend and a pooled "
+     "overnight model; live EDGAR feed check", "Reject",
+     "Day-session model: +2.4 bp/day (t 0.3) then -5.7 bp (t -1.0); insider inputs get 0.2-0.35% of the model's "
+     "gain. Blend filters and tilts: no variant beats the blend in both periods (best +2.5 bp, t 1.65, among 11 "
+     "tried). Pooled overnight model: +1.5 bp then -3.5 bp. Lead: purchases disclosed before the open beat the day "
+     "by +7 bp (t 0.7) then +20 bp (t 2.3). The EDGAR live feed shows filings about 40 s after acceptance."),
     ("90", "Bad-night filter: skip or halve the blend when 15:45 conditions (index and SMH moves, VIX, realized "
      "volatility, picks' beta and concentration, earnings and macro events, weekday) predict a 2%+ loss", "Reject",
      "No input separates bad nights in both periods. The rule chosen on 2024-25H1 (halve when SMH's day is in its "

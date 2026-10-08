@@ -46,8 +46,11 @@ Design:
   15:45 substitution of study 23), so the absolute Sharpe is not the live one; only the paired difference matters.
   Top 10, price > $5, ADV > $5M, closing-auction buy, opening-auction sell, auction cost + 2.5 bp per side.
   Paired t: daily net return difference (variant - base), mean / (sd / sqrt(n)).
-Live feed check (step `live`): a few requests to the EDGAR getcurrent Atom feed (type 4) and the daily index;
-reports the delay between acceptance and visibility.
+Live feed check (step `live`): 16 polls, 20 s apart, of the EDGAR getcurrent Atom feed (type 4, newest 100
+entries, each with its acceptance time); latency = first poll that shows a new accession minus its acceptance time.
+Also the daily form index of yesterday and today (Last-Modified = when it was published). Rows are appended per run.
+Steps: fetch (data), features (feature cache + checks), day, blend, model, all (= day + blend + model), live.
+Memory: about 2.7 GB to build the study-60 frame, 3.7 GB in the pooled-model step (ml_frame from 2020 + 10 inputs).
 Output: results/study78_insider_inputs.csv (section, variant, k, period, sharpe, net_bp, diff_bp, t_diff, ...).
 """
 import io
@@ -225,31 +228,45 @@ if __name__ == "__main__" and len(sys.argv) > 1 and sys.argv[1] == "fetch":
 
 
 # ------------------------------------------------------------------ live feed check (a few requests)
+LIVE_POLLS, LIVE_EVERY = 16, 20
+
+
 def live_check():
     """EDGAR getcurrent Atom feed (Form 4) and the daily index: how soon after acceptance a filing is visible."""
     from email.utils import parsedate_to_datetime
     rows = []
     atom = ("https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=4&company=&dateb=&owner=include"
             "&start=0&count=100&output=atom")
-    for rep in range(3):
-        t0 = pd.Timestamp.now(tz="America/New_York")
+    seen, first, lat = {}, None, []
+    for rep in range(LIVE_POLLS):                                    # poll; latency = first seen - acceptance
         r = sec_get(atom, timeout=60)
         if r is None or r.status_code != 200:
             rows.append(dict(section="live", variant="getcurrent_atom", note=f"http {None if r is None else r.status_code}"))
             continue
-        upd = pd.to_datetime(re.findall(r"<updated>([^<]+)</updated>", r.text)[1:], utc=True)
-        upd = upd.tz_convert("America/New_York")
-        accs = re.findall(r"accession-number=(\d{10}-\d{2}-\d{6})", r.text)
         srv = r.headers.get("Date")
-        now = pd.Timestamp(parsedate_to_datetime(srv)).tz_convert("America/New_York") if srv else t0
-        lag = (now - upd.max()).total_seconds() if len(upd) else np.nan
-        rows.append(dict(section="live", variant="getcurrent_atom", period=str(now.floor("s").tz_localize(None)),
-                         n=len(upd), latest_accept=str(upd.max().tz_localize(None)) if len(upd) else "",
-                         lag_sec=lag, span_min=(upd.max() - upd.min()).total_seconds() / 60 if len(upd) else np.nan,
-                         note=f"{len(set(accs))} accessions; lag = server time - newest acceptance in feed"))
-        print(rows[-1], flush=True)
-        if rep < 2:
-            time.sleep(60)
+        now = pd.Timestamp(parsedate_to_datetime(srv)).tz_convert("America/New_York")
+        ents = re.findall(r"<entry>.*?</entry>", r.text, re.S)
+        for e in ents:
+            m = re.search(r"accession-number=(\d{10}-\d{2}-\d{6})", e)
+            u = re.search(r"<updated>([^<]+)</updated>", e)
+            if m and u and m.group(1) not in seen:
+                seen[m.group(1)] = (pd.Timestamp(u.group(1)).tz_convert("America/New_York"), now, rep)
+        if rep == 0:
+            first = now
+            newest = max(v[0] for v in seen.values())
+            rows.append(dict(section="live", variant="getcurrent_atom_first", period=str(now.tz_localize(None).floor("s")),
+                             n=len(ents), latest_accept=str(newest.tz_localize(None)),
+                             lag_sec=(now - newest).total_seconds(), note="lag = server time - newest acceptance in feed"))
+        if rep < LIVE_POLLS - 1:
+            time.sleep(LIVE_EVERY)
+    lat = pd.Series({k: (v[1] - v[0]).total_seconds() for k, v in seen.items() if v[2] > 0})
+    rows.append(dict(section="live", variant="getcurrent_atom_poll",
+                     period=f"{first.tz_localize(None):%Y-%m-%d %H:%M} + {LIVE_POLLS} polls every {LIVE_EVERY}s",
+                     n=len(lat), lag_sec=lat.median() if len(lat) else np.nan,
+                     note=(f"new accessions seen after the first poll; first-seen minus acceptance (s): min "
+                           f"{lat.min():.0f}, median {lat.median():.0f}, max {lat.max():.0f} (poll interval bounds "
+                           f"the resolution)") if len(lat) else "no new filings during the polls"))
+    print(rows[-1], flush=True)
     d = pd.Timestamp.now(tz="America/New_York")
     q = (d.month - 1) // 3 + 1
     for day in (d - pd.Timedelta(days=1), d):
@@ -266,7 +283,10 @@ def live_check():
 
 if __name__ == "__main__" and len(sys.argv) > 1 and sys.argv[1] == "live":
     lv = live_check()
-    lv.to_csv(cpath("parts", "live.csv"), index=False)
+    fn = cpath("parts", "live.csv")
+    if os.path.exists(fn):                                           # keep earlier probes of the same session
+        lv = pd.concat([pd.read_csv(fn), lv], ignore_index=True)
+    lv.to_csv(fn, index=False)
     sys.exit(0)
 
 
@@ -697,13 +717,16 @@ def run_model(F):
     rows = []
     for s, net in nets.items():
         ref = nets["pooled"] if s.startswith("pooled") else base
-        for p, a, b in PERIODS_NIGHT:
-            st = ann_stats(net.loc[a:b])
-            dbp, t = paired(net.loc[a:b], ref.loc[a:b])
-            rows.append(dict(section="night_model", variant=s, k=10, period=p, sharpe=st["sharpe"],
-                             net_bp=1e4 * net.loc[a:b].mean(), days=st["n"], diff_bp=dbp, t_diff=t,
-                             note="close-based frame; diff vs " + ("pooled" if s.startswith("pooled") else
-                                                                    "blend base (2.85)")))
+        refs = [(ref, "pooled" if s.startswith("pooled") else "blend base (2.85)")]
+        if s == "blend + pooled+insider rank":
+            refs.append((nets["blend + pooled rank (no insider)"], "blend + pooled rank (no insider)"))
+        for ref, rname in refs:
+            for p, a, b in PERIODS_NIGHT:
+                st = ann_stats(net.loc[a:b])
+                dbp, t = paired(net.loc[a:b], ref.loc[a:b])
+                rows.append(dict(section="night_model", variant=s, k=10, period=p, sharpe=st["sharpe"],
+                                 net_bp=1e4 * net.loc[a:b].mean(), days=st["n"], diff_bp=dbp, t_diff=t,
+                                 note="close-based frame; diff vs " + rname))
     df = pd.DataFrame(rows)
     print(df.round(3).to_string(), flush=True)
     save_part("model", df)
@@ -712,7 +735,7 @@ def run_model(F):
 if __name__ == "__main__":
     step = sys.argv[1] if len(sys.argv) > 1 else "all"
     F = get_features()
-    save_part("checks", pd.DataFrame(F["checks"]))
+    save_part("checks", pd.DataFrame(F["checks"]))              # also merges parts/live.csv into the output
     if step in ("all", "day"):
         run_day(F)
     if step in ("all", "blend"):
