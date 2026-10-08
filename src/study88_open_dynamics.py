@@ -1,9 +1,46 @@
-"""Study 88: what drives the fall of the overnight picks in the first minutes after the opening auction, and can
-it be used? 2024-01 .. 2026-09.
+"""Study 88: what drives the fall of the overnight picks in the first minutes after the opening auction, and can it
+be used? 2024-01 .. 2026-09 (picks dated 2024-01-02 .. 2026-09-29).
 
-PLACEHOLDER docstring, completed below once the study is run.
+Question: study 87 found the blend's picks (study 33, top 10, bought at t's closing auction, sold at t+1's opening
+auction) fall about 18 bp by 09:31 and 33 bp by 09:35 after the open, SPY flat. (1) Which inputs known at the open
+explain that fall across picks? (2) Does the opening-auction volume matter? (3) Can it be traded: (a) short at the
+auction only the easy-to-borrow picks with a predicted large early fall (study 68 day short), (b) keep some longs past
+the open instead of selling all at the auction? (4) Could the market-on-open sell be a limit-on-open at the prior close
+or at the last premarket price?
 
-    python src/study88_open_dynamics.py fetch   # opening-cross prints (price, size) per pick, incremental
+Data: picks, pairs, 1-minute SIP bars (data/local/m1s85), price mapping and costs from study 85
+(src/study85_87_open_execution.py: build_pairs, cost_grid, stats_rows). New: the official opening cross of every
+pick on its sell day, fetched here from Alpaca SIP trades ('O' print on the primary exchange: price, size, venue, and
+the trades printed before it) into data/local/auctions88.parquet. Premarket move and volume, overnight news count and
+earnings flags from study 25's cache (data/local/m5pre/_study25_features.pkl; 91% of pairs); earnings also from
+store.read("earnings") for all pairs; ADV, 20-day volatility, traded price from the daily panel; the universe's
+open -> 09:35 move per stock-day from data/local/m5snap (5-minute bars) for each stock's past tendency.
+
+Data correction found here: study 85 anchors the bars at the first trade of the day and treats it as the opening
+auction, and the daily panel's open (Yahoo) is used as the auction price in studies 33/68/85-87. Both are often the
+first trade, which prints before the primary exchange's cross (NYSE crosses seconds after 09:30) and is on average
+above it. All returns from the open here are measured from the official cross: r_hhmm = bar price at hh:mm / cross - 1,
+night = cross / prior close - 1, r_day = closing auction / cross - 1 (pairs whose cross was not found are dropped).
+
+Design: (1) quintile buckets (discrete inputs: categories) of each input by period, mean return from the cross to
+09:31 / 09:35 / 10:00, 10:00 -> close and cross -> close, t-stats clustered by pick day; univariate slopes on the
+within-period percentile rank; pooled OLS on within-day percentile ranks, fit on 2024-01..2025-06, coefficients in
+both periods and out-of-sample IC / terciles in 2025-07..2026-09. Two models: 'full' (includes the cross gap and
+cross volume, descriptive) and 'preopen' (only inputs known before the 09:28 order cutoff, usable for MOO/LOO
+orders). (2) cross dollar volume / 20-day ADV and the share of volume printed before the cross, in (1).
+(3) rules = P1 quantiles of a prediction (preopen models, the premarket gap rank, and the cross-gap rank as an upper
+bound); (a) etb day short open -> close for the predicted-fall subset vs all, and open -> 09:35 / 10:00 covers;
+(b) longs: hold the predicted non-fallers (P1 top 10/30/50%) to 09:35 / 10:00, the rest sold at the auction.
+Costs as study 85 (auction core.exec_cost_bps + 2.5 bp, continuous s6162_common.cont_cost_bps at the time) and the
+bound with the auction cost on every leg. (4) A sell limit fills at the cross when cross >= limit; limits at the prior
+close (and 0.5/1/2% below) and at the last premarket trade (and below); non-fills sold at 09:31 / 09:35 / 10:00 at
+market. Periods: 2024-01..2025-06 (P1, rules chosen) and 2025-07..2026-09 (P2, reported).
+
+Output: results/study88_open_dynamics.csv (tables: bucket, slope_rank, multi_*_full / multi_*_preopen with *_oos,
+universe_by_gap) and results/study88_tradability.csv (tables: tradability in study 85's stats_rows format,
+limit_on_open).
+
+    python src/study88_open_dynamics.py fetch   # opening-cross prints per pick (incremental, ~90 min)
     python src/study88_open_dynamics.py         # study
 """
 import os
@@ -153,7 +190,6 @@ def build():
     for k, lab in [(1, "r0931"), (5, "r0935"), (15, "r0945"), (30, "r1000")]:
         pk[lab] = np.where(ok, N["o"][:, k] - 1, nan)
     pk["r_close"] = np.where(ok, pk.r_day, nan)
-    pk["r1000_close"] = (1 + pk.r_close) / (1 + pk.r1000) - 1
     pk["per"] = np.where(pk.pdate.dt.strftime("%Y-%m") <= P1[1], "P1", "P2")
     # ---- daily-panel features known at the open of tdate (values of pdate)
     c, dv = P["c"][cols], P["dv"][cols]
@@ -221,14 +257,26 @@ def build():
         araw = np.where(pk.first_px.notna(), pk.first_px, pk.open_px)
         same = np.abs(f / araw - 1) < 0.2
         pk["anchor_vs_cross"] = np.where(same, f / pk.open_px, araw / pk.open_px) - 1
-        for k in ["r0931", "r0935", "r0945", "r1000", "r_close"]:
+        for k in ["r0931", "r0935", "r0945", "r1000"]:
             pk[k + "_bar"] = pk[k]
             pk[k] = (1 + pk[k]) * (1 + pk.anchor_vs_cross) - 1   # from the official cross (NaN if not found)
         pk["cross_found"] = pk.open_px.notna()
+        pk["open_vs_pm"] = (1 + pk.open_vs_pm) / (1 + pk.anchor_vs_cross) - 1    # cross vs last premarket trade
         # Yahoo open (used for 'night' and the backtest's sell price) vs the official cross, in traded prices
         tc = traded_close(P)[cols]
         yo = (P["o"][cols] / P["c"][cols] * tc).values[c.index.get_indexer(pk.tdate), jj]
         pk["yahoo_open_vs_cross"] = yo / pk.open_px - 1
+        yoc = pk.yahoo_open_vs_cross.where(pk.yahoo_open_vs_cross.abs() < 0.2)
+        # overnight and day-session returns re-priced at the official cross (Yahoo's open is often the first trade)
+        pk["night_yahoo"], pk["r_day_yahoo"] = pk.night, pk.r_day
+        pk["night"] = (1 + pk.night_yahoo) / (1 + yoc) - 1
+        pk["r_day"] = (1 + pk.r_day_yahoo) * (1 + yoc) - 1
+        pk["r_close"] = np.where(ok, pk.r_day, np.nan)
+        pk["gap_z"] = pk.night / pk.vol20
+    else:
+        pk["cross_found"] = True
+    pk["r1000_close"] = (1 + pk.r_close) / (1 + pk.r1000) - 1
+    pk["use"] = pk.bars_ok & pk.cross_found & pk.night.notna()
     assert len(pk) == n, "merge duplicated rows"
     return pk.reset_index(drop=True), C, N
 
@@ -253,7 +301,7 @@ def mean_t(y, g):
 
 def cross_section(pk):
     rows = []
-    ok = pk.bars_ok.values
+    ok = pk.use.values
     for f in FEATS:
         if f not in pk:
             continue
@@ -284,6 +332,9 @@ def cross_section(pk):
     return rows
 
 
+# known before the 09:28 order cutoff (the opening-cross price and volume are not)
+MODEL_PRE = ["pm_gap", "pm_trend", "relvol", "n_news", "earn_any", "px", "adv20", "vol20", "ret1", "nd_corr60",
+             "past_e5_60d", "score_rank"]
 MODEL_FEATS = ["night", "gap_z", "pm_gap", "open_vs_pm", "relvol", "n_news", "earn_any", "px", "adv20", "vol20",
                "ret1", "nd_corr60", "past_e5_60d", "score_rank", "auc_dv_adv"]
 
@@ -310,7 +361,7 @@ def model(pk, target="r0935", feats=MODEL_FEATS):
     rows = []
     coefs = {}
     for per in ["P1", "P2"]:
-        m = (pk.per.values == per) & np.isfinite(y) & pk.bars_ok.values
+        m = (pk.per.values == per) & np.isfinite(y) & pk.use.values
         b, t = day_clustered_ols(y[m], X[m], pk.pdate.values[m])
         coefs[per] = b
         for nm, bb, tt in zip(["const"] + feats + ["no_premarket"], b, t):
@@ -318,7 +369,7 @@ def model(pk, target="r0935", feats=MODEL_FEATS):
     pred = X @ coefs["P1"]
     # out-of-sample check: daily Spearman IC and top/bottom tercile (by P1 cut points) in each period
     for per in ["P1", "P2"]:
-        m = (pk.per.values == per) & np.isfinite(y) & pk.bars_ok.values
+        m = (pk.per.values == per) & np.isfinite(y) & pk.use.values
         d = pd.DataFrame({"p": pred[m], "y": pk[target].values[m], "g": pk.pdate.values[m]})
         ic = d.groupby("g").apply(lambda z: z.p.corr(z.y, method="spearman"), include_groups=False).dropna()
         q1, q2 = np.quantile(pred[(pk.per.values == "P1") & np.isfinite(y)], [1 / 3, 2 / 3])
@@ -359,7 +410,7 @@ def tradability(pk, C, pred, pred_name):
     of the P1-fit prediction (pred = predicted open -> 09:35 return)."""
     rows = []
     n = len(pk)
-    ok = pk.bars_ok.values
+    ok = pk.use.values
     etb = pk.etb.values & ok
     p1 = (pk.per.values == "P1") & ok & np.isfinite(pred)
     night, rday = pk.night.values, pk.r_day.values
@@ -407,7 +458,7 @@ def limit_on_open(pk, C):
     """Q4: sell the longs with a limit-on-open order instead of market-on-open. A sell limit fills at the auction
     price when auction >= limit; a non-fill is sold at market at 09:31 / 09:35 / 10:00 (continuous cost)."""
     rows = []
-    ok = pk.bars_ok.values
+    ok = pk.use.values
     night = pk.night.values
     base = night - C["auc_p"] - C["auc_t"]
     # auction vs premarket: first trade of the 09:30 5-minute bar (m5snap) over the last premarket trade
@@ -436,41 +487,67 @@ def limit_on_open(pk, C):
 
 
 def checks(pk):
-    ok = pk.bars_ok.values
-    print("pairs", len(pk), "bars ok", ok.mean().round(4), "premarket features", pk.has_pm.mean().round(3),
-          "etb", pk.etb.mean().round(3))
-    for k in ["r0931", "r0935", "r1000", "night", "open_vs_pm", "pm_gap"]:
+    ok = pk.use.values
+    print("pairs", len(pk), "bars ok", pk.bars_ok.mean().round(4), "cross found", pk.cross_found.mean().round(4),
+          "used", ok.mean().round(4), "premarket features", pk.has_pm.mean().round(3), "etb", pk.etb.mean().round(3))
+    for k in ["r0931", "r0935", "r1000", "r0931_bar", "r0935_bar", "r1000_bar", "r_close", "night", "open_vs_pm",
+              "pm_gap", "anchor_vs_cross", "yahoo_open_vs_cross"]:
+        if k not in pk:
+            continue
         v = pk[k][ok]
-        print(f"{k:12s} mean {1e4 * v.mean():8.1f} bp  median {1e4 * v.median():7.1f}  p0.5 {1e4 * v.quantile(.005):8.0f}"
+        print(f"{k:20s} mean {1e4 * v.mean():8.1f} bp  median {1e4 * v.median():7.1f}  p0.5 {1e4 * v.quantile(.005):8.0f}"
               f"  p99.5 {1e4 * v.quantile(.995):8.0f}  n {v.notna().sum()}")
-    c = pk[["r0935", "e5_univ_today_chk"]][ok].dropna()
+    if "anchor_vs_cross" in pk:
+        a = pk.anchor_vs_cross[ok]
+        print("share |bar anchor - cross| > 10 bp", (a.abs() > 1e-3).mean().round(3), "| by cross venue:",
+              (1e4 * pk[ok].groupby("open_x")[["anchor_vs_cross", "r0935", "r0935_bar"]].mean()).round(1).to_dict())
+        y = pk.yahoo_open_vs_cross[ok]
+        print("Yahoo open vs cross: median |diff| bp", round(1e4 * y.abs().median(), 2), "share > 10 bp",
+              (y.abs() > 1e-3).mean().round(3), "share > 20% (split scale)", (y.abs() > 0.2).mean().round(4))
+    c = pk[["r0935_bar", "e5_univ_today_chk"]][ok].dropna()
     print("bars r0935 vs m5snap e5 same pair: corr", c.corr().iloc[0, 1].round(3), "mean", (1e4 * c.mean()).round(1).tolist())
     c = pk[["night", "pm_gap"]].dropna()
     print("night vs premarket gap corr", c.corr().iloc[0, 1].round(3))
-    if "open_px" in pk:
-        a = pk.anchor_vs_cross[ok]
-        print("cross found", pk.open_px.notna().mean().round(4), "| bar anchor vs official cross bp: mean",
-              round(1e4 * a.mean(), 1), "median", round(1e4 * a.median(), 1), "share |diff|>10bp",
-              (a.abs() > 1e-3).mean().round(3))
-        print("r0935 from official cross mean bp", round(1e4 * pk.r0935_off[ok].mean(), 1),
-              "from bar anchor", round(1e4 * pk.r0935[ok].mean(), 1))
-        ratio = pk.open_px / pk.o930
-        print("official cross vs m5snap 09:30 open: median |diff| bp", round(1e4 * (ratio - 1).abs().median(), 1),
-              "share > 20% apart (split rescale)", ((ratio - 1).abs() > 0.2).mean().round(4))
+
+
+def fall_summary(pk):
+    """Mean fall by period measured from the official cross and from study 85's first-trade anchor, plus the gap
+    between Yahoo's open (the backtests' auction price) and the cross."""
+    rows = []
+    for per in ["P1", "P2", "all"]:
+        d = pk[pk.use & ((pk.per == per) if per != "all" else True)]
+        r = dict(table="fall_summary", feature="all picks", period=per, n=len(d))
+        for k in ["r0931", "r0935", "r1000", "r0931_bar", "r0935_bar", "r1000_bar", "anchor_vs_cross",
+                  "yahoo_open_vs_cross", "night", "night_yahoo", "r_day", "r_day_yahoo"]:
+            m_, t_ = mean_t(d[k], d.pdate)
+            r[f"{k}_bp"], r[f"{k}_t"] = 1e4 * m_, t_
+        rows.append(r)
+        for v, dv in d.groupby("open_x"):
+            if len(dv) >= 100:
+                rows.append(dict(table="fall_summary", feature=f"cross venue {v}", period=per, n=len(dv),
+                                 **{f"{k}_bp": 1e4 * dv[k].mean() for k in ["r0935", "r0935_bar", "anchor_vs_cross",
+                                                                           "yahoo_open_vs_cross"]}))
+    return rows
 
 
 def main():
     pk, C, N = build()
     checks(pk)
-    rows = cross_section(pk)
+    rows = fall_summary(pk)
+    print(pd.DataFrame(rows).round(2).T.to_string())
+    rows += cross_section(pk)
     rows += universe_context()
     preds = {}
     for t_ in ["r0935", "r1000"]:
-        r, p = model(pk, t_)
-        rows += r
-        preds[t_] = p
-    # single-feature rule: the overnight gap alone (prediction = minus its within-day rank)
-    preds["night"] = -(pk.groupby("pdate").night.rank(pct=True).values - 0.5)
+        r, p = model(pk, t_, MODEL_FEATS)            # uses the cross price and volume: description only
+        rows += [dict(x_, table=x_["table"] + "_full") for x_ in r]
+        r, p = model(pk, t_, MODEL_PRE)              # pre-open inputs only: usable for orders sent before 09:28
+        rows += [dict(x_, table=x_["table"] + "_preopen") for x_ in r]
+        preds[f"preopen model {t_}"] = p
+    # single-input rules (prediction = minus the within-day rank): premarket gap (pre-open) and the overnight gap at
+    # the cross (not known when the order is sent; an upper bound)
+    for f in ["pm_gap", "night"]:
+        preds[f"{f} rank"] = -(pk.groupby("pdate")[f].rank(pct=True).fillna(0.5).values - 0.5)
     d = pd.DataFrame(rows)
     d.to_csv(f"{RES}/study88_open_dynamics.csv", index=False)
     pd.set_option("display.width", 250)
