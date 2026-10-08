@@ -12,10 +12,16 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-07)
+## Running (batch 2026-10-08)
+- 90: bad-night filter (15:45 market, sector, VIX, overlap and event conditions)
+- 91: volatility-scaled position sizes for the blend (smaller weights on the most volatile picks)
+- 92: broader concentration caps (sector instead of industry; a cap on chip/storage/hardware names together)
+- 88: opening-minute dynamics of the picks (what drives the first-minute fall)
+- 78: insider purchases (Form 4) as inputs to the jump and day-session models; live feed check
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 89 Done as a tool: src/week_dayshort.py scores the paper day short at fills and at auction prints each week
 - 83 Candidate: day-session long model loses only ~2 bp/day with SIP data cut at 09:10 (free plan); cycle Sharpe
   2.82 / 3.21 vs 2.80 / 3.31; IEX trades add nothing reliable; needs opening-auction entry (live account)
 - 85 Caveat: day short works only entered in the opening auction; picks fall 18 bp by 09:31 and 33 bp by 09:35, so
@@ -69,17 +75,6 @@ same universe's average (src/horizon_lib.py).
   news since the previous close, analyst targets, fundamentals, premarket move; long side only (study 29 found the
   short side works only in hard-to-borrow names)
 
-- 88: opening-minute dynamics of the picks: does the first-minute fall depend on the premarket move, spread or
-  news? Could a 09:30 limit-on-open order (live account only) capture the auction price?
-- 89: shadow-score the day short at auction prints only (live account plan) and compare with the paper fills
-
-- 90: bad-night filter: can anything known at 15:45 (index and sector moves that day, VIX change, picks' beta and
-  sector overlap, scheduled macro or earnings events overnight) predict the ~10% of nights the blend loses 2%+?
-  Quick check 2026-10-07: hedging with SPY/IWM/QQQ/SMH lowers Sharpe (2.43-2.76 vs 2.85) and barely changes the
-  worst nights; the picks' overnight beta to SPY is about 2
-
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
   in shadow.py, long-only top quintile, scored at official prints
-- 78: live Form 4 feed (EDGAR XML from 2026-04) for a shadow test of insider buys > 5% of ADV; insider features
-  (recent buy, size) as inputs to the day-session and jump models
