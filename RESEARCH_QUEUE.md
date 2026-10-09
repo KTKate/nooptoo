@@ -12,7 +12,14 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-08)
+## Running (batch 2026-10-09)
+- 94: rescore the blend and candidates 67, 68, 71, 80 at official opening and closing crosses
+- 95: overnight drift in index and leveraged ETFs (SPY, QQQ, IWM, TQQQ, SOXL...) with 15:45 filters
+- 96: index-event closes (quarterly options expiration, S&P and Russell rebalance days, month and quarter end):
+  effect on the blend and an overnight reversal of names with unusual closing-auction volume
+- 97: separate model for Friday-night (weekend) holds, since study 65 found Monday nights weakest
+- 98: closing-auction volume share as a 15:45-known proxy: does yesterday's or the 20-day closing-auction share
+  predict the overnight move (feature for the blend)?
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
@@ -81,9 +88,6 @@ same universe's average (src/horizon_lib.py).
 - 93: fresh test of "halve the book when any pick is tech hardware" (study 90 lead) on nights after 2026-10-08,
   scored from the paper picks at auction prints; decide in 2027 Q1
 
-- 94: rescore the blend and the main candidates (67, 68, 71, 80) at official opening crosses for every pick
-  (data/local/auctions88.parquet covers the blend picks); check whether the bias holds outside the picks and whether
-  it changes any earlier comparison between variants
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
