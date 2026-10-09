@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("94", "Rescore the blend and candidates 67, 68, 71 at official opening and closing crosses (48,716 prints)",
+     "Caveat",
+     "Blend Sharpe 2.48 / 2.27 / 2.38 at crosses vs 2.80 / 2.91 / 2.85 on panel prices (mean 37.5 vs 45.1 bp a "
+     "night); live capped blend 2.45. Blend + quarter-size day short 2.50 (was 3.04); study 67 2.33 (2.87); study 71 "
+     "2.46 (3.09). The bias is in the open only and mostly in the picks (+5 / +11 bp; random liquid stocks +0.2 / "
+     "+1.9 bp). Variant comparisons keep their direction; skipping Monday nights 2.55 vs 2.38."),
     ("96", "Index-event closes (quarterly options expiration and S&P rebalance, Russell reconstitution, month and "
      "quarter end): blend on those nights, and overnight reversal of stocks with unusually large closing crosses",
      "Leads only",
@@ -629,6 +635,17 @@ pre {{ background: var(--panel); border: 1px solid var(--rule); padding: 14px 16
     filter, the earlier universe gives Sharpe {uni9.get('s_intraday_loser', np.nan):.2f} (intraday loser) and
     {uni9.get('s_day_loser', np.nan):.2f} (day loser); the full universe gives {base9.loc['s_intraday_loser', '2024-26']:.2f}
     and {base9.loc['s_day_loser', '2024-26']:.2f}.</p>
+  </div>
+  <div class="finding">
+    <h3>3. The panel open overstates the sell price of the overnight picks (studies 88 and 94)</h3>
+    <p>The daily open from Yahoo is usually the day's first trade, not the official opening cross where a
+    market-on-open order fills. For the overnight picks (volatile names that gapped up) the first trade is on average
+    5 bp (2024-01..2025-06) and 11 bp (2025-07..2026-09) above the cross; for random liquid stocks the gap is 0-2 bp,
+    so the 2.5 bp per side allowance covered ordinary stocks but not the picks. The closing price matches the closing
+    cross. Rescored at official crosses (48,716 fetched prints), the overnight blend's Sharpe is 2.48 / 2.27 / 2.38
+    instead of 2.80 / 2.91 / 2.85, mean 37.5 bp a night instead of 45.1. The blend plus quarter-size day short is
+    2.50 instead of 3.04, and study 71's full cycle 2.46 instead of 3.09. Comparisons between variants keep their
+    direction. The paper virtual book already uses the official crosses.</p>
   </div>
   <p>The ML ranker is not affected by either error: without the filter its 2024-26 Sharpe is
   {ml_sh:.2f} (previously {f2(g(fsb, 'ml_overnight_k10', '2024-26')) if fsb is not None else 'n/a'}), and only 2.4% of its picks traded below $5.</p>

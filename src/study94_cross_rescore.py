@@ -14,8 +14,12 @@ day, kind): the opening cross is the first trade with condition 'O' printed by t
 the first with condition '6' from the listing exchange (other venues print 'O'/'6' for their own auctions, e.g. an
 Arca '6' print for a Nasdaq stock; listing venue from Alpaca's asset lists, as in study 88). Windows are searched in
 order (open 09:30:00-09:30:03, -09:30:20, -09:32, -09:45; close 15:59:59-16:00:30, -16:15, and 12:59:59-13:15 on
-early-close days); one request covers all symbols of a day (paged). Opening crosses of the uncapped blend picks'
-sell days are reused from study 88 (data/local/auctions88.parquet, same rule). Panel prices: core.load_panel
+early-close days); one request covers all symbols of a day (paged). Second pass for pairs with no listing-venue
+print (2.3%, mostly listing transfers such as PLTR and WMT NYSE -> Nasdaq or AZN Nasdaq -> NYSE, where today's venue
+is wrong for earlier days): the largest 'O' / '6' print from any exchange (N, Q, A, P, Z), which matched the
+listing-venue rule on all 110 already-found pairs checked (3 days); 0.3% of pairs remain without a cross.
+Opening crosses of the uncapped blend picks' sell days are reused from study 88 (data/local/auctions88.parquet,
+same rule). Panel prices: core.load_panel
 (split- and dividend-adjusted Yahoo), Yahoo raw close P["rawc"] (adjusted for later splits) put back on the day's
 traded scale with data/local/events/splits_yf.csv and checked against Alpaca's raw close (data/local/d1raw.parquet).
 Picks: blend as study 69 (lines 22-46: top 10 of (2 rank(ensemble) + rank(p_jump - p_drop)) / 3); the live version
@@ -38,6 +42,11 @@ dividend between the days). Where a cross is missing the panel price is used (fa
 the original studies. Bias stats: mean / median / share > 0 in bp of panel / cross - 1 (positive = panel above the
 cross). Periods: 2024-01..2025-06, 2025-07..2026-09, 2024-01..2026-09 by entry date (day long and study 71 from
 2024-07).
+
+Data errors found: 34 opening and 34 closing legs whose Yahoo raw close could not be put on the traded scale
+(splits missing from splits_yf.csv) and 1 opening cross outside 0.8..1.25 of the panel open; these use the panel
+price. Raw cross-to-cross night returns of the blend picks agree with the ratio method except 3 reverse splits on
+the sell day (FCEL, HOLO, XTIA) and 14 ex-dividend days (raw return lower by the dividend), as expected.
 
 Output: results/study94_cross_rescore.csv (tables: bias = panel vs cross by set, kind, period; rescore = Sharpe,
 mean net bp, max drawdown per strategy, period and pricing; fallback = share of legs priced at the panel; variants =
@@ -64,6 +73,7 @@ AUC_FN = os.path.join(A.LOCAL, "auctions94.parquet")
 AUC88 = os.path.join(A.LOCAL, "auctions88.parquet")
 OUT = os.path.join(RES, "study94_cross_rescore.csv")
 PRIMARY = {"NASDAQ": "Q", "NYSE": "N", "AMEX": "A", "ARCA": "P", "BATS": "Z"}
+LISTING = set(PRIMARY.values())
 EARLY = {"2024-07-03", "2024-11-29", "2024-12-24", "2025-07-03", "2025-11-28", "2025-12-24", "2026-07-02"}
 START, END = "2024-01", "2026-09"
 PER = [("2024-25H1", "2024-01", "2025-06"), ("2025H2-26", "2025-07", "2026-09"), ("2024-26", "2024-01", "2026-09")]
@@ -204,6 +214,57 @@ def _day_kind(day, kind, syms, ven):
     return [dict(ticker=s, date=pd.Timestamp(day), kind=kind, first_px=first[s], **res[s]) for s in syms]
 
 
+def _day_kind_largest(day, kind, syms):
+    """Second pass for pairs with no listing-venue cross (mostly listing transfers, e.g. PLTR and WMT moved from NYSE
+    to Nasdaq, AZN from Nasdaq to NYSE, so today's listing venue is wrong for earlier days): the largest 'O' / '6'
+    print of any listing exchange (N, Q, A, P, Z) in the first window that has one (the listing exchange's cross is by far the largest)."""
+    if kind == "open":
+        wins, cond = [("09:30:00", "09:30:20"), ("09:30:20", "09:32:00"), ("09:32:00", "09:45:00")], "O"
+    else:
+        wins, cond = [("15:59:59", "16:00:30"), ("16:00:30", "16:15:00")], "6"
+        if day in EARLY:
+            wins = [("12:59:59", "13:15:00")] + wins
+    res = {s: dict(px=np.nan, sz=np.nan, ts=None, x=None) for s in syms}
+    left = list(syms)
+    for wa, wb in wins:
+        if not left:
+            break
+        cand = {s: [] for s in left}
+        p = dict(symbols=",".join(left), start=_utc(day, wa), end=_utc(day, wb), limit=10000, feed="sip")
+        while True:
+            j = A.get("trades", p)
+            for t, trs in (j.get("trades") or {}).items():
+                if t in cand:
+                    cand[t] += [z for z in trs if cond in z.get("c", []) and z.get("x") in LISTING]
+            if not j.get("next_page_token"):
+                break
+            p["page_token"] = j["next_page_token"]
+        for t, zs in cand.items():
+            if zs:
+                z = max(zs, key=lambda q: q["s"])
+                res[t] = dict(px=z["p"], sz=z["s"], ts=z["t"], x=z.get("x"))
+        left = [s for s in left if np.isnan(res[s]["px"])]
+    return [dict(ticker=s, date=pd.Timestamp(day), kind=kind, rule="largest", **res[s]) for s in syms]
+
+
+def refetch_missing():
+    have = pd.read_parquet(AUC_FN)
+    have["rule"] = (have["rule"] if "rule" in have else pd.Series(index=have.index, dtype="string")).fillna("venue")
+    m = have.px.isna() & (have.rule == "venue")
+    jobs = [(d.strftime("%Y-%m-%d"), k, sorted(g.ticker)) for (d, k), g in have[m].groupby(["date", "kind"])]
+    print("second pass (largest print):", int(m.sum()), "pairs,", len(jobs), "day-kind jobs", flush=True)
+    with ThreadPoolExecutor(4) as ex:
+        rows = [r for rr in ex.map(lambda jb: _day_kind_largest(*jb), jobs) for r in rr]
+    new = pd.DataFrame(rows)
+    keep = have[~m]
+    old = have[m].drop(columns=["px", "sz", "ts", "x", "rule"]).merge(new, on=["ticker", "date", "kind"], how="left")
+    old["rule"] = old.rule.fillna("largest")
+    out = pd.concat([keep, old], ignore_index=True)
+    out["rule"] = out.rule.astype("string")
+    _save(out)
+    print("found in second pass", int(new.px.notna().sum()), "of", len(new), flush=True)
+
+
 def _save(df):
     df = df.copy()
     for k in ["ts", "x"]:
@@ -255,6 +316,7 @@ def fetch():
 
 if __name__ == "__main__" and len(sys.argv) > 1 and sys.argv[1] == "fetch":
     fetch()
+    refetch_missing()
     sys.exit()
 
 
@@ -416,7 +478,7 @@ def main():
     okS = S.notna()
     Wy = W.shift(1).fillna(0).where(okS, 0)
     both = ((W > 0) | (Wy > 0)).astype(float)
-    both = both.div(both.sum(1).replace(0, np.nan), axis=0).fillna(0)
+    both = both.div(both.sum(axis=1).replace(0, np.nan), axis=0).fillna(0)
     rows += fallback_rows("69: today + yesterday's picks", both, miss_n)
     for pr, R in [("panel", Rn_p), ("cross", Rn_x)]:
         base = nets[("blend top 10 (study 69 base)", pr)]

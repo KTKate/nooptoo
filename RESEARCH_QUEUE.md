@@ -13,12 +13,13 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-09)
-- 94: rescore the blend and candidates 67, 68, 71, 80 at official opening and closing crosses
 - 95: overnight drift in index and leveraged ETFs (SPY, QQQ, IWM, TQQQ, SOXL...) with 15:45 filters
 - 97: separate model for Friday-night (weekend) holds, since study 65 found Monday nights weakest
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 94 Caveat: at official crosses the blend is 2.48 / 2.27 / 2.38 (was 2.80 / 2.91 / 2.85); day legs still add
+  (+0.12 short, +0.16 long, +0.29 both); bias only at the open and mostly in the picks; variant rankings unchanged
 - 96 Leads only: quarterly expiration nights strong in 2025H2-26 (+286 bp vs other nights, 5 nights); closing
   price pressure reverses overnight but is known only after 16:00
 - 98 Reject: closing-auction share -7 bp decile spread, below costs; no blend gain
@@ -87,6 +88,10 @@ same universe's average (src/horizon_lib.py).
 - 93: fresh test of "halve the book when any pick is tech hardware" (study 90 lead) on nights after 2026-10-08,
   scored from the paper picks at auction prints; decide in 2027 Q1
 
+
+- 99: retrain the ensemble and jump models with targets at official opening crosses (data/local/auctions94.parquet
+  covers picks only; needs crosses for the training universe or a first-trade-vs-cross correction model)
+- 100: skip Monday-night entries as a pre-registered forward test (study 65 lead; at crosses 2.55 vs 2.38)
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
