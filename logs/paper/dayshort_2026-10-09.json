@@ -1,0 +1,63 @@
+{
+ "day": "2026-10-09",
+ "from_entry": "entry_2026-10-08.json",
+ "equity": 9938.35,
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MXL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 19,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AXTI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SHAZ",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TTMI",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CECO",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "OBX": "not easy to borrow",
+  "COHR": "no price or qty 0",
+  "WDC": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-09 09:34:03.732322-04:00"
+}
