@@ -360,6 +360,18 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("95", "Overnight holds of index and leveraged ETFs (SPY, QQQ, IWM, DIA, TQQQ, SQQQ, SOXL, SOXS, UPRO, TNA, SMH, "
+     "XLK, XLF, XLE) alone, with 15:45 filters, and added to the blend", "Reject",
+     "Overnight beats daytime holding in 2024+ (SPY net Sharpe 0.64 / 1.47, SMH 1.50 / 1.82) but is about zero in "
+     "2020-23. Filters chosen on earlier years (mostly skip Friday) lose on 2025H2-26. A long ETF leg lowers the "
+     "blend's Sharpe; a 50% short SPY or QQQ hedge gives 2.91 / 2.92 vs 2.80 / 2.91 (lead, conflicts with an "
+     "earlier quick check that found hedges lower Sharpe)."),
+    ("97", "Weekend holds: a model trained on weekend nights only, a weekend flag with interactions, and skipping "
+     "Friday or Monday nights", "Reject",
+     "Blend on weekend nights: -22 bp vs other nights (t -0.6) then +75 bp (t 1.9), so skip rules chosen on "
+     "2024-25H1 fail (skip Friday 2.97 then 1.87). Weekend-only model loses on 2025H2-26 (-42 bp vs the blend, t "
+     "-1.8). The weekend flag adds +2 to +6 bp on all nights (t 0.5-0.8), a lead for the next retrain. Skipping "
+     "Monday nights: 2.87 / 3.09 vs 2.80 / 2.91."),
     ("94", "Rescore the blend and candidates 67, 68, 71 at official opening and closing crosses (48,716 prints)",
      "Caveat",
      "Blend Sharpe 2.48 / 2.27 / 2.38 at crosses vs 2.80 / 2.91 / 2.85 on panel prices (mean 37.5 vs 45.1 bp a "

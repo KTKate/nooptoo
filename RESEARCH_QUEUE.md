@@ -13,11 +13,12 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-09)
-- 95: overnight drift in index and leveraged ETFs (SPY, QQQ, IWM, TQQQ, SOXL...) with 15:45 filters
-- 97: separate model for Friday-night (weekend) holds, since study 65 found Monday nights weakest
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 95 Reject: ETF overnight legs positive in 2024+ only and lower the blend's Sharpe; filters fail; short-index
+  hedge a small lead
+- 97 Reject: weekend-only model and Friday skip rules fail on 2025H2-26; weekend flag +2 to +6 bp (lead for retrain)
 - 94 Caveat: at official crosses the blend is 2.48 / 2.27 / 2.38 (was 2.80 / 2.91 / 2.85); day legs still add
   (+0.12 short, +0.16 long, +0.29 both); bias only at the open and mostly in the picks; variant rankings unchanged
 - 96 Leads only: quarterly expiration nights strong in 2025H2-26 (+286 bp vs other nights, 5 nights); closing
@@ -89,8 +90,10 @@ same universe's average (src/horizon_lib.py).
   scored from the paper picks at auction prints; decide in 2027 Q1
 
 
-- 99: retrain the ensemble and jump models with targets at official opening crosses (data/local/auctions94.parquet
+- 99: retrain the ensemble and jump models (with study 97's weekend flag) with targets at official opening crosses (data/local/auctions94.parquet
   covers picks only; needs crosses for the training universe or a first-trade-vs-cross correction model)
+- 101: beta hedge at cross prices: short 0.25-0.75x SPY or QQQ overnight against the blend; resolve why study 95
+  (2.91 / 2.92) and the 2026-10-07 quick check (2.70 for 0.5x SPY) disagree
 - 100: skip Monday-night entries as a pre-registered forward test (study 65 lead; at crosses 2.55 vs 2.38)
 
 ## Next (intraweek: 1-5 trading days)
