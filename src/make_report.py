@@ -360,6 +360,18 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("96", "Index-event closes (quarterly options expiration and S&P rebalance, Russell reconstitution, month and "
+     "quarter end): blend on those nights, and overnight reversal of stocks with unusually large closing crosses",
+     "Leads only",
+     "Quarterly expiration nights: blend +67 bp (t 0.8) then +286 bp (t 3.6) above other nights, 11 nights in all; "
+     "skipping them lowers Sharpe. Month end flips sign between periods. Closing-auction price pressure reverses "
+     "overnight (IC -0.02 to -0.03) but is only known after 16:00; entering after the cross earns +4 to +26 bp gross, "
+     "below after-hours costs."),
+    ("98", "Closing-auction share of volume (yesterday's and 20-day average, known at 15:45) as an overnight signal "
+     "and blend input", "Reject",
+     "Low-share stocks rise more overnight, top minus bottom decile -7 bp in both periods (t -2.6, -1.6), below the "
+     "9 bp round-trip cost. Every blend tilt lowers Sharpe; the best filter is 0.0 bp over 2024-26. The blend "
+     "already holds the low-share names."),
     ("88", "Opening minutes of the picks: what drives the fall after the opening cross, and trading uses (short "
      "subsets, holding longs past the open, limit-on-open sells); data check of the open price", "Caveat",
      "Data correction: the daily panel's open is usually the day's first trade, not the official opening cross, and "

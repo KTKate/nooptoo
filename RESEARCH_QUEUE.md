@@ -15,14 +15,13 @@ same universe's average (src/horizon_lib.py).
 ## Running (batch 2026-10-09)
 - 94: rescore the blend and candidates 67, 68, 71, 80 at official opening and closing crosses
 - 95: overnight drift in index and leveraged ETFs (SPY, QQQ, IWM, TQQQ, SOXL...) with 15:45 filters
-- 96: index-event closes (quarterly options expiration, S&P and Russell rebalance days, month and quarter end):
-  effect on the blend and an overnight reversal of names with unusual closing-auction volume
 - 97: separate model for Friday-night (weekend) holds, since study 65 found Monday nights weakest
-- 98: closing-auction volume share as a 15:45-known proxy: does yesterday's or the 20-day closing-auction share
-  predict the overnight move (feature for the blend)?
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 96 Leads only: quarterly expiration nights strong in 2025H2-26 (+286 bp vs other nights, 5 nights); closing
+  price pressure reverses overnight but is known only after 16:00
+- 98 Reject: closing-auction share -7 bp decile spread, below costs; no blend gain
 - 88 Caveat: panel open = first trade, 3.5 / 12 bp above the official cross for the picks, so overnight backtests
   are too high by that much (blend roughly 2.6 / 2.2); no trading use of the post-open fall survives
 - 78 Reject: insider inputs add nothing reliable to the day model, blend or pooled model; purchases disclosed
