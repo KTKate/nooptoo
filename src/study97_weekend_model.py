@@ -105,7 +105,8 @@ def train_all():
 
 def stats_row(part, variant, period, x, ref=None):
     x = x.dropna()
-    d = dict(part=part, variant=variant, period=period, n=len(x), mean_bp=1e4 * x.mean(),
+    d = dict(part=part, variant=variant, period=period, n=len(x), mean_bp=1e4 * x.mean(), median_bp=1e4 * x.median(),
+             mean_ex_best3_bp=1e4 * x.sort_values().iloc[:-3].mean() if len(x) > 10 else np.nan,
              sharpe=ann_stats(x)["sharpe"] if len(x) > 5 else np.nan,
              t_mean=x.mean() / x.std() * np.sqrt(len(x)) if len(x) > 2 else np.nan)
     if ref is not None:
@@ -186,7 +187,7 @@ if __name__ == "__main__":
         Wk = bt.select_topk(s, s.notna(), 10) > 0
         s0 = S["base"].loc[s.index]
         W0 = bt.select_topk(s0, s0.notna(), 10) > 0
-        ov = (Wk & W0).sum(1) / 10
+        ov = (Wk & W0).sum(axis=1) / 10
         rows.append(dict(part="B pick overlap with base", variant=k, period="2022-26", n=len(ov), mean_bp=np.nan,
                          overlap=ov.mean()))
     for p, a, b in PER:
@@ -206,10 +207,14 @@ if __name__ == "__main__":
         x = nets["all_wkflag"].loc[a:b]
         rows.append(stats_row("B all nights top 10 vs base", "wkflag", p, x, nets["all_base"].loc[a:b]))
         rows.append(stats_row("B all nights top 10 vs base", "base", p, nets["all_base"].loc[a:b]))
-    # data check: largest single-name weekend returns among the picks
-    W0 = bt.select_topk(S["wkonly"].loc[S["wkonly"].index.isin(wkdays)], S["wkonly"].loc[S["wkonly"].index.isin(wkdays)].notna(), 10)
-    picks = (R.reindex_like(W0)).where(W0 > 0).stack()
-    print("largest |weekend return| among wkonly picks:\n", picks.abs().sort_values().tail(8))
+    # data check: largest single-name weekend returns among the picks (split errors would show up here)
+    for k, W0 in [("wkonly", None), ("blend", WB)]:
+        if W0 is None:
+            s = S[k].loc[S[k].index.isin(wkdays)]
+            W0 = bt.select_topk(s, s.notna(), 10)
+        W0 = W0.loc[W0.index.isin(wkdays)]
+        picks = R.reindex_like(W0).where(W0 > 0).stack().dropna()
+        print(f"largest weekend returns among {k} picks:\n", picks.sort_values().iloc[[0, 1, 2, -3, -2, -1]])
 
     # ---- Part C: skip rules on the blend
     wd = pd.Series(idx.weekday, index=idx)
@@ -223,5 +228,6 @@ if __name__ == "__main__":
                              mean_bp=1e4 * x.loc[a:b].mean(), sharpe=st["sharpe"], ann=st["ann_ret"], maxdd=st["maxdd"]))
     df = pd.DataFrame(rows)
     df.to_csv(f"{RES}/study97_weekend_model.csv", index=False)
-    show = ["part", "variant", "period", "n", "mean_bp", "sharpe", "diff_bp", "t_diff", "overlap"]
+    show = ["part", "variant", "period", "n", "mean_bp", "median_bp", "mean_ex_best3_bp", "sharpe", "diff_bp", "t_diff",
+            "overlap"]
     print(df[[c for c in show if c in df]].round(3).to_string())

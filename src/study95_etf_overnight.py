@@ -43,6 +43,11 @@ RAWC = P["rawc"][ETF].astype("float64")
 VIX = P["c"]["^VIX"].astype("float64")
 NIGHT = O.shift(-1) / C - 1                 # close t -> open t+1 (dividend-adjusted)
 DAY = C / O - 1                              # open t -> close t
+CC = C / C.shift(1) - 1
+# data errors: Yahoo misses some reverse splits of the inverse ETFs (SOXS 2026-05-26: 1,132 -> 67), so moves larger
+# than 50% (the largest real one is 35%, 2020-03-13) are set to NaN
+for X_ in (NIGHT, DAY, CC):
+    X_.mask(np.log1p(X_).abs() > np.log(1.5), inplace=True)
 nxt = pd.Series(days[1:].append(pd.DatetimeIndex([pd.NaT])), index=days)
 GAP = (nxt - pd.Series(days, index=days)).dt.days
 
@@ -98,25 +103,26 @@ def quote_sample():
     return df
 
 
-def official_check(n_days=30, tickers=("SPY", "QQQ", "IWM", "TQQQ", "SOXL")):
+def official_check(n_days=30, tickers=("SPY", "QQQ", "IWM", "TQQQ", "SOXL", "SMH", "XLK", "UPRO", "TNA", "DIA",
+                                          "XLE")):
     """Official closing cross on day t and opening cross on t+1 vs the panel's raw close and open."""
-    if os.path.exists(OFN):
-        df = pd.read_parquet(OFN)
-    else:
+    df = pd.read_parquet(OFN) if os.path.exists(OFN) else pd.DataFrame(columns=["ticker"])
+    todo = [t for t in tickers if t not in set(df.ticker)]
+    if todo:
         rng = np.random.default_rng(88)
         dd = days[(days >= "2023-01-01") & (days <= "2026-09-20")]
         pick = dd[np.sort(rng.choice(len(dd) - 1, n_days, replace=False))]
         rows = []
         for d in pick:
             d1 = nxt[d]
-            for t in tickers:
+            for t in todo:
                 try:
                     cl = A._official(t, f"{d:%Y-%m-%d}", "close")[0]
                     op = A._official(t, f"{d1:%Y-%m-%d}", "open")[0]
                 except RuntimeError:
                     cl = op = np.nan
                 rows.append(dict(ticker=t, date=d, close_off=cl, open_next_off=op))
-        df = pd.DataFrame(rows)
+        df = pd.concat([df, pd.DataFrame(rows)], ignore_index=True) if len(df) else pd.DataFrame(rows)
         df.to_parquet(OFN, index=False)
     f = C / RAWC
     out = []
@@ -149,6 +155,7 @@ if __name__ == "__main__":
         rows.append(dict(part="check official crosses", etf=t, variant="panel minus official, mean bp",
                          period="sample 2023-26", n=g.night_diff_bp.notna().sum(), mean_bp=g.night_diff_bp.mean(),
                          med_abs_close_bp=g.close_diff_bp.abs().median(), med_abs_open_bp=g.open_diff_bp.abs().median()))
+    bias = chk.groupby("ticker").night_diff_bp.mean()      # panel overnight return minus official, bp
     big = NIGHT.loc["2020":"2026-09"].abs().stack().sort_values().tail(6)
     print("largest |overnight| moves:\n", big)
 
@@ -182,7 +189,10 @@ if __name__ == "__main__":
             rows.append(stats(net_alt[t].loc[a:b], "a unconditional", t, "overnight net, blend cost model", p))
             rows.append(stats(DAY[t].loc[a:b], "a unconditional", t, "day (open to close) gross", p))
             rows.append(stats(day_net[t].loc[a:b], "a unconditional", t, "day net", p))
-            rows.append(stats((C[t] / C[t].shift(1) - 1).loc[a:b], "a unconditional", t, "buy and hold (close to close)", p))
+            if t in bias:
+                rows.append(stats((net[t] - bias[t] / 1e4).loc[a:b], "a unconditional", t,
+                                  "overnight net, less panel open bias vs official cross", p))
+            rows.append(stats(CC[t].loc[a:b], "a unconditional", t, "buy and hold (close to close)", p))
 
     # ---- (b) 15:45 filters
     ratio = snapshot()
@@ -234,7 +244,10 @@ if __name__ == "__main__":
                              uncond_sharpe_hold=ann_stats(net[t].loc["2025-07":"2026-09"])["sharpe"]))
     print("selected rules:", sel)
 
-    # ---- (c) blend + ETF leg
+    # ---- (c) blend + ETF leg (SKIP_C=1 skips it, for a quick look at parts a and b)
+    if os.environ.get("SKIP_C") == "1":
+        pd.DataFrame(rows).to_csv(f"{RES}/study95_etf_overnight.csv", index=False)
+        raise SystemExit
     cols = stock_cols(P)
     ens = pd.read_parquet(f"{RES}/study23_pred.parquet")["ensemble"].unstack().reindex(columns=cols)
     ens = ens.loc[ens.index < days[-1]]
@@ -246,9 +259,9 @@ if __name__ == "__main__":
     SB = (2 * ens.where(ok).rank(axis=1, pct=True) + (pj - pdr).where(ok).rank(axis=1, pct=True)) / 3
     del ens, pj, pdr, ok
     R = (P["o"][cols].shift(-1) / P["c"][cols] - 1).reindex_like(SB)
-    CC = (exec_cost_bps(P, "auction")[cols] + 2.5).reindex_like(SB)
-    base = bt.run(bt.select_topk(SB, SB.notna(), 10), R, CC).net.loc[:"2026-09"]
-    del R, CC, SB
+    CB = (exec_cost_bps(P, "auction")[cols] + 2.5).reindex_like(SB)
+    base = bt.run(bt.select_topk(SB, SB.notna(), 10), R, CB).net.loc[:"2026-09"]
+    del R, CB, SB
     legs = {f"{t} unconditional": net[t] for t in ["SPY", "QQQ", "IWM", "TQQQ", "UPRO"]}
     for t, rn in sel.items():
         legs[f"{t} {rn}"] = net[t].where(rules[t][rn], 0.0)
