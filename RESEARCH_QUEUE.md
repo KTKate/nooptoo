@@ -12,7 +12,12 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-09)
+## Running (batch 2026-10-10)
+- 99: retrain the ensemble and jump models with targets at official opening crosses and the weekend flag
+- 101: beta hedge at cross prices (short 0.25-0.75x SPY or QQQ overnight against the blend)
+- 104: $10k account mechanics: whole-share rounding, names priced above the per-name budget, minimum sizes
+- 106: live-account timing: entry job runtime vs the 15:50 market-on-close order cutoff (from the paper logs)
+- 107: after-tax and after-fee return for a $10k account (short-term gains, data plan, borrow fees)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
@@ -90,10 +95,6 @@ same universe's average (src/horizon_lib.py).
   scored from the paper picks at auction prints; decide in 2027 Q1
 
 
-- 99: retrain the ensemble and jump models (with study 97's weekend flag) with targets at official opening crosses (data/local/auctions94.parquet
-  covers picks only; needs crosses for the training universe or a first-trade-vs-cross correction model)
-- 101: beta hedge at cross prices: short 0.25-0.75x SPY or QQQ overnight against the blend; resolve why study 95
-  (2.91 / 2.92) and the 2026-10-07 quick check (2.70 for 0.5x SPY) disagree
 - 100: skip Monday-night entries as a pre-registered forward test (study 65 lead; at crosses 2.55 vs 2.38)
 
 ## Next (intraweek: 1-5 trading days)
