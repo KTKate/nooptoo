@@ -360,6 +360,22 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("101", "Beta hedge: short 0.25-1.0x SPY or QQQ (or trailing-beta sized) overnight against the blend, at "
+     "official cross prices", "Reject",
+     "Every size lowers Sharpe in both periods: 2.32 to 1.75 vs 2.38 unhedged (2024-26). The picks' overnight beta is "
+     "about 2.2 but correlation with SPY only 0.54, and the hedge gives up SPY's own +6 bp a night plus 2.2 bp of "
+     "costs. Study 95's apparent gain credited the hedge cost instead of charging it."),
+    ("104", "$10,000 account mechanics: whole shares, names priced above the per-name budget, fractional orders, "
+     "day-short sizing", "Caveat",
+     "Whole shares cost almost nothing: Sharpe 2.49 with skip-and-replace vs 2.45 fractional ideal (3.5% idle cash, "
+     "skips mostly MSTR and SNDK, gone once equity grows). Fractional orders cannot use auction orders at Alpaca and "
+     "turn negative at continuous-market costs. Day short at 2.5%: 0.5 names a night skipped; book 2.62 vs 2.49. "
+     "Check that the broker has dropped the pattern-day-trader rule before running the day short under $25k."),
+    ("107", "After tax and fees for a $10,000 account (30% / 40% short-term tax, $99 a month data plan, borrow "
+     "fees)", "Caveat",
+     "Blend only, fresh $10k each year, free plan, 30% tax: $9,108 (2024), $14,838 (2025), $3,375 (2026 Jan-Sep) at "
+     "backtest cross-price returns; with the $99 plan $1,188 a year less. Easy-to-borrow shorts have no borrow fee at "
+     "Alpaca. The data plan is under 10% of gross profit above about $12,500 at backtest returns, $25,000 at half."),
     ("106", "Live-account timing: can the entry job send market-on-close orders before the 15:50 (NYSE) / 15:55 "
      "(Nasdaq) cutoffs, given the free plan forces a 15:46 start?", "Caveat",
      "The one market-on-close run (2026-09-29, ensemble only) sent its first order at 15:47:50, 92 s after starting. "
@@ -370,8 +386,8 @@ studies = [
      "XLK, XLF, XLE) alone, with 15:45 filters, and added to the blend", "Reject",
      "Overnight beats daytime holding in 2024+ (SPY net Sharpe 0.64 / 1.47, SMH 1.50 / 1.82) but is about zero in "
      "2020-23. Filters chosen on earlier years (mostly skip Friday) lose on 2025H2-26. A long ETF leg lowers the "
-     "blend's Sharpe; a 50% short SPY or QQQ hedge gives 2.91 / 2.92 vs 2.80 / 2.91 (lead, conflicts with an "
-     "earlier quick check that found hedges lower Sharpe)."),
+     "blend's Sharpe; the 50% short-hedge gain it reported came from a sign error in the hedge cost (study 101: "
+     "every hedge lowers Sharpe)."),
     ("97", "Weekend holds: a model trained on weekend nights only, a weekend flag with interactions, and skipping "
      "Friday or Monday nights", "Reject",
      "Blend on weekend nights: -22 bp vs other nights (t -0.6) then +75 bp (t 1.9), so skip rules chosen on "
