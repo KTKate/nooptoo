@@ -16,11 +16,12 @@ same universe's average (src/horizon_lib.py).
 - 99: retrain the ensemble and jump models with targets at official opening crosses and the weekend flag
 - 101: beta hedge at cross prices (short 0.25-0.75x SPY or QQQ overnight against the blend)
 - 104: $10k account mechanics: whole-share rounding, names priced above the per-name budget, minimum sizes
-- 106: live-account timing: entry job runtime vs the 15:50 market-on-close order cutoff (from the paper logs)
 - 107: after-tax and after-fee return for a $10k account (short-term gains, data plan, borrow fees)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 106 Caveat: ensemble-only scoring took 92 s (orders 15:47:50); blend scoring time not logged (job waits to 15:55);
+  log it before going live
 - 95 Reject: ETF overnight legs positive in 2024+ only and lower the blend's Sharpe; filters fail; short-index
   hedge a small lead
 - 97 Reject: weekend-only model and Friday skip rules fail on 2025H2-26; weekend flag +2 to +6 bp (lead for retrain)

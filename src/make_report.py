@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("106", "Live-account timing: can the entry job send market-on-close orders before the 15:50 (NYSE) / 15:55 "
+     "(Nasdaq) cutoffs, given the free plan forces a 15:46 start?", "Caveat",
+     "The one market-on-close run (2026-09-29, ensemble only) sent its first order at 15:47:50, 92 s after starting. "
+     "The blend adds the jump models and news counts, and its scoring time is not logged because the paper job waits "
+     "until 15:55; before going live, log the time scoring finishes (a paper-job change that needs the owner's "
+     "approval) and keep a fallback that sends the ensemble picks by 15:49. No run has failed or fallen back."),
     ("95", "Overnight holds of index and leveraged ETFs (SPY, QQQ, IWM, DIA, TQQQ, SQQQ, SOXL, SOXS, UPRO, TNA, SMH, "
      "XLK, XLF, XLE) alone, with 15:45 filters, and added to the blend", "Reject",
      "Overnight beats daytime holding in 2024+ (SPY net Sharpe 0.64 / 1.47, SMH 1.50 / 1.82) but is about zero in "
