@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("99", "Retrain the strongest ensemble member and the jump models with a target corrected for the first-trade vs "
+     "cross gap, with a weekend flag, and both; scored at official crosses", "Reject",
+     "Against a close-feature base retrained the same way (2.24 at crosses): corrected target 2.75 (+6 bp, t 1.2), "
+     "weekend flag 2.70 (t 0.8), both together 2.00. Changing only the random seed moves the base to 2.52 (+3.4 bp), "
+     "so the differences are within seed noise; none beats the live blend (2.38) by more than t 0.54. The gap model "
+     "ranks gaps correctly but explains almost none of their variance."),
     ("101", "Beta hedge: short 0.25-1.0x SPY or QQQ (or trailing-beta sized) overnight against the blend, at "
      "official cross prices", "Reject",
      "Every size lowers Sharpe in both periods: 2.32 to 1.75 vs 2.38 unhedged (2024-26). The picks' overnight beta is "

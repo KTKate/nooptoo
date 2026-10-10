@@ -31,7 +31,8 @@ Design:
       15:45 in study 23, per_beh (one model per behavior group, SMALL parameters; stocks without a group or in a
       group with fewer than 20,000 training rows scored by pooled_beh, which is retrained too), and the study-33
       jump / drop classifiers (targets > +5% / < -5%). Variants: base (panel target), adj (gap-adjusted target),
-      base_wk and adj_wk (+ weekend flag, calendar gap days and 6 flag x input interactions, as study 97). Rank
+      base_wk and adj_wk (+ weekend flag, calendar gap days and 6 flag x input interactions, as study 97), and
+      base_seed2 (base with LightGBM seed 2: how much the picks and returns move from random seeds alone). Rank
       targets use the within-day rank of the (adjusted) return; jump / drop use the (adjusted) return.
       Cost: the 15:45 feature frames of study 23 need ~5 GB RAM and ~8 s per day in one process (the full feature
       build runs on import), over this study's 4 GB limit, so all variants are trained and scored on close
@@ -43,6 +44,21 @@ Design:
       2.5 bp per side. Sharpe, mean net bp, max drawdown per period (2024-01..2025-06, 2025-07..2026-09,
       2024-01..2026-09); paired t of daily net returns against the retrained base blend (fair test) and against the
       live blend at cross prices (study 94: 2.48 / 2.27 / 2.38).
+
+Data checks: ml_frame y_night equals the panel night return on every cross row; the live blend rescored here
+reproduces study 94 exactly (2.48 / 2.27 / 2.38 at crosses); 71 opening and 72 closing legs whose Yahoo raw close
+could not be put on the traded scale and 1 opening cross outside 0.8..1.25 of the panel open use the panel price;
+16,905 + 2,130 new (ticker, day, kind) crosses fetched, 99.2% found; legs at the panel price 0.5-1.8% per variant.
+The "ensemble member only" rows (per_beh alone) are priced at the panel only (their picks were not fetched).
+
+Result (2024-01..2025-06 / 2025-07..2026-09 / 2024-26, Sharpe at crosses): base 2.38 / 2.12 / 2.24, adj 2.92 /
+2.63 / 2.75, base_wk 2.86 / 2.55 / 2.70, adj_wk 2.20 / 1.81 / 2.00, base_seed2 2.53 / 2.52 / 2.52; live blend 2.48 /
+2.27 / 2.38. Paired vs base (2024-26, cross): adj +6.1 bp (t 1.16), base_wk +4.3 (t 0.79), adj_wk -6.3 (t -1.14),
+base with another seed +3.4 (t 0.65). A seed change alone keeps only 58% of the picks, as many as the variants keep
+(54-61%), so the differences between variants are of the size of seed noise, and the two changes together are the
+worst variant. The adjusted target lowers the picks' panel-vs-cross gap by ~1.5 bp a night (7.8 -> 6.3 bp), the
+other variants by less. The gap model is weak (out-of-sample R2 ~0) but ranks the gap in the right order (top
+quintile +8.8 / +4.9 bp vs bottom +1.1 / +0.1 bp). Verdict: reject; nothing beats the base retrain beyond seed noise.
 
 Output: results/study99_cross_retrain.csv (tables: gapmodel = out-of-sample checks, gapcal = calibration by predicted
 quintile, rescore = Sharpe / net bp / drawdown per variant, period and pricing, paired = paired t-tests, fallback =
@@ -80,7 +96,7 @@ EXTRA_FN = os.path.join(LOC, "study99_extra.parquet")
 OUT = os.path.join(RES, "study99_cross_retrain.csv")
 PER = [("2024-25H1", "2024-01", "2025-06"), ("2025H2-26", "2025-07", "2026-09"), ("2024-26", "2024-01", "2026-09")]
 QUARTERS = pd.period_range("2024Q1", "2026Q3", freq="Q")
-VARIANTS = ["base", "adj", "base_wk", "adj_wk"]
+VARIANTS = ["base", "adj", "base_wk", "adj_wk", "base_seed2"]
 PARAMS = dict(objective="regression", learning_rate=0.03, num_leaves=63, min_data_in_leaf=2000,
               feature_fraction=0.7, bagging_fraction=0.7, bagging_freq=1, lambda_l2=10.0, verbose=-1, num_threads=2)
 SMALL = dict(PARAMS, num_leaves=31, min_data_in_leaf=500)
@@ -367,6 +383,7 @@ def train():
             yv = y - gh / 1e4 if v.startswith("adj") else y
             yr = (pd.Series(np.where(tr, yv, np.nan)).groupby(dnp).rank(pct=True).values - 0.5).astype("float32")
             use_wk = v.endswith("_wk")
+            sd = dict(seed=2) if v == "base_seed2" else {}      # noise yardstick: base with other random seeds
             res = pd.DataFrame({"date": dates[te], "ticker": tick[te], "q": str(q), "variant": v})
 
             base_parts = [X] + ([W] if use_wk else [])
@@ -375,7 +392,7 @@ def train():
             fn = base_names + gf_names
             ds = lgb.Dataset(mat(tr, base_parts + [GF]), yr[tr], feature_name=fn, categorical_feature=["g_id"],
                              free_raw_data=True)
-            m = lgb.train(PARAMS, ds, num_boost_round=300)
+            m = lgb.train(dict(PARAMS, **sd), ds, num_boost_round=300)
             del ds
             pb = m.predict(mat(te, base_parts + [GF])).astype("float32")
             res["pooled_beh"] = pb
@@ -389,7 +406,7 @@ def train():
                 if gg == -1 or (tr & mm).sum() < 20000:
                     continue
                 ds = lgb.Dataset(mat(tr & mm, base_parts), yr[tr & mm], feature_name=base_names, free_raw_data=True)
-                mg = lgb.train(SMALL, ds, num_boost_round=300)
+                mg = lgb.train(dict(SMALL, **sd), ds, num_boost_round=300)
                 del ds
                 sel = te & mm
                 per[gte == gg] = mg.predict(mat(sel, base_parts))
@@ -402,7 +419,7 @@ def train():
             Xte = mat(te, jparts)
             for k, lab in [("jump", yv > 0.05), ("drop", yv < -0.05)]:
                 ds = lgb.Dataset(mat(tr, jparts), lab[tr].astype("float32"), feature_name=jn, free_raw_data=True)
-                mj = lgb.train(PR_BIN, ds, num_boost_round=300)
+                mj = lgb.train(dict(PR_BIN, **sd), ds, num_boost_round=300)
                 del ds
                 res[f"p_{k}"] = mj.predict(Xte).astype("float32")
                 del mj
@@ -445,7 +462,7 @@ def fetch():
     cols = stock_cols(P)
     S = blends(cols, days)
     rows = []
-    for v in VARIANTS:
+    for v in [v for v in VARIANTS if v in S]:
         Wv = bt.select_topk(S[v], S[v].notna(), 10).loc["2024-01":"2026-09"]
         s = Wv.stack()
         s = s[s > 0].reset_index()
@@ -525,12 +542,14 @@ def main():
     gap_bp = 1e4 * (1 / ro.shift(-1) - 1)                         # panel open vs cross on the sell day (t+1)
     C = exec_cost_bps(P, "auction")[cols] + 2.5
     nets, Ws = {}, {}
-    order = ["live 15:45 blend (study 33)"] + VARIANTS + [v + " (ensemble member only)" for v in VARIANTS]
+    VA = [v for v in VARIANTS if v in S]
+    order = ["live 15:45 blend (study 33)"] + VA + [v + " (ensemble member only)" for v in VA]
     for name in order:
         Sx = S[name].loc["2024-01":"2026-09"]
         Wx = bt.select_topk(Sx, Sx.notna(), 10)
         Ws[name] = Wx
-        for pr, R in [("panel", Rn_p), ("cross", Rn_x)]:
+        member = "member only" in name          # crosses were not fetched for these picks: panel prices only
+        for pr, R in [("panel", Rn_p), ("cross", Rn_x)][:1 if member else 2]:
             net = bt.run(Wx, R.reindex_like(Wx), C.reindex_like(Wx)).net
             nets[(name, pr)] = net
             for lab, a0, b0 in PER:
@@ -543,6 +562,8 @@ def main():
             hh = h.loc[a0:b0]
             mm = (miss.reindex_like(Wx).fillna(True) & hh)
             g = gap_bp.reindex_like(Wx).where(hh).loc[a0:b0].stack(future_stack=True).dropna()
+            if member:
+                continue
             rows.append(dict(table="fallback", variant=name, period=lab, legs=int(hh.sum().sum()),
                              share_panel=mm.loc[a0:b0].sum().sum() / max(hh.sum().sum(), 1)))
             rows.append(dict(table="pickgap", variant=name, period=lab, n=len(g), mean_bp=g.mean(),
@@ -561,13 +582,15 @@ def main():
             if ref == name:
                 continue
             for pr in ["panel", "cross"]:
+                if (name, pr) not in nets or (ref, pr) not in nets:
+                    continue
                 for lab, a0, b0 in PER:
                     d = (nets[(name, pr)] - nets[(ref, pr)]).loc[a0:b0].dropna()
                     rows.append(dict(table="paired", variant=name, set=f"vs {ref}", pricing=pr, period=lab, n=len(d),
                                      diff_bp=1e4 * d.mean(), t_diff=d.mean() / d.std() * np.sqrt(len(d))))
     # weekend nights only (study 97's question at cross prices)
     wkd = gapd.reindex(nets[("base", "cross")].index) >= 3
-    for name in VARIANTS:
+    for name in VA:
         for lab, a0, b0 in PER:
             x = nets[(name, "cross")].loc[a0:b0]
             r_ = nets[("base", "cross")].loc[a0:b0]

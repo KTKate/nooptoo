@@ -13,10 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-10)
-- 99: retrain the ensemble and jump models with targets at official opening crosses and the weekend flag
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 99 Reject: gap-corrected target and weekend flag within seed noise (seed alone moves Sharpe by 0.28); combined
+  is worst
 - 101 Reject: every SPY/QQQ hedge lowers Sharpe (2.32 to 1.75 vs 2.38 at crosses)
 - 104 Caveat: whole shares cost ~nothing (skip and replace); fractional needs continuous orders (negative); check
   the broker's pattern-day-trader status before the day short in a $10k account
@@ -99,6 +100,11 @@ same universe's average (src/horizon_lib.py).
 
 
 - 100: skip Monday-night entries as a pre-registered forward test (study 65 lead; at crosses 2.55 vs 2.38)
+
+- 108: seed averaging: the live per-quarter models use one seed, and study 99 found the seed alone moves Sharpe by
+  ~0.3; average 3-5 seeds per model and test at cross prices whether the blend gets steadier or better
+- 109: confirm whether Alpaca still enforces the pattern-day-trader rule for accounts under $25k (owner check, not a
+  study; the day short depends on it)
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
