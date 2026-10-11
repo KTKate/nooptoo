@@ -17,10 +17,11 @@ same universe's average (src/horizon_lib.py).
 - 110: number of picks (5-20) and rank position at official cross prices
 - 112: price and liquidity floors at cross prices (the first-trade bias is largest in cheap, thin names)
 - 113: value of real-time data: scoring at 15:30 (free plan) vs 15:44 (paid plan)
-- 116: shadow candidates' live record so far (small-cap no-news losers, ADR losers, SPY mean reversion, day short)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 116 Leads only: after 7 nights ADR losers +71 bp (t 1.3), small-cap no-news -4 bp, day short +143 bp per name
+  (4 sessions); recheck after 40 nights (about 2026-11-24)
 - 99 Reject: gap-corrected target and weekend flag within seed noise (seed alone moves Sharpe by 0.28); combined
   is worst
 - 101 Reject: every SPY/QQQ hedge lowers Sharpe (2.32 to 1.75 vs 2.38 at crosses)

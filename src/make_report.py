@@ -360,6 +360,11 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("116", "Live record of the shadow candidates (no orders) from 2026-09-29: ADR losers, small-cap no-news losers, "
+     "the day short at official prints", "Leads only",
+     "Too few nights to judge. ADR losers +71 bp a night net over 7 nights (t 1.3, 5 of 7 positive); small-cap "
+     "no-news losers -4 bp (t -0.2); day short of the picks +143 bp per name over 4 sessions at official prints "
+     "(t 1.5), one large day (10/7, +4.2%). Recheck after 40 nights."),
     ("99", "Retrain the strongest ensemble member and the jump models with a target corrected for the first-trade vs "
      "cross gap, with a weekend flag, and both; scored at official crosses", "Reject",
      "Against a close-feature base retrained the same way (2.24 at crosses): corrected target 2.75 (+6 bp, t 1.2), "
