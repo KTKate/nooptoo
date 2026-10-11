@@ -31,6 +31,23 @@ Design:
       Sharpe and net-bp difference between the two members, their daily-return correlation, the standard deviation of
       the daily difference, and pick overlap. If averaging removes seed noise these move towards 0 / 1.
 
+Data checks: seeds 1 and 2 rescored here reproduce study 99 exactly (2024-26 at crosses 2.24 / 2.52); 5,248 new
+(ticker, day, kind) crosses fetched, 99.6% found; legs at the panel price 0.5-1.9% for every blend.
+
+Result (2024-01..2025-06 / 2025-07..2026-09 / 2024-26, at crosses): single seeds 1..5 Sharpe 2.38 / 2.12 / 2.24,
+2.53 / 2.52 / 2.52, 2.13 / 2.13 / 2.12, 2.24 / 1.61 / 1.91, 1.97 / 2.10 / 2.03 (mean 2.25 / 2.10 / 2.16, sd 0.22 /
+0.33 / 0.23); net 30.9 / 34.5 / 32.6 bp mean over seeds (sd 3.1 / 5.7 / 3.9). Seed-averaged blend (5 seeds) 2.30 /
+2.14 / 2.22, 31.5 / 34.8 / 33.0 bp, max drawdown -19.2% / -24.3% / -24.3% (single seeds -14.7..-22.5% over 2024-26).
+Paired vs the day-by-day mean of the single seeds +0.6 / +0.3 / +0.5 bp (t 0.16 / 0.08 / 0.17); vs seed 1 -1.7 bp
+(t -0.38). Seeds 1 and 2 (study 99) were the two best of five, so study 99's base retrain is a lucky draw. Pick
+overlap between single seeds 58%, between each seed and the average 71%; turnover 0.854 vs 0.860. Seed noise of
+2-seed averages vs single seeds (2024-26): pick overlap 68% vs 58%, daily correlation 0.86 vs 0.82, sd of the daily
+difference 128 vs 143 bp, |Sharpe difference| 0.15 vs 0.28 (3 pairs only, and not smaller in 2025-07..2026-09: 0.43
+vs 0.37). Holding all five single-seed books at 1/5 each (50 slots, daily average of returns) gives 2.45 / 2.25 /
+2.34 at crosses, above every single seed but seed 2 and above the averaged blend (lead only, not tested further).
+Verdict: reject as an improvement (no gain in mean return); averaging reduces the dependence of the picks on the seed
+only partly and does not lower drawdown.
+
 Output: results/study108_seed_bagging.csv (tables: rescore = per blend, pricing, period; seedsum = mean / sd / min /
 max over single seeds; paired = paired t-tests; overlap = pick overlap; noise = replicate-pair comparisons;
 fallback = share of legs priced at the panel). Seed predictions in data/local/study108_pred.parquet (resumable).

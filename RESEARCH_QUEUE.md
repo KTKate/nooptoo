@@ -13,10 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-11)
-- 108: seed averaging for the live models (3-5 seeds), scored at official crosses
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 108 Reject: 5-seed averaging +0.5 bp (t 0.2) vs single seeds (sd 0.23 Sharpe); lead: hold the 5 single-seed
+  books at a fifth each (2.34)
 - 113 Reject: the free-plan job already uses a ~15:45 IEX price; paid data adds nothing (-2.2 bp, t -1.2); log
   IEX vs SIP prices for the picks to confirm
 - 110 Leads only: top 8 won the choice period, +3 bp (t 0.9) on the holdout; keep 10
@@ -110,6 +111,9 @@ same universe's average (src/horizon_lib.py).
 
 - 109: confirm whether Alpaca still enforces the pattern-day-trader rule for accounts under $25k (owner check, not a
   study; the day short depends on it)
+
+- 117: log the IEX last trade and the SIP 15:45 price for each night's picks in the paper job (needs owner approval;
+  study 113 assumed they match)
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45

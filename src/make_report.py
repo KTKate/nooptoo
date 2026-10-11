@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("108", "Seed averaging: 5 LightGBM seeds per model (study 99 close-feature setup), averaged predictions vs "
+     "single seeds, at official cross prices", "Reject",
+     "Single seeds range 1.91-2.52 (mean 2.16, sd 0.23) over 2024-26; the 5-seed averaged blend gives 2.22 (+0.5 bp vs "
+     "the single-seed mean, t 0.17) and a deeper drawdown (-24% vs -15% to -23%). Pick overlap rises from 58% to 71%. "
+     "Lead: holding the five single-seed books at a fifth each gives 2.34. Study 99's two seeds were the best two of "
+     "five, so its gains were seed noise."),
     ("113", "Value of real-time data ($99 a month plan): blend scored with 15:45 prices and volume vs 15:30 data vs "
      "what the free-plan job does (IEX last trade at 15:45, SIP volume to 15:30)", "Reject",
      "The free-plan job already prices at about 15:45 from IEX. At cross prices 2024-26: paid 2.50, free job 2.66, "
