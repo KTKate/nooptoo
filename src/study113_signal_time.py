@@ -41,6 +41,23 @@ panel prices. Costs exec_cost_bps(P, "auction") + 2.5 bp per side. Per period (2
 (p1545 minus the other version). Dollars a year = mean daily net difference x 252 x account size (no compounding),
 against the $1,188 a year plan cost.
 
+Data checks: the rebuilt p1545 predictions cover exactly the rows of study23_pred / study33_pred; raw predictions
+match except ~1-2% of rows (later revisions of the Yahoo panel and earnings calendar, e.g. CTVA, HON, and the day
+2026-09-25), and the top-10 picks agree with study 94's on 97.6% of names; p1545 at crosses 2.79 / 2.19 / 2.50 vs
+study 94's 2.48 / 2.27 / 2.38. The news count rebuilt with a 15:45 cutoff equals news_features' n_news on every day
+in the test window. m5snap volume of the 15:30-15:45 bars is ~4% of the day (median volume share to 15:30 = 0.81).
+2,426 new crosses fetched (99.6% found); 1.1% of legs priced at the panel in every version.
+
+Result (top 10 uncapped, Sharpe at crosses, 2024-01..2025-06 / 2025-07..2026-09 / 2024-26): p1545 2.79 / 2.19 /
+2.50 (39.2 bp net a night), p1530 2.58 / 2.19 / 2.39 (36.4 bp), free_live 2.94 / 2.36 / 2.66 (41.4 bp). Paired,
+2024-26 at crosses: p1545 minus p1530 +2.8 bp a night (t 0.66, 95% CI -5.5..+11.1), picks shared 74%; p1545 minus
+free_live -2.2 bp (t -1.23), picks shared 95%. Capped live version: p1545 minus p1530 +5.5 bp (t 1.35), p1545 minus
+free_live -2.3 bp (t -1.56). In dollars (2024-26, crosses, uncapped): +$700 a year on $10k, +$1,751 on $25k against
+p1530 (break-even ~$17k; capped: ~$8.6k), but negative against free_live. Verdict: the 15 minutes of extra SIP data
+matter only for the price; the live free-plan job already takes the price from the real-time IEX last trade, and
+volume / range to 15:44 add nothing (slightly negative, within noise). Not worth $1,188 a year, provided the IEX
+price is close to the SIP price for the picks (not testable here: no IEX history).
+
 Output: results/study113_signal_time.csv (tables: rescore, paired, overlap, dollars, fallback, checks).
 Frames cached in data/local/study113_frames/, predictions in data/local/study113_pred.parquet.
 

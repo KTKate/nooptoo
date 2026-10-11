@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("113", "Value of real-time data ($99 a month plan): blend scored with 15:45 prices and volume vs 15:30 data vs "
+     "what the free-plan job does (IEX last trade at 15:45, SIP volume to 15:30)", "Reject",
+     "The free-plan job already prices at about 15:45 from IEX. At cross prices 2024-26: paid 2.50, free job 2.66, "
+     "15:30-only 2.39. Paid vs free job -2.2 bp a night (t -1.2, 95% of picks shared); paid vs 15:30-only +2.8 bp "
+     "(t 0.7). The plan does not pay for itself; IEX history was not available, so log IEX vs SIP prices for the picks "
+     "to confirm."),
     ("110", "Number of picks (5-20) and rank position, at official cross prices", "Leads only",
      "Top 8 won 2024-25H1 (3.02 vs 2.48, +9.8 bp, t 2.3) but only +3.1 bp (t 0.9) on the holdout with a deeper "
      "drawdown; chosen from 6 counts. Ranks 11-20 are weaker than 1-10 in both periods, so about 10 stays. The top 3 "

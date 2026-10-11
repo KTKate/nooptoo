@@ -14,10 +14,11 @@ same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-11)
 - 108: seed averaging for the live models (3-5 seeds), scored at official crosses
-- 113: value of real-time data: scoring at 15:30 (free plan) vs 15:44 (paid plan)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 113 Reject: the free-plan job already uses a ~15:45 IEX price; paid data adds nothing (-2.2 bp, t -1.2); log
+  IEX vs SIP prices for the picks to confirm
 - 110 Leads only: top 8 won the choice period, +3 bp (t 0.9) on the holdout; keep 10
 - 112 Reject: price and volume floors lose more return than the open bias they remove
 - 116 Leads only: after 7 nights ADR losers +71 bp (t 1.3), small-cap no-news -4 bp, day short +143 bp per name
