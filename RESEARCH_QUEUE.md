@@ -12,7 +12,12 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-10)
+## Running (batch 2026-10-11)
+- 108: seed averaging for the live models (3-5 seeds), scored at official crosses
+- 110: number of picks (5-20) and rank position at official cross prices
+- 112: price and liquidity floors at cross prices (the first-trade bias is largest in cheap, thin names)
+- 113: value of real-time data: scoring at 15:30 (free plan) vs 15:44 (paid plan)
+- 116: shadow candidates' live record so far (small-cap no-news losers, ADR losers, SPY mean reversion, day short)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
@@ -101,8 +106,6 @@ same universe's average (src/horizon_lib.py).
 
 - 100: skip Monday-night entries as a pre-registered forward test (study 65 lead; at crosses 2.55 vs 2.38)
 
-- 108: seed averaging: the live per-quarter models use one seed, and study 99 found the seed alone moves Sharpe by
-  ~0.3; average 3-5 seeds per model and test at cross prices whether the blend gets steadier or better
 - 109: confirm whether Alpaca still enforces the pattern-day-trader rule for accounts under $25k (owner check, not a
   study; the day short depends on it)
 
