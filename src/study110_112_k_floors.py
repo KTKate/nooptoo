@@ -33,6 +33,27 @@ per side. Periods by entry date 2024-01..2025-06 (choice), 2025-07..2026-09 (rep
        ranked names. Sharpe, mean, max drawdown, average bias per pick, share of picks replaced, paired t of daily
        net return differences vs the baseline top 10, per period at cross prices; choice on 2024-01..2025-06.
 
+Data checks: the baseline top 10 reproduces study 94 at crosses (Sharpe 2.48 / 2.27 / 2.38, 37.5 bp); 11,737 new
+(ticker, day, kind) keys fetched, 99.7% found (436 by the largest-print pass); 73 opening and 74 closing legs whose
+Yahoo raw close could not be put on the traded scale and 1 opening cross outside 0.8..1.25 use the panel price; legs
+at the panel price 0.2-1.4% per set and period. 3.9% of the baseline picks (5.9% in 2024-01..2025-06) traded below $3
+(Yahoo raw close adjusted for later reverse splits, e.g. EJH, PSNY, FFAI, FCEL); the ADV > $5M floor through t-1
+changes 1% of picks (the model universe uses the 20-day median including day t).
+
+Result (Sharpe at crosses, 2024-01..2025-06 / 2025-07..2026-09 / 2024-26):
+  110  top 5 2.28 / 2.10 / 2.19, top 8 3.02 / 2.30 / 2.66, top 10 2.48 / 2.27 / 2.38, top 12 2.45 / 2.23 / 2.34,
+       top 15 2.33 / 1.95 / 2.14, top 20 2.36 / 1.92 / 2.14. Chosen on the first period: top 8 (+9.8 bp a night vs
+       top 10, t 2.31); second period +3.1 bp, t 0.87. Net bp per name at crosses (panel): ranks 1-3 45.9 / 32.9
+       (49.6 / 44.9), 4-6 49.4 / 52.3, 7-10 21.4 / 30.8, 11-15 17.7 / 11.4, 16-20 25.9 / 20.7. Bias per pick (panel
+       minus cross) ranks 1-3 3.9 / 12.1 bp, 4-6 4.9 / 9.5, 7-10 5.4 / 11.6, 11-15 4.7 / 7.8, 16-20 3.3 / 5.7. The top
+       3 lose the most to crosses in the second period and have the lowest Sharpe of the top-10 buckets there, but
+       still earn as much per name as ranks 4-10 over 2024-26. Verdict: leads only (top 8 not significant out of
+       sample; the first-period gain comes from a weak ranks 7-10 bucket).
+  112  price > $3 2.35 / 2.23, > $5 2.47 / 2.28 (the live rule on traded prices; same as baseline), > $10 2.02 /
+       1.96, > $20 2.10 / 2.02; ADV > $5M 2.30 / 2.19, > $10M 2.36 / 2.29, > $20M 2.35 / 2.30, > $50M 1.68 / 1.69. No
+       floor beats the baseline on the first period; higher floors cut the bias per pick (> $20: 3.0 / 8.8 bp vs
+       4.8 / 11.1) but lose more edge (-8.0 / -5.6 bp a night). Verdict: reject.
+
 Output: results/study110_pick_count.csv (rows: kind = topk / bucket, set, period, pricing, Sharpe, net bp, net bp per
 name, max drawdown, bias per pick, paired diff vs top 10, fallback share), results/study112_floors.csv (rows: floor,
 period, pricing, Sharpe, net bp, max drawdown, bias per pick, share replaced, paired diff and t vs baseline,

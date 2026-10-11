@@ -360,6 +360,16 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("110", "Number of picks (5-20) and rank position, at official cross prices", "Leads only",
+     "Top 8 won 2024-25H1 (3.02 vs 2.48, +9.8 bp, t 2.3) but only +3.1 bp (t 0.9) on the holdout with a deeper "
+     "drawdown; chosen from 6 counts. Ranks 11-20 are weaker than 1-10 in both periods, so about 10 stays. The top 3 "
+     "lose the most moving to cross prices in 2025H2-26 (12 bp) but still earn about as much as the rest."),
+    ("112", "Price ($3-20) and dollar-volume ($5-50M) floors at cross prices, filling slots from the next-ranked "
+     "names", "Reject",
+     "No floor beats the baseline on 2024-25H1; higher floors cut the first-trade bias (to 3 / 9 bp at $20) but lose "
+     "more return (price > $10: 2.02 / 1.96; ADV > $50M: 1.68 / 1.69). The live rule ($5 on the traded price, $5M "
+     "ADV) matches the baseline (2.47 / 2.28); the backtest's $5 floor used split-adjusted prices, so 4% of its "
+     "picks traded below $3."),
     ("116", "Live record of the shadow candidates (no orders) from 2026-09-29: ADR losers, small-cap no-news losers, "
      "the day short at official prints", "Leads only",
      "Too few nights to judge. ADR losers +71 bp a night net over 7 nights (t 1.3, 5 of 7 positive); small-cap "
