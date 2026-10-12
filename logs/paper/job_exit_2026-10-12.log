@@ -1,0 +1,168 @@
+== paper job exit 2026-10-12 09:19:20 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-12",
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AXTI",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 76,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CDNL",
+   "qty": 49,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CIEN",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HELE",
+   "qty": 37,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HUT",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SATL",
+   "qty": 194,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TXG",
+   "qty": 12,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AAOI 200 {"id":"7c8c7ea7-2a75-4a0f-9c0d-9a1eb283eb66","client_order_id":"2c22061d-abae-442b-b304-82d89cf32931","created_at":"2026-10-12T13:19:41.275639107Z","updated_at":"2026-10-12T13:19:41.276263073Z","submi
+AXTI 200 {"id":"98462238-ec6a-45bc-ba41-06758503a142","client_order_id":"f6eccc00-ac13-4f0b-aac0-a69677ff5bd8","created_at":"2026-10-12T13:19:41.719399964Z","updated_at":"2026-10-12T13:19:41.720109058Z","submi
+BE 200 {"id":"1712b807-eb4f-4999-9966-c195c149a10e","client_order_id":"7d53c536-9b53-4246-bb8c-247208edd200","created_at":"2026-10-12T13:19:42.160920482Z","updated_at":"2026-10-12T13:19:42.162487492Z","submi
+BRUN 200 {"id":"c18b8cc5-a56a-4b27-b2d4-4b4a2bddbd7d","client_order_id":"933c0f07-032e-40fc-82c5-a940a31ea939","created_at":"2026-10-12T13:19:42.653494099Z","updated_at":"2026-10-12T13:19:42.657215281Z","submi
+CDNL 200 {"id":"61c39f8f-a94c-4c08-8735-b74b35f4bdb4","client_order_id":"7180d3cf-c01b-4680-b28a-1fe4f07cafef","created_at":"2026-10-12T13:19:43.104866454Z","updated_at":"2026-10-12T13:19:43.107252052Z","submi
+CIEN 200 {"id":"d706ab60-d8eb-43c1-b8a2-3fdabc434486","client_order_id":"69164a01-eb83-437d-b012-9d972ade545e","created_at":"2026-10-12T13:19:43.534766811Z","updated_at":"2026-10-12T13:19:43.535420291Z","submi
+HELE 200 {"id":"572da9c3-1707-4a1a-aba6-a5212573267e","client_order_id":"080fe4b6-033b-4f5b-91b5-cb431c69e849","created_at":"2026-10-12T13:19:44.124456905Z","updated_at":"2026-10-12T13:19:44.125146149Z","submi
+HUT 200 {"id":"3bfe69db-2bee-4e55-8871-a99933a08859","client_order_id":"da8d445e-e860-4e1b-b229-6f5f2eb4be1c","created_at":"2026-10-12T13:19:44.602582861Z","updated_at":"2026-10-12T13:19:44.603167718Z","submi
+SATL 200 {"id":"34a270ee-598f-4903-aa80-68d4f8f32398","client_order_id":"72996911-779c-42a6-a5ee-a9926c92179c","created_at":"2026-10-12T13:19:45.064490429Z","updated_at":"2026-10-12T13:19:45.065168546Z","submi
+TXG 200 {"id":"97509d0a-c52b-4529-bc08-811305b554d2","client_order_id":"0a6b019e-a66f-48fc-b0ae-0b290b4f27dc","created_at":"2026-10-12T13:19:45.534742423Z","updated_at":"2026-10-12T13:19:45.535692939Z","submi
+{
+ "day": "2026-10-12",
+ "from_entry": "entry_2026-10-09.json",
+ "equity": 9591.05,
+ "orders": [
+  {
+   "symbol": "CDNL",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AXTI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TXG",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HUT",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HELE",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SATL",
+   "qty": 47,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "CIEN": "no price or qty 0",
+  "BE": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-12 09:35:01.771573-04:00"
+}
+CDNL 200 {"id":"36da7024-359b-48a2-9cba-d2cc2b11dd58","client_order_id":"682c9375-700f-434a-bd3f-3da839c894aa","created_at":"2026-10-12T13:35:02.502465068Z","updated_at":"2026-10-12T13:35:02.514369255Z","submi
+AXTI 200 {"id":"d53904db-b7b5-4243-9c19-8d87405b8e1b","client_order_id":"8b698e83-f9fd-4ef4-ba8e-448bc1d9385a","created_at":"2026-10-12T13:35:03.028286538Z","updated_at":"2026-10-12T13:35:03.052711646Z","submi
+BRUN 200 {"id":"6387d6bd-8469-448e-b594-d6bdc8aa8433","client_order_id":"0412921a-7a74-4ffc-8b5b-0fe5fdecb700","created_at":"2026-10-12T13:35:03.529870952Z","updated_at":"2026-10-12T13:35:03.539820646Z","submi
+TXG 200 {"id":"9a33809f-0194-4a49-853b-ec714bf1a058","client_order_id":"30d41743-802f-4e9a-af4d-384dc108c8e1","created_at":"2026-10-12T13:35:04.069801736Z","updated_at":"2026-10-12T13:35:04.135457961Z","submi
+HUT 200 {"id":"636d650b-bc6c-497d-992a-a545125583fc","client_order_id":"d4f2d351-b610-4af4-928c-436d72bb969c","created_at":"2026-10-12T13:35:04.494162873Z","updated_at":"2026-10-12T13:35:04.513452157Z","submi
+AAOI 200 {"id":"7072b1dc-3c7e-4052-8b8f-1dc492561fce","client_order_id":"44b4be30-e14c-4422-b6b8-dc889e771420","created_at":"2026-10-12T13:35:04.930114998Z","updated_at":"2026-10-12T13:35:04.987416441Z","submi
+HELE 200 {"id":"84e4e4a1-aa9a-4353-9209-eccef15d3d7c","client_order_id":"d83259b2-4202-40d6-a018-89731d7b4196","created_at":"2026-10-12T13:35:05.482150949Z","updated_at":"2026-10-12T13:35:05.521844881Z","submi
+SATL 200 {"id":"74d2b493-34cf-4056-b7d7-25b4cc489c96","client_order_id":"d0eb6c77-fece-4ad6-b9d5-1bb8bb4a1d52","created_at":"2026-10-12T13:35:06.029457076Z","updated_at":"2026-10-12T13:35:06.033596636Z","submi
+remote: This repository moved. Please use the new location:        
+remote:   https://github.com/KTKate/nooptoo.git        
