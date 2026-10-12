@@ -1,0 +1,69 @@
+{
+ "day": "2026-10-12",
+ "from_entry": "entry_2026-10-09.json",
+ "equity": 9591.05,
+ "orders": [
+  {
+   "symbol": "CDNL",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AXTI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TXG",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HUT",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HELE",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SATL",
+   "qty": 47,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "CIEN": "no price or qty 0",
+  "BE": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-12 09:35:01.771573-04:00"
+}
