@@ -360,6 +360,16 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("118", "Book averaging vs score averaging: hold the ensemble's and the jump score's top lists side by side "
+     "instead of the blended top 10, at cross prices", "Leads only",
+     "Half in the ensemble's top 5 and half in the jump score's top 5: 2.68 / 2.44 / 2.57 vs 2.48 / 2.27 / 2.38 "
+     "(+10 then +6 bp a night, t 0.9 and 0.4). Holding both full top-10 lists (about 19 names) is worse (2.54 / 2.16). "
+     "The gain may come from concentration, as with study 110's top 8."),
+    ("127", "Fewer names on weak nights: hold only picks above a blended-score threshold (5-10 names, rest in cash), "
+     "or scale the book by the 10th pick's score, at cross prices", "Reject",
+     "The threshold chosen on 2024-25H1 (10th percentile) gives +0.6 bp then -1.1 bp. The names dropped by stricter "
+     "thresholds still earn +12 to +31 bp a night. Book scaling loses 5-8 bp a night in both periods. Agrees with "
+     "study 73 on panel prices."),
     ("108", "Seed averaging: 5 LightGBM seeds per model (study 99 close-feature setup), averaged predictions vs "
      "single seeds, at official cross prices", "Reject",
      "Single seeds range 1.91-2.52 (mean 2.16, sd 0.23) over 2024-26; the 5-seed averaged blend gives 2.22 (+0.5 bp vs "
