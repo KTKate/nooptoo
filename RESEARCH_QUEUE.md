@@ -13,15 +13,15 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-12)
-- 118: book averaging vs score averaging: hold the ensemble's and the jump model's top lists side by side instead of
-  one blended score (study 108 lead), at cross prices
-- 127: trade fewer names on weak nights (score threshold on the 10th pick), at cross prices
 - 121: overnight short of the bottom-ranked easy-to-borrow names at cross prices (the open bias may favor shorts)
 - 128: overnight-return persistence: stocks with consistently positive close-to-open returns over 20-250 days
 - 133: large-cap intraday losers bought at the close and sold at the open (liquid S&P 500 names), at cross prices
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 118 Leads only: ensemble top 5 + jump top 5 gives 2.57 vs 2.38 at crosses (t 0.9 / 0.4); full side-by-side lists
+  are worse
+- 127 Reject: score thresholds and book scaling move money out of names that still earn
 - 108 Reject: 5-seed averaging +0.5 bp (t 0.2) vs single seeds (sd 0.23 Sharpe); lead: hold the 5 single-seed
   books at a fifth each (2.34)
 - 113 Reject: the free-plan job already uses a ~15:45 IEX price; paid data adds nothing (-2.2 bp, t -1.2); log
@@ -120,6 +120,9 @@ same universe's average (src/horizon_lib.py).
 
 - 117: log the IEX last trade and the SIP 15:45 price for each night's picks in the paper job (needs owner approval;
   study 113 assumed they match)
+
+- 134: forward test (paper picks, auction prints) of the concentration leads: ensemble top 5 + jump top 5 (118) and
+  blended top 8 (110), alongside 93 and 100; decide in 2027 Q1
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
