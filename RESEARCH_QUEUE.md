@@ -12,7 +12,13 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-11)
+## Running (batch 2026-10-12)
+- 118: book averaging vs score averaging: hold the ensemble's and the jump model's top lists side by side instead of
+  one blended score (study 108 lead), at cross prices
+- 127: trade fewer names on weak nights (score threshold on the 10th pick), at cross prices
+- 121: overnight short of the bottom-ranked easy-to-borrow names at cross prices (the open bias may favor shorts)
+- 128: overnight-return persistence: stocks with consistently positive close-to-open returns over 20-250 days
+- 133: large-cap intraday losers bought at the close and sold at the open (liquid S&P 500 names), at cross prices
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
