@@ -13,10 +13,10 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-12)
-- 121: overnight short of the bottom-ranked easy-to-borrow names at cross prices (the open bias may favor shorts)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 121 Reject: overnight shorts of the blend's bottom lose on the holdout (-15 bp a night); cross pricing helps ~1 bp
 - 128 Leads only: overnight persistence real (IC 0.03-0.05) but weak after costs; blend has night20; tilts fail
   on the holdout
 - 133 Reject: large-cap intraday losers work only in 2025H2-26 and lower the blend's Sharpe

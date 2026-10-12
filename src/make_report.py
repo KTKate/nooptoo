@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("121", "Overnight short of the bottom of the blend (and of the highest P(drop)) in easy-to-borrow names, at "
+     "official cross prices", "Reject",
+     "The variant chosen on 2024-25H1 (bottom 5, price > $5, ADV > $20M; best of 24) earns +12.5 bp a night there and "
+     "-14.9 bp on the holdout (Sharpe 1.28 then -1.49). High-P(drop) names rise overnight on average. Buying back at "
+     "the cross helps shorts by only about 1 bp. 5-18% of picks were under the short-sale restriction; excluding "
+     "them makes every variant worse. Long + 25% short: 2.10 vs 2.27 on the holdout."),
     ("128", "Overnight-return persistence: past 20-250 day mean or share of positive close-to-open returns, alone "
      "and as a tilt or filter on the blend", "Leads only",
      "The signal is real (250-day share positive IC 0.03-0.05 in every period) but the top-decile long earns only "

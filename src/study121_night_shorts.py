@@ -32,6 +32,26 @@ below the prior close (Rule 201 in force at the closing auction, where a short m
 short on 2024-01..2025-06; 2025-07..2026-09 is the holdout. Data checks: raw cross-to-cross returns vs the ratio
 method, split days on t+1, legs with |return| > 30%.
 
+Data checks: 44,914 new (ticker, day, kind) keys fetched, 99.8% found; 317 opening and 319 closing legs whose Yahoo
+raw close could not be put on the traded scale (or ratio outside 0.8..1.25) use the panel price; legs at the panel
+price 0.2-4.4% per variant and period (most in 2024-01..2025-06). Raw cross-to-cross night returns agree with the
+ratio method on 24,275 of 24,308 legs (33 differ by more than 1%, 15 of them splits on t+1, the rest ex-dividend
+days); 16 picks have a split dated t+1 (handled by the adjusted panel). 122 legs moved more than 30% in a night; all
+checked ones are real earnings / news gaps (raw crosses agree, e.g. GME 2024-05-13 +109%, TNXP 2024-12-16 +138%,
+KRRO 2025-11-12 -78%), none is a split artifact. The long blend reproduces study 94 at crosses (2.48 / 2.27 / 2.38).
+
+Result (cross prices, net of costs, 2024-01..2025-06 / 2025-07..2026-09 / 2024-26): every short variant loses in the
+second period. Chosen on the first period: bottom 5 by S, price > $5, ADV > $20M: Sharpe 1.28 / -1.49 / 0.00, gross
+21.6 / -5.1 / 9.4 bp, net 12.5 / -14.9 / 0.0 bp a night, max drawdown -24% / -40% / -43%; the first period's result
+rests partly on one night (QBTS and RGTI -31% / -34% on 2025-01-07). Bottom 10 / 20 by S: net -0.1 / -9.4 and -3.6 /
+-8.7 bp (px > 5, ADV > 5M); top 10 by p_drop: net -16.9 / -48.0 bp (high p_drop names rise overnight on average).
+Bias per pick (panel short return minus cross short return) is small and negative: crosses help the short by about 1
+bp per pick for the bottom of S and 3-6 bp for top p_drop, too little to matter. 0.3%/yr borrow fee costs 0.1 bp a
+night. 5-18% of picks were under the short sale restriction at the close; dropping them makes every variant worse
+(chosen variant 4.8 / -17.8 bp). Combined with the long blend at crosses (2.48 / 2.27 / 2.38): + 25% short 2.78 /
+2.10 / 2.45, + 50% short 3.01 / 1.88 / 2.46; the holdout is worse than the long alone (-3.7 bp a night at 25%, t
+-1.66). Verdict: reject.
+
 Output: results/study121_night_shorts.csv (table = short: per variant, period, pricing: Sharpe, gross / net bp per
 night, max drawdown, names per night, bias per pick, fallback share, SSR share, net with fee; table = combined:
 long alone and long + 25% / 50% short; table = checks: data checks; table = big_moves: legs with |return| > 30%).
