@@ -14,11 +14,12 @@ same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-12)
 - 121: overnight short of the bottom-ranked easy-to-borrow names at cross prices (the open bias may favor shorts)
-- 128: overnight-return persistence: stocks with consistently positive close-to-open returns over 20-250 days
-- 133: large-cap intraday losers bought at the close and sold at the open (liquid S&P 500 names), at cross prices
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 128 Leads only: overnight persistence real (IC 0.03-0.05) but weak after costs; blend has night20; tilts fail
+  on the holdout
+- 133 Reject: large-cap intraday losers work only in 2025H2-26 and lower the blend's Sharpe
 - 118 Leads only: ensemble top 5 + jump top 5 gives 2.57 vs 2.38 at crosses (t 0.9 / 0.4); full side-by-side lists
   are worse
 - 127 Reject: score thresholds and book scaling move money out of names that still earn

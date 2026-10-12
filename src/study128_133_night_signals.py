@@ -39,7 +39,31 @@ share of picks the blend also holds, and blend + x * leg for x = 0.25, 0.5 (extr
 are rescored at official crosses (study 94 / 110 method: panel night return x (open cross / panel open on t+1) /
 (close cross / panel close on t), legs without a usable cross at the panel price).
 
-Output: results/study128_night_persistence.csv (tables: check, featcorr, signal, decile, blend, cross),
+Data checks: the base blend reproduces study 69 (Sharpe 2.80 / 2.91 / 2.85, panel) and study 94 at crosses (2.48 /
+2.27 / 2.38). night20 recomputed from the panel equals ml_frame's on 99.998% of 199,293 sampled rows. The largest
+overnight returns in the 128 universe (-92% .. -86%) are real biotech crashes, hence the +-30% clip in the signals.
+15:45 prices exist for 98.7% (open-to-15:45) / 97.9% (prev close-to-15:45) of large-cap stock-days; 1 / 11 legs
+disagree with the panel by more than 15% (splits) and are dropped. Crosses: 15,568 pairs fetched (99.7% found); 112
+opening and 111 closing legs of all cached crosses could not be put on the traded scale or were out of range and use
+the panel price; fallback share of the rescored picks below 1%. The 133 leg's largest pick returns are real (MP
++60% on 2025-07-09, SBET -68% on 2025-06-12); "top 500 by dollar volume" includes meme names such as SBET and HOLO.
+
+Result 128 (2020-23 / 2024-25H1 / 2025H2-26): all signals have a positive daily rank IC (pos250 0.044 / 0.028 /
+0.054, t 7.1 / 3.6 / 5.3; mean250 0.037 / 0.020 / 0.036) and a positive decile 10 - 1 spread (mean250 14.5 / 8.3 /
+17.1 bp a night), but the top decile long is weak net of costs (mean250 Sharpe 0.89 / 0.42 / 1.05, 6.9 / 3.7 / 10.0
+bp). Part of the spread is the panel's first-trade bias: in the cached crosses the panel open sits 4-6 bp above the
+cross in the top quintile of mean20 / mean250 vs 1-3 bp in the bottom quintile. The existing feature night20 is the
+same as mean20 (rank corr 1.00); mean60 / 120 / 250 correlate 0.53 / 0.38 / 0.31 with it. On the blend: the variant
+chosen on 2024-25H1 (pos60 tilt 0.30, Sharpe 3.66 vs 2.80) loses in 2025H2-26 (2.38 vs 2.91, -12.0 bp, t -1.26); at
+crosses 2024-26 2.64 vs 2.38 only because of the first period. 28 of 48 variants beat the base in 2024-25H1, 17 in
+2025H2-26. Verdict: leads only.
+Result 133 (prev close-to-15:45 leg, chosen on 2024-25H1): net Sharpe -0.15 / 1.63 (2024-25H1 / 2025H2-26), the
+close proxies -0.68 / -0.06 / 1.77 (open-to-close, 2020-23 / 2024-25H1 / 2025H2-26); correlation with the blend
+0.53-0.56; adding it at 0.25 / 0.5 lowers the blend's Sharpe in 2024-25H1 (2.50 / 2.22 vs 2.80) and in 2025H2-26
+(2.89 / 2.83 vs 2.91). At crosses 2024-26: leg alone 0.47 (5.3 bp), blend + 0.25 x leg 2.22 vs base 2.38. Verdict:
+reject.
+
+Output: results/study128_night_persistence.csv (tables: check, featcorr, signal, decile, blend, gapcheck, cross),
 results/study133_largecap_losers.csv (tables: check, leg, corr, combo, cross).
 
     python src/study128_133_night_signals.py fetch   # official crosses for the chosen picks (resumable)

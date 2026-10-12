@@ -360,6 +360,17 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("128", "Overnight-return persistence: past 20-250 day mean or share of positive close-to-open returns, alone "
+     "and as a tilt or filter on the blend", "Leads only",
+     "The signal is real (250-day share positive IC 0.03-0.05 in every period) but the top-decile long earns only "
+     "Sharpe 0.4-1.0 after costs, and part of the spread is the first-trade vs cross bias. The blend already has the "
+     "20-day version (night20). The tilt chosen on 2024-25H1 (3.66 vs 2.80) loses on the holdout (2.38 vs 2.91, t "
+     "-1.3); 17 of 48 variants beat the blend there."),
+    ("133", "Large-cap intraday losers (10 worst of the top 500 by dollar volume, 15:45 prices from 2024) bought at "
+     "the close, sold at the open", "Reject",
+     "Loses in 2020-23 and 2024-25H1 (Sharpe -0.7 to 0.2), gains only in 2025H2-26 (1.3-1.8, half of it from 5 "
+     "days). Correlation with the blend 0.55; added at 25-50% it lowers the blend's Sharpe in both periods (2.22 vs "
+     "2.38 at crosses)."),
     ("118", "Book averaging vs score averaging: hold the ensemble's and the jump score's top lists side by side "
      "instead of the blended top 10, at cross prices", "Leads only",
      "Half in the ensemble's top 5 and half in the jump score's top 5: 2.68 / 2.44 / 2.57 vs 2.48 / 2.27 / 2.38 "
