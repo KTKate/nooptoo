@@ -360,6 +360,17 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("139", "Blend picks reporting earnings that night vs the rest, at cross prices; exclude or half-weight rules",
+     "Reject",
+     "Earnings-night picks (8-11% of picks) earn +111 bp per pick at crosses in 2024-25H1 (32% of P&L) but +15 bp on "
+     "the holdout, where delayed NYSE openings after earnings put the cross 95 bp below the first trade. Excluding "
+     "them loses 12 bp a day in the choice period (t -2.0); half weight loses 6 bp (t -2.3). Keep them at full weight."),
+    ("142", "Live-order risks at the open: missing or late opening crosses, halts, gaps over 20%, and order size "
+     "against the opening cross", "Caveat",
+     "Only 2 of 6,850 picks had no opening auction; 7.5% crossed late (to 09:45, often NYSE earnings names), which a "
+     "market-on-open order still fills. Alpaca cancels an unfilled market-on-open order, so a live exit job needs a "
+     "fallback sell. Halts 0.2% of picks. A $10k account is 0.1% of the median cross; at $100k, 24% of picks would be "
+     "over 5% of the cross."),
     ("135", "Live (capped) blend at cross prices by market regime (VIX, SPY trend, volatility) and its sector mix "
      "over time", "Caveat",
      "Only SPY below its 50-day average is weaker in both periods (23 / 12 bp vs 44 / 42 bp, t -0.6 / -0.8). VIX "

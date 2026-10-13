@@ -13,11 +13,13 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-13)
-- 139: blend picks reporting earnings that night vs not, at cross prices (study 80 used panel prices)
-- 142: live-order risks: picks with no opening cross (halts, late opens), and what a market-on-open order would get
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 139 Reject: earnings-night picks are the best picks in 2024-25H1 and weak on the holdout (late NYSE crosses);
+  excluding or halving them loses in the choice period
+- 142 Caveat: missing crosses negligible (2 of 6,850); live exit needs a fallback sell for cancelled market-on-open
+  orders; capacity fine at $10-25k, strained at $100k
 - 135 Caveat: only SPY below its 50-day average is weaker in both periods (not significant); tech hardware share
   rising (7% to 30%)
 - 137 Caveat: no measurable edge decay 2024-26 (trend t -0.5); 2026Q3 the only negative quarter
@@ -131,6 +133,9 @@ same universe's average (src/horizon_lib.py).
 
 - 134: forward test (paper picks, auction prints) of the concentration leads: ensemble top 5 + jump top 5 (118) and
   blended top 8 (110), alongside 93 and 100; decide in 2027 Q1
+
+- 143: live-account exit design: market-on-open sells plus a 09:45 check that sells any position still open
+  (Alpaca cancels unfilled market-on-open orders); needed before going live, not for paper
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
