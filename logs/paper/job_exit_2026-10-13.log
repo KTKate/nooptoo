@@ -1,0 +1,152 @@
+== paper job exit 2026-10-13 09:19:40 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-13",
+ "orders": [
+  {
+   "symbol": "AEVA",
+   "qty": 78,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ARQQ",
+   "qty": 57,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AXTI",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CHPT",
+   "qty": 134,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CTNM",
+   "qty": 110,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FSLY",
+   "qty": 36,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MOD",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SECZ",
+   "qty": 81,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TNXP",
+   "qty": 144,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "WDC",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AEVA 200 {"id":"2fe47e73-9aca-4ca0-b911-fe3c4fa3325c","client_order_id":"0d10aaf0-766d-45c2-a851-bb42363fe9b7","created_at":"2026-10-13T13:20:03.858053073Z","updated_at":"2026-10-13T13:20:03.860365812Z","submi
+ARQQ 200 {"id":"5df0be03-c876-47d5-ad30-44118e4c3ff7","client_order_id":"00bab68d-44d0-4f33-9cb8-8af3b30722e8","created_at":"2026-10-13T13:20:04.487927134Z","updated_at":"2026-10-13T13:20:04.488711521Z","submi
+AXTI 200 {"id":"ec505962-8bf7-4116-bfcb-e40bd1005760","client_order_id":"472acb0e-e996-4ecf-8e54-75c4cdc92b89","created_at":"2026-10-13T13:20:05.071455737Z","updated_at":"2026-10-13T13:20:05.074082056Z","submi
+CHPT 200 {"id":"44e610dc-b14e-4d7e-9927-c87fff1295b1","client_order_id":"7c8aa004-9e03-4d22-a9bf-723f18f5a445","created_at":"2026-10-13T13:20:05.59728592Z","updated_at":"2026-10-13T13:20:05.598095174Z","submit
+CTNM 200 {"id":"a520563b-206f-4c99-949c-1261b69adf9d","client_order_id":"9aaa24c1-5149-40b2-a6f9-68b04396f0e8","created_at":"2026-10-13T13:20:06.126127932Z","updated_at":"2026-10-13T13:20:06.126832348Z","submi
+FSLY 200 {"id":"94462ed8-5081-4b3d-99a4-915e661dba18","client_order_id":"53ec48ea-906f-45d1-bbad-7c7a3e986a83","created_at":"2026-10-13T13:20:06.637700559Z","updated_at":"2026-10-13T13:20:06.638311576Z","submi
+MOD 200 {"id":"82f7320d-a7f1-48bf-ac71-7736533d4f1c","client_order_id":"033554c2-289d-412e-9f28-376282d239ed","created_at":"2026-10-13T13:20:07.414262214Z","updated_at":"2026-10-13T13:20:07.414886972Z","submi
+SECZ 200 {"id":"58c45979-0006-4e0b-963f-1e90365e54c4","client_order_id":"98977a3b-db2f-479b-9899-d363a0067a29","created_at":"2026-10-13T13:20:08.219689268Z","updated_at":"2026-10-13T13:20:08.220519944Z","submi
+TNXP 200 {"id":"e891f0be-c370-490d-b049-e5a3c24db92d","client_order_id":"85dbdd58-2ee5-44e5-bc63-c4167c4de989","created_at":"2026-10-13T13:20:08.727143548Z","updated_at":"2026-10-13T13:20:08.730521064Z","submi
+WDC 200 {"id":"8da7746c-bbdc-4a5c-a75a-7b663135ca73","client_order_id":"a5e4e1a2-ff0e-44f9-ae6b-76c5065ad301","created_at":"2026-10-13T13:20:09.806102133Z","updated_at":"2026-10-13T13:20:09.806675874Z","submi
+{
+ "day": "2026-10-13",
+ "from_entry": "entry_2026-10-12.json",
+ "equity": 9284.54,
+ "orders": [
+  {
+   "symbol": "AXTI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AEVA",
+   "qty": 19,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TNXP",
+   "qty": 35,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MOD",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CTNM",
+   "qty": 26,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FSLY",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "ARQQ": "not easy to borrow",
+  "CHPT": "not easy to borrow",
+  "WDC": "no price or qty 0",
+  "SECZ": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-10-13 09:34:45.279544-04:00"
+}
+AXTI 200 {"id":"4a053ac3-c1f5-492c-a9ca-2a5e664469eb","client_order_id":"6c00c51c-7a91-4808-b2aa-6428d5960990","created_at":"2026-10-13T13:34:45.995699953Z","updated_at":"2026-10-13T13:34:45.996566233Z","submi
+AEVA 200 {"id":"328766b9-3fc0-499e-a49f-7bf99445da1d","client_order_id":"62eda1b9-2b0a-48a3-9391-072176367a44","created_at":"2026-10-13T13:34:46.546815565Z","updated_at":"2026-10-13T13:34:46.558266522Z","submi
+TNXP 200 {"id":"e646866d-6714-4cb5-9f10-3facc2cb9322","client_order_id":"a5e3f318-4faf-4fe1-bac0-36df1b42f02a","created_at":"2026-10-13T13:34:47.256980092Z","updated_at":"2026-10-13T13:34:47.27737817Z","submit
+MOD 200 {"id":"e34b12f4-a037-4863-abec-4a1d0aedd352","client_order_id":"93b087da-0cfa-4942-9f1c-94e2de351fd2","created_at":"2026-10-13T13:34:48.179813696Z","updated_at":"2026-10-13T13:34:48.189603341Z","submi
+CTNM 200 {"id":"14063529-b33b-4730-b913-96207a3b2e59","client_order_id":"39d63be2-937f-442b-8eef-e2e9d7938cff","created_at":"2026-10-13T13:34:49.321338501Z","updated_at":"2026-10-13T13:34:49.324717679Z","submi
+FSLY 200 {"id":"ab32df6c-9bdf-4a5d-885a-795c78f6a847","client_order_id":"0a98e676-f491-4934-ab6d-18bfd5e96c3a","created_at":"2026-10-13T13:34:49.861833181Z","updated_at":"2026-10-13T13:34:49.881082114Z","submi

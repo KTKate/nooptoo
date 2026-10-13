@@ -1,0 +1,57 @@
+{
+ "day": "2026-10-13",
+ "from_entry": "entry_2026-10-12.json",
+ "equity": 9284.54,
+ "orders": [
+  {
+   "symbol": "AXTI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AEVA",
+   "qty": 19,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TNXP",
+   "qty": 35,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MOD",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CTNM",
+   "qty": 26,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FSLY",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "ARQQ": "not easy to borrow",
+  "CHPT": "not easy to borrow",
+  "WDC": "no price or qty 0",
+  "SECZ": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-10-13 09:34:45.279544-04:00"
+}
