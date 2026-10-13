@@ -1,0 +1,134 @@
+{
+ "day": "2026-10-13",
+ "recorded_at": "2026-10-13 15:56:41.611569-04:00",
+ "news_window": [
+  "2026-10-12 19:45:00+00:00",
+  "2026-10-13 19:45:00+00:00"
+ ],
+ "n_news_symbols": 702,
+ "smallcap_nonews": {
+  "STRO": {
+   "loss": 0.1617,
+   "px": 10.99
+  },
+  "ANTX": {
+   "loss": 0.1593,
+   "px": 3.615
+  },
+  "LRMR": {
+   "loss": 0.1542,
+   "px": 2.14
+  },
+  "IMUX": {
+   "loss": 0.1394,
+   "px": 6.85
+  },
+  "UPB": {
+   "loss": 0.1377,
+   "px": 3.57
+  },
+  "TRDA": {
+   "loss": 0.1218,
+   "px": 4.83
+  },
+  "GLSI": {
+   "loss": 0.1171,
+   "px": 15.45
+  },
+  "CEPL": {
+   "loss": 0.1166,
+   "px": 3.41
+  },
+  "REA": {
+   "loss": 0.115,
+   "px": 8.16
+  },
+  "KRSA": {
+   "loss": 0.104,
+   "px": 31.530000686645508
+  }
+ },
+ "adr_loser": {
+  "GPCR": {
+   "loss": 0.0719,
+   "px": 22.2
+  },
+  "SLN": {
+   "loss": 0.0649,
+   "px": 8.93
+  },
+  "ZLAB": {
+   "loss": 0.0466,
+   "px": 23.12
+  },
+  "IVA": {
+   "loss": 0.043,
+   "px": 2.89
+  },
+  "IMCR": {
+   "loss": 0.0369,
+   "px": 27.93
+  }
+ },
+ "spy_meanrev": {
+  "SPY": {
+   "action": "flat",
+   "px": 777.965,
+   "down3": false,
+   "above5": true
+  },
+  "QQQ": {
+   "action": "flat",
+   "px": 743.47,
+   "down3": false,
+   "above5": false
+  }
+ },
+ "day_short": {
+  "MXL": {
+   "etb": false,
+   "shortable": false
+  },
+  "AAOI": {
+   "etb": true,
+   "shortable": true
+  },
+  "SITM": {
+   "etb": true,
+   "shortable": true
+  },
+  "COHR": {
+   "etb": true,
+   "shortable": true
+  },
+  "BE": {
+   "etb": true,
+   "shortable": true
+  },
+  "CIEN": {
+   "etb": true,
+   "shortable": true
+  },
+  "TTMI": {
+   "etb": true,
+   "shortable": true
+  },
+  "ONTO": {
+   "etb": true,
+   "shortable": true
+  },
+  "HPE": {
+   "etb": true,
+   "shortable": true
+  },
+  "CUE": {
+   "etb": false,
+   "shortable": false
+  }
+ },
+ "universe": {
+  "smallcap": 739,
+  "smallcap_priced": 739,
+  "adr": 173
+ }
+}
