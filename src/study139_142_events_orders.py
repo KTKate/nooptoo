@@ -224,3 +224,102 @@ def pick_frame(Wx, D, extra=None):
 
 def in_per(t, a0, b0):
     return (t >= pd.Timestamp(a0)) & (t <= pd.Timestamp(b0) + pd.offsets.MonthEnd(0))
+
+
+# ------------------------------------------------------------------ study 139
+GROUPS = [("earnings night (headline or calendar time)", lambda d: d.EN.astype(bool)),
+          ("report date t or t+1, not confirmed for the night", lambda d: d.EW.astype(bool) & ~d.EN.astype(bool)),
+          ("no report on t or t+1", lambda d: ~d.EW.astype(bool) & ~d.EN.astype(bool)),
+          ("all picks", lambda d: pd.Series(True, index=d.index)),
+          ("robustness: earnings night by gap rule (uses the reaction)", lambda d: d.EG.astype(bool))]
+
+
+def group_rows(series, df):
+    rows, worst = [], []
+    for lab, a0, b0 in PER:
+        x = df[in_per(df.t, a0, b0)]
+        tot = (x.w * x.net_x.fillna(0)).sum()
+        tot_p = (x.w * x.net_p.fillna(0)).sum()
+        rest = x[~x.EN.astype(bool)]
+        for g, f in GROUPS:
+            y = x[f(x)]
+            v = y.net_x.dropna()
+            r = rest.net_x.dropna()
+            t_diff = ((v.mean() - r.mean()) / np.sqrt(v.var() / len(v) + r.var() / len(r))
+                      if g.startswith("earnings night (") and len(v) > 2 else np.nan)
+            rows.append(dict(table="groups", series=series, period=lab, group=g, n=len(y), share_of_picks=len(y) / len(x),
+                             no_return=int(y.Rp.isna().sum()), cross_missing=float(y.miss.mean()),
+                             net_bp_panel=y.net_p.mean(), net_bp_cross=v.mean(), median_bp_cross=v.median(),
+                             open_bias_bp=y.bias_o.mean(), open_bias_median_bp=y.bias_o.median(),
+                             close_bias_bp=y.bias_c.mean(), hit_cross=(v > 0).mean(), sd_bp_cross=v.std(),
+                             p05_bp_cross=v.quantile(0.05), worst_bp_cross=v.min(),
+                             pnl_share_cross=(y.w * y.net_x.fillna(0)).sum() / tot,
+                             pnl_share_panel=(y.w * y.net_p.fillna(0)).sum() / tot_p, t_vs_rest_cross=t_diff))
+            if g.startswith(("earnings night (", "no report")):
+                for _, z in y.nsmallest(5, "net_x").iterrows():
+                    worst.append(dict(table="worst", series=series, period=lab, group=g, ticker=z.ticker,
+                                      entry=z.t.date(), net_bp_cross=z.net_x, net_bp_panel=z.net_p,
+                                      open_bias_bp=z.bias_o))
+    return rows + worst
+
+
+def rule_rows(series, D, sel):
+    """Rules (a) exclude flagged picks and refill from the next-ranked names; (b) half weight on flagged picks
+    (rest cash, or the freed weight spread over the other picks)."""
+    S, G = D["S"], D["G"]
+    base = D["W"] if sel is topk else D["Wc"]
+    rows, nets = [], {}
+    for fname in ["EN", "EW"]:
+        F = D[fname].reindex_like(S).fillna(False)
+        Wex = sel(S.where(~F))
+        Wh = base.where(~F, base * 0.5)
+        Whr = Wh.div(Wh.sum(axis=1).replace(0, np.nan), axis=0).fillna(0)
+        miss_new = ((Wex > 0) & G["miss"]).loc[START:END].sum().sum() / max((Wex > 0).loc[START:END].sum().sum(), 1)
+        for vname, Wv in [("base", base), ("a: exclude, refill next-ranked", Wex), ("b: half weight, rest cash", Wh),
+                          ("b2: half weight, freed weight to the others", Whr)]:
+            for pr, R in [("panel", G["Rp"]), ("cross", G["Rx"])]:
+                net = bt.run(Wv, R, G["C"]).net.loc[START:END]
+                nets[(fname, vname, pr)] = net
+                bnet = nets[(fname, "base", pr)]
+                for lab, a0, b0 in PER:
+                    x = net.loc[a0:b0]
+                    st = ann_stats(x)
+                    dd = (x - bnet.loc[a0:b0])
+                    rows.append(dict(table="rules", series=series, flag=fname, variant=vname, pricing=pr, period=lab,
+                                     n=st["n"], sharpe=st["sharpe"], net_bp=1e4 * x.mean(), ann=st["ann_ret"],
+                                     maxdd=st["maxdd"], diff_bp_vs_base=1e4 * dd.mean(),
+                                     t_diff=dd.mean() / dd.std() * np.sqrt(len(dd)) if dd.std() > 0 else np.nan,
+                                     flagged_share=float(((base > 0) & F).loc[a0:b0].sum().sum() /
+                                                         max((base > 0).loc[a0:b0].sum().sum(), 1)),
+                                     cross_missing_legs=miss_new if vname.startswith("a") else np.nan))
+    # choice on the first period by cross Sharpe, checked on the holdout
+    r = pd.DataFrame(rows)
+    r = r[(r.pricing == "cross")]
+    out = []
+    for fname, g in r.groupby("flag"):
+        p1 = g[g.period == PER[0][0]].set_index("variant").sharpe
+        best = p1.idxmax()
+        h = g[(g.period == PER[1][0])].set_index("variant")
+        out.append(dict(table="choice", series=series, flag=fname, variant=best, period=PER[1][0],
+                        sharpe_first=p1[best], sharpe_base_first=p1["base"], sharpe=h.sharpe[best],
+                        sharpe_base_holdout=h.sharpe["base"], diff_bp_vs_base=h.diff_bp_vs_base[best],
+                        t_diff=h.t_diff[best]))
+    return rows + out
+
+
+def study139(D):
+    rows = []
+    for series, sel in [("live: top 10, max 3 per industry", capped), ("blend top 10 (study 69 base)", topk)]:
+        Wx = D["Wc"] if sel is capped else D["W"]
+        df = pick_frame(Wx, D)
+        rows += group_rows(series, df)
+        rows += rule_rows(series, D, sel)
+    # timing agreement (picks of the live series in EW)
+    df = pick_frame(D["Wc"], D)
+    x = df[df.EW.astype(bool)]
+    ct = pd.crosstab(x.EN.astype(bool), x.EG.astype(bool))
+    for a in ct.index:
+        for b in ct.columns:
+            rows.append(dict(table="timing_check", series="live: top 10, max 3 per industry", group=f"EN={a}|EG={b}",
+                             n=int(ct.loc[a, b])))
+    return pd.DataFrame(rows)
