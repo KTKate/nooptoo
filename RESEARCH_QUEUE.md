@@ -12,7 +12,13 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-12)
+## Running (batch 2026-10-13)
+- 135: blend at cross prices by market regime (VIX level, SPY trend, volatility) and its sector mix over time
+- 137: edge decay: blend net return by quarter at cross prices, 2024-26, with a trend test
+- 136: what to expect live: block bootstrap of the cross-price series for 1, 3, 6 and 12 months (return ranges,
+  chance of a loss, drawdown sizes), and where the paper nights so far fall in that range
+- 139: blend picks reporting earnings that night vs not, at cross prices (study 80 used panel prices)
+- 142: live-order risks: picks with no opening cross (halts, late opens), and what a market-on-open order would get
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
