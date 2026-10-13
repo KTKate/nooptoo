@@ -360,6 +360,19 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("135", "Live (capped) blend at cross prices by market regime (VIX, SPY trend, volatility) and its sector mix "
+     "over time", "Caveat",
+     "Only SPY below its 50-day average is weaker in both periods (23 / 12 bp vs 44 / 42 bp, t -0.6 / -0.8). VIX "
+     "patterns flip. Tech hardware rose from 7% of picks (2024Q1) to 30% (2026Q3), t 3.4; nights with 3+ such names "
+     "lost 51 bp in 2024-25H1 and gained 66 bp in 2025H2-26, so no stable penalty yet."),
+    ("137", "Edge decay: blend net return by quarter at cross prices, 2024Q1-2026Q3", "Caveat",
+     "No measurable decay: trend -6 bp a year (t -0.5); first half 35 bp vs second half 42 bp. Quarters range from -3 "
+     "bp (2026Q3, the only negative one) to 70 bp, which is normal for this series."),
+    ("136", "What to expect live: block bootstrap of the capped blend at cross prices (2024-26), and at half the "
+     "backtest mean", "Caveat",
+     "At backtest returns: chance of a loss 27% over 1 month, 14% over 3, 6% over 6, 1.4% over 12; a drawdown worse "
+     "than -20% within a year 50%. At half the mean: loss chance 39% / 32% / 25% / 16%, drawdown worse than -30% "
+     "within a year 35%. The first 8 paper nights (-1.05%) are at the 28th percentile, inside the normal range."),
     ("121", "Overnight short of the bottom of the blend (and of the highest P(drop)) in easy-to-borrow names, at "
      "official cross prices", "Reject",
      "The variant chosen on 2024-25H1 (bottom 5, price > $5, ADV > $20M; best of 24) earns +12.5 bp a night there and "

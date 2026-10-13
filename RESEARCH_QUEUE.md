@@ -13,15 +13,16 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-13)
-- 135: blend at cross prices by market regime (VIX level, SPY trend, volatility) and its sector mix over time
-- 137: edge decay: blend net return by quarter at cross prices, 2024-26, with a trend test
-- 136: what to expect live: block bootstrap of the cross-price series for 1, 3, 6 and 12 months (return ranges,
-  chance of a loss, drawdown sizes), and where the paper nights so far fall in that range
 - 139: blend picks reporting earnings that night vs not, at cross prices (study 80 used panel prices)
 - 142: live-order risks: picks with no opening cross (halts, late opens), and what a market-on-open order would get
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 135 Caveat: only SPY below its 50-day average is weaker in both periods (not significant); tech hardware share
+  rising (7% to 30%)
+- 137 Caveat: no measurable edge decay 2024-26 (trend t -0.5); 2026Q3 the only negative quarter
+- 136 Caveat: 1/3/6/12-month loss chance 27/14/6/1% at backtest returns, 39/32/25/16% at half; 50% chance of a
+  -20% drawdown within a year; paper so far at the 28th percentile
 - 121 Reject: overnight shorts of the blend's bottom lose on the holdout (-15 bp a night); cross pricing helps ~1 bp
 - 128 Leads only: overnight persistence real (IC 0.03-0.05) but weak after costs; blend has night20; tilts fail
   on the holdout
