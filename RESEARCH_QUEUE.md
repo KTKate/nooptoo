@@ -12,7 +12,13 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-13)
+## Running (batch 2026-10-14)
+- 145: sell the overnight picks in the premarket (08:00-09:28) instead of the opening auction, net of premarket
+  spreads
+- 149: retrain frequency: monthly vs quarterly refits of the models (close-feature setup of study 99)
+- 151: training window: expanding vs rolling 2- and 3-year windows
+- 150: what drives the picks now: feature importance and pick traits 2024 vs 2026 (why tech hardware rose)
+- 154: live vs backtest consistency: do the paper job's picks match an offline rerun of the same models and days?
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
