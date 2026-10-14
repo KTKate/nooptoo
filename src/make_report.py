@@ -360,6 +360,18 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("154", "Live vs backtest consistency: do the paper job's picks match offline reruns of the same models, and is "
+     "a pipeline error behind the October losses?", "Caveat",
+     "No error behind the losses: the backtest-style picks lost about as much on the same nights (10/6 -2.5% vs -2.3% "
+     "live, 10/7 -2.2% vs -1.9%). A replica of the live job matches 7.4 of 10 picks (prices at the day's high or low "
+     "make picks sensitive to one cent). One train/serve mismatch: the live earnings calendar ends the day before, so "
+     "days_to_e (11-12% of the jump models' gain) is missing for nearly every live name; correcting it changes 1.5 "
+     "picks a night, with no return difference on 70 backtest days. Fix needs the owner's approval."),
+    ("150", "What drives the picks now: traits of 2024 vs 2026 picks and model drift; why tech hardware rose from 8% "
+     "to 30%", "Caveat",
+     "About half the rise comes from the stocks (tech hardware became more volatile and higher-beta; old models also "
+     "pick more of it) and half from refits that favor these names. Pick beta rose from 1.8 to 2.8. October live "
+     "picks lean further toward that day's losers and high beta (median day return -3.7%, beta 3.3)."),
     ("145", "Sell the overnight picks in the premarket (08:00-09:25) instead of the opening auction, net of "
      "premarket spreads (Alpaca quote and trade samples)", "Reject",
      "Premarket last trades sit 25-52 bp above the cross, but half spreads are 29-49 bp, so selling at the bid "

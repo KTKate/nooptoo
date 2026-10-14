@@ -15,11 +15,13 @@ same universe's average (src/horizon_lib.py).
 ## Running (batch 2026-10-14)
 - 149: retrain frequency: monthly vs quarterly refits of the models (close-feature setup of study 99)
 - 151: training window: expanding vs rolling 2- and 3-year windows
-- 150: what drives the picks now: feature importance and pick traits 2024 vs 2026 (why tech hardware rose)
-- 154: live vs backtest consistency: do the paper job's picks match an offline rerun of the same models and days?
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 154 Caveat: live job runs the backtest models correctly; October losses are shared by the backtest picks; bug:
+  live days_to_e missing (earnings calendar grid ends the day before), changes ~1.5 picks a night; fix pending
+  owner approval
+- 150 Caveat: tech hardware share rise is half stock traits (more volatile, higher beta), half model refits
 - 145 Reject: premarket sells at the bid lose to the cross; lead: resting limit at the last premarket trade, then
   the auction if unfilled (+20 to +30 bp in 2025H2-26 only; fills unverified)
 - 139 Reject: earnings-night picks are the best picks in 2024-25H1 and weak on the holdout (late NYSE crosses);
@@ -145,6 +147,11 @@ same universe's average (src/horizon_lib.py).
 
 - 155: paper test of the premarket resting limit sell (study 145 lead): measure real fill rates vs the cross; a
   paper-job change, needs owner approval
+
+- 156: fix the live earnings-calendar gap (src/ml_features.py earnings_features grid ends the previous day, so
+  reports dated today or later are dropped) and check the same gap in the 2026Q3 training rows (days_to_e missing
+  for 84-99% of Aug-Sep 2026 rows); a paper-job change, needs owner approval
+- 157: log the live feature rows for the picks each night (study 154 could not rebuild exact inputs)
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45

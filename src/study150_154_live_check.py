@@ -10,44 +10,57 @@
 Data
   Live logs (read only): logs/paper/entry_<day>.json (submitted orders, capped and uncapped top 10, model names) and
   members_<day>.json (top 10 of each ensemble member, of the ensemble and of P(jump) - P(drop), news and earnings
-  counts) for every submitted entry from 2026-09-29.
-  Models (read only): data/models/night_<q>, ens_*_<q>, jump_{jump,drop}_<q> (same files the live job pulls).
-  Daily panel core.load_panel (Yahoo store through 2026-10-12), earnings calendar data/store/earnings,
-  data/store/sectors.parquet. Alpaca SIP bars for the candidate universe on each live day: 30-minute bars
-  09:30-15:30, the 15:40-15:45 5-minute bar, SPY/IWM 15:44 1-minute bars and, for 2026-10-13 (not yet in the daily
-  store), the daily bar; cached in data/local/study154_bars.parquet. Alpaca news counts per symbol for
-  (15:45 of the previous trading day, 15:45 of the day], articles tagged with 1-3 symbols, cached in
-  data/local/study154_news.parquet. Backtest predictions results/study23_pred.parquet and study33_pred.parquet.
+  counts) for every submitted entry from 2026-09-29; job_entry_<day>.log (split lists). The live job logs no feature
+  values and no scores beyond these top 10s, so the full live ranking cannot be read back.
+  Models (read only): data/models/night_<q>, ens_*_<q>, jump_{jump,drop}_<q>; their hashes equal the copies in the
+  Hugging Face repo the job pulls (checked read-only; last model upload 2026-09-30 05:54 UTC).
+  Daily store: core.load_panel (Yahoo, through 2026-10-12), and data/store as committed by each live entry job
+  ("Paper job entry <day>" commit, read with git show) for the replica on the job's own data. Earnings calendar
+  data/store/earnings, data/store/sectors.parquet. Alpaca bars for the candidate universe on each live day, cached in
+  data/local/study154_bars.parquet: SIP 30-minute 09:30-15:00, SIP 5-minute 15:30/15:35/15:40, SIP 15:30 minute,
+  IEX 1-minute 15:40-15:45 (the live price is the IEX last trade), SPY/IWM 15:44 minute, and the daily bar of
+  2026-10-13 (not yet in the store). Alpaca news counts for (15:45 previous trading day, 15:45 day], articles tagged
+  with 1-3 symbols, data/local/study154_news.parquet. Backtest predictions results/study23_pred.parquet and
+  study33_pred.parquet; training frame data/ml_frame.parquet (clv column only).
   ml_features.py is not imported (its module-level full-panel build peaks above 4 GB); its earnings_features, build
   and features_frame functions are loaded from the source file and run on a 260-day window.
 
-Design 154, per live day, four offline scorings with the same quarterly models the live job used:
-  L      live replica: the code path of paper_overnight.ml_scores (30-minute SIP bars to 15:30 for open/high/low/
-         volume, the price at 15:45, earnings features from the panel that ends the previous day, VIX of the previous
-         day, news NaN when none). The live price is the IEX last trade after 15:40; L uses the SIP 15:40-15:45 bar
-         close, as the runner's replay mode does.
+Design 154, per live day, offline scorings with the same quarterly models the live job used:
+  Lthen  live replica on the job's own data/store (commit of that day): the code path of paper_overnight.ml_scores
+         (SIP 30-minute bars plus the in-progress 15:30 bar for open/high/low/volume, IEX last trade 15:40-15:45 as
+         the price or the bar close without one, earnings features from a calendar grid that ends the previous day,
+         VIX of the previous day, news NaN when none).
+  L      the same on today's daily store (store revisions after the fact).
   Lfix   L with the earnings features computed on a calendar that extends past the day (as in training).
   B      backtest 15:45 (study 23 / 33 frame): daily-store open/high/low, the SIP 15:40-15:45 close, 85% of the day's
          volume, SPY/IWM at 15:44, VIX close of the day, earnings features on the extended calendar, news 0 when none.
   C      daily close features (cruder): the full daily row of the day.
   Each is ranked as live: (2 rank(ensemble) + rank(P(jump) - P(drop))) / 3 on the tradable names, top 10 with at most 3
   per industry (2026-09-29 ran --strategy=ensemble with the 2026Q3 models; scored that way). Checks: overlap of each
-  top 10 with the live picks; Spearman rank correlation across the universe between variants; L against every value
-  the live job logged (member top 10s, ensemble top 10, jump-minus-drop top 10, earnings and news counts); per live
-  pick: rank in each variant, price at 15:45 vs the order size, ADV, news, earnings flags, panel sanity (last close
-  date, zero volume, largest daily move, split list in the job logs).
-Design 150: backtest blend picks 2024-01..2026-09 (study 69 lines 22-46, capped at 3 per industry as live) and the
-  live October picks; traits per pick: price, 20-day median dollar volume, 20-day volatility, return from the previous
-  close to 15:45 (study 23 frame: the 15:40 SIP bar), 5-day return, news count in the window, sector, 60-day beta,
-  tech hardware flag (TECH_HW of studies 90/92/135). Each trait is also expressed as the pick's within-day percentile
-  among the universe, so a market-wide shift (e.g. all of tech more volatile) is separated from the selection.
-  Decomposition of the tech hardware share: share of tech hardware in the universe, and its share among the names
-  with the highest volatility/momentum, per half-year. Model side: LightGBM gain importance (normalized to 100%)
-  of night_, ens_pooled_beh/com_ and jump_ models of 2024Q1, 2025Q1, 2026Q1 and 2026Q4; and a cross-scoring test:
-  the 2024Q1 and 2026Q4 models score the same 2026Q3 feature frames (B frames rebuilt for 20 sampled days), tech
-  hardware share of each model's top 10.
+  top 10 with the live picks; Spearman rank correlation across the universe between variants; the replica against
+  every value the live job logged (member top 10s, ensemble top 10, jump-minus-drop top 10, earnings and news
+  counts); per live pick: rank in each variant, SIP price at 15:45 vs the price implied by the order size
+  (qty = int(equity / 10 // price)), ADV, news, earnings flags, close location, panel sanity (last close date, zero
+  volume, largest daily move, split list in the job logs). check table: (a) hl_window: which intraday window for
+  high/low/volume (to 15:30, to 15:31, to 15:45) reproduces the live logs; (b) fragility: the replica with every price
+  moved by -1/0/+1 cent; (c) share of names whose 15:45 price is the day's high or low (clv = +-1; the models split at
+  0.9997 and -0.9999) in each variant and in the training frame; (d) earn_nan_test: close-feature frames of 40 random
+  days 2024-01..2026-06 and every second day of 2026Q3 scored with days_to_e as trained and set to NaN (as live).
+Design 150: backtest blend picks 2024-01..2026-09 (study 69 lines 22-46, capped at 3 per industry as live), the live
+  October picks and the B picks of the same October days; traits per pick: price at 15:45, 20-day median dollar
+  volume, 20-day volatility, return from the previous close to 15:45 (study 23 frame: the 15:40 SIP bar) and to the
+  close, 5-day return to the previous close, news count in the window, sector, 60-day beta, tech hardware flag
+  (TECH_HW of studies 90/92/135). Each trait is also expressed as the pick's within-day percentile among the scored
+  universe, so a market-wide shift (e.g. all of tech more volatile) is separated from the selection.
+  Tech hardware per half-year: share in the universe, among the top volatility and top 5-day-return deciles, and a
+  trait-only expectation (picks drawn at random from the universe within the same 20-day-volatility decile x 5-day
+  return tercile buckets as the actual picks). Model side: LightGBM gain importance (normalized to 100%) of night_,
+  ens_pooled_beh/com_ and jump_ models of 2024Q1, 2025Q1, 2026Q1 and 2026Q4; cross-scoring: the 2024Q1 and 2026Q4
+  model sets score the same close-feature frames of 20 random days of 2024H1 and 20 of 2026Q3; tech hardware share
+  of each set's capped top 10 (and of the ensemble and jump-minus-drop top 10s).
 Output: results/study154_live_consistency.csv (table = day_summary / variant_corr / member_check / live_pick /
-  check), results/study150_pick_traits.csv (table = traits / trait_pct / techhw_decomp / importance / cross_score)
+  check / earn_nan_test), results/study150_pick_traits.csv (table = traits / sector_share / techhw_decomp /
+  importance / cross_score)
     python src/study150_154_live_check.py fetch   # Alpaca bars and news for the live days (cached)
     python src/study150_154_live_check.py 154
     python src/study150_154_live_check.py 150
@@ -478,6 +491,21 @@ def run154():
             sc["clv"] = X["clv"].values
             print(day.date(), "Lthen", "universe", len(sc), "overlap with live", len(set(top.index) & set(live_top)), flush=True)
             del Pt, ct
+        # which intraday window reproduces the live logs (high/low/volume after 15:30)
+        for win in [None, "to1531", "to1545"]:
+            iw = ctx.intraday(day, liquid + ["SPY", "IWM"], with_1530=win)[0]
+            Xw = ctx.frame(day, "L", liquid, intr=iw)
+            tw = Xw.index.get_level_values(1)
+            import jumpmodel as J
+            scw = score(Xw, day, q_ens, J.earn_tonight(tw, prev, nxt), news, jump=blend_live)
+            topw, _ = picks(scw)
+            ext_ = pd.Series((Xw.clv.abs() >= 0.9999).values, index=tw)
+            md = [float((scw[m].reindex(pd.Series(v).index) - pd.Series(v)).abs().median())
+                  for m, v in ml.get("members", {}).items()]
+            rows.append(dict(table="check", day=r["day"], variant=f"L_hl_{win or 'to1530'}", item="hl_window",
+                             overlap_live=len(set(topw.index) & set(live_top)), value=float(np.median(md)),
+                             clv_plus1=float(ext_.mean()), top10_share=float(ext_.reindex(topw.index).mean()),
+                             top10_minus1=float(ext_.reindex(live_top).mean())))
         for kind in ["L", "Lfix", "B", "C"]:
             tick = liquid + ["SPY", "IWM"] if kind in ("L", "Lfix") else cand
             intr = intr_all.reindex(liquid + ["SPY", "IWM"]) if kind in ("L", "Lfix") else intr_all
@@ -746,8 +774,18 @@ def run150():
     lt["techhw"] = hw.reindex(lt.ticker).fillna(False).values
     lt["sector"] = sec.reindex(lt.ticker).fillna("(none)").values
     lt["period"] = "live_2026-10"
+    # the backtest-style (study 23 frame, variant B of study 154) picks on the same October days
+    s154 = pd.read_csv(f"{RES}/study154_live_consistency.csv")
+    s154 = s154[(s154.table == "day_summary") & (s154.variant == "B") & (s154.strategy == "blend")]
+    bv = pd.DataFrame([(pd.Timestamp(d), t) for d, p in zip(s154.day, s154.picks) for t in p.split()],
+                      columns=["date", "ticker"])
+    bt_ = live_traits(P, cols, bv)
+    bt_["techhw"] = hw.reindex(bt_.ticker).fillna(False).values
+    bt_["sector"] = sec.reindex(bt_.ticker).fillna("(none)").values
+    bt_["period"] = "backtestB_2026-10"
     traits = ["price", "adv20", "vol20", "ret_1545", "ret_close", "ret5", "news", "beta60"]
-    groups_ = [(p, picks[picks.period == p]) for p in ["2024", "2025", "2026"]] + [("2024-26", picks), ("live_2026-10", lt)]
+    groups_ = [(p, picks[picks.period == p]) for p in ["2024", "2025", "2026"]]
+    groups_ += [("2024-26", picks), ("live_2026-10", lt), ("backtestB_2026-10", bt_)]
     for p, x in groups_:
         for k in traits + ["techhw"]:
             v = x[k].astype(float)
@@ -755,7 +793,7 @@ def run150():
                      universe_median=uni.get((p, k), np.nan))
             if k in traits and k + "_pct" in x:
                 d["pct_in_universe_mean"] = x[k + "_pct"].mean()
-            if p == "live_2026-10" and k in traits:       # where the live picks fall in the backtest pick distribution
+            if p in ("live_2026-10", "backtestB_2026-10") and k in traits:       # where the live picks fall in the backtest pick distribution
                 ref = picks[k].dropna().values
                 d["pct_vs_backtest_picks"] = float(np.mean([np.mean(ref <= z) for z in v.dropna()]))
                 ref26 = picks.loc[picks.period == "2026", k].dropna().values
@@ -810,7 +848,8 @@ def run150():
     t = df[df.table == "traits"]
     print(t.pivot_table(index="item", columns="period", values="median", sort=False).round(4).to_string())
     print(t.pivot_table(index="item", columns="period", values="pct_in_universe_mean", sort=False).round(3).to_string())
-    print(t[t.period == "live_2026-10"][["item", "mean", "median", "pct_vs_backtest_picks", "pct_vs_2026_picks"]].round(3).to_string(index=False))
+    print(t[t.period.isin(["live_2026-10", "backtestB_2026-10"])][["period", "item", "mean", "median", "pct_vs_backtest_picks",
+                                                                   "pct_vs_2026_picks"]].round(3).to_string(index=False))
     print(t.pivot_table(index="item", columns="period", values="universe_median", sort=False).round(4).to_string())
     print(df[df.table == "sector_share"].pivot_table(index="item", columns="period", values="mean").round(3).to_string())
     print(df[df.table == "techhw_decomp"].dropna(axis=1, how="all").round(3).to_string(index=False))
