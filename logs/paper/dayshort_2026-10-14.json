@@ -1,0 +1,45 @@
+{
+ "day": "2026-10-14",
+ "from_entry": "entry_2026-10-13.json",
+ "equity": 8981.05,
+ "orders": [
+  {
+   "symbol": "MXL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TTMI",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "SITM": "no price or qty 0",
+  "COHR": "no price or qty 0",
+  "BE": "no price or qty 0",
+  "CIEN": "no price or qty 0",
+  "ONTO": "no price or qty 0",
+  "CUE": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-10-14 09:32:43.420469-04:00"
+}
