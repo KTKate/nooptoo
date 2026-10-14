@@ -194,6 +194,12 @@ def fetch():
             x["day"], x["tf"] = day, "iex1Min"
             parts.append(x)
             print(day.date(), "iex1Min", len(x), flush=True)
+        if "sip5_1530" not in done:                 # SIP 15:30-15:40 5-minute bars (with the 15:40 bar: 15:30-15:45)
+            x = pd.concat([A.bars(tick[i:i + 400], "5Min", utc(day, "15:30"), utc(day, "15:35"))
+                           for i in range(0, len(tick), 400)])
+            x["day"], x["tf"] = day, "sip5_1530"
+            parts.append(x)
+            print(day.date(), "sip5_1530", len(x), flush=True)
         if "sip1530" not in done:                   # SIP 15:30 minute: what a 15:46 request sees of the 15:30 bar
             x = pd.concat([A.bars(tick[i:i + 400], "1Min", utc(day, "15:30"), utc(day, "15:30"))
                            for i in range(0, len(tick), 400)])
@@ -292,17 +298,20 @@ class Ctx:
                 m.iat[d - 1, ci[t]] = 1.0
         return m
 
-    def intraday(self, day, tick, live_price=True, with_1530=True, jitter=None):
+    def intraday(self, day, tick, live_price=True, with_1530="to1545", jitter=None):
         """Live-style aggregate as paper_overnight.today_intraday at 15:46: SIP 30-minute bars 09:30-15:00 plus the
-        first minute of the 15:30 bar (with_1530; the delayed feed holds data to about 15:31), price = last IEX
-        trade 15:40-15:45 if any (live_price), else the close of those bars. Also the 15:40 SIP 5-minute close
-        (p1545, the backtest price), SPY/IWM 15:44 and the daily bar (2026-10-13)."""
+        in-progress 15:30 bar. with_1530: "to1545" = SIP 15:30-15:45 (5-minute bars; this reproduces the live
+        logs best, see table check / hl_window), "to1531" = only the 15:30 minute, None = nothing after 15:30.
+        Price = last IEX trade 15:40-15:45 if any (live_price), else the close of those bars. Also the 15:40 SIP
+        5-minute close (p1545, the backtest price), SPY/IWM 15:44 and the daily bar (2026-10-13)."""
         b = self.bars[self.bars.day == day]
         hm = b.ts.dt.strftime("%H:%M")              # Alpaca's end time is inclusive: keep the bars that start
         b = b[((b.tf == "30Min") & (hm < "15:30")) | ((b.tf == "5Min") & (hm == "15:40"))
               | ((b.tf == "1Min") & (hm == "15:44")) | (b.tf == "1Day") | (b.tf == "iex1Min")
-              | ((b.tf == "sip1530") & (hm == "15:30"))]
-        b30 = b[(b.tf == "30Min") | ((b.tf == "sip1530") & with_1530)].sort_values("ts")
+              | ((b.tf == "sip1530") & (hm == "15:30")) | ((b.tf == "sip5_1530") & hm.isin(["15:30", "15:35"]))]
+        late = {"to1545": (b.tf == "sip5_1530") | (b.tf == "5Min"), "to1531": b.tf == "sip1530"}.get(
+            with_1530, pd.Series(False, index=b.index))
+        b30 = b[(b.tf == "30Min") | late].sort_values("ts")
         g = b30.groupby("ticker")
         agg = pd.DataFrame({"o": g.o.first(), "h": g.h.max(), "l": g.l.min(), "v": g.v.sum(), "c1530": g.c.last()})
         p5 = b[b.tf == "5Min"].groupby("ticker").c.last()
@@ -577,6 +586,9 @@ def run154():
     del tr
     if os.environ.get("SKIP_NAN_TEST") != "1":
         rows += earn_nan_test(ctx, hw)
+    elif os.path.exists(f"{RES}/study154_live_consistency.csv"):    # reuse the rows of the previous run
+        old_ = pd.read_csv(f"{RES}/study154_live_consistency.csv")
+        rows += old_[old_.table == "earn_nan_test"].dropna(axis=1, how="all").to_dict("records")
     df = pd.DataFrame(rows)
     # virtual book next to the day summary
     vd = pd.read_csv(os.path.join(LOG, "virtual_days.csv"), index_col=0)
