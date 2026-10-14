@@ -1,0 +1,140 @@
+== paper job exit 2026-10-14 09:18:38 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-14",
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CIEN",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "COHR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CUE",
+   "qty": 46,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MXL",
+   "qty": 10,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SITM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TTMI",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AAOI 200 {"id":"63ce74ec-cbb9-4d3e-8c92-979470fdcdfd","client_order_id":"abcc996e-2a6a-4a4c-9685-c8d1a7e55927","created_at":"2026-10-14T13:18:59.187699908Z","updated_at":"2026-10-14T13:18:59.188318896Z","submi
+BE 200 {"id":"ce184619-6ca2-4e1c-95a0-ca39689741c8","client_order_id":"fd09634c-bf07-4fe6-96bc-832d7fa74693","created_at":"2026-10-14T13:18:59.679092694Z","updated_at":"2026-10-14T13:18:59.679755879Z","submi
+CIEN 200 {"id":"94754384-efe3-4573-94fc-9e3cddf0615a","client_order_id":"558d435a-9922-4dc8-bd3a-e96decd0ff50","created_at":"2026-10-14T13:19:00.090027463Z","updated_at":"2026-10-14T13:19:00.090651739Z","submi
+COHR 200 {"id":"1b3b8fda-41be-42dc-b7c5-c688f6ba74a8","client_order_id":"5a150ec2-24ab-43d3-a2df-db80852033b4","created_at":"2026-10-14T13:19:00.333465453Z","updated_at":"2026-10-14T13:19:00.33411678Z","submit
+CUE 200 {"id":"ce3ac307-0f7c-432c-acd6-1e0a534a6bfe","client_order_id":"7d6771a0-c529-403f-a663-cf956ff9074a","created_at":"2026-10-14T13:19:00.83187167Z","updated_at":"2026-10-14T13:19:00.83347195Z","submitt
+HPE 200 {"id":"174a5fcc-26ef-497b-8bbe-2d997cf38eec","client_order_id":"b29ebda9-e0fc-4b38-9f4c-d4e933e9f202","created_at":"2026-10-14T13:19:01.113028058Z","updated_at":"2026-10-14T13:19:01.113950252Z","submi
+MXL 200 {"id":"230f8391-8c72-4289-bdeb-de0f5e96c317","client_order_id":"37da3b25-9e7a-4935-9661-ffef00fcabf2","created_at":"2026-10-14T13:19:01.634451661Z","updated_at":"2026-10-14T13:19:01.636528286Z","submi
+ONTO 200 {"id":"2e94681a-0eed-4cfc-a6a8-48e3ea7c299a","client_order_id":"27c034e5-eee7-4307-b1e6-ab05675cc0d6","created_at":"2026-10-14T13:19:02.111010537Z","updated_at":"2026-10-14T13:19:02.113038519Z","submi
+SITM 200 {"id":"44d354ca-e0d3-4956-b2dd-62f9a7a75b35","client_order_id":"e9537c29-07dc-4801-bba5-581c59c24b70","created_at":"2026-10-14T13:19:02.55552851Z","updated_at":"2026-10-14T13:19:02.556986988Z","submit
+TTMI 200 {"id":"27150529-f186-4c54-83c4-2b41bb704dd4","client_order_id":"6433d956-6e40-4c19-a99e-41e22c8bd41c","created_at":"2026-10-14T13:19:02.926464329Z","updated_at":"2026-10-14T13:19:02.92743146Z","submit
+{
+ "day": "2026-10-14",
+ "from_entry": "entry_2026-10-13.json",
+ "equity": 8981.05,
+ "orders": [
+  {
+   "symbol": "MXL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TTMI",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "SITM": "no price or qty 0",
+  "COHR": "no price or qty 0",
+  "BE": "no price or qty 0",
+  "CIEN": "no price or qty 0",
+  "ONTO": "no price or qty 0",
+  "CUE": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-10-14 09:32:43.420469-04:00"
+}
+MXL 200 {"id":"bcd87fc7-8fa4-46a8-817b-556841e692ee","client_order_id":"db1d2cf0-13a4-4aeb-9070-79d3d23f6e85","created_at":"2026-10-14T13:32:43.899297172Z","updated_at":"2026-10-14T13:32:43.900565825Z","submi
+AAOI 200 {"id":"e25a2b4e-bebf-4eb8-9d98-d47d414f7628","client_order_id":"23ae865f-754e-4ea2-9da1-34aaf44f4bf5","created_at":"2026-10-14T13:32:44.342655586Z","updated_at":"2026-10-14T13:32:44.345434654Z","submi
+TTMI 200 {"id":"e412b566-a0a7-410f-ae72-34cf916a6178","client_order_id":"e0e81ede-dcba-4cf1-a15f-412542edd17f","created_at":"2026-10-14T13:32:44.714983263Z","updated_at":"2026-10-14T13:32:44.716116522Z","submi
+HPE 200 {"id":"9858f753-f822-4a6f-b04d-d7d7dfaa697b","client_order_id":"8b097144-dba0-4204-b148-e2700dffa220","created_at":"2026-10-14T13:32:45.186273705Z","updated_at":"2026-10-14T13:32:45.198027776Z","submi
+remote: This repository moved. Please use the new location:        
+remote:   https://github.com/KTKate/nooptoo.git        
