@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("145", "Sell the overnight picks in the premarket (08:00-09:25) instead of the opening auction, net of "
+     "premarket spreads (Alpaca quote and trade samples)", "Reject",
+     "Premarket last trades sit 25-52 bp above the cross, but half spreads are 29-49 bp, so selling at the bid "
+     "loses (median -34 to -43 bp in 2024-25H1, about 0 in 2025H2-26). Sell all at 09:25: 1.98 / 2.30 vs 2.65 / "
+     "2.25. Lead: a resting limit at the last trade, cancelled before 09:28 and sent to the auction if unfilled, "
+     "-11 to +2 bp then +20 to +30 bp a pick; fills are unverified (much premarket volume is off-exchange retail)."),
     ("139", "Blend picks reporting earnings that night vs the rest, at cross prices; exclude or half-weight rules",
      "Reject",
      "Earnings-night picks (8-11% of picks) earn +111 bp per pick at crosses in 2024-25H1 (32% of P&L) but +15 bp on "

@@ -24,12 +24,16 @@ Design: per pick, the sell price at premarket time T is compared with the openin
 the same day). Bar-based price for every pick: the last premarket trade before T (close of the last 5-minute bar
 ending by T, at most 30 minutes old; otherwise no premarket sale is possible and the pick is sold at the cross)
 minus half the quoted premarket spread. Half spread per pick: from the quote sample, a regression of log half
-spread (bp) on log 20-day ADV, log price and the time slot (fit on all sampled pick-days, both periods). Quote-based
+spread (bp) on log 20-day ADV, log price and the time slot (fit on all sampled pick-days, both periods; the median
+prediction is used, and its error against the actual bid is reported as a calibration check). Quote-based
 price on the sampled pick-days: the bid (a marketable limit sell), and bid + 25% / 50% of the spread (a passive limit
 that may not fill). Passive limit variant (every pick with a premarket price): a limit sell from T at the last
 trade (or 0.25% / 0.5% above it), counted as filled if a later premarket bar (ending by 09:25) has a high at least
 1 cent above the limit (strict version: max(20 bp, 2 cents) above), otherwise cancelled before the 09:28 OPG cutoff and
-sold in the opening auction. Edge per pick = sell price / cross - 1 in bp; cost: the opening-auction sell is charged the
+sold in the opening auction. On the quote sample the passive limit is re-tested with SIP trades 07:30-09:25 fetched here (data/local/
+trades145.parquet, one request per pick-day): filled only if a lit-exchange print (not FINRA 'D' off-exchange) at or
+above the limit + 1 cent follows T (and, stricter, if those prints total at least $5k). Edge per pick = sell price /
+cross - 1 in bp; cost: the opening-auction sell is charged the
 study 69 auction cost (core.exec_cost_bps 'auction' + 2.5 bp), a premarket sell 0.3 bp fees + 2.5 bp on top of the
 bid (the half spread is already in the price). Net gain vs the cross = edge - premarket cost + auction cost. Fill
 risk: premarket dollar volume in [T, T+15 min) and the bid size in dollars vs a $1k and $2.5k order. Book: the
@@ -44,12 +48,29 @@ are rejected); OPG (market/limit-on-open) orders are rejected between 09:28 and 
 cancelled after the open. So a premarket exit is a limit sell with extended_hours=true; a share left unsold by 09:28
 cannot be moved into the opening auction any more (it can only be sold in the regular session).
 
+Data errors found: 109 capped pick-days (11 tickers, mostly splits or ADR ratio changes missing from splits_yf.csv:
+AZN, RVSN, GMEX, HOLO, ...) have premarket bars more than 25% from the cross; they are treated as no premarket price.
+24 sampled NBBOs had a mid more than 25% from the cross (dropped); 192 had a quoted spread above 10% (kept: the bid is
+what a marketable sell gets). The 08:00 bar holds a burst of FINRA 'D' (off-exchange) prints, wholesalers filling
+retail orders when many brokers open their premarket session; 64-71% of the dollar volume around 08:00-08:30 is
+off-exchange. A fill test on any print (the bar model) therefore overstates passive fills; the lit-print test on the
+sample is the one to trust. Alpaca quote sizes switch from round lots to shares in 2025-11.
+
+Results (capped picks; P1 = 2024-01..2025-06, P2 = 2025-07..2026-09): the last premarket trade is 25-37 bp (P1) and
+43-52 bp (P2) above the opening cross on average at every time from 08:00 to 09:25, but the premarket half spread
+of the picks is 38-49 bp (P1) and 29-36 bp (P2) at the median, with a fat tail. Selling at the bid loses vs the
+cross: random sample, net of costs, P1 -133 to -183 bp per pick (median -34 to -43), P2 -30 to -39 bp (median about
+0). Variants (b) (X = 15% chosen on P1, almost no sales) and (c) give nothing. A passive limit at the last trade,
+filled only on a later lit-exchange print, gains -11 to +2 bp per pick in P1 and +20 to +30 bp in P2 (t 1.6-2.3;
+with at least $5k of lit prints at or above the limit: P1 -16 to -4, P2 +10 to +17), i.e. a lead only.
+
 Output: results/study145_premarket_exit.csv (tables: data_errors, spread_model, edge_bars (per time, period, set),
-edge_quotes (quote sample), fill (volume and bid size vs order), threshold (variant b grid on P1), book (Sharpe /
+edge_quotes (quote sample), last_vs_nbbo, limit_sample (passive limit, lit-print fill test), fill (volume and bid size vs order), threshold (variant b grid on P1), book (Sharpe /
 net bp per variant and period)).
 
     python src/study145_premarket_exit.py picks    # pick list with cross prices -> data/local/_study145_picks.parquet
     python src/study145_premarket_exit.py fetch    # premarket quote sample (resumable; ALPACA_PER_MIN, default 60)
+    python src/study145_premarket_exit.py fetch_trades   # SIP trades of the sampled pick-days (resumable)
     python src/study145_premarket_exit.py          # study
 """
 import os
@@ -250,6 +271,68 @@ def fetch():
             print("quotes", i + 1, "/", len(jobs), flush=True)
 
 
+def trade_summary(sym, day):
+    """SIP trades 07:30-09:25 of one pick-day, summarised per T: last trade before T (all venues / lit exchanges
+    only, i.e. not FINRA 'D' off-exchange prints), and lit-exchange prints in [T, 09:25) at or above the last
+    trade + 1 cent (highest price, dollar volume)."""
+    p = dict(symbols=sym, start=_utc(day, "07:30:00"), end=_utc(day, "09:25:00"), limit=10000, feed="sip")
+    tr = []
+    while True:
+        j = A.get("trades", p)
+        tr += (j.get("trades") or {}).get(sym, [])
+        if not j.get("next_page_token"):
+            break
+        p["page_token"] = j["next_page_token"]
+    if not tr:
+        return [dict(T=T, n_tr=0) for T in TIMES]
+    d = pd.DataFrame({"ts": pd.to_datetime([z["t"] for z in tr], format="ISO8601").tz_convert("America/New_York"),
+                      "p": [z["p"] for z in tr], "s": [z["s"] for z in tr], "x": [z.get("x") for z in tr]})
+    d["ts"] = d.ts.dt.tz_localize(None)
+    d["lit"] = d.x != "D"
+    d["dv"] = d.p * d.s
+    out = []
+    for T in TIMES:
+        tt = pd.Timestamp(f"{day} {T}")
+        b = d[d.ts < tt]
+        a = d[d.ts >= tt]
+        L = b.p.iloc[-1] if len(b) else np.nan
+        bl = b[b.lit]
+        al = a[a.lit & (a.p >= L + 0.01)] if len(b) else a.iloc[:0]
+        w = d[(d.ts >= tt - pd.Timedelta(minutes=30)) & (d.ts < tt + pd.Timedelta(minutes=15))]
+        out.append(dict(T=T, n_tr=len(d), last_all=L, last_all_age_min=(tt - b.ts.iloc[-1]).total_seconds() / 60 if len(b) else np.nan,
+                        last_lit=bl.p.iloc[-1] if len(bl) else np.nan, hi_lit_after=a[a.lit].p.max(),
+                        lit_dv_above=al.dv.sum(), dv_after=a.dv.sum(),
+                        d_share=w.dv[~w.lit].sum() / w.dv.sum() if w.dv.sum() > 0 else np.nan))
+    return out
+
+
+TFN = os.path.join(A.LOCAL, "trades145.parquet")
+
+
+def fetch_trades():
+    qs = pd.read_parquet(QFN)
+    smp = qs.drop_duplicates(["ticker", "t1"])[["ticker", "t1", "per", "stratum"]]
+    have = pd.read_parquet(TFN) if os.path.exists(TFN) else pd.DataFrame(columns=["ticker", "t1"])
+    done = set(zip(have.ticker, pd.to_datetime(have.t1)))
+    jobs = [r for r in smp.itertuples() if (r.ticker, pd.Timestamp(r.t1)) not in done]
+    print("trade summaries to do", len(jobs), flush=True)
+    rows = []
+    for i, r in enumerate(jobs):
+        try:
+            z = trade_summary(r.ticker.replace("-", "."), pd.Timestamp(r.t1).strftime("%Y-%m-%d"))
+        except RuntimeError as e:
+            print("err", r.ticker, r.t1, e, flush=True)
+            continue
+        rows += [dict(ticker=r.ticker, t1=pd.Timestamp(r.t1), per=r.per, stratum=r.stratum, **q) for q in z]
+        if (i + 1) % 50 == 0 or i == len(jobs) - 1:
+            out = pd.concat([have, pd.DataFrame(rows)], ignore_index=True) if len(have) else pd.DataFrame(rows)
+            out.to_parquet(TFN, index=False)
+            print("trades", i + 1, "/", len(jobs), flush=True)
+
+
+if __name__ == "__main__" and len(sys.argv) > 1 and sys.argv[1] == "fetch_trades":
+    fetch_trades()
+    sys.exit()
 if __name__ == "__main__" and len(sys.argv) > 1 and sys.argv[1] == "picks":
     picks()
     sys.exit()
@@ -289,7 +372,7 @@ def spread_model(qs):
     y = np.log(q.hs_bp.values)
     b, *_ = np.linalg.lstsq(X, y, rcond=None)
     res = y - X @ b
-    smear = np.mean(np.exp(res))         # Duan smearing: mean, not median, half spread
+    smear = np.mean(np.exp(res))         # Duan smearing factor (reported; predictions use the median, smear = 1)
     r2 = 1 - res.var() / y.var()
     names = ["const", "log_adv", "log_px"] + [f"T={T}" for T in TIMES[1:]]
     return dict(zip(names, b)), smear, r2, len(q)
@@ -352,7 +435,7 @@ def main():
                          quote_found=g.bid.notna().mean(), median_hs_bp=g.hs_bp.median(), mean_hs_bp=g.hs_bp.mean(),
                          p90_hs_bp=g.hs_bp.quantile(0.9)))
     # ---- bar-based sell price for every pick
-    x["hs_hat"] = predict_hs(coef, smear, x.adv.values, x.buy_px.values, x["T"].values)
+    x["hs_hat"] = predict_hs(coef, 1.0, x.adv.values, x.buy_px.values, x["T"].values)
     x["sell_bar"] = x.px * (1 - x.hs_hat / 1e4)
     x["edge_last"] = 1e4 * (x.px / x.sell_ref - 1)                      # last trade vs cross (no spread)
     x["gain_bar"] = 1e4 * (x.sell_bar / x.sell_ref - 1) - PM_COST + x.cost    # net vs selling at the cross
@@ -384,7 +467,7 @@ def main():
     qs["gain_bid"] = 1e4 * (qs.bid / qs.sell_ref - 1) - PM_COST + qs.cost
     qs["gain_b25"] = 1e4 * ((qs.bid + 0.25 * (qs.ask - qs.bid)) / qs.sell_ref - 1) - PM_COST + qs.cost
     qs["gain_mid"] = 1e4 * (qs.mid / qs.sell_ref - 1) - PM_COST + qs.cost
-    qs["hs_hat"] = predict_hs(coef, smear, qs.adv.values, qs.buy_px.values, qs["T"].values)
+    qs["hs_hat"] = predict_hs(coef, 1.0, qs.adv.values, qs.buy_px.values, qs["T"].values)
     qs["calib"] = 1e4 * (qs.px * (1 - qs.hs_hat / 1e4) / qs.bid - 1)       # bar estimate vs actual bid
     qs["up"] = qs.px / qs.buy_px - 1
     for (p, st, T), g in qs.groupby(["per", "stratum", "T"]):
@@ -404,8 +487,36 @@ def main():
                                                + pd.to_timedelta(g["T"] + ":00") -
                                                pd.to_datetime(g.qts, format="ISO8601").dt.tz_convert("America/New_York")
                                                ).dt.total_seconds().median() / 60))
+    # ---- passive limit on the sample with a stricter fill test: lit-exchange prints only (FINRA 'D' prints are
+    # off-exchange retail internalisation and never trade against a resting exchange order; Reg NMS trade-through
+    # protection does not apply outside 09:30-16:00)
+    if os.path.exists(TFN):
+        tr = pd.read_parquet(TFN)
+        tr["t1"] = pd.to_datetime(tr.t1)
+        z = tr.merge(qs[["ticker", "t1", "T", "t", "sell_ref", "cost", "bid", "ask"]], on=["ticker", "t1", "T"], how="left")
+        z = z.merge(x.loc[x.set == "capped", ["ticker", "t1", "T", "fill_l0", "gain_l0"]], on=["ticker", "t1", "T"],
+                    how="left")
+        L = z.last_all
+        okL = L.notna() & ((L / z.sell_ref - 1).abs() <= 0.25) & (z["T"] != "09:25")
+        z["edge_last_raw"] = 1e4 * (L / z.sell_ref - 1)
+        for key, need in [("lit", 0.0), ("lit5k", 5000.0)]:
+            f = okL & (z.lit_dv_above > need)
+            z[f"gain_{key}"] = np.where(okL, np.where(f, 1e4 * (L / z.sell_ref - 1) - PM_COST + z.cost, 0.0), np.nan)
+            z[f"fill_{key}"] = f.where(okL)
+        for (p, st, T), g in z[z["T"] != "09:25"].groupby(["per", "stratum", "T"]):
+            base = dict(table="limit_sample", set=f"capped sample, {st}", period=p, T=T,
+                        d_share_dv=g.d_share.median(), last_age_min=g.last_all_age_min.median())
+            rows.append(dict(base, what="last trade (raw SIP) vs cross", **summ(g.edge_last_raw, g.t)))
+            rows.append(dict(base, what="limit at last trade, bar fill model (any print >= limit + 1c)",
+                             fill_rate=g.fill_l0[g.gain_l0.notna()].mean(), **summ(g.gain_l0, g.t)))
+            rows.append(dict(base, what="limit at last trade, fill only if a lit-exchange print >= limit + 1c",
+                             fill_rate=g.fill_lit.mean(), **summ(g.gain_lit, g.t)))
+            rows.append(dict(base, what="limit at last trade, fill only if lit prints >= limit + 1c total >= $5k",
+                             fill_rate=g.fill_lit5k.mean(), **summ(g.gain_lit5k, g.t)))
     # ---- fill risk
-    qs["bid_usd"] = qs.bsz * 100 * qs.bid           # Alpaca SIP quote sizes are round lots (100 shares)
+    # Alpaca SIP quote sizes are in round lots (100 shares) up to 2025-10 and in shares from 2025-11 (every size a
+    # multiple of 100 from then on in the sample; the SIP moved to share sizes with the round-lot reform)
+    qs["bid_usd"] = qs.bsz * np.where(qs.t1 < "2025-11-01", 100, 1) * qs.bid
     for (p, T), g in x[x.set == "capped"].groupby(["per", "T"]):
         dv = g.dv15.fillna(0)
         rows.append(dict(table="fill", set="capped, all picks (bars)", period=p, T=T, n=len(g),

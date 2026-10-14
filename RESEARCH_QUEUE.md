@@ -13,8 +13,6 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-14)
-- 145: sell the overnight picks in the premarket (08:00-09:28) instead of the opening auction, net of premarket
-  spreads
 - 149: retrain frequency: monthly vs quarterly refits of the models (close-feature setup of study 99)
 - 151: training window: expanding vs rolling 2- and 3-year windows
 - 150: what drives the picks now: feature importance and pick traits 2024 vs 2026 (why tech hardware rose)
@@ -22,6 +20,8 @@ same universe's average (src/horizon_lib.py).
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 145 Reject: premarket sells at the bid lose to the cross; lead: resting limit at the last premarket trade, then
+  the auction if unfilled (+20 to +30 bp in 2025H2-26 only; fills unverified)
 - 139 Reject: earnings-night picks are the best picks in 2024-25H1 and weak on the holdout (late NYSE crosses);
   excluding or halving them loses in the choice period
 - 142 Caveat: missing crosses negligible (2 of 6,850); live exit needs a fallback sell for cancelled market-on-open
@@ -142,6 +142,9 @@ same universe's average (src/horizon_lib.py).
 
 - 143: live-account exit design: market-on-open sells plus a 09:45 check that sells any position still open
   (Alpaca cancels unfilled market-on-open orders); needed before going live, not for paper
+
+- 155: paper test of the premarket resting limit sell (study 145 lead): measure real fill rates vs the cross; a
+  paper-job change, needs owner approval
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
