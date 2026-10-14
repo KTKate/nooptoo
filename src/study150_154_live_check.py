@@ -148,6 +148,26 @@ def news_counts(since_utc, until_utc):
     return out
 
 
+def iex_bars(symbols, start, end):
+    """IEX-feed 1-minute bars (alpaca_data.bars is SIP only)."""
+    p = dict(symbols=",".join(symbols), timeframe="1Min", start=start, end=end, limit=10000, feed="iex", sort="asc")
+    rows = []
+    while True:
+        j = A.get("bars", p)
+        for s_, bl in (j.get("bars") or {}).items():
+            for b in bl:
+                b["ticker"] = s_
+            rows.extend(bl)
+        if not j.get("next_page_token"):
+            break
+        p["page_token"] = j["next_page_token"]
+    d = pd.DataFrame.from_records(rows)
+    if not len(d):
+        return pd.DataFrame(columns=["ts", "ticker", "o", "h", "l", "c", "v"])
+    d["ts"] = pd.to_datetime(d.t, utc=True).dt.tz_convert(ET).dt.tz_localize(None)
+    return d[["ts", "ticker", "o", "h", "l", "c", "v"]]
+
+
 def fetch():
     P = load_panel()
     cols = stock_cols(P)
@@ -168,6 +188,18 @@ def fetch():
             x["day"], x["tf"] = day, tf
             parts.append(x)
             print(day.date(), tf, len(x), flush=True)
+        if "iex1Min" not in done:                   # IEX 1-minute bars 15:40-15:45: the live job's IEX last trade
+            x = pd.concat([iex_bars(tick[i:i + 400], utc(day, "15:40"), utc(day, "15:45"))
+                           for i in range(0, len(tick), 400)])
+            x["day"], x["tf"] = day, "iex1Min"
+            parts.append(x)
+            print(day.date(), "iex1Min", len(x), flush=True)
+        if "sip1530" not in done:                   # SIP 15:30 minute: what a 15:46 request sees of the 15:30 bar
+            x = pd.concat([A.bars(tick[i:i + 400], "1Min", utc(day, "15:30"), utc(day, "15:30"))
+                           for i in range(0, len(tick), 400)])
+            x["day"], x["tf"] = day, "sip1530"
+            parts.append(x)
+            print(day.date(), "sip1530", len(x), flush=True)
         if day not in days and "1Day" not in done:
             x = A.bars(tick, "1Day", utc(day, "00:00"), utc(day, "23:59"), adjustment="raw")
             x["day"], x["tf"] = day, "1Day"
@@ -183,14 +215,56 @@ def fetch():
 
 
 # ------------------------------------------------------------------ feature frames
+def job_commit(day):
+    """The commit the live entry job made on day (it carries the data/store state the job used)."""
+    import subprocess
+    out = subprocess.run(["git", "log", "--format=%H %s"], capture_output=True, text=True, cwd=A.ROOT).stdout
+    for line in out.splitlines():
+        h, msg = line.split(" ", 1)
+        if msg == f"Paper job entry {day}":
+            return h
+    return None
+
+
+def _git_parquet(commit, path):
+    import io
+    import subprocess
+    r = subprocess.run(["git", "show", f"{commit}:{path}"], capture_output=True, cwd=A.ROOT)
+    return pd.read_parquet(io.BytesIO(r.stdout)) if r.returncode == 0 else None
+
+
+def store_at(commit, day):
+    """Daily panels (as core.load_panel, last ~17 months) and the earnings calendar from data/store at commit."""
+    import subprocess
+    parts = [_git_parquet(commit, f"data/store/daily/{m}.parquet")
+             for m in pd.period_range(pd.Timestamp(day) - pd.Timedelta(days=520), pd.Timestamp(day), freq="M")]
+    d = pd.concat([p for p in parts if p is not None], ignore_index=True)
+    d = d[(d.c > 0) & (d.o > 0) & (d.h > 0) & (d.l > 0)]
+    f = store.adj_factor(d).astype("float64")
+    d["rawc"] = d["c"]
+    for k in ["o", "h", "l", "c"]:
+        d[k] = d[k] * f
+    P = {k: d.pivot(index="date", columns="ticker", values=k).astype("float32") for k in ["o", "h", "l", "c", "rawc", "v"]}
+    days = P["c"]["SPY"].dropna().index
+    P = {k: x.reindex(days) for k, x in P.items()}
+    P["dv"] = (P["rawc"] * P["v"]).astype("float32")
+    bad = (P["l"] > P["h"] * 1.0001) | (P["o"] > P["h"] * 1.02) | (P["o"] < P["l"] * 0.98)
+    for k in ["o", "h", "l", "c"]:
+        P[k] = P[k].mask(bad)
+    ls = subprocess.run(["git", "ls-tree", "--name-only", commit, "data/store/earnings/"], capture_output=True,
+                        text=True, cwd=A.ROOT).stdout.split()
+    E = pd.concat([_git_parquet(commit, p) for p in ls if p.endswith(".parquet")], ignore_index=True)
+    return P, E
+
+
 class Ctx:
-    def __init__(self):
-        self.P = load_panel()
+    def __init__(self, P=None, E=None):
+        self.P = P if P is not None else load_panel()
         self.cols = stock_cols(self.P)
         self.days = self.P["c"].index
         self.grid = extended_grid(self.days)
         self.ns = load_mlf()
-        E = store.read("earnings")
+        E = E if E is not None else store.read("earnings")
         self.E = E[E.symbol.isin(self.cols)]
         self.bars = pd.read_parquet(BARS) if os.path.exists(BARS) else None
         self.news = pd.read_parquet(NEWS) if os.path.exists(NEWS) else None
@@ -218,16 +292,28 @@ class Ctx:
                 m.iat[d - 1, ci[t]] = 1.0
         return m
 
-    def intraday(self, day, tick):
-        """Live-style aggregate (paper_overnight.today_intraday, replay price) and the 15:40 SIP close."""
+    def intraday(self, day, tick, live_price=True, with_1530=True, jitter=None):
+        """Live-style aggregate as paper_overnight.today_intraday at 15:46: SIP 30-minute bars 09:30-15:00 plus the
+        first minute of the 15:30 bar (with_1530; the delayed feed holds data to about 15:31), price = last IEX
+        trade 15:40-15:45 if any (live_price), else the close of those bars. Also the 15:40 SIP 5-minute close
+        (p1545, the backtest price), SPY/IWM 15:44 and the daily bar (2026-10-13)."""
         b = self.bars[self.bars.day == day]
-        b30 = b[b.tf == "30Min"]
+        hm = b.ts.dt.strftime("%H:%M")              # Alpaca's end time is inclusive: keep the bars that start
+        b = b[((b.tf == "30Min") & (hm < "15:30")) | ((b.tf == "5Min") & (hm == "15:40"))
+              | ((b.tf == "1Min") & (hm == "15:44")) | (b.tf == "1Day") | (b.tf == "iex1Min")
+              | ((b.tf == "sip1530") & (hm == "15:30"))]
+        b30 = b[(b.tf == "30Min") | ((b.tf == "sip1530") & with_1530)].sort_values("ts")
         g = b30.groupby("ticker")
         agg = pd.DataFrame({"o": g.o.first(), "h": g.h.max(), "l": g.l.min(), "v": g.v.sum(), "c1530": g.c.last()})
         p5 = b[b.tf == "5Min"].groupby("ticker").c.last()
+        iex = b[b.tf == "iex1Min"].sort_values("ts").groupby("ticker").c.last()
         agg = agg.reindex(sorted(set(agg.index) | set(p5.index)))
         agg["p1545"] = p5
-        agg["p"] = agg.p1545.fillna(agg.c1530)
+        agg["p_iex"] = iex
+        agg["p"] = (agg.p_iex if live_price else agg.p1545).fillna(agg.c1530)
+        if jitter is not None:                      # price moved by -1, 0 or +1 cent (fragility check)
+            rng = np.random.default_rng(jitter)
+            agg["p"] = agg.p + rng.choice([-0.01, 0.0, 0.01], len(agg))
         agg["h"] = np.maximum(agg.h, agg.p)
         agg["l"] = np.minimum(agg.l, agg.p)
         m1 = b[b.tf == "1Min"].groupby("ticker").c.last()
@@ -348,6 +434,41 @@ def run154():
         live_top = list(r["ml_top"])
         live_unc = list(r.get("uncapped_top") or [])
         res = {}
+        # Lthen: the live replica on the daily store and earnings calendar exactly as the job had them
+        cm = job_commit(r["day"])
+        if cm:
+            Pt, Et = store_at(cm, day)
+            Pt = {k: x.loc[x.index < day] for k, x in Pt.items()}
+            ct = Ctx(Pt, Et)
+            ct.bars, ct.news = ctx.bars, ctx.news
+            lq_t, _ = universe_sets(Pt, ct.cols, day)
+            it = intr_all.reindex(lq_t + ["SPY", "IWM"])
+            X = ct.frame(day, "L", lq_t, intr=it)
+            t = X.index.get_level_values(1)
+            import jumpmodel as J
+            et = J.earn_tonight(t, prev, nxt)          # uses today's calendar file; the count is checked below
+            sc = score(X, day, q_ens, et, news, jump=blend_live)
+            sc["earn_tonight"] = et.reindex(sc.index).values
+            sc["news"] = news.reindex(sc.index).fillna(0).values
+            for k in ["days_to_e", "days_since_e", "lpx", "ldv", "vol20", "r1", "r5", "vz1", "vix"]:
+                sc[k] = X[k].values
+            top, pred = picks(sc)
+            sc["rank"] = pred.rank(ascending=False)
+            res["Lthen"] = (sc, list(top.index), list(pred.head(10).index))
+            # fragility: the same replica with every price moved by -1/0/+1 cent at random
+            for rep in range(3):
+                itj = ct.intraday(day, lq_t + ["SPY", "IWM"], jitter=rep)[0]
+                Xj = ct.frame(day, "L", lq_t, intr=itj)
+                scj = score(Xj, day, q_ens, et.reindex(Xj.index.get_level_values(1)).fillna(0.0), news, jump=blend_live)
+                tj, _ = picks(scj)
+                com = sc.index.intersection(scj.index)
+                rows.append(dict(table="check", day=r["day"], variant="Lthen_jitter1c", item=f"rep{rep}",
+                                 n=len(com), overlap=len(set(tj.index) & set(top.index)),
+                                 value=spearmanr(sc.loc[com, "blend"], scj.loc[com, "blend"])[0],
+                                 overlap_live=len(set(tj.index) & set(live_top))))
+            sc["clv"] = X["clv"].values
+            print(day.date(), "Lthen", "universe", len(sc), "overlap with live", len(set(top.index) & set(live_top)), flush=True)
+            del Pt, ct
         for kind in ["L", "Lfix", "B", "C"]:
             tick = liquid + ["SPY", "IWM"] if kind in ("L", "Lfix") else cand
             intr = intr_all.reindex(liquid + ["SPY", "IWM"]) if kind in ("L", "Lfix") else intr_all
@@ -363,12 +484,20 @@ def run154():
             sc = score(X, day, q_ens, et, nw, jump=blend_live)
             sc["earn_tonight"] = et.reindex(sc.index).values
             sc["news"] = news.reindex(sc.index).fillna(0).values
-            for k in ["days_to_e", "days_since_e", "lpx", "ldv", "vol20", "r1", "r5", "vz1", "vix"]:
+            for k in ["days_to_e", "days_since_e", "lpx", "ldv", "vol20", "r1", "r5", "vz1", "vix", "clv"]:
                 sc[k] = X[k].values
             top, pred = picks(sc)
             sc["rank"] = pred.rank(ascending=False)
             res[kind] = (sc, list(top.index), list(pred.head(10).index))
             print(day.date(), kind, "universe", len(sc), "overlap with live", len(set(top.index) & set(live_top)), flush=True)
+        # close location at the extremes (clv = +1 or -1: the price is the day's high or low so far); the models
+        # split at clv 0.9997 and -0.9999
+        for kind, (sc, top, unc) in res.items():
+            ext_ = sc.clv.abs() >= 0.9999
+            rows.append(dict(table="check", day=r["day"], variant=kind, item="clv_at_extreme_share", n=len(sc),
+                             value=float(ext_.mean()), top10_share=float(ext_.reindex(top).mean()),
+                             clv_plus1=float((sc.clv >= 0.9999).mean()), clv_minus1=float((sc.clv <= -0.9999).mean()),
+                             top10_minus1=float((sc.clv.reindex(top) <= -0.9999).mean())))
         # day summary
         for kind, (sc, top, unc) in res.items():
             rows.append(dict(table="day_summary", day=r["day"], variant=kind, strategy=r["strategy"],
@@ -379,15 +508,15 @@ def run154():
                              picks=" ".join(top), live_picks=" ".join(live_top),
                              net_live=np.nan))
         # rank correlations between variants on the common universe
-        for a, b in [("L", "B"), ("L", "C"), ("B", "C"), ("L", "Lfix")]:
+        for a, b in [("Lthen", "L"), ("Lthen", "B"), ("L", "B"), ("L", "C"), ("B", "C"), ("L", "Lfix")]:
             x, y = res[a][0], res[b][0]
             com = x.index.intersection(y.index)
             for k in ["blend", "ensemble"] + (["jmd"] if blend_live else []):
                 rows.append(dict(table="variant_corr", day=r["day"], variant=f"{a}_vs_{b}", item=k, n=len(com),
                                  value=spearmanr(x.loc[com, k], y.loc[com, k])[0],
                                  overlap=len(set(res[a][1]) & set(res[b][1]))))
-        # L against the logged live values
-        sc = res["L"][0]
+        # live replica against the logged live values
+        sc = res["Lthen"][0] if "Lthen" in res else res["L"][0]
         checks = [(f"member_{m}", sc[m], v) for m, v in ml.get("members", {}).items()]
         if blend_live:
             checks += [("ensemble_top", sc.ensemble, ml["ensemble_top"]), ("jmd_top", sc.jmd, ml["jmd_top"]),
@@ -397,7 +526,7 @@ def run154():
         for name, ser, logged in checks:
             lg = pd.Series(logged, dtype="float64")
             mine = ser.reindex(lg.index)
-            rows.append(dict(table="member_check", day=r["day"], variant="L", item=name,
+            rows.append(dict(table="member_check", day=r["day"], variant="Lthen", item=name,
                              n=len(lg), overlap=len(set(ser.nlargest(10).index) & set(lg.index)),
                              value=float((mine - lg).abs().max()), missing=int(mine.isna().sum()),
                              median_abs_diff=float((mine - lg).abs().median())))
@@ -410,21 +539,22 @@ def run154():
         qty = {o["symbol"]: o["qty"] for o in r["orders"]}
         eq = r["equity"]
         for t in live_top:
-            x = res["L"][0]
+            x = res["Lthen"][0]
             d = dict(table="live_pick", day=r["day"], ticker=t, sector=sec.get(t), industry=ind.get(t),
                      techhw=bool(hw.get(t, False)), live_score=r["ml_top"][t])
             for kind in res:
                 s_ = res[kind][0]
                 d[f"rank_{kind}"] = s_["rank"].get(t, np.nan)
                 d[f"in_top_{kind}"] = t in res[kind][1]
-            d["score_L"] = x.blend.get(t, np.nan)
+            d["score_Lthen"] = x.blend.get(t, np.nan)
             for k in ["ensemble", "jmd", "p_jump", "p_drop", "earn_tonight", "news", "days_to_e", "days_since_e",
-                      "r1", "r5", "vol20", "vz1"]:
+                      "r1", "r5", "vol20", "vz1", "clv"]:
                 if k in x:
                     d[k] = x[k].get(t, np.nan)
             d["days_to_e_B"] = res["B"][0].days_to_e.get(t, np.nan)
-            d["ens_rank_L"] = x.ensemble.rank(ascending=False).get(t, np.nan)
-            d["jmd_rank_L"] = x.jmd.rank(ascending=False).get(t, np.nan) if "jmd" in x else np.nan
+            d["clv_B"] = res["B"][0].clv.get(t, np.nan)
+            d["ens_rank_Lthen"] = x.ensemble.rank(ascending=False).get(t, np.nan)
+            d["jmd_rank_Lthen"] = x.jmd.rank(ascending=False).get(t, np.nan) if "jmd" in x else np.nan
             d["p1545_sip"] = intr_all.p1545.get(t, np.nan)
             q_ = qty.get(t)
             if q_:      # qty = int(equity * 0.1 // price): the live price lies in (eq/10/(q+1), eq/10/q]
@@ -438,7 +568,15 @@ def run154():
             d["max_abs_daily_ret20"] = float(P["c"][t].loc[days < day].tail(21).pct_change().abs().max()) if t in P["c"] else np.nan
             d["split_flags"] = " ".join(splits.get(t, []))
             rows.append(d)
-    rows += earn_nan_test(ctx, hw)
+    # training rows (close features, data/ml_frame.parquet): how often the close is the day's high or low
+    tr = pd.read_parquet(os.path.join(DATA, "ml_frame.parquet"), columns=["clv"])
+    tr = tr[tr.index.get_level_values(0) >= "2024-01-01"].clv
+    rows.append(dict(table="check", day="2024-01..2026-09", variant="training frame", item="clv_at_extreme_share",
+                     n=len(tr), value=float((tr.abs() >= 0.9999).mean()), clv_plus1=float((tr >= 0.9999).mean()),
+                     clv_minus1=float((tr <= -0.9999).mean())))
+    del tr
+    if os.environ.get("SKIP_NAN_TEST") != "1":
+        rows += earn_nan_test(ctx, hw)
     df = pd.DataFrame(rows)
     # virtual book next to the day summary
     vd = pd.read_csv(os.path.join(LOG, "virtual_days.csv"), index_col=0)
@@ -460,12 +598,15 @@ def run154():
                  "live_techhw_picks", "net_live", "gross_variant", "gross_live_panel"]].to_string(index=False))
     print(df[df.table == "variant_corr"].pivot_table(index="day", columns=["variant", "item"], values="value").round(3).to_string())
     print(df[df.table == "member_check"][["day", "item", "n", "overlap", "value", "median_abs_diff", "live"]].to_string(index=False))
+    ck = df[df.table == "check"]
+    print(ck.groupby(["item", "variant"])[["value", "top10_share", "clv_plus1", "clv_minus1", "top10_minus1", "overlap",
+                                             "overlap_live"]].mean().round(3).to_string())
     en = df[df.table == "earn_nan_test"]
     print(en.groupby("variant")[["overlap", "value", "gross_variant", "gross_live_panel", "techhw_picks",
                                  "live_techhw_picks", "nan_share_days_to_e"]].mean().round(4).to_string())
     lp = df[df.table == "live_pick"]
-    print(lp[["day", "ticker", "industry", "rank_L", "rank_Lfix", "rank_B", "rank_C", "ens_rank_L", "jmd_rank_L",
-              "news", "earn_tonight", "days_to_e", "days_to_e_B", "p1545_sip", "live_px_lo", "live_px_hi",
+    print(lp[["day", "ticker", "industry", "rank_Lthen", "rank_L", "rank_Lfix", "rank_B", "rank_C", "ens_rank_Lthen", "jmd_rank_Lthen",
+              "news", "earn_tonight", "days_to_e", "days_to_e_B", "clv", "clv_B", "p1545_sip", "live_px_lo", "live_px_hi",
               "prev_close", "last_close_date", "adv20", "zero_vol_days20", "max_abs_daily_ret20",
               "split_flags"]].round(3).to_string(index=False))
 
@@ -565,7 +706,7 @@ def run150():
     ci = pd.Index(cols).get_indexer(pk.get_level_values(1))
     picks = pd.DataFrame(index=pk)
     picks["period"] = per(pk.get_level_values(0))
-    hwv = hw.reindex(cols).fillna(False).values
+    hwv = hw.reindex(cols).fillna(False).astype(bool).values
     picks["techhw"] = hwv[ci]
     picks["sector"] = sec.reindex(pk.get_level_values(1)).fillna("(none)").values
     for k, X in T.items():
@@ -618,7 +759,7 @@ def run150():
     hwmask = pd.DataFrame(np.broadcast_to(hwv, univ.shape), index=univ.index, columns=cols)
     for h in sorted(set(picks.half)):
         m = np.array(half(univ.index)) == h
-        U = univ.values[m]
+        U = univ.values[m].astype(bool)
         HW = hwmask.values[m]
         V, M5 = vpct.values[m], mpct.values[m]
         x = picks[picks.half == h]
