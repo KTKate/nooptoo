@@ -26,7 +26,10 @@ ending by T, at most 30 minutes old; otherwise no premarket sale is possible and
 minus half the quoted premarket spread. Half spread per pick: from the quote sample, a regression of log half
 spread (bp) on log 20-day ADV, log price and the time slot (fit on all sampled pick-days, both periods). Quote-based
 price on the sampled pick-days: the bid (a marketable limit sell), and bid + 25% / 50% of the spread (a passive limit
-that may not fill). Edge per pick = sell price / cross - 1 in bp; cost: the opening-auction sell is charged the
+that may not fill). Passive limit variant (every pick with a premarket price): a limit sell from T at the last
+trade (or 0.25% / 0.5% above it), counted as filled if a later premarket bar (ending by 09:25) has a high at least
+1 cent above the limit (strict version: max(20 bp, 2 cents) above), otherwise cancelled before the 09:28 OPG cutoff and
+sold in the opening auction. Edge per pick = sell price / cross - 1 in bp; cost: the opening-auction sell is charged the
 study 69 auction cost (core.exec_cost_bps 'auction' + 2.5 bp), a premarket sell 0.3 bp fees + 2.5 bp on top of the
 bid (the half spread is already in the price). Net gain vs the cross = edge - premarket cost + auction cost. Fill
 risk: premarket dollar volume in [T, T+15 min) and the bid size in dollars vs a $1k and $2.5k order. Book: the
@@ -298,6 +301,10 @@ def predict_hs(coef, smear, adv, px, T):
     return np.exp(z) * smear
 
 
+LIMS = {"l0": (0.0, 1e-4, 0.01), "l0s": (0.0, 0.002, 0.02), "l25": (0.0025, 1e-4, 0.01), "l50": (0.005, 1e-4, 0.01)}
+LIM_LAB = {"l0": "limit at last trade (fill: later print >= limit + 1c)",
+           "l0s": "limit at last trade (strict fill: later print >= limit + max(20 bp, 2c))",
+           "l25": "limit 0.25% above last trade", "l50": "limit 0.5% above last trade"}
 PM_COST = 0.3 + 2.5      # premarket limit sell: fees + the studies' 2.5 bp per side (spread is in the bid)
 
 
@@ -349,24 +356,30 @@ def main():
     x["sell_bar"] = x.px * (1 - x.hs_hat / 1e4)
     x["edge_last"] = 1e4 * (x.px / x.sell_ref - 1)                      # last trade vs cross (no spread)
     x["gain_bar"] = 1e4 * (x.sell_bar / x.sell_ref - 1) - PM_COST + x.cost    # net vs selling at the cross
-    # passive limit at the last trade from T; filled if a later premarket trade (bars ending by 09:25) prints above it,
-    # otherwise cancelled at 09:27 and sold in the opening auction (market-on-open accepted until 09:28)
-    x["lim_fill"] = (x.hi_after > x.px * (1 + 1e-4)) & (x["T"] != "09:25")
-    x["sell_lim"] = x.px.where(x.lim_fill)
-    x["gain_lim"] = np.where(x.lim_fill, 1e4 * (x.px / x.sell_ref - 1) - PM_COST + x.cost, 0.0)
-    x.loc[x.px.isna() | (x["T"] == "09:25"), "gain_lim"] = np.nan
+    # passive limit sell from T at the last trade (or k above it); filled if a later premarket trade (bars ending by
+    # 09:25) prints at least max(1 cent, margin) above the limit, otherwise cancelled at 09:27 and sold in the opening
+    # auction (market-on-open accepted until 09:28). No limit variant at 09:25 (no time left to work the order).
+    for key, (k, marg, cents) in LIMS.items():
+        lim = x.px * (1 + k)
+        fill = (x.hi_after >= np.maximum(lim * (1 + marg), lim + cents)) & (x["T"] != "09:25")
+        x[f"fill_{key}"] = fill
+        x[f"sell_{key}"] = lim.where(fill)
+        g_ = np.where(fill, 1e4 * (lim / x.sell_ref - 1) - PM_COST + x.cost, 0.0)
+        x[f"gain_{key}"] = np.where(x.px.isna() | (x["T"] == "09:25"), np.nan, g_)
     for (s, p, T), g in x.groupby(["set", "per", "T"]):
         rows.append(dict(table="edge_bars", set=s, period=p, T=T, what="last trade vs cross (bp)",
                          have_px=g.px.notna().mean(), **summ(g.edge_last, g.t)))
         rows.append(dict(table="edge_bars", set=s, period=p, T=T, what="net gain vs cross: last - modelled half spread",
                          have_px=g.px.notna().mean(), **summ(g.gain_bar, g.t)))
         if T != "09:25":
-            rows.append(dict(table="edge_bars", set=s, period=p, T=T,
-                             what="net gain vs cross: limit at last trade, else cross (all picks with a price)",
-                             have_px=g.px.notna().mean(), fill_rate=g.lim_fill[g.px.notna()].mean(), **summ(g.gain_lim, g.t)))
-            f = g[g.lim_fill]
-            rows.append(dict(table="edge_bars", set=s, period=p, T=T, what="limit at last trade: filled picks only",
-                             **summ(f.gain_lim, f.t)))
+            for key, lab in LIM_LAB.items():
+                rows.append(dict(table="edge_bars", set=s, period=p, T=T,
+                                 what=f"net gain vs cross: {lab}, else cross (picks with a price)",
+                                 have_px=g.px.notna().mean(), fill_rate=g[f"fill_{key}"][g.px.notna()].mean(),
+                                 **summ(g[f"gain_{key}"], g.t)))
+                f = g[g[f"fill_{key}"]]
+                rows.append(dict(table="edge_bars", set=s, period=p, T=T, what=f"{lab}: filled picks only",
+                                 **summ(f[f"gain_{key}"], f.t)))
     # ---- quote-based
     qs["gain_bid"] = 1e4 * (qs.bid / qs.sell_ref - 1) - PM_COST + qs.cost
     qs["gain_b25"] = 1e4 * ((qs.bid + 0.25 * (qs.ask - qs.bid)) / qs.sell_ref - 1) - PM_COST + qs.cost
@@ -381,6 +394,16 @@ def main():
                        ("calib", "bar estimate (last - model half spread) minus actual bid")]:
             rows.append(dict(table="edge_quotes", set=f"capped sample, {st}", period=p, T=T, what=lab,
                              quote_found=g.bid.notna().mean(), **summ(g[k], g.t)))
+    qs["pos"] = (qs.px - qs.bid) / (qs.ask - qs.bid)                    # last trade within the NBBO (0 bid, 1 ask)
+    for (p, T), g in qs[qs.stratum == "random"].groupby(["per", "T"]):
+        v = g.pos.dropna()
+        rows.append(dict(table="last_vs_nbbo", set="capped sample, random", period=p, T=T, n=len(v),
+                         share_at_or_below_bid=(v <= 0).mean(), share_inside=((v > 0) & (v < 1)).mean(),
+                         share_at_or_above_ask=(v >= 1).mean(), median_pos=v.median(),
+                         median_quote_age_min=(pd.to_datetime(g.t1).dt.tz_localize("America/New_York")
+                                               + pd.to_timedelta(g["T"] + ":00") -
+                                               pd.to_datetime(g.qts, format="ISO8601").dt.tz_convert("America/New_York")
+                                               ).dt.total_seconds().median() / 60))
     # ---- fill risk
     qs["bid_usd"] = qs.bsz * 100 * qs.bid           # Alpaca SIP quote sizes are round lots (100 shares)
     for (p, T), g in x[x.set == "capped"].groupby(["per", "T"]):
@@ -401,7 +424,8 @@ def main():
         ref = y.drop_duplicates(["t", "ticker"])[["t", "ticker", "per", "R_cross", "cost", "buy_px", "sell_ref"]]
         W = y.pivot_table(index=["t", "ticker"], columns="T", values="sell_bar", aggfunc="first")
         L = y.pivot_table(index=["t", "ticker"], columns="T", values="px", aggfunc="first")
-        LF = y.pivot_table(index=["t", "ticker"], columns="T", values="sell_lim", aggfunc="first")
+        LF = {key: y.pivot_table(index=["t", "ticker"], columns="T", values=f"sell_{key}", aggfunc="first")
+              for key in LIMS}
         ref = ref.set_index(["t", "ticker"])
         n0 = base_net(ref)
 
@@ -414,8 +438,9 @@ def main():
         variants = {"cross (opening auction, base)": n0}
         for T in TIMES:
             variants[f"a: sell all at {T} (last - half spread)"] = pm_net(W[T].reindex(ref.index))
-        for T in TIMES[:-1]:
-            variants[f"a2: limit at the last trade from {T}, unfilled at the cross"] = pm_net(LF[T].reindex(ref.index))
+        for key, lab in LIM_LAB.items():
+            for T in TIMES[:-1]:
+                variants[f"a2: {lab} from {T}, unfilled at the cross"] = pm_net(LF[key][T].reindex(ref.index))
         variants["c: half at 09:25, half at the cross"] = pm_net(W["09:25"].reindex(ref.index), 0.5)
         up = L["09:25"].reindex(ref.index) / ref.buy_px - 1
         thr = {}
