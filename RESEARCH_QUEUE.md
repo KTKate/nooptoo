@@ -19,10 +19,11 @@ same universe's average (src/horizon_lib.py).
   by month 2020-26, and the effect of rebuilding it on the 2026Q3-Q4 jump models' picks
 - 159: shadow candidates rescored at official crosses: ADR losers and small-cap no-news losers (backtests used panel
   prices)
-- 162: losing streaks: after 3 or more losing nights in 5, do the next 5-20 nights do worse than usual?
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 162 Caveat: the live losing run is about a 1-in-10 outcome (10th-14th percentile); streaks do not reliably
+  predict more losses
 - 164 Caveat: 12 of 13 entries and all exits ran; the 9/30 miss had known, fixed causes
 - 151 Reject: rolling 2- and 3-year training windows lose to the expanding window in both periods (-0.73 / -0.45
   Sharpe at crosses over 2024-26)

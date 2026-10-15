@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("162", "Losing streaks: how unusual is the live run (5 losses in 6 nights, about -5% over 10 nights), and do "
+     "streaks predict more losses?", "Caveat",
+     "About a 1-in-10 outcome: 14% of 11-night backtest windows end at or below -5% (about 9 such stretches a year); "
+     "the live result is at the 10th-14th percentile of the bootstrap (15th-19th at half the mean). Streaks do not "
+     "reliably predict more losses: after 4+ losses in 6 the next 5 nights averaged +16 bp in 2024-25H1 and -27 bp "
+     "in 2025H2-26 (all nights about 40 bp); return autocorrelation is near zero."),
     ("164", "Paper-job reliability since 2026-09-28: missed or failed entry and exit runs", "Caveat",
      "Every exit ran. One of 13 entries did not trade: 2026-09-30, when the old routine's 30-minute limit stopped the "
      "job and the daily data was stuck at 9/28 (both fixed that day). The only error lines since are one-ticker "
