@@ -1,0 +1,14 @@
+day,entry_log,entry_record,entry_finished,exit_log,error_lines,errors
+2026-09-28,True,True,,True,0,
+2026-09-29,True,True,15:47:54,True,3,1 Failed download: | ['AEXA']: OperationalError('database is locked')
+2026-09-30,True,False,,True,0,
+2026-10-01,True,True,15:55:06,True,1,1 Failed download:
+2026-10-02,True,True,15:55:13,True,1,1 Failed download:
+2026-10-05,True,True,15:55:40,True,3,1 Failed download:
+2026-10-06,True,True,15:55:34,True,1,1 Failed download:
+2026-10-07,True,True,15:55:30,True,0,
+2026-10-08,True,True,15:55:31,True,0,
+2026-10-09,True,True,15:55:24,True,0,
+2026-10-12,True,True,15:55:34,True,0,
+2026-10-13,True,True,15:55:26,True,1,1 Failed download:
+2026-10-14,True,True,15:55:23,True,1,1 Failed download:

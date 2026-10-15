@@ -360,6 +360,10 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("164", "Paper-job reliability since 2026-09-28: missed or failed entry and exit runs", "Caveat",
+     "Every exit ran. One of 13 entries did not trade: 2026-09-30, when the old routine's 30-minute limit stopped the "
+     "job and the daily data was stuck at 9/28 (both fixed that day). The only error lines since are one-ticker "
+     "Yahoo download failures and one database-lock message, which did not affect orders."),
     ("151", "Training window: expanding (all data since 2020) vs rolling 2- and 3-year windows, quarterly refits, 2 "
      "seeds each, at official cross prices (close-feature setup of study 99)", "Reject",
      "Rolling windows are worse in both periods: 2-year 1.39 / 1.91 and 3-year 1.98 / 1.92 vs expanding 2.45 / 2.32 "
