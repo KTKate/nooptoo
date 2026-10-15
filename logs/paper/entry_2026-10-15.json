@@ -1,0 +1,97 @@
+{
+ "day": "2026-10-15",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "LITE": 0.99702,
+  "CIEN": 0.99689,
+  "MRVL": 0.99508,
+  "FORM": 0.99482,
+  "HPE": 0.99443,
+  "DELL": 0.99222,
+  "COHR": 0.99209,
+  "VICR": 0.99054,
+  "MTSI": 0.98963,
+  "ONTO": 0.98756
+ },
+ "uncapped_top": {
+  "LITE": 0.99702,
+  "CIEN": 0.99689,
+  "MRVL": 0.99508,
+  "FORM": 0.99482,
+  "HPE": 0.99443,
+  "DELL": 0.99222,
+  "COHR": 0.99209,
+  "VICR": 0.99054,
+  "MTSI": 0.98963,
+  "VIAV": 0.98911
+ },
+ "equity": 8379.89,
+ "orders": [
+  {
+   "symbol": "CIEN",
+   "qty": 2,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "FORM",
+   "qty": 7,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 14,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 1,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "COHR",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "VICR",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "MTSI",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 6429.26
+}
