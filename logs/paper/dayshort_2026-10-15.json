@@ -1,0 +1,63 @@
+{
+ "day": "2026-10-15",
+ "from_entry": "entry_2026-10-14.json",
+ "equity": 8464.16,
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ASTS",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AXTI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PURR",
+   "qty": 23,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TTMI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "LITE": "no price or qty 0",
+  "CIEN": "no price or qty 0",
+  "COHR": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-15 09:36:31.951461-04:00"
+}
