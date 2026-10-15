@@ -15,13 +15,13 @@ same universe's average (src/horizon_lib.py).
 ## Running (batch 2026-10-15)
 - 149: retrain frequency: monthly vs quarterly refits (seed 1 nearly done, seed 2 not started; ~3 h of training left;
   resumable with `python src/study149_151_retrain.py train`)
-- 158: size of the earnings-calendar gap (study 154) in the training data and backtests: share of missing days_to_e
-  by month 2020-26, and the effect of rebuilding it on the 2026Q3-Q4 jump models' picks
 - 159: shadow candidates rescored at official crosses: ADR losers and small-cap no-news losers (backtests used panel
   prices)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 158 Caveat: days_to_e missing live for ~100% of names and for most Aug-Sep 2026 training rows; fixing it changes
+  1.3 picks a night, +2.6 bp (t 0.75); does not explain the weak 2026Q3; fix live and rebuild before next refit
 - 162 Caveat: the live losing run is about a 1-in-10 outcome (10th-14th percentile); streaks do not reliably
   predict more losses
 - 164 Caveat: 12 of 13 entries and all exits ran; the 9/30 miss had known, fixed causes

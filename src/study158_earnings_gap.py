@@ -53,6 +53,24 @@ Design
       gain, missing direction; a missing value goes with the far side (values above the threshold, i.e. with 15 =
       "no report within 3 weeks") or with the near side. Gain share of days_to_e per model.
 
+Result (1): the frame matches the current calendar to within 0.1-0.3% of rows a month for 2020-01..2026-05 (about
+1.5% of rows have no future report in any calendar; same in both). The gap is the frame's end: days_to_e missing
+for 3% (2026-06), 11% (07), 84% (08), 99% (09) of rows, of which 0.8 / 8.5 / 78 / 87 points had a later report in
+today's calendar. Almost none of them (0-1%) had a report within 15 trading days: the frame says "missing" where
+the truth is mostly the clipped 15. days_since_e and last_surp match exactly. Live: days_to_e missing for 99.7-100%
+of the universe every day 2026-07..10-13 (truth: 2-41% with a report within 15 days, 12-14% missing because the
+calendar ends 2026-11-13); days_since_e off by one day for 97% of names.
+Result (3), 2026Q3 models on 2026Q3 close frames, capped, at crosses: orig 4.2 bp a night, fix 6.9 (+2.6, t 0.75),
+live 3.1 (-1.1, t -0.10). Picks changed vs orig: fix 1.3 of 10 (0.5 in July, 2.6 in September), live 2.7; live vs
+fix 3.6. The 15:45 backtest reference reproduces study 137 (-3.1 bp); close-frame picks share only 6.4 of 10 with it.
+2026Q4 models are in sample on these days (about +200 bp a night), only pick changes are meaningful (fix vs orig
+1.4, live vs fix 2.9).
+Result (4): training rows with days_to_e missing but a later report known: 0.08% for the 2024Q1..2025Q4 models,
+0.11% for 2026Q3, 2.1% for 2026Q4 (45% of its last 60 days); within-15-day cases 0.00-0.06%. days_to_e is 10-12% of
+the gain of the jump models and 0.1-1.4% of the ensemble members. In the jump models 85-94% of the days_to_e gain
+is in splits whose missing branch is the far side (with values above the threshold, mostly at 1.5), so a missing
+value is read mostly like "no report in the next day or two"; 2-17% of the gain sends it to the near side.
+
 LightGBM: one process, predict with num_threads=2 (Booster.predict wrapped), no fork.
 Output: results/study158_earnings_gap.csv (table = monthly / live_share / train_affected / splits / importance /
 score / overlap_day), data/local/study158_earn.parquet.

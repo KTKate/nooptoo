@@ -360,6 +360,13 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("158", "Earnings-calendar gap (study 154): how much of the training data and live input lacks days_to_e, and "
+     "does fixing it change picks or returns?", "Caveat",
+     "Training data is correct through 2026-05; days_to_e is wrongly missing for 8% of 2026-07, 78% of 2026-08 and "
+     "87% of 2026-09 rows (2% of the 2026Q4 models' rows). Live it is missing for 99.7-100% of names, while 41% had a "
+     "report within 15 days on 10/13. On 61 nights of 2026Q3 the fix changes 1.3 picks a night and adds +2.6 bp (t "
+     "0.75); July, the weak month, had no gap. The models mostly read a missing value as no report soon. "
+     "Recommendation: fix the live calendar and rebuild the training frame before the next refit."),
     ("162", "Losing streaks: how unusual is the live run (5 losses in 6 nights, about -5% over 10 nights), and do "
      "streaks predict more losses?", "Caveat",
      "About a 1-in-10 outcome: 14% of 11-night backtest windows end at or below -5% (about 9 such stretches a year); "
