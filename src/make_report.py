@@ -360,6 +360,13 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("159", "Shadow candidates rescored at official crosses: small-cap no-news intraday losers and ADR losers "
+     "(study 16 rule and the live 15:45 version)", "Reject",
+     "Small-cap no-news losers: Sharpe 0.11 / 0.73 at crosses (0.49 / 1.02 at panel prices); the first trade sits "
+     "59 bp above the cross for these names. ADR losers, live 15:45 version: 0.46 / 1.33 at crosses (study 16 close "
+     "version 0.91 / 1.54, not tradable as written). Live shadow at crosses over 10 nights: ADR +6 bp, small caps -37 "
+     "bp a night. Neither beats the blend or adds a reason to trade it. The unfiltered small-cap reference did not "
+     "reproduce final_summary (0.48 / 1.05 vs 0.82 / 1.25)."),
     ("158", "Earnings-calendar gap (study 154): how much of the training data and live input lacks days_to_e, and "
      "does fixing it change picks or returns?", "Caveat",
      "Training data is correct through 2026-05; days_to_e is wrongly missing for 8% of 2026-07, 78% of 2026-08 and "

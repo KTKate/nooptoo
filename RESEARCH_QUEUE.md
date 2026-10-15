@@ -15,11 +15,11 @@ same universe's average (src/horizon_lib.py).
 ## Running (batch 2026-10-15)
 - 149: retrain frequency: monthly vs quarterly refits (seed 1 nearly done, seed 2 not started; ~3 h of training left;
   resumable with `python src/study149_151_retrain.py train`)
-- 159: shadow candidates rescored at official crosses: ADR losers and small-cap no-news losers (backtests used panel
-  prices)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 159 Reject: at official crosses small-cap no-news losers 0.11 / 0.73 and live-style ADR losers 0.46 / 1.33;
+  live shadow at crosses +6 bp (ADR) and -37 bp (small caps) over 10 nights
 - 158 Caveat: days_to_e missing live for ~100% of names and for most Aug-Sep 2026 training rows; fixing it changes
   1.3 picks a night, +2.6 bp (t 0.75); does not explain the weak 2026Q3; fix live and rebuild before next refit
 - 162 Caveat: the live losing run is about a 1-in-10 outcome (10th-14th percentile); streaks do not reliably
