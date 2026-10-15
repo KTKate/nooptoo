@@ -360,6 +360,11 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("151", "Training window: expanding (all data since 2020) vs rolling 2- and 3-year windows, quarterly refits, 2 "
+     "seeds each, at official cross prices (close-feature setup of study 99)", "Reject",
+     "Rolling windows are worse in both periods: 2-year 1.39 / 1.91 and 3-year 1.98 / 1.92 vs expanding 2.45 / 2.32 "
+     "(2-seed means). Over 2024-26 the 3-year window loses 10 bp a night (t -1.6, seed-averaged book); the 2-year "
+     "loss is 3 seed-noise sds. Keep the expanding window. Study 149 (monthly refits) is not finished."),
     ("154", "Live vs backtest consistency: do the paper job's picks match offline reruns of the same models, and is "
      "a pipeline error behind the October losses?", "Caveat",
      "No error behind the losses: the backtest-style picks lost about as much on the same nights (10/6 -2.5% vs -2.3% "

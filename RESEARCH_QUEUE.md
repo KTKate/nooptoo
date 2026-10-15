@@ -13,11 +13,13 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-14)
-- 149: retrain frequency: monthly vs quarterly refits of the models (close-feature setup of study 99)
-- 151: training window: expanding vs rolling 2- and 3-year windows
+- 149: retrain frequency: monthly vs quarterly refits (seed 1 nearly done, seed 2 not started; ~3 h of training left;
+  resumable with `python src/study149_151_retrain.py train`)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 151 Reject: rolling 2- and 3-year training windows lose to the expanding window in both periods (-0.73 / -0.45
+  Sharpe at crosses over 2024-26)
 - 154 Caveat: live job runs the backtest models correctly; October losses are shared by the backtest picks; bug:
   live days_to_e missing (earnings calendar grid ends the day before), changes ~1.5 picks a night; fix pending
   owner approval
