@@ -12,9 +12,15 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-14)
+## Running (batch 2026-10-15)
 - 149: retrain frequency: monthly vs quarterly refits (seed 1 nearly done, seed 2 not started; ~3 h of training left;
   resumable with `python src/study149_151_retrain.py train`)
+- 158: size of the earnings-calendar gap (study 154) in the training data and backtests: share of missing days_to_e
+  by month 2020-26, and the effect of rebuilding it on the 2026Q3-Q4 jump models' picks
+- 159: shadow candidates rescored at official crosses: ADR losers and small-cap no-news losers (backtests used panel
+  prices)
+- 162: losing streaks: after 3 or more losing nights in 5, do the next 5-20 nights do worse than usual?
+- 164: paper-job reliability: missed or failed runs since 2026-09-28 and their causes
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
