@@ -12,9 +12,14 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-15)
+## Running (batch 2026-10-16)
 - 149: retrain frequency: monthly vs quarterly refits (seed 1 nearly done, seed 2 not started; ~3 h of training left;
   resumable with `python src/study149_151_retrain.py train`)
+- 166: which blend inputs earn the return at cross prices: drop each ensemble member and the jump score in turn
+- 167: blend weights at cross prices: ensemble vs jump score 2:1 (live), 1:1, 1:2, and each alone
+- 168: earnings season: blend net return in reporting-season weeks vs other weeks, at cross prices
+- 171: same-day news on the picks: picks with news (and headline tone) between the open and 15:45 vs none, at cross
+  prices
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
