@@ -13,11 +13,10 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-16)
-- 149: retrain frequency: monthly vs quarterly refits (seed 1 nearly done, seed 2 not started; ~3 h of training left;
-  resumable with `python src/study149_151_retrain.py train`)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 149 Reject: monthly refits 2.33 vs quarterly 2.38 over 2024-26 at crosses (t -0.4); keep quarterly
 - 166 Reject: the blend beats ensemble-only (1.88) and jump-only (2.15); no member clearly harmful
 - 167 Reject: live 2:1 weight best in the choice period; keep it
 - 172 Caveat: live picks 35% tech hardware (losses concentrated there); no halving or cap rule helps in both periods;

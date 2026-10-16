@@ -405,11 +405,15 @@ studies = [
      "Every exit ran. One of 13 entries did not trade: 2026-09-30, when the old routine's 30-minute limit stopped the "
      "job and the daily data was stuck at 9/28 (both fixed that day). The only error lines since are one-ticker "
      "Yahoo download failures and one database-lock message, which did not affect orders."),
+    ("149", "Retrain frequency: monthly vs quarterly refits (close-feature setup of study 99, 2 seeds), at official "
+     "cross prices", "Reject",
+     "Monthly 2.70 / 1.96 vs quarterly 2.45 / 2.32 (2-seed means); over 2024-26 2.33 vs 2.38, -1.3 bp a night (t "
+     "-0.4), within seed noise and better in one period, worse in the other. Keep quarterly refits."),
     ("151", "Training window: expanding (all data since 2020) vs rolling 2- and 3-year windows, quarterly refits, 2 "
      "seeds each, at official cross prices (close-feature setup of study 99)", "Reject",
      "Rolling windows are worse in both periods: 2-year 1.39 / 1.91 and 3-year 1.98 / 1.92 vs expanding 2.45 / 2.32 "
      "(2-seed means). Over 2024-26 the 3-year window loses 10 bp a night (t -1.6, seed-averaged book); the 2-year "
-     "loss is 3 seed-noise sds. Keep the expanding window. Study 149 (monthly refits) is not finished."),
+     "loss is 3 seed-noise sds. Keep the expanding window."),
     ("154", "Live vs backtest consistency: do the paper job's picks match offline reruns of the same models, and is "
      "a pipeline error behind the October losses?", "Caveat",
      "No error behind the losses: the backtest-style picks lost about as much on the same nights (10/6 -2.5% vs -2.3% "
