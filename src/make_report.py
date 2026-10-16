@@ -360,6 +360,19 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("172", "Tech-hardware concentration: live October picks vs backtest, returns by tech-hardware count, "
+     "pre-registered halving and cap rules at cross prices, correlation between picks", "Caveat",
+     "Live picks were 35% tech hardware (4.9 a night over the last 7 nights) and those names lost 219 bp each vs 41 bp "
+     "for the rest. Backtest count rose from 0.6-1.1 a night (2024-25) to 3.0 (2026Q3). Nights with 4+ such names "
+     "have more 2%+ losses but no stable mean penalty. No rule helps in both periods (halve at 4+: +1.5 then -4.3 bp; "
+     "caps help only in 2026Q3, t 1.7-2.1 on 61 nights). Pick correlation rose from 0.21 to 0.38 (above-market +0.30, "
+     "t 4.2): the book is less diversified, without a measured loss of mean."),
+    ("168", "Earnings season: blend in reporting-season weeks vs other weeks, at cross prices", "Reject",
+     "Not weaker in season (39 vs 40 bp, then 53 vs 23 bp). The October live nights were off season (1 of 110 picks "
+     "reported within 5 days), so earnings do not explain the losses."),
+    ("171", "Same-day news (09:30-15:45) on the picks and its headline tone, at cross prices", "Reject",
+     "Tone effects flip sign between periods (negative tone +88 then -42 bp). The filter chosen on 2024-25H1 (drop "
+     "positive-tone picks) loses 4.1 bp a night on the holdout; dropping all news picks loses in both periods."),
     ("159", "Shadow candidates rescored at official crosses: small-cap no-news intraday losers and ADR losers "
      "(study 16 rule and the live 15:45 version)", "Reject",
      "Small-cap no-news losers: Sharpe 0.11 / 0.73 at crosses (0.49 / 1.02 at panel prices); the first trade sits "

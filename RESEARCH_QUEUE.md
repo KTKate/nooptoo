@@ -17,14 +17,13 @@ same universe's average (src/horizon_lib.py).
   resumable with `python src/study149_151_retrain.py train`)
 - 166: which blend inputs earn the return at cross prices: drop each ensemble member and the jump score in turn
 - 167: blend weights at cross prices: ensemble vs jump score 2:1 (live), 1:1, 1:2, and each alone
-- 168: earnings season: blend net return in reporting-season weeks vs other weeks, at cross prices
-- 171: same-day news on the picks: picks with news (and headline tone) between the open and 15:45 vs none, at cross
-  prices
-- 172: tech-hardware concentration: live October picks vs backtest, results by tech-hardware count, halving and cap
-  rules at cross prices, rising pick correlation
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 172 Caveat: live picks 35% tech hardware (losses concentrated there); no halving or cap rule helps in both periods;
+  pick correlation rising (0.21 to 0.38)
+- 168 Reject: no earnings-season effect; October losses were off season
+- 171 Reject: same-day news and tone filters flip sign between periods
 - 159 Reject: at official crosses small-cap no-news losers 0.11 / 0.73 and live-style ADR losers 0.46 / 1.33;
   live shadow at crosses +6 bp (ADR) and -37 bp (small caps) over 10 nights
 - 158 Caveat: days_to_e missing live for ~100% of names and for most Aug-Sep 2026 training rows; fixing it changes
@@ -168,6 +167,10 @@ same universe's average (src/horizon_lib.py).
   reports dated today or later are dropped) and check the same gap in the 2026Q3 training rows (days_to_e missing
   for 84-99% of Aug-Sep 2026 rows); a paper-job change, needs owner approval
 - 157: log the live feature rows for the picks each night (study 154 could not rebuild exact inputs)
+
+- 173: correlation-aware selection: penalize a candidate's score by its 60-day overnight correlation with picks
+  already chosen (greedy), or cap the book's average pairwise correlation; test at cross prices with rules fixed in
+  advance (study 92's hard 0.6/0.7 correlation cap lost; this is a softer version)
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
