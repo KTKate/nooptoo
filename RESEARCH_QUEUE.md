@@ -20,6 +20,8 @@ same universe's average (src/horizon_lib.py).
 - 168: earnings season: blend net return in reporting-season weeks vs other weeks, at cross prices
 - 171: same-day news on the picks: picks with news (and headline tone) between the open and 15:45 vs none, at cross
   prices
+- 172: tech-hardware concentration: live October picks vs backtest, results by tech-hardware count, halving and cap
+  rules at cross prices, rising pick correlation
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
