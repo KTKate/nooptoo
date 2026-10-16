@@ -15,11 +15,11 @@ same universe's average (src/horizon_lib.py).
 ## Running (batch 2026-10-16)
 - 149: retrain frequency: monthly vs quarterly refits (seed 1 nearly done, seed 2 not started; ~3 h of training left;
   resumable with `python src/study149_151_retrain.py train`)
-- 166: which blend inputs earn the return at cross prices: drop each ensemble member and the jump score in turn
-- 167: blend weights at cross prices: ensemble vs jump score 2:1 (live), 1:1, 1:2, and each alone
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 166 Reject: the blend beats ensemble-only (1.88) and jump-only (2.15); no member clearly harmful
+- 167 Reject: live 2:1 weight best in the choice period; keep it
 - 172 Caveat: live picks 35% tech hardware (losses concentrated there); no halving or cap rule helps in both periods;
   pick correlation rising (0.21 to 0.38)
 - 168 Reject: no earnings-season effect; October losses were off season

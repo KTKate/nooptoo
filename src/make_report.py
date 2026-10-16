@@ -360,6 +360,14 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("166", "Which blend inputs earn the return at cross prices: drop each ensemble member, ensemble only, jump score "
+     "only (capped top 10)", "Reject",
+     "The blend beats both parts: 2.45 over 2024-26 vs ensemble only 1.88 (t -2.0) and jump only 2.15. Dropping one "
+     "member changes Sharpe by -0.34 to +0.13 with no member clearly harmful in both periods (drop pooled +0.26 on "
+     "the holdout only, t 1.3). Jump-only picks hold fewer tech-hardware names (1.8 vs 2.4 a night in 2026)."),
+    ("167", "Blend weights ensemble : jump score of 0.5, 1, 2 (live), 3, 4, at cross prices", "Reject",
+     "The live weight 2 has the best 2024-25H1 Sharpe (2.65); 3 is slightly better on the holdout (2.42 vs 2.23, t "
+     "1.0) but not chosen in advance. Keep 2:1."),
     ("172", "Tech-hardware concentration: live October picks vs backtest, returns by tech-hardware count, "
      "pre-registered halving and cap rules at cross prices, correlation between picks", "Caveat",
      "Live picks were 35% tech hardware (4.9 a night over the last 7 nights) and those names lost 219 bp each vs 41 bp "
