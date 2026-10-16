@@ -1,0 +1,115 @@
+== paper job exit 2026-10-16 09:21:41 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-16",
+ "orders": [
+  {
+   "symbol": "CIEN",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "COHR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FORM",
+   "qty": 7,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MTSI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "VICR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+CIEN 200 {"id":"844e94d8-695a-48c7-9a8d-a1ff286afffc","client_order_id":"743c2631-1af3-41f2-a65b-317c3ecef5e1","created_at":"2026-10-16T13:22:06.009209683Z","updated_at":"2026-10-16T13:22:06.00990794Z","submit
+COHR 200 {"id":"b061866c-ec20-43bf-abdd-2f81dbfa6bee","client_order_id":"492091e1-8111-48a4-a0d6-fbd3d8717b26","created_at":"2026-10-16T13:22:06.458336148Z","updated_at":"2026-10-16T13:22:06.458968937Z","submi
+DELL 200 {"id":"8f5b8b65-68b0-44cb-91e1-229c5f96b419","client_order_id":"fa76f508-29c7-4d7a-9186-25362f2311f4","created_at":"2026-10-16T13:22:06.866447951Z","updated_at":"2026-10-16T13:22:06.868931496Z","submi
+FORM 200 {"id":"2e853ee6-759a-4b0b-bc23-d72068cbe18f","client_order_id":"f6895d72-ea1f-4f6c-ae99-df6a9e48054e","created_at":"2026-10-16T13:22:07.263606344Z","updated_at":"2026-10-16T13:22:07.264261036Z","submi
+HPE 200 {"id":"e7e74282-a02e-4a39-b873-248f5c4240bb","client_order_id":"f5a27881-4fec-4e16-891a-bac74191d533","created_at":"2026-10-16T13:22:07.646616093Z","updated_at":"2026-10-16T13:22:07.647231456Z","submi
+MRVL 200 {"id":"1108cd34-1017-441e-9830-b05391953040","client_order_id":"5b2af667-b874-4bb4-b987-c1d771eaf4f2","created_at":"2026-10-16T13:22:08.526451868Z","updated_at":"2026-10-16T13:22:08.528595794Z","submi
+MTSI 200 {"id":"6a83fb1b-ebed-4555-b1ee-74464aa1e4ac","client_order_id":"a564144f-d022-4803-9dc1-75e2b3fd0caf","created_at":"2026-10-16T13:22:08.999930071Z","updated_at":"2026-10-16T13:22:09.000608799Z","submi
+ONTO 200 {"id":"ebee5e78-8bc4-4ed9-bbe2-7fad76ff1d13","client_order_id":"8cf7da00-a54a-492a-bbbe-67802080cc3d","created_at":"2026-10-16T13:22:09.57669767Z","updated_at":"2026-10-16T13:22:09.577308746Z","submit
+VICR 200 {"id":"a03391f5-0b4c-49ac-a1c0-ecee489b5ca7","client_order_id":"d6650a1a-d57d-45e6-959f-6fee0aab64c6","created_at":"2026-10-16T13:22:10.010299978Z","updated_at":"2026-10-16T13:22:10.011163414Z","submi
+{
+ "day": "2026-10-16",
+ "from_entry": "entry_2026-10-15.json",
+ "equity": 8232.22,
+ "orders": [
+  {
+   "symbol": "FORM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "CIEN": "no price or qty 0",
+  "MRVL": "no price or qty 0",
+  "DELL": "no price or qty 0",
+  "COHR": "no price or qty 0",
+  "VICR": "no price or qty 0",
+  "MTSI": "no price or qty 0",
+  "ONTO": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-16 09:33:00.009701-04:00"
+}
+FORM 200 {"id":"ae930e17-bd65-47dc-82a4-c65a7dcc3951","client_order_id":"cc7f4053-3488-48c2-8e30-cfc6743336b3","created_at":"2026-10-16T13:33:00.429148314Z","updated_at":"2026-10-16T13:33:00.430251709Z","submi
+HPE 200 {"id":"bace1ecc-aaf3-47a7-9251-e0fe87a6575c","client_order_id":"c29c7065-c5d9-4c7a-8b41-6d4c376e8812","created_at":"2026-10-16T13:33:00.84257648Z","updated_at":"2026-10-16T13:33:00.865234758Z","submit

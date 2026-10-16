@@ -1,0 +1,32 @@
+{
+ "day": "2026-10-16",
+ "from_entry": "entry_2026-10-15.json",
+ "equity": 8232.22,
+ "orders": [
+  {
+   "symbol": "FORM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "CIEN": "no price or qty 0",
+  "MRVL": "no price or qty 0",
+  "DELL": "no price or qty 0",
+  "COHR": "no price or qty 0",
+  "VICR": "no price or qty 0",
+  "MTSI": "no price or qty 0",
+  "ONTO": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-16 09:33:00.009701-04:00"
+}
