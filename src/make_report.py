@@ -360,6 +360,16 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("173", "Correlation-aware selection: score penalty for correlation with chosen picks, a correlation budget, "
+     "inverse-correlation weights, at cross prices", "Reject",
+     "Every rule lowers the mean. A strong penalty (lambda 0.25) loses 12 bp a night in both periods (t -2.5 / -2.2); "
+     "lambda 0.5 halves book correlation and trims drawdown and tech hardware but costs 6-14 bp. Inverse-correlation "
+     "weights (chosen on 2024-25H1) give 2.17 vs 2.23 on the holdout and would not have changed the live nights."),
+    ("175", "Pause rules: stop after an 8-12% drawdown, a negative trailing 20-night mean, or 3 losing nights, then "
+     "resume", "Reject",
+     "Every rule lowers the 2024-26 mean by 1.5-11 bp a night; the trailing-mean rules are significantly worse in "
+     "2024-25H1 (t -2.6). The least harmful (12% stop, resume after 5 nights) gives 2.55 / 2.30 vs 2.65 / 2.23. Some "
+     "rules would have skipped the worst live nights, but the live comparison is not a test."),
     ("174", "Recent edge: rolling results at cross prices through 2026-09 plus the live October nights", "Caveat",
      "Weak since July: 2026-07-01..09-25 averaged -3 bp a night vs +42 bp before (t -1.35); the 60-night mean at 09-25 "
      "was at the 6th percentile. The last 60 backtest nights plus 12 live nights (-16.5%) are worse than any 72-night "

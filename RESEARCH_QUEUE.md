@@ -13,12 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-17)
-- 173: correlation-aware selection (penalize candidates that move with picks already chosen), at cross prices
-- 175: pause rules: stop trading after a drawdown or a weak rolling window, then resume; does any rule fixed in
-  advance help in the backtest?
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 173 Reject: correlation-aware selection lowers the mean in both periods
+- 175 Reject: pause rules lower the 2024-26 mean by 1.5-11 bp a night
 - 174 Caveat: edge weak since July 2026 (-3 bp a night); recent 72 nights worse than any 2024-26 window (t -2.05)
 - 176 Caveat: tech hardware overnight -75 bp a night in October (3rd percentile) after a strong 2026Q3
 - 178 Caveat: about half the live gap is a market-wide high-beta overnight reversal; the rest is a model shortfall

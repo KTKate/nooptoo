@@ -43,6 +43,38 @@ close t-1) over the 60 trading days ending the day before the entry day (at leas
 with fewer are ignored in means and in the budget). Tech hardware as studies 90/92/172. Live nights:
 logs/paper/virtual_days.csv (net) and logs/paper/virtual.csv (per-name returns at official prints), read only.
 
+Data checks: the base reproduces study 135 (capped Sharpe 2.65 / 2.23 / 2.45, mean 38.2 bp) with all caches; the
+series ends with the night of 2026-09-25, so 2026Q3 is 61 nights. 1,693 new legs fetched into auctions173 (97% found
+in the first pass, 36 of 49 in the second); legs at the panel price 0.3-1.1% for every variant. Book correlation of
+the base (window ending the day before): 0.29 / 0.31, 0.38 in 2026Q3; live nights 0.41. The live virtual book is
+-12.5% compounded on its net column over 12 nights (-10.5% on its equity column; study 136 noted the difference).
+
+Result 173 (2024-25H1 / 2025H2-26 / 2026Q3; base Sharpe 2.65 / 2.23 / -0.20, 39.3 / 36.8 / -3.1 bp, maxdd -17% /
+-23%, nights <= -2% 11.3% / 14.1%): every selection rule lowered the mean. Penalty lambda 0.1: 2.44 / 2.19 / -0.69,
+-4.1 / -2.7 / -7.0 bp (t -1.3 / -0.8 / -1.1); lambda 0.25: 1.82 / 1.68, -12.7 / -12.0 bp (t -2.5 / -2.2); lambda 0.5:
+1.76 / 2.24 / 0.09, -14.2 / -5.8 / +4.2 bp (t -2.2 / -0.8 / 0.3), book correlation 0.14 / 0.13, maxdd -16% / -16%,
+nights <= -2% 8.8% / 11.2%, tech hardware 0.74 / 1.30 names (base 0.84 / 1.77). Budget 0.25: 1.82 / 1.87, -14.8 /
+-9.8 bp; budget 0.30: 1.98 / 2.18, -11.4 / -4.6 bp. Inverse-correlation weights: 2.63 / 2.17 / -0.33, -0.1 / -1.2 /
+-2.0 bp (t -0.1 / -1.2 / -0.8). Chosen on 2024-25H1 (best Sharpe among the six, still below the base): inverse-
+correlation weights, which on 2025H2-26 gave Sharpe 2.17 vs 2.23 and -1.2 bp a night. On the live nights the same
+weights would have changed -108.6 bp a night to -107.9 bp (-12.4% vs -12.5% compounded). Worst nights barely move
+(the -13.4% night of 2024-25H1 is kept by most variants). No correlation-aware rule is worth adopting.
+Result 175 (Sharpe / total / maxdd / share paused, 2024-25H1 and 2025H2-26; base 2.65 / +290% / -17% and 2.23 /
++183% / -23%): drawdown 8% resume 5 nights 2.55 / 2.10, -4.0 / -3.5 bp (maxdd -21% / -17%, paused 9% / 13%);
+drawdown 12% resume 5 nights 2.55 / 2.30, -3.1 / +0.3 bp (maxdd -20% / -17%, paused 5% / 8%); 10-night resumes -5 to
+-8 bp; shadow 20-night-high resumes -10 to -12 bp (paused 25-39%, t -2.1 / -2.5 on 2024-26). Trailing mean below 0:
+1.89 / 2.37, -14.3 / -2.5 bp (t -2.6 / -0.4, maxdd -29% / -16%); below -20 bp: 1.98 / 2.40, -12.1 / -1.6 bp. Three
+losses pause 1: 2.62 / 2.12, -0.9 / -2.6 bp; pause 3: 2.52 / 2.13, -3.1 / -2.8 bp (2026Q3 +6.2 bp). Every rule lowers
+the 2024-26 mean (by 1.5 to 11 bp a night); some cut the 2025H2-26 drawdown (-17% instead of -23%) but none improves
+both periods' Sharpe. Live 12 nights (compounded net -12.5%): the 8% drawdown rules and both 3-loss rules would have
+skipped 10-14 and 10-15 (-6.2%), the 12% drawdown rules 10-15 only (-10.9%); with the rule state carried over from
+the backtest, the shadow-20-high and trailing-mean rules would have been in cash all 12 nights (0%), because 2026Q3
+ended in a losing stretch; started fresh on 2026-09-29 the trailing-mean rules cannot trigger in 12 nights.
+
+Caveats: rules and thresholds were fixed before the run, but the live nights are the reason the study was asked, so
+the live comparison is not a test; 12 live nights is far too few to judge; the pause rules' backtest is one path of
+685 nights, so their differences are mostly within noise; sectors.parquet is today's classification for all dates.
+
 Output: results/study173_corr_select.csv (table = variants / choice / live_inverse_corr; one row per variant x
 period: n, sharpe, net_bp, maxdd, worst_bp, share_le_2pct, book_corr, techhw, names, overlap_base, diff_bp,
 t_vs_base, legs_at_panel), results/study175_pause.csv (table = backtest / live; per rule x period: sharpe, total,
@@ -97,7 +129,7 @@ def blend(cols, last_day):
 def corr_matrix(onv, i, js):
     """Pairwise correlation of overnight returns over rows i-WIN..i-1 for columns js (NaN where < MINP common)."""
     X = onv[i - WIN:i][:, js].astype("float64")
-    return pd.DataFrame(X).corr(min_periods=MINP).values
+    return np.array(pd.DataFrame(X).corr(min_periods=MINP).values, dtype="float64")
 
 
 def avg_pair(Cm):
@@ -402,10 +434,10 @@ def study175(base):
             tr, pz = run_rule(full, kind, par)
             trl, pzl = run_rule(vd, kind, par)
         for p, a, b in PERQ:
-            x, xb = tr.loc[a:b], full.loc[a:b]
+            x, xb, pp = tr.loc[base.index].loc[a:b], base.loc[a:b], pz.loc[base.index].loc[a:b]
             s = ann_stats(x)
             rows.append(dict(table="backtest", rule=name, period=p, n=s["n"], sharpe=s["sharpe"], total=s["total"],
-                             maxdd=s["maxdd"], share_paused=pz.loc[a:b].mean(), nights_paused=int(pz.loc[a:b].sum()),
+                             maxdd=s["maxdd"], share_paused=pp.mean(), nights_paused=int(pp.sum()),
                              net_bp=1e4 * x.mean(), diff_bp=1e4 * (x - xb).mean(), t_vs_base=tstat(x - xb)))
         xl = tr.loc[vd.index]
         rows.append(dict(table="live", rule=name, period="live 2026-09-29..10-15 (state carried from backtest)", n=nl,
