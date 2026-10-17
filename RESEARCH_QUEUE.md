@@ -16,14 +16,13 @@ same universe's average (src/horizon_lib.py).
 - 173: correlation-aware selection (penalize candidates that move with picks already chosen), at cross prices
 - 175: pause rules: stop trading after a drawdown or a weak rolling window, then resume; does any rule fixed in
   advance help in the backtest?
-- 174: recent edge: rolling 20/60-night results at cross prices through 2026-09 plus the live October nights; did the
-  edge fade before October?
-- 176: tech-hardware overnight returns by month 2024-10/2026: has the group's overnight drift turned negative?
-- 178: the base overnight premium of high-beta, volatile stocks by month (universe-wide), to separate a market-wide
-  change from a model failure
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 174 Caveat: edge weak since July 2026 (-3 bp a night); recent 72 nights worse than any 2024-26 window (t -2.05)
+- 176 Caveat: tech hardware overnight -75 bp a night in October (3rd percentile) after a strong 2026Q3
+- 178 Caveat: about half the live gap is a market-wide high-beta overnight reversal; the rest is a model shortfall
+  visible since July (t about -2)
 - 149 Reject: monthly refits 2.33 vs quarterly 2.38 over 2024-26 at crosses (t -0.4); keep quarterly
 - 166 Reject: the blend beats ensemble-only (1.88) and jump-only (2.15); no member clearly harmful
 - 167 Reject: live 2:1 weight best in the choice period; keep it
@@ -175,6 +174,11 @@ same universe's average (src/horizon_lib.py).
   for 84-99% of Aug-Sep 2026 rows); a paper-job change, needs owner approval
 - 157: log the live feature rows for the picks each night (study 154 could not rebuild exact inputs)
 
+
+- 179: rescore October 2026 (entries 09-28..10-14) with the frozen 2026Q4 models in the backtest pipeline (panel
+  now runs to 10-15): do backtest picks lose as much as the live picks?
+- 180: what changed in July 2026: compare the 2026Q3 models (trained to mid-2026) with earlier quarters on the same
+  test days; is the July shortfall tied to the Q3 refit or to the market?
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45

@@ -43,11 +43,54 @@ survivorship bias in the panel). 2026Q3, October 2026 and 2026-07-01..10-15 are 
 rolling windows of the same number of nights 2020-2026 and 2024-2026. Attribution: OLS of the backtest capped nightly
 net (2024-01..2026-09) on the universe EW overnight mean, the top-vol premium and tech hardware minus rest overnight;
 the fitted values for the live nights give the net expected from the market moves alone, and the live residual
-(live net minus fitted) is the part the factors do not explain, with a t from the backtest residual sd.
+(live net minus fitted) is the part the factors do not explain, with a t from the backtest residual sd. Live picks:
+each pick's official-print return minus its group's EW overnight mean that night (tech hardware or rest of liquid).
+
+Data checks: build() reproduces study 94/137 (capped mean 38.2 bp, Sharpe 2.45). Alpaca close 2026-10-15 equals the
+panel raw close (median difference 0 bp); 2,593 of 2,594 liquid names have the 10-15 night. Live picks at panel
+prices vs official prints: per-night gross within about 15 bp, no systematic gap (live scoring is not the issue).
+Peak memory 1.75 GB.
+
+Result 174: monthly backtest net 2026-05..09: +113, +25, -23, +52, -44 bp (Sept to 09-25). Rolling 60-night mean at
+09-25: -4.5 bp (Sharpe -0.28), 5.9th percentile of all 626 60-night windows 2024-26 (5th pct -5.4 bp). 2026-07-01..
+09-25: -3.1 bp over 61 nights vs +42.2 bp in 2024-01..2026-06 (Welch t -1.35). Live 12 nights: -109 bp a night,
+compounded -12.5% (net column), 1.6th percentile of 12-night windows. Last 60 backtest + 12 live nights (72): -21.9
+bp a night, compounded -16.5%, below every one of the 614 72-night windows in 2024-26 (worst -16.8 bp, -12.8%;
+5th pct +1.9 bp); 2026-07..live (73 nights) -20.5 bp, t -2.05 vs 2024-01..2026-06. So the
+edge has been weak since July 2026 (one positive month, August, in three) and the live nights extend it. Earlier
+weak stretches exist (2024-08..10 rolling 60 at -3 bp; 2026-02..04 at +8 bp) and recovered. The panel now runs to
+2026-10-15, so an October rescore with the frozen 2026Q4 models is possible (not done).
+Result 176 (bp a night, EW, overnight): tech hardware 2024-01..2026-06 +14.1, 2026Q3 +22.9 (normal, 77th pct), Oct
+2026 (11 nights to 10-15) -74.9 (3rd pct of 11-night windows), top-beta half -102.7 (2nd pct); rest of liquid +5.4,
++8.7, +3.9 (38th pct), top-beta half -11.8. Tech hardware minus rest: +8.7, +14.1, -78.8 (lowest 11-night window, t
+-2.1). SMH +21.8, +24.1, -77.2 (3rd pct); SPY +5.8, +7.4, +1.4 (27th pct). Tech hardware's overnight drift turned
+sharply negative in October 2026 only; it was strong through 2026Q3; the broad market's overnight return was normal.
+Result 178 (top decile minus liquid universe, bp a night, overnight): vol20 premium 2020-26H1 +5.8, 2024-26H1 +6.2,
+2026Q3 +2.4 (45th pct vs 2020), Oct 2026 -49.0 (0.9th pct, t -2.0); beta60 premium +5.0 / +9.6, 2026Q3 +16.9 (85th
+pct), Oct -74.5 (0.5th pct). Day session (contrast): vol20 -10.6 normally, Oct -71.9 (7th pct); beta60 -3.8, Oct
+-81.6 (3rd pct), so high-beta names fell in both sessions in October. Universe overnight Oct -0.2 bp (34th pct).
+Attribution (685 backtest nights, R2 0.49): net = 24.8 bp (t 3.6) + 0.76 x universe night (t 6.1) + 1.52 x top-vol
+premium (t 10.0) + 0.03 x tech hw minus rest (t 0.3). Live nights: fitted -36.6 bp a night (factor part -61.3 bp),
+actual -108.6, residual -72.0 bp (t -1.40, 12 nights); backtest 2026-07..09 residual -34.9 bp (t -1.53, in-sample
+fit); both together -41.0 bp over 73 nights (t -1.97). Live picks vs own group that night: tech hardware picks (45 of
+119, 79% of the gross loss) -206 bp vs group -120 bp (excess -86); other picks -34 bp vs +18 bp (excess -52); picks on
+one night are correlated, so pick-level t (-3.1 / -2.2) overstates significance.
+Reading: about half of the live shortfall against the backtest mean (38 -> -109 bp, a 147 bp gap) is the market: the
+high-beta / high-vol overnight premium and tech hardware overnight had one of their worst stretches since 2020 in
+October 2026 (top-decile premium at the 1st percentile), while the broad market's overnight return was normal. The
+rest (about -72 bp a night after factors) is not explained by these factors; on its own it is within 1.4 sd for 12
+nights, but together with 2026Q3, when the premium was normal and the blend still earned about 0, the unexplained
+shortfall is about -41 bp a night over 73 nights (t about -2). Market-wide change plus a weak model stretch since July,
+with luck not ruled out for either part.
+Caveats: sectors.parquet is a current snapshot; the factor regression is fit on the same 2024-26 nights it judges
+(2026Q3 residual is in-sample) and its tech hardware slope is near 0 because picks were rarely tech-heavy before
+2025H2, so the live tech concentration enters through the premium factor and the residual; factor returns use panel
+opens (first trade, ~1 bp above the cross for liquid names) and Alpaca bars for the 10-15 night, the live net uses
+official prints; percentile windows overlap; 12 live nights is a small sample.
 
 Output: results/study174_recent_edge.csv (table = monthly / windows / live_vs_panel / panel_extent),
 results/study176_techhw_overnight.csv (table = monthly / recent), results/study178_premium.csv (table = monthly /
-windows / attribution / live_nights).
+windows / attribution / live_nights / live_picks).
 
     python src/study174_178_recent_edge.py
 """
@@ -121,8 +164,8 @@ def study174(K):
         rows.append(dict(table="windows", series=lab, period=f"{x.index[0].date()}..{x.index[-1].date()}", n=n,
                          net_bp=1e4 * x.mean(), sharpe=sh(x), hit=(x > 0).mean(), cum_net=cum,
                          pct_mean=pct_rank(rm.values, x.mean()), pct_cum=pct_rank(rc.values, cum),
-                         dist_mean_p5_bp=1e4 * rm.quantile(0.05), dist_mean_p50_bp=1e4 * rm.median(),
-                         dist_cum_p5=rc.quantile(0.05), n_windows=len(rm)))
+                         dist_mean_min_bp=1e4 * rm.min(), dist_mean_p5_bp=1e4 * rm.quantile(0.05), dist_mean_p50_bp=1e4 * rm.median(),
+                         dist_cum_min=rc.min(), dist_cum_p5=rc.quantile(0.05), n_windows=len(rm)))
     a, b = bt_.loc[:"2026-06"], bt_.loc["2026-07":]
     for lab, x in [("2026-07..09 vs 2024-01..2026-06", b), ("2026-07..09 + live vs 2024-01..2026-06",
                                                            pd.concat([b, lv]))]:
@@ -349,6 +392,21 @@ def study178(K, F, D176):
                      live_net_bp=1e4 * y.values[q3].mean(), fitted_bp=1e4 * (A @ bcoef)[q3].mean(),
                      factor_part_bp=1e4 * (Z.values @ bcoef[1:])[q3].mean(), resid_bp=1e4 * e[q3].mean(),
                      t=e[q3].mean() / (s / np.sqrt(q3.sum()))))
+    allr = np.concatenate([e[q3], res[ok]])
+    rows.append(dict(table="live_nights", period="2026-07..09 backtest + live nights", nights=len(allr),
+                     resid_bp=1e4 * allr.mean(), t=allr.mean() / (s / np.sqrt(len(allr)))))
+    # live picks against their own group's overnight mean that night (tech hardware or rest of liquid)
+    vv = pd.read_csv(os.path.join(ROOT, "logs", "paper", "virtual.csv"), parse_dates=["day"])
+    vv["techhw"] = vv.symbol.str.replace(".", "-", regex=False).isin(K["techhw_set"])
+    gm = np.where(vv.techhw, D176["tech hardware EW"].reindex(vv.day).values,
+                  D176["rest of liquid EW"].reindex(vv.day).values)
+    vv["excess"] = vv.ret - gm
+    for lab, x in [("tech hardware picks", vv[vv.techhw]), ("other picks", vv[~vv.techhw]), ("all picks", vv)]:
+        rows.append(dict(table="live_picks", series=lab, nights=x.day.nunique(), n=len(x),
+                         mean_ret_bp=1e4 * x.ret.mean(), group_mean_bp=1e4 * (x.ret - x.excess).mean(),
+                         excess_bp=1e4 * x.excess.mean(),
+                         t=x.excess.mean() / (x.excess.std() / np.sqrt(len(x))),
+                         share_of_live_gross=x.ret.sum() / vv.ret.sum()))
     return pd.DataFrame(rows)
 
 
@@ -377,7 +435,7 @@ def main():
     print("\n== study178")
     m = d178[d178.table == "monthly"].dropna(axis=1, how="all")
     print(m[m.period >= "2024-01"].round(1).to_string(index=False))
-    for t in ["windows", "attribution", "live_nights"]:
+    for t in ["windows", "attribution", "live_nights", "live_picks"]:
         print(d178[d178.table == t].dropna(axis=1, how="all").round(3).to_string(index=False))
 
 

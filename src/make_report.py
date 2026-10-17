@@ -360,6 +360,19 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("174", "Recent edge: rolling results at cross prices through 2026-09 plus the live October nights", "Caveat",
+     "Weak since July: 2026-07-01..09-25 averaged -3 bp a night vs +42 bp before (t -1.35); the 60-night mean at 09-25 "
+     "was at the 6th percentile. The last 60 backtest nights plus 12 live nights (-16.5%) are worse than any 72-night "
+     "window in 2024-26 (t -2.05 vs the earlier sample). Earlier weak stretches recovered."),
+    ("176", "Tech-hardware overnight returns by month 2024-01..2026-10-15", "Caveat",
+     "Strong through 2026Q3 (+23 bp a night), then -75 bp in October (3rd percentile); tech hardware minus the rest -79 "
+     "bp, the lowest on record. SMH -77 bp; SPY and the rest of the universe normal (+1 to +4 bp)."),
+    ("178", "The base overnight premium of volatile, high-beta stocks by month, and attribution of the live loss",
+     "Caveat",
+     "The top-volatility and top-beta deciles lost 49 and 75 bp a night overnight in October (below the 1st "
+     "percentile) while the universe was flat. A factor regression (R2 0.49) explains about half of the live gap "
+     "(predicted -37 bp vs actual -109 bp); the unexplained part is -72 bp a night live and -35 bp in 2026Q3 (together "
+     "-41 bp over 73 nights, t about -2): a market-wide reversal plus a model-side shortfall that began in July."),
     ("166", "Which blend inputs earn the return at cross prices: drop each ensemble member, ensemble only, jump score "
      "only (capped top 10)", "Reject",
      "The blend beats both parts: 2.45 over 2024-26 vs ensemble only 1.88 (t -2.0) and jump only 2.15. Dropping one "
