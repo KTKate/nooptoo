@@ -12,7 +12,15 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-16)
+## Running (batch 2026-10-17)
+- 173: correlation-aware selection (penalize candidates that move with picks already chosen), at cross prices
+- 175: pause rules: stop trading after a drawdown or a weak rolling window, then resume; does any rule fixed in
+  advance help in the backtest?
+- 174: recent edge: rolling 20/60-night results at cross prices through 2026-09 plus the live October nights; did the
+  edge fade before October?
+- 176: tech-hardware overnight returns by month 2024-10/2026: has the group's overnight drift turned negative?
+- 178: the base overnight premium of high-beta, volatile stocks by month (universe-wide), to separate a market-wide
+  change from a model failure
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
@@ -167,9 +175,6 @@ same universe's average (src/horizon_lib.py).
   for 84-99% of Aug-Sep 2026 rows); a paper-job change, needs owner approval
 - 157: log the live feature rows for the picks each night (study 154 could not rebuild exact inputs)
 
-- 173: correlation-aware selection: penalize a candidate's score by its 60-day overnight correlation with picks
-  already chosen (greedy), or cap the book's average pairwise correlation; test at cross prices with rules fixed in
-  advance (study 92's hard 0.6/0.7 correlation cap lost; this is a softer version)
 
 ## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
