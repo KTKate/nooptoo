@@ -12,7 +12,15 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-17)
+## Running (batch 2026-10-18)
+- 179: rescore October 2026 (entries 09-28..10-14) with the frozen 2026Q4 models in the backtest pipeline
+- 180: what changed in July 2026: the 2026Q3 models vs earlier quarters' models on the same test days
+- 181: input drift: feature distributions July-October 2026 vs 2024-26 (population stability), for the inputs the
+  models rely on most
+- 182: did every model family weaken since July? Each ensemble member's and the jump score's own top 10 by month at
+  cross prices
+- 183: simple overnight rules (high-beta, day losers, volatility decile) by month: did all overnight approaches fail
+  since July, or only the model?
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
@@ -174,11 +182,5 @@ same universe's average (src/horizon_lib.py).
 - 157: log the live feature rows for the picks each night (study 154 could not rebuild exact inputs)
 
 
-- 179: rescore October 2026 (entries 09-28..10-14) with the frozen 2026Q4 models in the backtest pipeline (panel
-  now runs to 10-15): do backtest picks lose as much as the live picks?
-- 180: what changed in July 2026: compare the 2026Q3 models (trained to mid-2026) with earlier quarters on the same
-  test days; is the July shortfall tied to the Q3 refit or to the market?
-
-## Next (intraweek: 1-5 trading days)
 - 81: live shadow of the earnings-night model (study 80): train on all events, score tonight's reporters at 15:45
   in shadow.py, long-only top quintile, scored at official prints
