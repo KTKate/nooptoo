@@ -360,6 +360,17 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("179", "October 2026 rescored in the backtest pipeline with the frozen 2026Q4 models, at official crosses",
+     "Caveat",
+     "Backtest-style picks lose about as much as the live book: -95 bp a night (15:45 frame) and -86 bp (close "
+     "features) vs live -102 bp over 11 nights; nightly correlation with live 0.95. The live pipeline is not the "
+     "cause. Liquid tech hardware averaged -60 bp a night overnight while the universe was +2 bp."),
+    ("180", "What changed in July 2026: the 2026Q3 models vs older quarterly models (2025Q3, 2026Q1, 2026Q2) on the "
+     "same test days, at crosses", "Caveat",
+     "The refit is not the cause: on 2026Q3 days the own-quarter models make +4 bp a night and older models +5 to +16 "
+     "bp (t 0.1-0.7); in October all vintages lose 36-69 bp. In normal times a stale model costs return (2025Q3 "
+     "models 50 bp worse on 2026Q2 days). Importance barely moved (correlation 0.97-0.999). Newer models pick more "
+     "tech hardware (34% vs 17% in October), within noise."),
     ("173", "Correlation-aware selection: score penalty for correlation with chosen picks, a correlation budget, "
      "inverse-correlation weights, at cross prices", "Reject",
      "Every rule lowers the mean. A strong penalty (lambda 0.25) loses 12 bp a night in both periods (t -2.5 / -2.2); "

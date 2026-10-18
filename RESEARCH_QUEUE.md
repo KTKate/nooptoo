@@ -13,8 +13,6 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-18)
-- 179: rescore October 2026 (entries 09-28..10-14) with the frozen 2026Q4 models in the backtest pipeline
-- 180: what changed in July 2026: the 2026Q3 models vs earlier quarters' models on the same test days
 - 181: input drift: feature distributions July-October 2026 vs 2024-26 (population stability), for the inputs the
   models rely on most
 - 182: did every model family weaken since July? Each ensemble member's and the jump score's own top 10 by month at
@@ -24,6 +22,8 @@ same universe's average (src/horizon_lib.py).
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 179 Caveat: backtest-style picks with frozen 2026Q4 models lose as much as live in October (-95 vs -102 bp)
+- 180 Caveat: every model vintage is weak since July; the Q3 refit is not the cause
 - 173 Reject: correlation-aware selection lowers the mean in both periods
 - 175 Reject: pause rules lower the 2024-26 mean by 1.5-11 bp a night
 - 174 Caveat: edge weak since July 2026 (-3 bp a night); recent 72 nights worse than any 2024-26 window (t -2.05)

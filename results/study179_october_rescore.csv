@@ -1,0 +1,311 @@
+table,day,live_strategy,live_model,universe_overnight_bp,techhw_universe_overnight_bp,variant,net_bp,gross_bp,techhw_picks,picks,overlap_live,overlap_B_2026Q4,item,nights,sharpe,hit,compounded,corr_with_live,fallback_share,t_vs_live,ticker,industry,techhw,rank,universe,in_scored_universe
+nightly,2026-09-28,,,11.52845573425293,162.6926727294922,live_virtual_book,,,,,,,,,,,,,,,,,,,,
+nightly,2026-09-28,,,11.52845573425293,162.6926727294922,live_repriced,,,0.0,,,0.0,,,,,,,,,,,,,,
+nightly,2026-09-28,,,11.52845573425293,162.6926727294922,B_2026Q4,61.58810058235443,70.43972182412884,3.0,AYA HYMC ASM INTC EXK DELL ARIS TSEM MOD AUGO,,10.0,,,,,,,,,,,,,,
+nightly,2026-09-28,,,11.52845573425293,162.6926727294922,C_2026Q4,93.43285300474227,102.3409671679473,2.0,AYA HYMC CDE ALM ASM DELL INTC ARIS NEXA USDE,,6.0,,,,,,,,,,,,,,
+nightly,2026-09-28,,,11.52845573425293,162.6926727294922,B_2026Q3,49.830651967183066,58.87108908207373,1.0,USDE TGB AYA ASM AESI VSH JEF SHIP DC HL,,2.0,,,,,,,,,,,,,,
+nightly,2026-09-28,,,11.52845573425293,162.6926727294922,C_2026Q3,189.62830813781576,198.46359630993786,0.0,USDE CDE AYA TGB HL RDW DCH HBM ARIS KMX,,2.0,,,,,,,,,,,,,,
+nightly,2026-09-29,ensemble,ensemble5_night_2026Q3.txt,43.47500991821289,56.29722595214844,live_virtual_book,64.628878276631,73.620163270298,0.0,ECAT ASC STNG NAT HYT HESM TK IDT ADX AES,,,,,,,,,,,,,,,,
+nightly,2026-09-29,ensemble,ensemble5_night_2026Q3.txt,43.47500991821289,56.29722595214844,live_repriced,64.65729787240882,73.6199650703292,0.0,ADX AES ASC ECAT HESM HYT IDT NAT STNG TK,10.0,0.0,,,,,,,,,,,,,,
+nightly,2026-09-29,ensemble,ensemble5_night_2026Q3.txt,43.47500991821289,56.29722595214844,B_2026Q4,67.24247293917674,76.31027015762615,5.0,SWMR EAF AXTI INTC BE TSEM CLPT LITE COHR VRT,0.0,10.0,,,,,,,,,,,,,,
+nightly,2026-09-29,ensemble,ensemble5_night_2026Q3.txt,43.47500991821289,56.29722595214844,C_2026Q4,85.29188220201357,94.46779171049891,2.0,EAF CLPT BE AXTI LITE CDNL INTC MEC AYA AADX,0.0,6.0,,,,,,,,,,,,,,
+nightly,2026-09-29,ensemble,ensemble5_night_2026Q3.txt,43.47500991821289,56.29722595214844,B_2026Q3,-60.769932530040165,-51.538725743687024,2.0,SWMR JBL CCL MGNI CLPT EAF CALM LITE AADX AXTI,0.0,5.0,,,,,,,,,,,,,,
+nightly,2026-09-29,ensemble,ensemble5_night_2026Q3.txt,43.47500991821289,56.29722595214844,C_2026Q3,16.045610852124195,25.29375571855719,0.0,CLPT EAF MEC FUN AADX CCL CAG MGNI JACK AESI,0.0,2.0,,,,,,,,,,,,,,
+nightly,2026-09-30,,,4.463036060333252,56.040306091308594,live_virtual_book,,,,,,,,,,,,,,,,,,,,
+nightly,2026-09-30,,,4.463036060333252,56.040306091308594,live_repriced,,,0.0,,,0.0,,,,,,,,,,,,,,
+nightly,2026-09-30,,,4.463036060333252,56.040306091308594,B_2026Q4,-20.176266534620343,-10.168528049619317,0.0,GLAS SCTX BETR CAPR FRVO AGL USDE LYNX TRLV MEC,,10.0,,,,,,,,,,,,,,
+nightly,2026-09-30,,,4.463036060333252,56.040306091308594,C_2026Q4,-48.737227575456075,-38.95561007882775,0.0,SCTX CAPR ELE ANRO PPTA HOS FDXF FOXF BKV SKE,,2.0,,,,,,,,,,,,,,
+nightly,2026-09-30,,,4.463036060333252,56.040306091308594,B_2026Q3,-11.43412771665697,-2.385902067490118,2.0,GLAS NVTS LUNR RDW RKLB TRLV BETR CAPR VELO SGMT,,4.0,,,,,,,,,,,,,,
+nightly,2026-09-30,,,4.463036060333252,56.040306091308594,C_2026Q3,-102.8710396696766,-93.73394186533514,2.0,TJGC RDW SA NVTS RKLB SATL LUNR VELO APLD IONQ,,0.0,,,,,,,,,,,,,,
+nightly,2026-10-01,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,95.57159423828125,209.62391662597656,live_virtual_book,148.359923929678,157.741721237184,1.0,NKTR SA UMAC SCTX EQX FRVO TDAY OCUL ELE JBL,,,,,,,,,,,,,,,,
+nightly,2026-10-01,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,95.57159423828125,209.62391662597656,live_repriced,148.30041734530573,157.7417242762724,1.0,ELE EQX FRVO JBL NKTR OCUL SA SCTX TDAY UMAC,10.0,4.0,,,,,,,,,,,,,,
+nightly,2026-10-01,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,95.57159423828125,209.62391662597656,B_2026Q4,89.72615183699473,99.13639141847908,1.0,NKTR LITE UMAC SCTX TDAY PAYS EFXT TSEM CCXI INOD,4.0,10.0,,,,,,,,,,,,,,
+nightly,2026-10-01,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,95.57159423828125,209.62391662597656,C_2026Q4,53.13432937839236,62.95398418444376,1.0,SCTX NKTR UMAC EFXT VIAV AGEN PAYS TDAY OBX AIR,4.0,6.0,,,,,,,,,,,,,,
+nightly,2026-10-01,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,95.57159423828125,209.62391662597656,B_2026Q3,71.59365006268659,80.41640595079103,4.0,LITE AXTI TSEM AAOI NKTR COHR PAYS EFXT CIEN UMAC,2.0,6.0,,,,,,,,,,,,,,
+nightly,2026-10-01,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,95.57159423828125,209.62391662597656,C_2026Q3,57.22323023026932,66.55500186851371,4.0,LITE NKTR TSEM VIAV AXTI SNDK PAYS AGEN SCTX EFXT,2.0,6.0,,,,,,,,,,,,,,
+nightly,2026-10-02,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,17.35676383972168,-1.4800524711608887,live_virtual_book,-39.06748029224801,-29.527325419245003,2.0,FIGR GEN QMCO ELMT BXC WOLF KLRA PPTA CCXI NG,,,,,,,,,,,,,,,,
+nightly,2026-10-02,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,17.35676383972168,-1.4800524711608887,live_repriced,-39.03860089288381,-29.527388540220525,2.0,BXC CCXI ELMT FIGR GEN KLRA NG PPTA QMCO WOLF,10.0,0.0,,,,,,,,,,,,,,
+nightly,2026-10-02,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,17.35676383972168,-1.4800524711608887,B_2026Q4,-123.18984119614575,-113.69858947277058,7.0,SILC BETR VIAV AEHR VELO HPE VSH SYNA SMTC HOS,0.0,10.0,,,,,,,,,,,,,,
+nightly,2026-10-02,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,17.35676383972168,-1.4800524711608887,C_2026Q4,-42.45000881824423,-32.75529052812387,6.0,SILC HPE BETR ELMT ALGM AEHR PENG SYNA VSH HOS,1.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-02,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,17.35676383972168,-1.4800524711608887,B_2026Q3,-17.38634581592935,-8.695893554567123,6.0,MXL HPE PENG OUST SMTC VSH QMCO BE FCEL PURR,1.0,3.0,,,,,,,,,,,,,,
+nightly,2026-10-02,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,17.35676383972168,-1.4800524711608887,C_2026Q3,43.08275912385851,51.7543298677583,6.0,MXL PENG HPE OUST AAOI AEHR VSH QMCO BE PURR,1.0,3.0,,,,,,,,,,,,,,
+nightly,2026-10-05,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,51.780460357666016,95.15185546875,live_virtual_book,117.403441015124,126.358783505662,1.0,ALVO BRUN BETA DFH ACMR RDW FRVO DKNG AADX SPHR,,,,,,,,,,,,,,,,
+nightly,2026-10-05,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,51.780460357666016,95.15185546875,live_repriced,118.39042852234749,127.38212807171699,1.0,AADX ACMR ALVO BETA BRUN DFH DKNG FRVO RDW SPHR,10.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-05,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,51.780460357666016,95.15185546875,B_2026Q4,288.1521296492966,297.20022700877877,1.0,ALVO BRUN DKNG SPHR FRVO APOG SECZ CBRS DFH AADX,7.0,10.0,,,,,,,,,,,,,,
+nightly,2026-10-05,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,51.780460357666016,95.15185546875,C_2026Q4,278.60280502863407,287.68977387152796,2.0,ALVO BRUN SECZ SPHR WDC AADX FRVO APOG UCTT WULF,5.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-05,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,51.780460357666016,95.15185546875,B_2026Q3,103.65102790659952,112.67328158850509,5.0,PENG FRVO ALVO VELO BRUN PURR SPHR AAOI ACMR WDC,5.0,4.0,,,,,,,,,,,,,,
+nightly,2026-10-05,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,51.780460357666016,95.15185546875,C_2026Q3,153.63809070162893,162.50802308399648,4.0,PENG ALVO BRUN AAOI FRVO PURR ACMR WULF PUMP VSH,4.0,3.0,,,,,,,,,,,,,,
+nightly,2026-10-06,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-96.47554779052734,-214.5736541748047,live_virtual_book,-246.452508995909,-237.463461541444,5.0,APMD MRVL STX HUT WDC SYRE EROC BRUN AMKR CAMT,,,,,,,,,,,,,,,,
+nightly,2026-10-06,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-96.47554779052734,-214.5736541748047,live_repriced,-241.5228447708584,-232.49625450179946,5.0,AMKR APMD BRUN CAMT EROC HUT MRVL STX SYRE WDC,10.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-06,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-96.47554779052734,-214.5736541748047,B_2026Q4,-273.4983154439534,-264.51715485725356,3.0,APMD EROC MRVL STX XE BRUN WDC SYRE BETR ASTS,7.0,10.0,,,,,,,,,,,,,,
+nightly,2026-10-06,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-96.47554779052734,-214.5736541748047,C_2026Q4,-290.1000281587263,-281.0616838420761,4.0,APMD MRVL EROC WS STX XE SYRE WDC XNDU LUNR,6.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-06,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-96.47554779052734,-214.5736541748047,B_2026Q3,-256.89152593585,-248.06634232262414,4.0,AAOI APMD MRVL STX WDC LEU HUT ASTS SYRE BRUN,7.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-06,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-96.47554779052734,-214.5736541748047,C_2026Q3,-281.9783531880503,-273.22159448466573,6.0,AAOI MRVL STX HUT TXG WDC TSEM APMD HPE LEU,5.0,4.0,,,,,,,,,,,,,,
+nightly,2026-10-07,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-40.50655746459961,-143.71214294433594,live_virtual_book,-194.970564667283,-185.447339185092,7.0,SITM MXL CYD TSEM BRUN ABSI ACMR COHR TTMI MEI,,,,,,,,,,,,,,,,
+nightly,2026-10-07,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-40.50655746459961,-143.71214294433594,live_repriced,-194.98556524890424,-185.41754489674182,7.0,ABSI ACMR BRUN COHR CYD MEI MXL SITM TSEM TTMI,10.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-07,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-40.50655746459961,-143.71214294433594,B_2026Q4,-238.94869212969218,-229.76909929863191,5.0,SITM TSEM COHR MXL ABSI ONTO MEI CIEN BRUN BE,7.0,10.0,,,,,,,,,,,,,,
+nightly,2026-10-07,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-40.50655746459961,-143.71214294433594,C_2026Q4,-149.608657388136,-140.3075880209247,5.0,BRUN SITM TSEM CYD COHR ONTO MRVL APLD ACMR ABSI,7.0,6.0,,,,,,,,,,,,,,
+nightly,2026-10-07,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-40.50655746459961,-143.71214294433594,B_2026Q3,-298.69189488509954,-290.01237774774717,6.0,AAOI CIEN TSEM COHR ABSI MRVL TXG STX BE MEI,4.0,6.0,,,,,,,,,,,,,,
+nightly,2026-10-07,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-40.50655746459961,-143.71214294433594,C_2026Q3,-192.7427683613595,-183.9598111464974,4.0,CIEN ALMR COHR MRVL AAOI TSEM BRUN APLD TXG BE,3.0,5.0,,,,,,,,,,,,,,
+nightly,2026-10-08,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,31.96830940246582,139.86911010742188,live_virtual_book,245.911547388511,254.83676175927,6.0,AAOI MXL BRUN OBX AXTI COHR SHAZ TTMI WDC CECO,,,,,,,,,,,,,,,,
+nightly,2026-10-08,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,31.96830940246582,139.86911010742188,live_repriced,245.84630034504997,254.83667433135747,6.0,AAOI AXTI BRUN CECO COHR MXL OBX SHAZ TTMI WDC,10.0,6.0,,,,,,,,,,,,,,
+nightly,2026-10-08,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,31.96830940246582,139.86911010742188,B_2026Q4,236.87202878798954,245.6647109895911,6.0,BRUN AAOI COHR MXL MRVL SHAZ MEI HUT ABSI WDC,6.0,10.0,,,,,,,,,,,,,,
+nightly,2026-10-08,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,31.96830940246582,139.86911010742188,C_2026Q4,242.92219301249852,251.77234020346796,5.0,AAOI BRUN SHAZ MXL MRVL COHR HUT MEI CIEN TER,5.0,8.0,,,,,,,,,,,,,,
+nightly,2026-10-08,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,31.96830940246582,139.86911010742188,B_2026Q3,284.38737765250943,293.31614820117346,6.0,AAOI COHR TSEM TXG CIEN MEI SMTC BW TWST TTMI,3.0,3.0,,,,,,,,,,,,,,
+nightly,2026-10-08,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,31.96830940246582,139.86911010742188,C_2026Q3,278.1130975046045,286.6765538047849,4.0,AAOI COHR MRVL HUT TXG TSEM CIEN BE BW BFLY,2.0,4.0,,,,,,,,,,,,,,
+nightly,2026-10-09,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-6.715060234069824,-88.66069030761719,live_virtual_book,-189.33795142754,-180.422294095686,2.0,CDNL AXTI BRUN CIEN TXG HUT AAOI BE HELE SATL,,,,,,,,,,,,,,,,
+nightly,2026-10-09,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-6.715060234069824,-88.66069030761719,live_repriced,-189.34249469237452,-180.42231507059236,2.0,AAOI AXTI BE BRUN CDNL CIEN HELE HUT SATL TXG,10.0,5.0,,,,,,,,,,,,,,
+nightly,2026-10-09,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-6.715060234069824,-88.66069030761719,B_2026Q4,-124.26682712063975,-115.2390450497236,1.0,CDNL FSLY CIEN TXG BE AAOI LBRX DOCN STLN MANE,5.0,10.0,,,,,,,,,,,,,,
+nightly,2026-10-09,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-6.715060234069824,-88.66069030761719,C_2026Q4,-119.57271159891214,-110.37889322297822,1.0,CDNL FSLY CIEN TXG STLN LBRX AAOI HELP MANE AUGO,4.0,8.0,,,,,,,,,,,,,,
+nightly,2026-10-09,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-6.715060234069824,-88.66069030761719,B_2026Q3,-166.71761549779296,-157.73579780480904,4.0,AAOI MXL CDNL TXG LITE AXTI SATL ATEX COHR HUT,6.0,3.0,,,,,,,,,,,,,,
+nightly,2026-10-09,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-6.715060234069824,-88.66069030761719,C_2026Q3,-166.71761549779296,-157.73579780480904,4.0,AAOI MXL TXG AXTI LITE SATL COHR ATEX CDNL HUT,6.0,3.0,,,,,,,,,,,,,,
+nightly,2026-10-12,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,3.615994691848755,-187.6015167236328,live_virtual_book,-254.266056895775,-244.957761728129,2.0,ARQQ CHPT WDC SECZ AXTI AEVA TNXP MOD CTNM FSLY,,,,,,,,,,,,,,,,
+nightly,2026-10-12,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,3.615994691848755,-187.6015167236328,live_repriced,-254.41658766209898,-244.95773769883257,2.0,AEVA ARQQ AXTI CHPT CTNM FSLY MOD SECZ TNXP WDC,10.0,6.0,,,,,,,,,,,,,,
+nightly,2026-10-12,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,3.615994691848755,-187.6015167236328,B_2026Q4,-166.4641081076952,-156.50353278740295,2.0,CTNM SECZ EDRY CDNL AXTI WDC NGNE TNXP FRNM FSLY,6.0,10.0,,,,,,,,,,,,,,
+nightly,2026-10-12,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,3.615994691848755,-187.6015167236328,C_2026Q4,-126.29830084089834,-116.72795299720663,4.0,CTNM FRNM TNXP AXTI VELO TRAX CDNL LPTH EAF CBRS,3.0,5.0,,,,,,,,,,,,,,
+nightly,2026-10-12,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,3.615994691848755,-187.6015167236328,B_2026Q3,-132.20137368777287,-122.49058321473639,1.0,EDRY FSLY AXTI TNXP SVC CDNL AEVA TRAX ASTS CTNM,5.0,6.0,,,,,,,,,,,,,,
+nightly,2026-10-12,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,3.615994691848755,-187.6015167236328,C_2026Q3,-172.71437093933287,-163.3843125853798,3.0,TRAX BRUN FRNM VELO LPTH TNXP AXTI FSLY CTNM FWDI,4.0,5.0,,,,,,,,,,,,,,
+nightly,2026-10-13,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-86.66667175292969,-213.53720092773438,live_virtual_book,-275.572893124377,-266.445687456862,6.0,MXL AAOI SITM COHR BE CIEN TTMI ONTO HPE CUE,,,,,,,,,,,,,,,,
+nightly,2026-10-13,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-86.66667175292969,-213.53720092773438,live_repriced,-276.6833997715446,-267.5068663933496,6.0,AAOI BE CIEN COHR CUE HPE MXL ONTO SITM TTMI,10.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-13,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-86.66667175292969,-213.53720092773438,B_2026Q4,-248.3278269363321,-239.1999212275944,5.0,MXL AAOI CIEN MTSI CUE COHR TTMI BE SLDB TER,7.0,10.0,,,,,,,,,,,,,,
+nightly,2026-10-13,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-86.66667175292969,-213.53720092773438,C_2026Q4,-285.70574785487935,-276.5495084612465,5.0,MXL AAOI CIEN SITM CUE COHR TER ONTO BE HPE,9.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-13,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-86.66667175292969,-213.53720092773438,B_2026Q3,-212.8035186742401,-203.6066208802132,4.0,MXL MTSI TTMI COHR HUT CUE SLDB OMDA BE SNDX,5.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-13,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,-86.66667175292969,-213.53720092773438,C_2026Q3,-217.67545720568447,-208.21499797521682,5.0,MXL MTSI NGNE AAOI OMDA COHR SLDB CUE TTMI BE,6.0,8.0,,,,,,,,,,,,,,
+nightly,2026-10-14,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,8.196500778198242,-310.583740234375,live_virtual_book,-500.83657685862397,-492.473336544832,6.0,AAOI LITE ASTS TSEM AXTI PURR HPE TTMI CIEN COHR,,,,,,,,,,,,,,,,
+nightly,2026-10-14,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,8.196500778198242,-310.583740234375,live_repriced,-500.8591039220854,-492.47331835777084,6.0,AAOI ASTS AXTI CIEN COHR HPE LITE PURR TSEM TTMI,10.0,5.0,,,,,,,,,,,,,,
+nightly,2026-10-14,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,8.196500778198242,-310.583740234375,B_2026Q4,-555.6938616837618,-547.4189536808302,6.0,AAOI AXTI LITE SMTC HPE ONTO NBIS IONQ COHR DELL,5.0,10.0,,,,,,,,,,,,,,
+nightly,2026-10-14,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,8.196500778198242,-310.583740234375,C_2026Q4,-590.7892383731594,-582.4346229530563,7.0,AAOI AXTI LITE MRVL HPE COHR TTMI ONTO PURR DELL,7.0,7.0,,,,,,,,,,,,,,
+nightly,2026-10-14,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,8.196500778198242,-310.583740234375,B_2026Q3,-156.33828869040713,-146.76463837686583,3.0,DUOT TSSI MTSI ASML QBTS AOSL TSLX SENEA CBLL CWT,0.0,0.0,,,,,,,,,,,,,,
+nightly,2026-10-14,blend,blend_ensemble5_night_2026Q4.txt_jump2026Q4,8.196500778198242,-310.583740234375,C_2026Q3,-248.77202734874285,-239.55830282589145,3.0,DUOT ASML MTSI DFH ASTS PDFS QBTS AMSC TSSI AOSL,1.0,0.0,,,,,,,,,,,,,,
+summary,,,,1.9637088775634766,-59.92790222167969,live_virtual_book,-102.20002196834653,-93.107252381716,3.4545454545454546,,,,11 live nights,11.0,-7.162215768539234,0.36363636363636365,-0.10918596354117904,1.0,,,,,,,,
+summary,,,,1.9637088775634766,-59.92790222167969,live_virtual_book,-102.20002196834653,-93.107252381716,3.4545454545454546,,,,13 nights 09-28..10-14,11.0,-7.162215768539234,0.36363636363636365,-0.10918596354117904,1.0,,,,,,,,
+summary,,,,1.9637088775634766,-59.92790222167969,live_repriced,-101.78674117051254,-92.65644851905738,3.4545454545454546,,10.0,,11 live nights,11.0,-7.137244860043544,0.36363636363636365,-0.10877402691835536,0.9999761100430695,0.00909090909090909,0.8728077979520836,,,,,,
+summary,,,,1.9637088775634766,-59.92790222167969,live_repriced,-101.78674117051254,-92.65644851905738,3.4545454545454546,,10.0,,13 nights 09-28..10-14,11.0,-7.137244860043544,0.36363636363636365,-0.10877402691835536,0.9999761100430695,0.00909090909090909,0.8728077979520836,,,,,,
+summary,,,,1.9637088775634766,-59.92790222167969,B_2026Q4,-95.30878994588751,-86.18497243633928,3.8181818181818183,,4.909090909090909,,11 live nights,11.0,-6.113465819457826,0.36363636363636365,-0.10279283753841995,0.9525493688382055,0.0,0.30115887106432115,,,,,,
+summary,,,,2.891714334487915,-33.88261032104492,B_2026Q4,-77.4603734890022,-68.28950023270943,3.4615384615384617,,4.909090909090909,,13 nights 09-28..10-14,13.0,-5.3303554865675125,0.38461538461538464,-0.09908848698368478,0.9525493688382055,0.0,0.30115887106432115,,,,,,
+summary,,,,1.9637088775634766,-59.92790222167969,C_2026Q4,-85.8703166737652,-76.66651364142488,3.8181818181818183,,4.636363636363637,,11 live nights,11.0,-5.410048980466943,0.36363636363636365,-0.09345611836708068,0.9478831700017141,0.0,0.6668234758442001,,,,,,
+summary,,,,2.891714334487915,-33.88261032104492,C_2026Q4,-69.22137369093315,-59.99586868973494,3.3846153846153846,,4.636363636363637,,13 nights 09-28..10-14,13.0,-4.668608633470082,0.38461538461538464,-0.08944554470019617,0.9478831700017141,0.0,0.6668234758442001,,,,,,
+summary,,,,1.9637088775634766,-59.92790222167969,B_2026Q3,-76.56076728139423,-67.5004676277073,4.090909090909091,,3.4545454545454546,,11 live nights,11.0,-6.942416907875665,0.2727272727272727,-0.0824841434379977,0.8248047935732978,0.0,0.661153679775111,,,,,,
+summary,,,,2.891714334487915,-33.88261032104492,B_2026Q3,-61.82860891113927,-52.770765914630516,3.6923076923076925,,3.4545454545454546,,13 nights 09-28..10-14,13.0,-5.974433413666536,0.3076923076923077,-0.07896642918477703,0.8248047935732978,0.0,0.661153679775111,,,,,,
+summary,,,,1.9637088775634766,-59.92790222167969,C_2026Q3,-66.59070946622522,-57.571559316259055,3.909090909090909,,3.090909090909091,,11 live nights,11.0,-5.72349203353685,0.45454545454545453,-0.07245413801608469,0.9239402979161734,0.0,1.3111637245205767,,,,,,
+summary,,,,2.891714334487915,-33.88261032104492,C_2026Q3,-49.67234889694911,-40.658269079557456,3.4615384615384617,,3.090909090909091,,13 nights 09-28..10-14,13.0,-4.295564942426565,0.46153846153846156,-0.06458794227374953,0.9239402979161734,0.0,1.3111637245205767,,,,,,
+live_pick_rank,2026-09-29,,,,,B_2026Q4,,,,,,,,,,,,,,,ECAT,Finance/Investors Services,False,426.0,2579.0,True
+live_pick_rank,2026-09-29,,,,,B_2026Q4,,,,,,,,,,,,,,,ASC,Marine Transportation,False,121.0,2579.0,True
+live_pick_rank,2026-09-29,,,,,B_2026Q4,,,,,,,,,,,,,,,STNG,Marine Transportation,False,299.0,2579.0,True
+live_pick_rank,2026-09-29,,,,,B_2026Q4,,,,,,,,,,,,,,,NAT,Marine Transportation,False,457.0,2579.0,True
+live_pick_rank,2026-09-29,,,,,B_2026Q4,,,,,,,,,,,,,,,HYT,Finance Companies,False,392.0,2579.0,True
+live_pick_rank,2026-09-29,,,,,B_2026Q4,,,,,,,,,,,,,,,HESM,Oil & Gas Production,False,304.5,2579.0,True
+live_pick_rank,2026-09-29,,,,,B_2026Q4,,,,,,,,,,,,,,,TK,Marine Transportation,False,146.0,2579.0,True
+live_pick_rank,2026-09-29,,,,,B_2026Q4,,,,,,,,,,,,,,,IDT,Telecommunications Equipment,False,2065.0,2579.0,True
+live_pick_rank,2026-09-29,,,,,B_2026Q4,,,,,,,,,,,,,,,ADX,Investment Managers,False,388.0,2579.0,True
+live_pick_rank,2026-09-29,,,,,B_2026Q4,,,,,,,,,,,,,,,AES,Electric Utilities: Central,False,336.0,2579.0,True
+live_pick_rank,2026-09-29,,,,,C_2026Q4,,,,,,,,,,,,,,,ECAT,Finance/Investors Services,False,431.0,2616.0,True
+live_pick_rank,2026-09-29,,,,,C_2026Q4,,,,,,,,,,,,,,,ASC,Marine Transportation,False,94.0,2616.0,True
+live_pick_rank,2026-09-29,,,,,C_2026Q4,,,,,,,,,,,,,,,STNG,Marine Transportation,False,264.0,2616.0,True
+live_pick_rank,2026-09-29,,,,,C_2026Q4,,,,,,,,,,,,,,,NAT,Marine Transportation,False,523.5,2616.0,True
+live_pick_rank,2026-09-29,,,,,C_2026Q4,,,,,,,,,,,,,,,HYT,Finance Companies,False,1985.0,2616.0,True
+live_pick_rank,2026-09-29,,,,,C_2026Q4,,,,,,,,,,,,,,,HESM,Oil & Gas Production,False,302.0,2616.0,True
+live_pick_rank,2026-09-29,,,,,C_2026Q4,,,,,,,,,,,,,,,TK,Marine Transportation,False,145.0,2616.0,True
+live_pick_rank,2026-09-29,,,,,C_2026Q4,,,,,,,,,,,,,,,IDT,Telecommunications Equipment,False,1926.0,2616.0,True
+live_pick_rank,2026-09-29,,,,,C_2026Q4,,,,,,,,,,,,,,,ADX,Investment Managers,False,402.0,2616.0,True
+live_pick_rank,2026-09-29,,,,,C_2026Q4,,,,,,,,,,,,,,,AES,Electric Utilities: Central,False,333.0,2616.0,True
+live_pick_rank,2026-10-01,,,,,B_2026Q4,,,,,,,,,,,,,,,NKTR,Biotechnology: Pharmaceutical Preparations,False,1.0,2594.0,True
+live_pick_rank,2026-10-01,,,,,B_2026Q4,,,,,,,,,,,,,,,SA,Precious Metals,False,39.0,2594.0,True
+live_pick_rank,2026-10-01,,,,,B_2026Q4,,,,,,,,,,,,,,,UMAC,Radio And Television Broadcasting And Communications Equipment,False,3.0,2594.0,True
+live_pick_rank,2026-10-01,,,,,B_2026Q4,,,,,,,,,,,,,,,SCTX,Biotechnology: Biological Products (No Diagnostic Substances),False,4.0,2594.0,True
+live_pick_rank,2026-10-01,,,,,B_2026Q4,,,,,,,,,,,,,,,EQX,Precious Metals,False,151.0,2594.0,True
+live_pick_rank,2026-10-01,,,,,B_2026Q4,,,,,,,,,,,,,,,FRVO,Electric Utilities: Central,False,34.0,2594.0,True
+live_pick_rank,2026-10-01,,,,,B_2026Q4,,,,,,,,,,,,,,,TDAY,Newspapers/Magazines,False,5.0,2594.0,True
+live_pick_rank,2026-10-01,,,,,B_2026Q4,,,,,,,,,,,,,,,OCUL,Biotechnology: Pharmaceutical Preparations,False,1140.0,2594.0,True
+live_pick_rank,2026-10-01,,,,,B_2026Q4,,,,,,,,,,,,,,,ELE,Precious Metals,False,292.0,2594.0,True
+live_pick_rank,2026-10-01,,,,,B_2026Q4,,,,,,,,,,,,,,,JBL,Electrical Products,True,224.0,2594.0,True
+live_pick_rank,2026-10-01,,,,,C_2026Q4,,,,,,,,,,,,,,,NKTR,Biotechnology: Pharmaceutical Preparations,False,2.0,2620.0,True
+live_pick_rank,2026-10-01,,,,,C_2026Q4,,,,,,,,,,,,,,,SA,Precious Metals,False,41.0,2620.0,True
+live_pick_rank,2026-10-01,,,,,C_2026Q4,,,,,,,,,,,,,,,UMAC,Radio And Television Broadcasting And Communications Equipment,False,3.0,2620.0,True
+live_pick_rank,2026-10-01,,,,,C_2026Q4,,,,,,,,,,,,,,,SCTX,Biotechnology: Biological Products (No Diagnostic Substances),False,1.0,2620.0,True
+live_pick_rank,2026-10-01,,,,,C_2026Q4,,,,,,,,,,,,,,,EQX,Precious Metals,False,179.0,2620.0,True
+live_pick_rank,2026-10-01,,,,,C_2026Q4,,,,,,,,,,,,,,,FRVO,Electric Utilities: Central,False,107.0,2620.0,True
+live_pick_rank,2026-10-01,,,,,C_2026Q4,,,,,,,,,,,,,,,TDAY,Newspapers/Magazines,False,8.0,2620.0,True
+live_pick_rank,2026-10-01,,,,,C_2026Q4,,,,,,,,,,,,,,,OCUL,Biotechnology: Pharmaceutical Preparations,False,752.5,2620.0,True
+live_pick_rank,2026-10-01,,,,,C_2026Q4,,,,,,,,,,,,,,,ELE,Precious Metals,False,238.0,2620.0,True
+live_pick_rank,2026-10-01,,,,,C_2026Q4,,,,,,,,,,,,,,,JBL,Electrical Products,True,1022.0,2620.0,True
+live_pick_rank,2026-10-02,,,,,B_2026Q4,,,,,,,,,,,,,,,FIGR,Finance: Consumer Services,False,46.0,2599.0,True
+live_pick_rank,2026-10-02,,,,,B_2026Q4,,,,,,,,,,,,,,,GEN,Computer Software: Prepackaged Software,False,38.0,2599.0,True
+live_pick_rank,2026-10-02,,,,,B_2026Q4,,,,,,,,,,,,,,,QMCO,Electronic Components,True,44.0,2599.0,True
+live_pick_rank,2026-10-02,,,,,B_2026Q4,,,,,,,,,,,,,,,ELMT,Metal Fabrications,False,21.0,2599.0,True
+live_pick_rank,2026-10-02,,,,,B_2026Q4,,,,,,,,,,,,,,,BXC,Wholesale Distributors,False,,2599.0,False
+live_pick_rank,2026-10-02,,,,,B_2026Q4,,,,,,,,,,,,,,,WOLF,Semiconductors,True,11.0,2599.0,True
+live_pick_rank,2026-10-02,,,,,B_2026Q4,,,,,,,,,,,,,,,KLRA,Biotechnology: Pharmaceutical Preparations,False,40.0,2599.0,True
+live_pick_rank,2026-10-02,,,,,B_2026Q4,,,,,,,,,,,,,,,PPTA,Precious Metals,False,134.0,2599.0,True
+live_pick_rank,2026-10-02,,,,,B_2026Q4,,,,,,,,,,,,,,,CCXI,Blank Checks,False,22.0,2599.0,True
+live_pick_rank,2026-10-02,,,,,B_2026Q4,,,,,,,,,,,,,,,NG,Precious Metals,False,251.0,2599.0,True
+live_pick_rank,2026-10-02,,,,,C_2026Q4,,,,,,,,,,,,,,,FIGR,Finance: Consumer Services,False,46.0,2621.0,True
+live_pick_rank,2026-10-02,,,,,C_2026Q4,,,,,,,,,,,,,,,GEN,Computer Software: Prepackaged Software,False,32.0,2621.0,True
+live_pick_rank,2026-10-02,,,,,C_2026Q4,,,,,,,,,,,,,,,QMCO,Electronic Components,True,39.0,2621.0,True
+live_pick_rank,2026-10-02,,,,,C_2026Q4,,,,,,,,,,,,,,,ELMT,Metal Fabrications,False,4.0,2621.0,True
+live_pick_rank,2026-10-02,,,,,C_2026Q4,,,,,,,,,,,,,,,BXC,Wholesale Distributors,False,171.0,2621.0,True
+live_pick_rank,2026-10-02,,,,,C_2026Q4,,,,,,,,,,,,,,,WOLF,Semiconductors,True,11.0,2621.0,True
+live_pick_rank,2026-10-02,,,,,C_2026Q4,,,,,,,,,,,,,,,KLRA,Biotechnology: Pharmaceutical Preparations,False,44.0,2621.0,True
+live_pick_rank,2026-10-02,,,,,C_2026Q4,,,,,,,,,,,,,,,PPTA,Precious Metals,False,256.0,2621.0,True
+live_pick_rank,2026-10-02,,,,,C_2026Q4,,,,,,,,,,,,,,,CCXI,Blank Checks,False,17.0,2621.0,True
+live_pick_rank,2026-10-02,,,,,C_2026Q4,,,,,,,,,,,,,,,NG,Precious Metals,False,224.0,2621.0,True
+live_pick_rank,2026-10-05,,,,,B_2026Q4,,,,,,,,,,,,,,,ALVO,Biotechnology: Biological Products (No Diagnostic Substances),False,1.0,2598.0,True
+live_pick_rank,2026-10-05,,,,,B_2026Q4,,,,,,,,,,,,,,,BRUN,EDP Services,False,2.0,2598.0,True
+live_pick_rank,2026-10-05,,,,,B_2026Q4,,,,,,,,,,,,,,,BETA,Aerospace,False,206.0,2598.0,True
+live_pick_rank,2026-10-05,,,,,B_2026Q4,,,,,,,,,,,,,,,DFH,Homebuilding,False,9.0,2598.0,True
+live_pick_rank,2026-10-05,,,,,B_2026Q4,,,,,,,,,,,,,,,ACMR,Industrial Machinery/Components,True,19.0,2598.0,True
+live_pick_rank,2026-10-05,,,,,B_2026Q4,,,,,,,,,,,,,,,RDW,Military/Government/Technical,False,23.0,2598.0,True
+live_pick_rank,2026-10-05,,,,,B_2026Q4,,,,,,,,,,,,,,,FRVO,Electric Utilities: Central,False,5.0,2598.0,True
+live_pick_rank,2026-10-05,,,,,B_2026Q4,,,,,,,,,,,,,,,DKNG,Services-Misc. Amusement & Recreation,False,3.0,2598.0,True
+live_pick_rank,2026-10-05,,,,,B_2026Q4,,,,,,,,,,,,,,,AADX,Military/Government/Technical,False,10.0,2598.0,True
+live_pick_rank,2026-10-05,,,,,B_2026Q4,,,,,,,,,,,,,,,SPHR,Services-Misc. Amusement & Recreation,False,4.0,2598.0,True
+live_pick_rank,2026-10-05,,,,,C_2026Q4,,,,,,,,,,,,,,,ALVO,Biotechnology: Biological Products (No Diagnostic Substances),False,1.0,2625.0,True
+live_pick_rank,2026-10-05,,,,,C_2026Q4,,,,,,,,,,,,,,,BRUN,EDP Services,False,2.0,2625.0,True
+live_pick_rank,2026-10-05,,,,,C_2026Q4,,,,,,,,,,,,,,,BETA,Aerospace,False,1286.0,2625.0,True
+live_pick_rank,2026-10-05,,,,,C_2026Q4,,,,,,,,,,,,,,,DFH,Homebuilding,False,28.0,2625.0,True
+live_pick_rank,2026-10-05,,,,,C_2026Q4,,,,,,,,,,,,,,,ACMR,Industrial Machinery/Components,True,57.0,2625.0,True
+live_pick_rank,2026-10-05,,,,,C_2026Q4,,,,,,,,,,,,,,,RDW,Military/Government/Technical,False,169.0,2625.0,True
+live_pick_rank,2026-10-05,,,,,C_2026Q4,,,,,,,,,,,,,,,FRVO,Electric Utilities: Central,False,7.0,2625.0,True
+live_pick_rank,2026-10-05,,,,,C_2026Q4,,,,,,,,,,,,,,,DKNG,Services-Misc. Amusement & Recreation,False,40.0,2625.0,True
+live_pick_rank,2026-10-05,,,,,C_2026Q4,,,,,,,,,,,,,,,AADX,Military/Government/Technical,False,6.0,2625.0,True
+live_pick_rank,2026-10-05,,,,,C_2026Q4,,,,,,,,,,,,,,,SPHR,Services-Misc. Amusement & Recreation,False,4.0,2625.0,True
+live_pick_rank,2026-10-06,,,,,B_2026Q4,,,,,,,,,,,,,,,APMD,Biotechnology: Pharmaceutical Preparations,False,1.0,2583.0,True
+live_pick_rank,2026-10-06,,,,,B_2026Q4,,,,,,,,,,,,,,,MRVL,Semiconductors,True,3.0,2583.0,True
+live_pick_rank,2026-10-06,,,,,B_2026Q4,,,,,,,,,,,,,,,STX,Electronic Components,True,4.0,2583.0,True
+live_pick_rank,2026-10-06,,,,,B_2026Q4,,,,,,,,,,,,,,,HUT,Finance: Consumer Services,False,12.0,2583.0,True
+live_pick_rank,2026-10-06,,,,,B_2026Q4,,,,,,,,,,,,,,,WDC,Electronic Components,True,7.0,2583.0,True
+live_pick_rank,2026-10-06,,,,,B_2026Q4,,,,,,,,,,,,,,,SYRE,Biotechnology: Pharmaceutical Preparations,False,8.0,2583.0,True
+live_pick_rank,2026-10-06,,,,,B_2026Q4,,,,,,,,,,,,,,,EROC,Industrial Machinery/Components,False,2.0,2583.0,True
+live_pick_rank,2026-10-06,,,,,B_2026Q4,,,,,,,,,,,,,,,BRUN,EDP Services,False,6.0,2583.0,True
+live_pick_rank,2026-10-06,,,,,B_2026Q4,,,,,,,,,,,,,,,AMKR,Semiconductors,True,32.0,2583.0,True
+live_pick_rank,2026-10-06,,,,,B_2026Q4,,,,,,,,,,,,,,,CAMT,Electronic Components,True,66.0,2583.0,True
+live_pick_rank,2026-10-06,,,,,C_2026Q4,,,,,,,,,,,,,,,APMD,Biotechnology: Pharmaceutical Preparations,False,1.0,2617.0,True
+live_pick_rank,2026-10-06,,,,,C_2026Q4,,,,,,,,,,,,,,,MRVL,Semiconductors,True,2.0,2617.0,True
+live_pick_rank,2026-10-06,,,,,C_2026Q4,,,,,,,,,,,,,,,STX,Electronic Components,True,5.0,2617.0,True
+live_pick_rank,2026-10-06,,,,,C_2026Q4,,,,,,,,,,,,,,,HUT,Finance: Consumer Services,False,14.0,2617.0,True
+live_pick_rank,2026-10-06,,,,,C_2026Q4,,,,,,,,,,,,,,,WDC,Electronic Components,True,8.0,2617.0,True
+live_pick_rank,2026-10-06,,,,,C_2026Q4,,,,,,,,,,,,,,,SYRE,Biotechnology: Pharmaceutical Preparations,False,7.0,2617.0,True
+live_pick_rank,2026-10-06,,,,,C_2026Q4,,,,,,,,,,,,,,,EROC,Industrial Machinery/Components,False,3.0,2617.0,True
+live_pick_rank,2026-10-06,,,,,C_2026Q4,,,,,,,,,,,,,,,BRUN,EDP Services,False,25.0,2617.0,True
+live_pick_rank,2026-10-06,,,,,C_2026Q4,,,,,,,,,,,,,,,AMKR,Semiconductors,True,47.5,2617.0,True
+live_pick_rank,2026-10-06,,,,,C_2026Q4,,,,,,,,,,,,,,,CAMT,Electronic Components,True,145.5,2617.0,True
+live_pick_rank,2026-10-07,,,,,B_2026Q4,,,,,,,,,,,,,,,SITM,Semiconductors,True,1.0,2582.0,True
+live_pick_rank,2026-10-07,,,,,B_2026Q4,,,,,,,,,,,,,,,MXL,Semiconductors,True,4.0,2582.0,True
+live_pick_rank,2026-10-07,,,,,B_2026Q4,,,,,,,,,,,,,,,CYD,Industrial Machinery/Components,False,31.0,2582.0,True
+live_pick_rank,2026-10-07,,,,,B_2026Q4,,,,,,,,,,,,,,,TSEM,Semiconductors,True,2.0,2582.0,True
+live_pick_rank,2026-10-07,,,,,B_2026Q4,,,,,,,,,,,,,,,BRUN,EDP Services,False,9.0,2582.0,True
+live_pick_rank,2026-10-07,,,,,B_2026Q4,,,,,,,,,,,,,,,ABSI,Biotechnology: Commercial Physical & Biological Resarch,False,5.0,2582.0,True
+live_pick_rank,2026-10-07,,,,,B_2026Q4,,,,,,,,,,,,,,,ACMR,Industrial Machinery/Components,True,13.0,2582.0,True
+live_pick_rank,2026-10-07,,,,,B_2026Q4,,,,,,,,,,,,,,,COHR,Electronic Components,True,3.0,2582.0,True
+live_pick_rank,2026-10-07,,,,,B_2026Q4,,,,,,,,,,,,,,,TTMI,Electrical Products,True,17.0,2582.0,True
+live_pick_rank,2026-10-07,,,,,B_2026Q4,,,,,,,,,,,,,,,MEI,Electrical Products,True,7.0,2582.0,True
+live_pick_rank,2026-10-07,,,,,C_2026Q4,,,,,,,,,,,,,,,SITM,Semiconductors,True,2.0,2609.0,True
+live_pick_rank,2026-10-07,,,,,C_2026Q4,,,,,,,,,,,,,,,MXL,Semiconductors,True,8.0,2609.0,True
+live_pick_rank,2026-10-07,,,,,C_2026Q4,,,,,,,,,,,,,,,CYD,Industrial Machinery/Components,False,4.0,2609.0,True
+live_pick_rank,2026-10-07,,,,,C_2026Q4,,,,,,,,,,,,,,,TSEM,Semiconductors,True,3.0,2609.0,True
+live_pick_rank,2026-10-07,,,,,C_2026Q4,,,,,,,,,,,,,,,BRUN,EDP Services,False,1.0,2609.0,True
+live_pick_rank,2026-10-07,,,,,C_2026Q4,,,,,,,,,,,,,,,ABSI,Biotechnology: Commercial Physical & Biological Resarch,False,11.0,2609.0,True
+live_pick_rank,2026-10-07,,,,,C_2026Q4,,,,,,,,,,,,,,,ACMR,Industrial Machinery/Components,True,10.0,2609.0,True
+live_pick_rank,2026-10-07,,,,,C_2026Q4,,,,,,,,,,,,,,,COHR,Electronic Components,True,5.0,2609.0,True
+live_pick_rank,2026-10-07,,,,,C_2026Q4,,,,,,,,,,,,,,,TTMI,Electrical Products,True,17.0,2609.0,True
+live_pick_rank,2026-10-07,,,,,C_2026Q4,,,,,,,,,,,,,,,MEI,Electrical Products,True,15.0,2609.0,True
+live_pick_rank,2026-10-08,,,,,B_2026Q4,,,,,,,,,,,,,,,AAOI,Semiconductors,True,2.0,2584.0,True
+live_pick_rank,2026-10-08,,,,,B_2026Q4,,,,,,,,,,,,,,,MXL,Semiconductors,True,4.0,2584.0,True
+live_pick_rank,2026-10-08,,,,,B_2026Q4,,,,,,,,,,,,,,,BRUN,EDP Services,False,1.0,2584.0,True
+live_pick_rank,2026-10-08,,,,,B_2026Q4,,,,,,,,,,,,,,,OBX,Biotechnology: Pharmaceutical Preparations,False,27.0,2584.0,True
+live_pick_rank,2026-10-08,,,,,B_2026Q4,,,,,,,,,,,,,,,AXTI,Semiconductors,True,26.0,2584.0,True
+live_pick_rank,2026-10-08,,,,,B_2026Q4,,,,,,,,,,,,,,,COHR,Electronic Components,True,3.0,2584.0,True
+live_pick_rank,2026-10-08,,,,,B_2026Q4,,,,,,,,,,,,,,,SHAZ,EDP Services,False,6.0,2584.0,True
+live_pick_rank,2026-10-08,,,,,B_2026Q4,,,,,,,,,,,,,,,TTMI,Electrical Products,True,15.0,2584.0,True
+live_pick_rank,2026-10-08,,,,,B_2026Q4,,,,,,,,,,,,,,,WDC,Electronic Components,True,12.0,2584.0,True
+live_pick_rank,2026-10-08,,,,,B_2026Q4,,,,,,,,,,,,,,,CECO,Pollution Control Equipment,False,17.5,2584.0,True
+live_pick_rank,2026-10-08,,,,,C_2026Q4,,,,,,,,,,,,,,,AAOI,Semiconductors,True,1.0,2612.0,True
+live_pick_rank,2026-10-08,,,,,C_2026Q4,,,,,,,,,,,,,,,MXL,Semiconductors,True,4.0,2612.0,True
+live_pick_rank,2026-10-08,,,,,C_2026Q4,,,,,,,,,,,,,,,BRUN,EDP Services,False,2.0,2612.0,True
+live_pick_rank,2026-10-08,,,,,C_2026Q4,,,,,,,,,,,,,,,OBX,Biotechnology: Pharmaceutical Preparations,False,52.0,2612.0,True
+live_pick_rank,2026-10-08,,,,,C_2026Q4,,,,,,,,,,,,,,,AXTI,Semiconductors,True,31.0,2612.0,True
+live_pick_rank,2026-10-08,,,,,C_2026Q4,,,,,,,,,,,,,,,COHR,Electronic Components,True,6.0,2612.0,True
+live_pick_rank,2026-10-08,,,,,C_2026Q4,,,,,,,,,,,,,,,SHAZ,EDP Services,False,3.0,2612.0,True
+live_pick_rank,2026-10-08,,,,,C_2026Q4,,,,,,,,,,,,,,,TTMI,Electrical Products,True,13.0,2612.0,True
+live_pick_rank,2026-10-08,,,,,C_2026Q4,,,,,,,,,,,,,,,WDC,Electronic Components,True,24.0,2612.0,True
+live_pick_rank,2026-10-08,,,,,C_2026Q4,,,,,,,,,,,,,,,CECO,Pollution Control Equipment,False,27.0,2612.0,True
+live_pick_rank,2026-10-09,,,,,B_2026Q4,,,,,,,,,,,,,,,CDNL,Military/Government/Technical,False,1.0,2578.0,True
+live_pick_rank,2026-10-09,,,,,B_2026Q4,,,,,,,,,,,,,,,AXTI,Semiconductors,True,11.0,2578.0,True
+live_pick_rank,2026-10-09,,,,,B_2026Q4,,,,,,,,,,,,,,,BRUN,EDP Services,False,32.0,2578.0,True
+live_pick_rank,2026-10-09,,,,,B_2026Q4,,,,,,,,,,,,,,,CIEN,Telecommunications Equipment,False,3.0,2578.0,True
+live_pick_rank,2026-10-09,,,,,B_2026Q4,,,,,,,,,,,,,,,TXG,Biotechnology: Laboratory Analytical Instruments,False,4.0,2578.0,True
+live_pick_rank,2026-10-09,,,,,B_2026Q4,,,,,,,,,,,,,,,HUT,Finance: Consumer Services,False,16.0,2578.0,True
+live_pick_rank,2026-10-09,,,,,B_2026Q4,,,,,,,,,,,,,,,AAOI,Semiconductors,True,6.0,2578.0,True
+live_pick_rank,2026-10-09,,,,,B_2026Q4,,,,,,,,,,,,,,,BE,Industrial Machinery/Components,False,5.0,2578.0,True
+live_pick_rank,2026-10-09,,,,,B_2026Q4,,,,,,,,,,,,,,,HELE,Home Furnishings,False,119.5,2578.0,True
+live_pick_rank,2026-10-09,,,,,B_2026Q4,,,,,,,,,,,,,,,SATL,Radio And Television Broadcasting And Communications Equipment,False,15.0,2578.0,True
+live_pick_rank,2026-10-09,,,,,C_2026Q4,,,,,,,,,,,,,,,CDNL,Military/Government/Technical,False,1.5,2614.0,True
+live_pick_rank,2026-10-09,,,,,C_2026Q4,,,,,,,,,,,,,,,AXTI,Semiconductors,True,12.0,2614.0,True
+live_pick_rank,2026-10-09,,,,,C_2026Q4,,,,,,,,,,,,,,,BRUN,EDP Services,False,292.0,2614.0,True
+live_pick_rank,2026-10-09,,,,,C_2026Q4,,,,,,,,,,,,,,,CIEN,Telecommunications Equipment,False,3.0,2614.0,True
+live_pick_rank,2026-10-09,,,,,C_2026Q4,,,,,,,,,,,,,,,TXG,Biotechnology: Laboratory Analytical Instruments,False,4.0,2614.0,True
+live_pick_rank,2026-10-09,,,,,C_2026Q4,,,,,,,,,,,,,,,HUT,Finance: Consumer Services,False,24.0,2614.0,True
+live_pick_rank,2026-10-09,,,,,C_2026Q4,,,,,,,,,,,,,,,AAOI,Semiconductors,True,7.0,2614.0,True
+live_pick_rank,2026-10-09,,,,,C_2026Q4,,,,,,,,,,,,,,,BE,Industrial Machinery/Components,False,56.0,2614.0,True
+live_pick_rank,2026-10-09,,,,,C_2026Q4,,,,,,,,,,,,,,,HELE,Home Furnishings,False,116.0,2614.0,True
+live_pick_rank,2026-10-09,,,,,C_2026Q4,,,,,,,,,,,,,,,SATL,Radio And Television Broadcasting And Communications Equipment,False,13.0,2614.0,True
+live_pick_rank,2026-10-12,,,,,B_2026Q4,,,,,,,,,,,,,,,ARQQ,Computer Software: Prepackaged Software,False,1421.0,2565.0,True
+live_pick_rank,2026-10-12,,,,,B_2026Q4,,,,,,,,,,,,,,,CHPT,Industrial Machinery/Components,False,1048.0,2565.0,True
+live_pick_rank,2026-10-12,,,,,B_2026Q4,,,,,,,,,,,,,,,WDC,Electronic Components,True,6.0,2565.0,True
+live_pick_rank,2026-10-12,,,,,B_2026Q4,,,,,,,,,,,,,,,SECZ,Finance: Consumer Services,False,2.0,2565.0,True
+live_pick_rank,2026-10-12,,,,,B_2026Q4,,,,,,,,,,,,,,,AXTI,Semiconductors,True,5.0,2565.0,True
+live_pick_rank,2026-10-12,,,,,B_2026Q4,,,,,,,,,,,,,,,AEVA,Auto Parts:O.E.M.,False,16.0,2565.0,True
+live_pick_rank,2026-10-12,,,,,B_2026Q4,,,,,,,,,,,,,,,TNXP,Biotechnology: Pharmaceutical Preparations,False,7.5,2565.0,True
+live_pick_rank,2026-10-12,,,,,B_2026Q4,,,,,,,,,,,,,,,MOD,Auto Parts:O.E.M.,False,714.5,2565.0,True
+live_pick_rank,2026-10-12,,,,,B_2026Q4,,,,,,,,,,,,,,,CTNM,Biotechnology: Pharmaceutical Preparations,False,1.0,2565.0,True
+live_pick_rank,2026-10-12,,,,,B_2026Q4,,,,,,,,,,,,,,,FSLY,Computer Software: Prepackaged Software,False,10.5,2565.0,True
+live_pick_rank,2026-10-12,,,,,C_2026Q4,,,,,,,,,,,,,,,ARQQ,Computer Software: Prepackaged Software,False,675.0,2601.0,True
+live_pick_rank,2026-10-12,,,,,C_2026Q4,,,,,,,,,,,,,,,CHPT,Industrial Machinery/Components,False,1797.5,2601.0,True
+live_pick_rank,2026-10-12,,,,,C_2026Q4,,,,,,,,,,,,,,,WDC,Electronic Components,True,18.0,2601.0,True
+live_pick_rank,2026-10-12,,,,,C_2026Q4,,,,,,,,,,,,,,,SECZ,Finance: Consumer Services,False,80.5,2601.0,True
+live_pick_rank,2026-10-12,,,,,C_2026Q4,,,,,,,,,,,,,,,AXTI,Semiconductors,True,4.5,2601.0,True
+live_pick_rank,2026-10-12,,,,,C_2026Q4,,,,,,,,,,,,,,,AEVA,Auto Parts:O.E.M.,False,130.0,2601.0,True
+live_pick_rank,2026-10-12,,,,,C_2026Q4,,,,,,,,,,,,,,,TNXP,Biotechnology: Pharmaceutical Preparations,False,3.0,2601.0,True
+live_pick_rank,2026-10-12,,,,,C_2026Q4,,,,,,,,,,,,,,,MOD,Auto Parts:O.E.M.,False,237.0,2601.0,True
+live_pick_rank,2026-10-12,,,,,C_2026Q4,,,,,,,,,,,,,,,CTNM,Biotechnology: Pharmaceutical Preparations,False,1.0,2601.0,True
+live_pick_rank,2026-10-12,,,,,C_2026Q4,,,,,,,,,,,,,,,FSLY,Computer Software: Prepackaged Software,False,13.0,2601.0,True
+live_pick_rank,2026-10-13,,,,,B_2026Q4,,,,,,,,,,,,,,,MXL,Semiconductors,True,1.0,2563.0,True
+live_pick_rank,2026-10-13,,,,,B_2026Q4,,,,,,,,,,,,,,,AAOI,Semiconductors,True,2.5,2563.0,True
+live_pick_rank,2026-10-13,,,,,B_2026Q4,,,,,,,,,,,,,,,SITM,Semiconductors,True,6.0,2563.0,True
+live_pick_rank,2026-10-13,,,,,B_2026Q4,,,,,,,,,,,,,,,COHR,Electronic Components,True,7.0,2563.0,True
+live_pick_rank,2026-10-13,,,,,B_2026Q4,,,,,,,,,,,,,,,BE,Industrial Machinery/Components,False,10.0,2563.0,True
+live_pick_rank,2026-10-13,,,,,B_2026Q4,,,,,,,,,,,,,,,CIEN,Telecommunications Equipment,False,2.5,2563.0,True
+live_pick_rank,2026-10-13,,,,,B_2026Q4,,,,,,,,,,,,,,,TTMI,Electrical Products,True,9.0,2563.0,True
+live_pick_rank,2026-10-13,,,,,B_2026Q4,,,,,,,,,,,,,,,ONTO,Industrial Machinery/Components,False,17.0,2563.0,True
+live_pick_rank,2026-10-13,,,,,B_2026Q4,,,,,,,,,,,,,,,HPE,Retail: Computer Software & Peripheral Equipment,True,16.0,2563.0,True
+live_pick_rank,2026-10-13,,,,,B_2026Q4,,,,,,,,,,,,,,,CUE,Biotechnology: Pharmaceutical Preparations,False,5.0,2563.0,True
+live_pick_rank,2026-10-13,,,,,C_2026Q4,,,,,,,,,,,,,,,MXL,Semiconductors,True,1.0,2592.0,True
+live_pick_rank,2026-10-13,,,,,C_2026Q4,,,,,,,,,,,,,,,AAOI,Semiconductors,True,2.0,2592.0,True
+live_pick_rank,2026-10-13,,,,,C_2026Q4,,,,,,,,,,,,,,,SITM,Semiconductors,True,3.5,2592.0,True
+live_pick_rank,2026-10-13,,,,,C_2026Q4,,,,,,,,,,,,,,,COHR,Electronic Components,True,6.0,2592.0,True
+live_pick_rank,2026-10-13,,,,,C_2026Q4,,,,,,,,,,,,,,,BE,Industrial Machinery/Components,False,11.0,2592.0,True
+live_pick_rank,2026-10-13,,,,,C_2026Q4,,,,,,,,,,,,,,,CIEN,Telecommunications Equipment,False,3.5,2592.0,True
+live_pick_rank,2026-10-13,,,,,C_2026Q4,,,,,,,,,,,,,,,TTMI,Electrical Products,True,14.0,2592.0,True
+live_pick_rank,2026-10-13,,,,,C_2026Q4,,,,,,,,,,,,,,,ONTO,Industrial Machinery/Components,False,10.0,2592.0,True
+live_pick_rank,2026-10-13,,,,,C_2026Q4,,,,,,,,,,,,,,,HPE,Retail: Computer Software & Peripheral Equipment,True,12.0,2592.0,True
+live_pick_rank,2026-10-13,,,,,C_2026Q4,,,,,,,,,,,,,,,CUE,Biotechnology: Pharmaceutical Preparations,False,5.0,2592.0,True
+live_pick_rank,2026-10-14,,,,,B_2026Q4,,,,,,,,,,,,,,,AAOI,Semiconductors,True,1.0,2562.0,True
+live_pick_rank,2026-10-14,,,,,B_2026Q4,,,,,,,,,,,,,,,LITE,Telecommunications Equipment,False,3.0,2562.0,True
+live_pick_rank,2026-10-14,,,,,B_2026Q4,,,,,,,,,,,,,,,ASTS,Telecommunications Equipment,False,29.0,2562.0,True
+live_pick_rank,2026-10-14,,,,,B_2026Q4,,,,,,,,,,,,,,,TSEM,Semiconductors,True,5.0,2562.0,True
+live_pick_rank,2026-10-14,,,,,B_2026Q4,,,,,,,,,,,,,,,AXTI,Semiconductors,True,2.0,2562.0,True
+live_pick_rank,2026-10-14,,,,,B_2026Q4,,,,,,,,,,,,,,,PURR,Finance: Consumer Services,False,38.0,2562.0,True
+live_pick_rank,2026-10-14,,,,,B_2026Q4,,,,,,,,,,,,,,,HPE,Retail: Computer Software & Peripheral Equipment,True,6.0,2562.0,True
+live_pick_rank,2026-10-14,,,,,B_2026Q4,,,,,,,,,,,,,,,TTMI,Electrical Products,True,19.0,2562.0,True
+live_pick_rank,2026-10-14,,,,,B_2026Q4,,,,,,,,,,,,,,,CIEN,Telecommunications Equipment,False,32.0,2562.0,True
+live_pick_rank,2026-10-14,,,,,B_2026Q4,,,,,,,,,,,,,,,COHR,Electronic Components,True,14.0,2562.0,True
+live_pick_rank,2026-10-14,,,,,C_2026Q4,,,,,,,,,,,,,,,AAOI,Semiconductors,True,1.0,2585.0,True
+live_pick_rank,2026-10-14,,,,,C_2026Q4,,,,,,,,,,,,,,,LITE,Telecommunications Equipment,False,3.0,2585.0,True
+live_pick_rank,2026-10-14,,,,,C_2026Q4,,,,,,,,,,,,,,,ASTS,Telecommunications Equipment,False,20.0,2585.0,True
+live_pick_rank,2026-10-14,,,,,C_2026Q4,,,,,,,,,,,,,,,TSEM,Semiconductors,True,11.0,2585.0,True
+live_pick_rank,2026-10-14,,,,,C_2026Q4,,,,,,,,,,,,,,,AXTI,Semiconductors,True,2.0,2585.0,True
+live_pick_rank,2026-10-14,,,,,C_2026Q4,,,,,,,,,,,,,,,PURR,Finance: Consumer Services,False,15.0,2585.0,True
+live_pick_rank,2026-10-14,,,,,C_2026Q4,,,,,,,,,,,,,,,HPE,Retail: Computer Software & Peripheral Equipment,True,5.0,2585.0,True
+live_pick_rank,2026-10-14,,,,,C_2026Q4,,,,,,,,,,,,,,,TTMI,Electrical Products,True,9.0,2585.0,True
+live_pick_rank,2026-10-14,,,,,C_2026Q4,,,,,,,,,,,,,,,CIEN,Telecommunications Equipment,False,46.0,2585.0,True
+live_pick_rank,2026-10-14,,,,,C_2026Q4,,,,,,,,,,,,,,,COHR,Electronic Components,True,8.0,2585.0,True
