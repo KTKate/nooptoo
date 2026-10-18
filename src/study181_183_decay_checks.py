@@ -64,6 +64,43 @@ gains, weighted, rank_q3), results/study182_families.csv (table = monthly / peri
 nights, net_bp, sharpe, diff_bp, t_vs_base, corr_live, fallback), results/study183_simple_rules.csv (table =
 monthly / period: rule, pricing, month or period, nights, net_bp, sharpe, t_vs_base, pct_window, corr_blend).
 
+Data checks: the live score here reproduces study135_137_expectations.build() exactly (capped, mean 38.17 bp, nightly
+corr 1.0); cap rule matches paper_overnight.cap_by_industry on 15 of 15 sampled days. Crosses: 111,926 legs needed,
+60,610 cached, 51,316 fetched into auctions182.parquet (98.4% found by the listing-venue rule, 598 of the remaining 801
+by the largest-print pass). Legs priced at the panel (no usable cross): 0.4-0.8% for the members, ensemble and blend,
+4.1% for p_jump and 12.5% for p_drop (low-priced names), 0.7-3.0% for the simple rules; the 10-15 night has a cross
+for every rule pick. Peak memory 2.4 GB.
+
+Result 181: market-level inputs have PSI 1-5 in most months (one value per day); 2026Q3 pooled vix 2.5, spy20 1.7
+(as in 2026Q1-Q2), vix_term 1.5 and iwm_spy5 1.0 (higher than 0.2-0.4 in 2026Q1-Q2, but within the monthly values seen
+throughout 2024-26), so no clearly unusual market regime in the inputs. Of the stock-level inputs, two moved: (1) beta (60-day): PSI 2026Q3 0.60 in the liquid universe (2026Q1 0.07,
+Q2 0.09) and 0.46 in the top 50 (0.24 / 0.33); the cross-section widened, with the median of all ml_frame rows at
+0.49-0.56 in 2026-07..09 against 0.86-1.03 in 2026H1 and the 10th percentile at -0.40..-0.44 against 0.02..0.10, i.e.
+many stocks moved against SPY. beta carries 7.0% of the ensemble's gain (the largest stock-level input; the
+market inputs carry 8-9% each) and 0.9% of the jump models'. (2) days_to_e: missing share 1.5% (liquid, 2024-25) ->
+10.7% in 2026-07, 83.6% in 08, 98.6% in 09 (top 50: 6.3%, 56%, 97%); PSI of its non-missing values 0.61 in Q3. It
+carries 11.0% of the jump models' gain and 0.2% of the ensemble's (study 158: 10-12% of jump_jump / jump_drop 2026Q3
+gain). last_surp had a smaller missing bump in 2026-02..04 (29-33% vs 13%; under 0.3% of gain). Every other
+stock-level input has 2026Q3 PSI <= 0.22 (top 50) and <= 0.14 (liquid), no higher than in 2026H1.
+Result 182 (capped top 10 at crosses, mean net bp a night, 2024-01..2026-06 -> 2026-07..09, Welch t): pooled +22.7 ->
+-19.3 (t -2.1), pooled_beh +25.4 -> -7.4 (-1.4), per_beh +25.6 -> -5.5 (-1.5), pooled_com +22.7 -> +15.7 (-0.3),
+per_com +7.7 -> -9.6 (-0.7), ensemble +29.5 -> -15.1 (-1.7), p_jump +47.6 -> -10.1 (-1.3), p_drop +30.8 -> -25.5
+(-0.9), p_jump - p_drop +46.8 -> -15.4 (-1.6), live blend +42.2 -> -3.1 (-1.3). Nine of ten scores turned negative;
+only pooled_com stayed positive. The drop is broad across the tree-model members and the jump model, so not one
+broken member. p_drop's base is driven by 2026-05 (+1,004 bp a night on low-priced names).
+Result 183 (net bp a night, cross pricing; panel in brackets; base 2024-01..2026-06 -> 2026Q3 -> 2026-10 to the
+10-15 night, 11 nights; Q3 percentile among 64-night windows, October among 11-night windows): beta60 +9.5 (+14.1) ->
+-0.5 (+5.4), 39th pct -> -91.2 (-81.6), 6th pct; vol20 -20.5 (-15.5) -> -35.7 (-34.2), 32nd -> -61.0 (-43.5), 29th;
+worst1 +11.0 (+13.4) -> -3.8 (+2.6), 25th -> -84.0 (-82.9), 5th; best1 +12.2 (+16.3) -> -4.0 (+1.7), 28th -> -15.0
+(-11.2), 32nd. Blend (182) for contrast: 2026Q3 at the 6th pct of 61-night windows. Cross pricing costs the rules 2-6
+bp a night against the panel (first-trade bias). Correlation of nightly net with the blend: beta60 0.59, best1 0.45,
+worst1 0.44, vol20 0.29.
+Reading: the simple rules were weaker in 2026Q3 (down 10-16 bp a night from base), but within their normal range
+(25th-39th percentile), while the blend and most model scores fell 17-62 bp, the blend to near the 6th percentile; so the Q3
+weakness is mostly specific to the models. October is market-wide: beta60 and worst1 lost 84-91 bp a night, near the
+5th percentile, as large as the live loss per night. The input checks point to two model-side candidates in Q3: the
+days_to_e outage (jump models) and the unusual beta cross-section (ensemble); neither is shown here to cause the loss.
+
     python src/study181_183_decay_checks.py fetch   # crosses for the picks of 182 and 183 (resumable)
     python src/study181_183_decay_checks.py         # all three studies (or: 181 / 182 / 183)
 """
@@ -447,7 +484,7 @@ def study183(P, cols, live_net=None):
             roll = full.rolling(n).mean().dropna() if n > 1 else full
             rows.append(dict(table="period", rule=k, pricing=pricing, period=nm, nights=n, net_bp=1e4 * s.mean(),
                              sharpe=sh(s), t_vs_base=welch_t(s, base) if nm != "2024-01..2026-06" else np.nan,
-                             pct_window=pct_rank(roll.values, s.mean()) if nm != "2024-01..2026-06" else np.nan,
+                             pct_window=pct_rank(roll.values, s.mean()) if nm != "2024-01..2026-06" and n else np.nan,
                              corr_blend=x.corr(live_net) if live_net is not None else np.nan))
     df = pd.DataFrame(rows)
     df.to_csv(OUT183, index=False)

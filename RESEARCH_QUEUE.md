@@ -13,15 +13,12 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-18)
-- 181: input drift: feature distributions July-October 2026 vs 2024-26 (population stability), for the inputs the
-  models rely on most
-- 182: did every model family weaken since July? Each ensemble member's and the jump score's own top 10 by month at
-  cross prices
-- 183: simple overnight rules (high-beta, day losers, volatility decile) by month: did all overnight approaches fail
-  since July, or only the model?
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 181 Caveat: only beta (spread widened) and days_to_e (unfilled Aug-Sep) drifted in 2026Q3
+- 182 Caveat: 9 of 10 model scores turned negative in 2026Q3; shared weakness
+- 183 Caveat: simple rules only mildly weaker in Q3 (model-side), but lost like the book in October (market-wide)
 - 179 Caveat: backtest-style picks with frozen 2026Q4 models lose as much as live in October (-95 vs -102 bp)
 - 180 Caveat: every model vintage is weak since July; the Q3 refit is not the cause
 - 173 Reject: correlation-aware selection lowers the mean in both periods

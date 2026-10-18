@@ -360,6 +360,18 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("181", "Input drift July-September 2026 vs 2024-25 (population stability by input and month)", "Caveat",
+     "Only two stock-level inputs moved: 60-day beta (PSI 0.60; the cross-stock spread widened and the median fell "
+     "from about 0.95 to 0.5; the ensemble's largest stock input at 7% of gain) and days_to_e (missing for 11% / 84% "
+     "/ 99% of rows in July / August / September; 11% of the jump models' gain). All other stock inputs PSI <= 0.22."),
+    ("182", "Each model family's own capped top 10 by period at cross prices", "Caveat",
+     "Nine of ten scores turned negative in 2026Q3 (drops of 17-62 bp a night, t -0.3 to -2.1); only pooled_com held "
+     "up (+16 bp). The weakness is shared across the families, not one broken member."),
+    ("183", "Simple overnight rules with no model (top beta, top volatility, day losers, day winners) by period",
+     "Caveat",
+     "In 2026Q3 the simple rules fell only 10-16 bp from their base (25th-39th percentile) while the blend was at the "
+     "6th; in October the beta and day-loser rules lost 84-91 bp a night, like the live book. Reading: July-September "
+     "is mostly model-side (coinciding with the beta drift and the days_to_e gap), October is market-wide."),
     ("179", "October 2026 rescored in the backtest pipeline with the frozen 2026Q4 models, at official crosses",
      "Caveat",
      "Backtest-style picks lose about as much as the live book: -95 bp a night (15:45 frame) and -86 bp (close "
