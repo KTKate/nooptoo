@@ -360,6 +360,15 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("187", "Group momentum overnight: after tech hardware, the top-beta or top-volatility decile has a bad stretch, "
+     "do the next nights continue or reverse? Same for the blend", "Caveat",
+     "After 10-night sums below the 5th percentile the groups return to about normal (next 20 nights +5 to +9 bp vs "
+     "+3 to +5 normally, t below 1.1); the blend's next 60 nights averaged +52 bp (normal +41). October's group "
+     "losses (-612 to -973 bp over 10 nights) are 3-4 times the 5th-percentile cut, so no close precedent exists."),
+    ("189", "Earlier drawdowns of the blend (2024-26) and the ML ranker (2022-26): depth, length, recovery", "Caveat",
+     "The five earlier blend drawdowns (-16% to -23%) all recovered within 47-88 nights of their peak. The current one "
+     "(backtest plus live) is -22.4% over 33 nights, the second deepest, while SPY was flat. The 15:45 ML ranker has "
+     "been below its January 2026 peak for 165 nights (-20.5%). A recovery is plausible, not shown."),
     ("181", "Input drift July-September 2026 vs 2024-25 (population stability by input and month)", "Caveat",
      "Only two stock-level inputs moved: 60-day beta (PSI 0.60; the cross-stock spread widened and the median fell "
      "from about 0.95 to 0.5; the ensemble's largest stock input at 7% of gain) and days_to_e (missing for 11% / 84% "
