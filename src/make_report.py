@@ -360,6 +360,11 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("184", "The July suspects tested with the frozen models: corrected days_to_e, beta mapped to its 2024-25 "
+     "quantiles or clipped, and both, on 2026Q3, October, a 2026Q2 control and 2025", "Reject",
+     "Neither explains the weakness. Corrected days_to_e adds +2.5 bp a night on 2026Q3 (t 0.7); beta remapping makes "
+     "it worse (-5.6 to -10.7 bp); clipping about -2 bp. October stays at -46 to -95 bp in every variant. Picks move "
+     "by about one name a night. The 2026Q2 control and 2025 barely change."),
     ("187", "Group momentum overnight: after tech hardware, the top-beta or top-volatility decile has a bad stretch, "
      "do the next nights continue or reverse? Same for the blend", "Caveat",
      "After 10-night sums below the 5th percentile the groups return to about normal (next 20 nights +5 to +9 bp vs "

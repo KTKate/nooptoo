@@ -53,6 +53,43 @@ Design
   overlap with the base picks (of 10), mean tech hardware picks a night, mean daily Spearman of the blend with base,
   paired t of the nightly net difference against base, share of changed beta / days_to_e values. Monthly means too.
 
+Data checks: base reproduces study 180 / 179 (C 2026Q2 on Q2 +63.9 bp, C 2026Q3 on Q3 +4.0, ML 2026Q3 on Q3 +4.0,
+  ML 2026Q2 on Q3 +18.3, C 2026Q4 October -69.2, C 2026Q2 October -66.8, B 2026Q4 October -77.5). Beta reference
+  1,091,544 rows: 1st / 50th / 99th percentile -0.42 / 0.99 / 3.85. Base frame beta median 1.02 (April) -> 0.56 /
+  0.49 / 0.54 (July / August / September) -> 0.69 (October); 10th percentile 0.10 -> -0.44 / -0.43 / -0.40; in 2025
+  the median was 0.89-1.22 and the 10th percentile 0.12-0.38. c_clip changes 10% of beta values in the 2026 frames, 2%
+  in 2025. days_to_e: the C and B frames already agree with the study 158 panel on 99.2-99.7% of rows (a_earn is
+  almost a no-op there); in the ML frame a_earn changes 39% of the Q2+Q3 rows and the missing share falls from 44% to
+  5%; days_since_e agrees everywhere. 469 new legs fetched into auctions184 (99.6% found by the venue rule, the other
+  2 by the largest-print pass); legs at the panel price 0-2%. Peak memory 2.6 GB (report), 1.4 GB (score).
+
+Result (capped top 10 at crosses, net bp a night, own-quarter models; diff vs base, paired t; overlap with base of 10):
+  2026Q2 control (C, 2026Q2): base +63.9; a_earn +63.9 (0.0, 10.0); b_qmap +66.2 (+2.3, t 0.5, 9.6); c_clip +61.2
+    (-2.7, t -1.6, 9.9); d +66.2. ML frame: base +65.9; a -1.0 (t -1.5); b -2.9 (t -1.0); c -2.9 (t -1.7).
+  2026Q3 (C, 2026Q3): base +4.0; a_earn +4.0 (0.0, 10.0); b_qmap -1.6 (-5.6, t -0.8, 9.2); c_clip +1.8 (-2.3, t -0.6,
+    9.8); d -1.6 (-5.6, t -0.8). ML frame (the backtest's inputs, with the hole): base +4.0; a_earn +6.5 (+2.5, t 0.7,
+    8.7); b_qmap -6.7 (-10.7, t -1.5, 9.2); c_clip +1.9 (-2.1, t -0.6); d -1.7 (-5.8, t -0.8, 8.3). Second check, 2026Q2
+    models on Q3: C base +12.9, b -10.4 (t -1.7), c -4.2 (t -1.4); ML base +18.3, a -5.8 (t -1.4), b -13.1 (t -2.2),
+    d -17.4 (t -2.7). Tech hardware picks 2.6-2.8 a night in every variant.
+  October, 13 nights (C, 2026Q4): base -69.2; a -69.2 (0.0); b -83.2 (-14.0, t -1.0, 9.2); c -73.6 (-4.4, t -1.3);
+    d -83.2. B (15:45) 2026Q4: base -77.5; b -74.4 (+3.1, t 0.5); c -78.1 (-0.7). 2026Q2 models: C base -66.8, b -65.9,
+    c -70.0; B base -48.7, b -46.7, c -47.9. Tech hardware 3.1-3.7 picks a night, about the same in every variant.
+  h_hole (days_to_e all missing, the live input): C 2026Q3 on Q3 +19.2 (+15.2, t 1.5, overlap 6.6); C 2026Q4 October
+    -95.4 (-26.2, t -1.7); B 2026Q4 October -91.3 (-13.8, t -0.9); 2026Q2 control -17.4 (t -1.3).
+  2025 sanity (ML, own quarterly models 2025Q1-Q4, 250 nights): base +61.1; b_qmap +58.0 (-3.1, t -1.0, overlap 9.45);
+    c_clip +61.9 (+0.8, t 0.8, 9.9). By quarter b moves -3.5 / -13.3 / +1.7 / +2.3 bp.
+Reading: neither suspect explains the July-September weakness. The Q3 shortfall against Q2 is about 60 bp a night
+  (+63.9 -> +4.0); correcting days_to_e adds at most +2.5 bp (ML frame, t 0.7) and nothing in the rebuilt C frame,
+  which already had correct values and was just as weak. Putting beta back on its 2024-25 distribution makes Q3
+  slightly worse (-5.6 to -13 bp, t -0.8 to -2.2), and clipping changes little (-2 bp). The models are not very
+  sensitive to either input: quantile mapping changes 0.5-0.9 picks of 10 a night in Q3, about as many as in 2025
+  (0.55), where the mapping has no drift to undo. October is not explained either (all variants -46 to -95 bp).
+Caveats: 61 Q3 nights and 13 October nights; paired t ignores cross-night correlation of picks. The quantile map
+  changes beta even in 2025 because single days differ from the pooled 2024-25 distribution; it removes the level
+  and spread of the day's beta but also the information in them. Tree models see beta through split thresholds, so a
+  shift inside a leaf range changes nothing; a different mapping (e.g. by month) could act differently. The h_hole
+  gain in Q3 and loss in October point in opposite directions and are within noise. sectors.parquet is a snapshot.
+
 Output: results/study184_july_suspects.csv (table = summary / monthly / input_change)
     python src/study184_july_suspects.py frames   # 2025 frame (ml_frame rows + earn_tonight / news_today)
     python src/study184_july_suspects.py score    # all variants -> data/local/study184_picks.parquet
