@@ -46,6 +46,27 @@ Design:
       has sd about 0.23. Pick overlap rank vs raw (same seed) and seed 2 vs seed 1. Check: the raw seed-1 2024Q1 fit
       against study 99's base (original days_to_e) to show the setup reproduces it.
 
+Data checks: corrected days_to_e missing for 1.6% of frame rows (frame 4.3%), 5.9% in 2026Q3 (frame 62%); where
+both are present they never differ. Market-level inputs take one value per day on every day 2020-26 (asserted).
+raw seed 1 2024Q1 vs study 99 base 2024Q1 (only days_to_e differs, on a few training rows): corr 0.96 pooled_beh,
+0.99 per_beh, 0.99 p_jump / p_drop, against 0.88 / 0.89 / 0.98 / 0.98 between study 99's seeds 1 and 2, so the setup
+reproduces study 99 up to the days_to_e change. Cap rule matches paper_overnight.cap_by_industry on 15 of 15 sampled
+days. Crosses: 30,668 legs needed, 26,971 cached, 3,697 fetched into auctions185.parquet (99.4% found); legs at the
+panel price 0.5-1.8% per book. Peak memory 2.8 GB (train), 1.8 GB (eval); about 5-8 min per quarter, 4.1 h in all.
+
+Result (capped top 10 at crosses; 2024-01..2025-06 / 2025-07..2026-06 / 2026Q3 / 2024-26; 2026Q3 = 61 nights to
+09-25): raw seed 1 Sharpe 2.56 / 2.59 / 0.83 / 2.39, seed 2 2.44 / 2.81 / -0.16 / 2.36; rank seed 1 2.23 / 2.38 /
+0.11 / 2.07, seed 2 2.16 / 3.10 / 0.40 / 2.36. 2-seed means: raw 2.50 / 2.70 / 0.34 / 2.38 (net 34.6 / 45.2 / 5.7 /
+35.9 bp), rank 2.20 / 2.74 / 0.25 / 2.22 (30.4 / 45.5 / 4.1 / 33.6 bp); rank minus raw -0.31 / +0.04 / -0.08 / -0.16
+Sharpe (-1.3 / +0.2 / -0.4 / -0.7 noise sd). Max drawdown of the 2-seed books raw -14.1% / -23.1% / -16.0% / -23.1%,
+rank -25.0% / -17.2% / -17.2% / -25.0%. Paired rank vs raw, same seed, 2024-26: seed 1 -4.5 bp (t -0.66), seed 2
+-0.1 bp (t -0.02), seed-averaged book -2.3 bp (t -0.40); 2026Q3: -11.8 (t -0.57), +8.7 (t 0.61), -1.6 (t -0.11).
+Seed noise reference (raw seed 2 vs 1): 2026Q3 -15.9 bp (t -1.11), Sharpe 0.83 vs -0.16. Ranked inputs keep only
+38-39% of the raw picks (same seed), less than a seed change keeps (57%), but the returns are no better. Verdict:
+reject. Ranking the stock-level inputs does not lift the blend in 2026Q3 or overall; all differences are within seed
+noise, and the rank blend is weaker in 2024-01..2025-06. The 2026Q3 weakness is not repaired by making the models
+blind to the scale of beta and the other stock inputs.
+
 Output: results/study185_rank_inputs.csv (tables: check, rescore, seedsum, paired, overlap, fallback, data_errors).
 Predictions in data/local/study185_pred/ (one parquet per variant, seed and quarter; resumable), ranked inputs cached
 in data/local/study185_pred/_xrank.npy. Training log data/local/study185_pred/train.log.

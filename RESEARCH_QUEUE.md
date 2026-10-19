@@ -13,12 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-19)
-- 185: retrain (close-feature setup of study 99, 2 seeds) with stock inputs as within-day ranks, so a shift in a
-  feature's spread cannot move the model; compare 2024-26 and 2026Q3 at crosses (start after 184)
 - 186: live record update with Friday 10-16
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 185 Reject: rank-input retrain no better (2.22 vs 2.38 over 2024-26; 2026Q3 0.25 vs 0.34)
 - 184 Reject: neither the days_to_e gap nor the beta drift explains the July-September weakness
 - 187 Caveat: after past bad stretches groups and the blend returned to about normal; October is 3-4x worse than
   the 5th-percentile cut, so precedents are weak

@@ -360,6 +360,11 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("185", "Retrain with stock-level inputs as within-day ranks (close-feature setup, 2 seeds, corrected days_to_e), "
+     "so feature spread shifts cannot move the model", "Reject",
+     "No gain: 2-seed mean Sharpe 2.20 / 2.74 / 0.25 (2024-25H1 / 2025H2-26H1 / 2026Q3) vs raw 2.50 / 2.70 / 0.34; "
+     "2024-26 -2.3 bp a night (t -0.4). Rank inputs change 61% of picks but not returns; in 2026Q3 the seed alone "
+     "moves results more. The July weakness is not an input-scaling problem."),
     ("184", "The July suspects tested with the frozen models: corrected days_to_e, beta mapped to its 2024-25 "
      "quantiles or clipped, and both, on 2026Q3, October, a 2026Q2 control and 2025", "Reject",
      "Neither explains the weakness. Corrected days_to_e adds +2.5 bp a night on 2026Q3 (t 0.7); beta remapping makes "
