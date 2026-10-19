@@ -12,7 +12,15 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-18)
+## Running (batch 2026-10-19)
+- 184: test the July suspects with the frozen models: rescore 2026Q3 and October with days_to_e rebuilt and with beta
+  replaced by its 2024-25 quantile value or clipped, at cross prices
+- 185: retrain (close-feature setup of study 99, 2 seeds) with stock inputs as within-day ranks, so a shift in a
+  feature's spread cannot move the model; compare 2024-26 and 2026Q3 at crosses (start after 184)
+- 187: group momentum overnight: after tech hardware or the volatile decile loses several nights in a row, does the
+  next stretch continue or reverse?
+- 189: earlier drawdowns of the ML ranker (2020-26) and the blend: depth, length, recovery
+- 186: live record update with Friday 10-16
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
