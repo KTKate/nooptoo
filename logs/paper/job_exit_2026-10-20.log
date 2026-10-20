@@ -1,0 +1,166 @@
+== paper job exit 2026-10-20 09:23:16 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-20",
+ "orders": [
+  {
+   "symbol": "ARCT",
+   "qty": 82,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BSP",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DJT",
+   "qty": 133,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRVO",
+   "qty": 94,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HNRG",
+   "qty": 74,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HOOD",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPP",
+   "qty": 92,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NN",
+   "qty": 89,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PUMP",
+   "qty": 110,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SVRN",
+   "qty": 32,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+ARCT 200 {"id":"e4f0aa91-94d0-4dd0-afb0-35af43b59b2d","client_order_id":"5545916e-027a-4f89-883c-1236591626ba","created_at":"2026-10-20T13:23:35.72008146Z","updated_at":"2026-10-20T13:23:35.720859768Z","submit
+BSP 200 {"id":"a961d89b-055a-40fa-ada3-0cb471df29ab","client_order_id":"5ab189e5-8b2c-4820-99dc-651c5f27fcb6","created_at":"2026-10-20T13:23:36.185155964Z","updated_at":"2026-10-20T13:23:36.185938077Z","submi
+DJT 200 {"id":"c133cf41-316c-420c-9e64-538bbcf2e354","client_order_id":"ebbaa50d-973e-49d8-b6c0-b9340fc8160e","created_at":"2026-10-20T13:23:36.614035386Z","updated_at":"2026-10-20T13:23:36.621716007Z","submi
+FRVO 200 {"id":"dd541855-58ba-47bf-8019-ec26a4fa8993","client_order_id":"a6ba3fea-cba7-4835-8644-a7f1a14c8890","created_at":"2026-10-20T13:23:36.976075058Z","updated_at":"2026-10-20T13:23:36.977520416Z","submi
+HNRG 200 {"id":"649da360-5648-4e92-8a04-134b1f60cd73","client_order_id":"fce92bbf-a396-49e8-ab3a-10ac7890c820","created_at":"2026-10-20T13:23:37.470377285Z","updated_at":"2026-10-20T13:23:37.47117444Z","submit
+HOOD 200 {"id":"931376c5-c7dc-4c68-96f8-c48a4da2cd5d","client_order_id":"9dcc23ee-a566-4ff0-8097-295c389292e2","created_at":"2026-10-20T13:23:37.9149259Z","updated_at":"2026-10-20T13:23:37.915720512Z","submitt
+HPP 200 {"id":"179eeaf8-a542-4284-95a0-0cd7629b702d","client_order_id":"637af635-a811-4b82-972d-de8903cbab21","created_at":"2026-10-20T13:23:38.343902438Z","updated_at":"2026-10-20T13:23:38.344811942Z","submi
+NN 200 {"id":"7a54180f-2f5b-4e80-85be-7e966d3bc2da","client_order_id":"78d41b0d-36e8-4e42-ad91-bbe949b037a2","created_at":"2026-10-20T13:23:38.761534619Z","updated_at":"2026-10-20T13:23:38.762154368Z","submi
+PUMP 200 {"id":"7969ba11-b676-4083-a996-cf9012072ac8","client_order_id":"aa843050-97a9-43c5-ab0f-e6433d71c948","created_at":"2026-10-20T13:23:39.052593468Z","updated_at":"2026-10-20T13:23:39.05320768Z","submit
+SVRN 200 {"id":"9bdb2a7a-a1a9-4290-b601-de5c7c96d6e5","client_order_id":"92da6f33-bfdb-48d8-a291-42a297b83a1d","created_at":"2026-10-20T13:23:39.484143135Z","updated_at":"2026-10-20T13:23:39.484940742Z","submi
+{
+ "day": "2026-10-20",
+ "from_entry": "entry_2026-10-19.json",
+ "equity": 8400.57,
+ "orders": [
+  {
+   "symbol": "NN",
+   "qty": 22,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HOOD",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DJT",
+   "qty": 33,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRVO",
+   "qty": 23,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HNRG",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ARCT",
+   "qty": 20,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPP",
+   "qty": 23,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PUMP",
+   "qty": 27,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "SVRN": "not easy to borrow",
+  "BSP": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-10-20 09:33:31.594885-04:00"
+}
+NN 200 {"id":"531f2b95-e99c-4004-b97b-670d8cc91beb","client_order_id":"4650aaaa-4846-43ea-981a-104abb52f958","created_at":"2026-10-20T13:33:32.029177987Z","updated_at":"2026-10-20T13:33:32.033647912Z","submi
+HOOD 200 {"id":"66361ac3-fa5c-481c-985b-e221f702cb5a","client_order_id":"49f9893f-2339-4993-bfce-f570587429cc","created_at":"2026-10-20T13:33:32.539985581Z","updated_at":"2026-10-20T13:33:32.54420519Z","submit
+DJT 200 {"id":"4f73e5e2-5c53-4894-beae-4bcaeab759c8","client_order_id":"09299106-cda0-4201-99ae-70e6b6e1b89e","created_at":"2026-10-20T13:33:32.969178633Z","updated_at":"2026-10-20T13:33:33.001607757Z","submi
+FRVO 200 {"id":"a6602b57-9812-49c4-b719-3443a07026b6","client_order_id":"7b1f04f0-836b-417c-8319-6717e23839ee","created_at":"2026-10-20T13:33:33.425575891Z","updated_at":"2026-10-20T13:33:33.427037323Z","submi
+HNRG 200 {"id":"1a318afe-dfd8-4ffc-90f7-997e377a120a","client_order_id":"09263b98-ea6b-4a76-a1d4-fd0811b1a0b7","created_at":"2026-10-20T13:33:33.824082473Z","updated_at":"2026-10-20T13:33:33.832567921Z","submi
+ARCT 200 {"id":"fd32780a-4e48-47b8-aca5-ef99bd90d92a","client_order_id":"705ff32f-ad0c-4bce-998e-a1c8e87c46d7","created_at":"2026-10-20T13:33:34.24727931Z","updated_at":"2026-10-20T13:33:34.249233852Z","submit
+HPP 200 {"id":"6c69aef9-d1e4-4dab-b876-4fc8ddfdda02","client_order_id":"fda5b6ec-6409-458a-902d-6b97aadf3c19","created_at":"2026-10-20T13:33:34.776277971Z","updated_at":"2026-10-20T13:33:34.778300996Z","submi
+PUMP 200 {"id":"ea63d443-e31f-4868-ac46-ec1b7789b5ef","client_order_id":"f7ccf08c-ed2f-482a-9957-25f1fafa0321","created_at":"2026-10-20T13:33:35.227108179Z","updated_at":"2026-10-20T13:33:35.232857343Z","submi
