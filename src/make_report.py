@@ -360,6 +360,15 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("190", "October 2026 by blend part (blend, ensemble only, jump only, w=3) with the frozen 2026Q4 models, 13 live "
+     "nights, at crosses", "Reject",
+     "No part lost much less: blend -58 bp a night, ensemble only -44 (t +0.6), jump only -81 (t -0.7) despite half "
+     "the tech-hardware picks; every part lost 250-560 bp on 10-06, 10-13 and 10-14 and gained 440-520 bp on 10-16."),
+    ("191", "Forward-test tracker of the queued leads on the live nights (fixed before these nights), rerun weekly",
+     "Leads only",
+     "13 nights to entry 10-16: live -7.75%; halve on tech hardware -3.5% (halved on 12 of 13 nights, so mostly a "
+     "smaller book); skip Monday -6.5%; top 8 -7.75%; ensemble 5 + jump 5 -8.3%. Far too few nights to judge; "
+     "rerun with `python src/study190_191_live_leads.py track`."),
     ("185", "Retrain with stock-level inputs as within-day ranks (close-feature setup, 2 seeds, corrected days_to_e), "
      "so feature spread shifts cannot move the model", "Reject",
      "No gain: 2-seed mean Sharpe 2.20 / 2.74 / 0.25 (2024-25H1 / 2025H2-26H1 / 2026Q3) vs raw 2.50 / 2.70 / 0.34; "
