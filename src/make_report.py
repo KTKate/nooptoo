@@ -360,6 +360,15 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("192", "Rank within sector: top name per sector, top 2 from the 5 best sectors, or sector-demeaned scores, at "
+     "cross prices", "Reject",
+     "Every variant is worse in both periods (-9 to -24 bp a night, t up to -3.4). Spreading across sectors halves "
+     "tech-hardware exposure and lowers pick correlation, but costs more than it saves."),
+    ("193", "Dispersion regime: is the blend better after nights or days with wide cross-sectional dispersion?",
+     "Reject",
+     "Patterns flip between periods or between standard deviation and interquartile range. The sizing rule chosen on "
+     "2024-25H1 (2.79 vs 2.65) loses on the holdout (2.05 vs 2.23, t -2.0); dispersion has risen since mid-2025, so "
+     "fixed tercile cuts drift."),
     ("190", "October 2026 by blend part (blend, ensemble only, jump only, w=3) with the frozen 2026Q4 models, 13 live "
      "nights, at crosses", "Reject",
      "No part lost much less: blend -58 bp a night, ensemble only -44 (t +0.6), jump only -81 (t -0.7) despite half "

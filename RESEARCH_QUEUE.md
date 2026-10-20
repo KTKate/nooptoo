@@ -13,11 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-20)
-- 192: rank within sector: take the best names per sector (instead of the overall top 10), at cross prices
-- 193: overnight dispersion as a regime: is the blend better after nights with wide cross-sectional dispersion?
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 192 Reject: ranking within sectors costs 9-24 bp a night in both periods
+- 193 Reject: dispersion patterns flip; sizing rule fails on the holdout
 - 190 Reject: no blend part lost much less in October; jump-only lost more with fewer tech-hardware picks
 - 191 Leads only: tracker built; after 13 live nights all leads within noise of the live book (rerun weekly)
 - 186 Live record: Friday 10-16 night +5.4% ($420.74); 13 nights compounded -7.75% at auction prints

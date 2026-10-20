@@ -43,6 +43,47 @@ Rule candidates (10): per variable, weight 1.5 / 1.0 / 0.5 on the high / mid / l
 reverse ('up_low'); net return scales with the weight (costs included). The candidate with the best 2024-01..2025-06
 Sharpe is chosen and checked on 2025-07..2026-09; mean weight reported (it is not 1 outside the first period).
 
+Data checks: the base rebuilt here on the full cross table has the same picks as build() on every day and the same
+net series (corr 1.0, mean abs difference 0.0 bp; Sharpe 2.65 / 2.23 / -0.20 / 2.45). Crosses: 30,190 legs needed,
+24,755 cached, 5,435 fetched into auctions192.parquet (99.8% found, 51 by the second pass); legs at the panel price
+0.3-1.0% per variant and period. Liquid universe at least 2,065 names a day (median 2,326). Peak memory 1.9 GB.
+
+Result 192 (at crosses; 2024-01..2025-06 / 2025-07..2026-09 / 2026Q3 / 2024-26; 373 / 312 / 61 / 685 nights):
+  base           Sharpe 2.65 / 2.23 / -0.20 / 2.45, net 39.3 / 36.8 / -3.1 / 38.2 bp, max dd -17.0% / -22.8% / -14.7% /
+                 -22.8%, tech hardware 0.84 / 1.77 / 2.98 names a night, pick correlation 0.28 / 0.31 / 0.38.
+  sector1x10 (a) Sharpe 1.77 / 0.89 / -1.21 / 1.33, net 21.4 / 12.6 / -15.5 / 17.4 bp, vs base -17.9 / -24.2 / -12.3 /
+                 -20.8 bp (paired t -2.6 / -3.4 / -1.0 / -4.2), max dd -15.0% / -22.8%, tech hw 0.43 / 0.64 / 1.00,
+                 correlation 0.26 / 0.25 / 0.26; 51% of its picks are base picks.
+  sector2x5 (b)  Sharpe 2.19 / 1.33 / 0.15 / 1.77, net 30.0 / 20.9 / 2.3 / 25.8 bp, vs base -9.3 / -15.9 / +5.4 /
+                 -12.3 bp (t -1.7 / -2.6 / +0.5 / -3.0), max dd -17.7% / -28.7%, tech hw 0.64 / 1.03 / 1.59,
+                 correlation 0.28 / 0.28 / 0.31; 71% overlap.
+  demeaned_cap3 (c) Sharpe 2.22 / 1.17 / -1.42 / 1.74, net 29.7 / 16.1 / -17.4 / 23.5 bp, vs base -9.6 / -20.7 /
+                 -14.2 / -14.7 bp (t -1.3 / -2.2 / -0.7 / -2.4), max dd -18.6% / -24.9%, tech hw 0.66 / 0.87 / 1.93,
+                 correlation 0.29 / 0.27 / 0.27; 34% overlap.
+  Verdict: reject all three. Each is worse than the base in the choice period and again in 2025-07..2026-09 (the
+  shortfall is significant in the second period for all three). Spreading picks across sectors lowers tech hardware
+  exposure and pick correlation somewhat, but it costs 9-24 bp a night of return; the base's sector concentration is
+  where its edge is. Only (b) is better than the base in 2026Q3 (+5.4 bp, t 0.5, 61 nights), not a reason to switch.
+
+Result 193 (base capped net; terciles cut on 2024-01..2025-06; dispersion rose after mid-2025, so 56-83% of
+2025-07..2026-09 nights fall in the first period's high tercile for on_iqr / day_std / day_iqr):
+  Night dispersion (std): high tercile 68 bp vs low 22 bp in the first period (t high vs low 1.6), but 27 vs 43 bp in
+  the second (t -0.4). IQR: low tercile best in both periods (48 / 66 bp vs high 33 / 27 bp; t -0.5 / -0.9).
+  Day-session dispersion (std): high tercile better in both periods (49 vs 25 bp, t 0.9; 57 vs -85 bp, t 2.6, the
+  low tercile there has only 28 nights); Spearman 0.07 / 0.12. Day IQR: no consistent sign (high tercile 25 / 37 bp
+  vs low 46 / 50 bp). Score spread: middle tercile best in both periods (64 / 46 bp vs low 19 / 18 bp), not monotone.
+  Rule: the best of the 10 candidates on 2024-01..2025-06 was day_iqr 'up_low' (1.5x after low day IQR, 0.5x after
+  high): Sharpe 2.79 vs 2.65 there (+3.4 bp, t 0.7), but 2.05 vs 2.23 in 2025-07..2026-09 (-13.9 bp, t -2.0, mean
+  weight 0.62 because most nights are now in the high tercile) and -1.08 vs -0.20 in 2026Q3. Verdict: reject. No
+  dispersion measure gives a rule that holds up; the one in-sample winner fails out of sample. Post hoc, day_std
+  'up_high' was better in the second period (2.70 vs 2.23, t 3.5, mean weight 1.31) but below the base in the first
+  (2.46 vs 2.65); with the measures' sign flipping between std and IQR it is not a basis for sizing.
+
+Caveats: one sector snapshot applied to all dates; '(none)' sector names pooled as one group; day-session dispersion
+uses the 16:00 close, so a live rule would have to use the 15:45 value (very close but not identical); tercile
+buckets of 20-60 nights in the second period and 2026Q3 are noisy; 10 rule candidates were searched, so even a
+pass would need a haircut.
+
 Output: results/study192_sector_rank.csv (table = rescore / overlap / fallback / check), results/study193_dispersion.csv
 (table = tercile / spearman / rule / choice / cuts).
 
@@ -250,7 +291,6 @@ def study192(K, S, W, th, Rx, miss, C, same):
         nth = (H & th.reindex(cols).values).sum(axis=1).where(H.sum(axis=1) > 0)
         nn = H.sum(axis=1).where(H.sum(axis=1) > 0)
         pc = pick_corr(Wx, N)
-        nsec = None
         for p, a0, b0 in PER:
             x = nets[k].loc[a0:b0]
             rows.append(dict(table="rescore", variant=k, period=p, **st(x),
@@ -262,7 +302,6 @@ def study192(K, S, W, th, Rx, miss, C, same):
                              share_in_base=float((hh & Hb.loc[a0:b0]).values.sum() / hh.values.sum())))
             rows.append(dict(table="fallback", variant=k, period=p, legs=int(hh.values.sum()),
                              share_panel=float((miss.loc[a0:b0] & hh).values.sum() / hh.values.sum())))
-        del nsec
     return pd.DataFrame(rows), nets
 
 
@@ -279,7 +318,7 @@ def dispersion(P, cols, S, Wc):
         q = x.quantile([0.25, 0.75], axis=1)
         return q.loc[0.75] - q.loc[0.25]
     D = pd.DataFrame({"on_std": on.clip(-0.5, 0.5).std(axis=1), "on_iqr": iqr(on),
-                      "day_std": dy.clip(-0.5, 0.5).std(axis=1), "day_iqr": iqr(dy), "n_liquid": liq.loc[ix].sum(1)})
+                      "day_std": dy.clip(-0.5, 0.5).std(axis=1), "day_iqr": iqr(dy), "n_liquid": liq.loc[ix].sum(axis=1)})
     H = Wc > 0
     D["score_spread"] = S.where(H).mean(axis=1) - S.median(axis=1)
     return D
