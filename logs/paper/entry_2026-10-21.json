@@ -1,0 +1,97 @@
+{
+ "day": "2026-10-21",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "TSEM": 0.9961,
+  "VICR": 0.99584,
+  "FRVO": 0.99454,
+  "PENG": 0.99441,
+  "SPCX": 0.99337,
+  "FIX": 0.99298,
+  "ONTO": 0.98829,
+  "SMCI": 0.98777,
+  "RAPP": 0.98686,
+  "BRUN": 0.98686
+ },
+ "uncapped_top": {
+  "TSEM": 0.9961,
+  "VICR": 0.99584,
+  "FRVO": 0.99454,
+  "PENG": 0.99441,
+  "SPCX": 0.99337,
+  "FIX": 0.99298,
+  "ONTO": 0.98829,
+  "SMCI": 0.98777,
+  "RAPP": 0.98686,
+  "BRUN": 0.98686
+ },
+ "equity": 8688.62,
+ "orders": [
+  {
+   "symbol": "TSEM",
+   "qty": 4,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "VICR",
+   "qty": 4,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "FRVO",
+   "qty": 96,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "PENG",
+   "qty": 14,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SPCX",
+   "qty": 5,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SMCI",
+   "qty": 24,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "RAPP",
+   "qty": 34,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 103,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 7343.07
+}
