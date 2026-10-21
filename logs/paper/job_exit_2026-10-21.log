@@ -1,0 +1,152 @@
+== paper job exit 2026-10-21 09:19:54 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-21",
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 10,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AEHR",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "COHR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "LITE",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PENG",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMTC",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TTMI",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AAOI 200 {"id":"b4e50178-02eb-4241-9583-99b6a7921aef","client_order_id":"5af06f21-adea-45a7-8eb0-a23a8eb738f0","created_at":"2026-10-21T13:20:15.466064158Z","updated_at":"2026-10-21T13:20:15.466627834Z","submi
+AEHR 200 {"id":"35fd1740-3781-4567-ad7f-a0d55bd66ef0","client_order_id":"46f908b4-1629-4519-8f1d-20ea11fae0a3","created_at":"2026-10-21T13:20:15.93583592Z","updated_at":"2026-10-21T13:20:15.941835439Z","submit
+BE 200 {"id":"9fbbc1b7-4b29-4148-ad66-216c74880812","client_order_id":"01876127-6ce0-4739-b0dc-2cd6f73f9b05","created_at":"2026-10-21T13:20:16.490515113Z","updated_at":"2026-10-21T13:20:16.49106622Z","submit
+COHR 200 {"id":"be3911c7-1a69-4394-a953-e904430f4b85","client_order_id":"b27092d3-83fd-42d7-8507-69d1cfcdba60","created_at":"2026-10-21T13:20:16.929436219Z","updated_at":"2026-10-21T13:20:16.930026454Z","submi
+DELL 200 {"id":"e61731c3-d405-4e12-be71-bd637d5a7d78","client_order_id":"e244fa64-9726-4517-bae8-92009f3e6814","created_at":"2026-10-21T13:20:17.322378575Z","updated_at":"2026-10-21T13:20:17.322945506Z","submi
+HPE 200 {"id":"e56e30a7-7b9f-46d1-be56-a55b985cc554","client_order_id":"481ee1fc-686e-404d-b958-f8b4eae26f2d","created_at":"2026-10-21T13:20:17.730395053Z","updated_at":"2026-10-21T13:20:17.737038559Z","submi
+LITE 200 {"id":"e23caf23-6931-43f4-8025-d7f8aae774ff","client_order_id":"12ea8922-8e0e-4c7f-a2e5-1380472ac060","created_at":"2026-10-21T13:20:18.12937047Z","updated_at":"2026-10-21T13:20:18.133443149Z","submit
+PENG 200 {"id":"86d0371d-9efb-4e18-b18e-c17051d0d69e","client_order_id":"798111fb-a58e-47a9-8a97-de5154fcf0e4","created_at":"2026-10-21T13:20:18.541540689Z","updated_at":"2026-10-21T13:20:18.542098936Z","submi
+SMTC 200 {"id":"8fd5968e-c8ca-4de2-9775-325ada6c5f59","client_order_id":"12c4febb-d68f-44de-9b1a-6613a713fd1e","created_at":"2026-10-21T13:20:18.991969135Z","updated_at":"2026-10-21T13:20:18.99256553Z","submit
+TTMI 200 {"id":"11046c37-561c-4a6c-ac3b-a61296afc86c","client_order_id":"a3806813-6810-4893-bb78-bcc917890bb4","created_at":"2026-10-21T13:20:19.429348237Z","updated_at":"2026-10-21T13:20:19.429916139Z","submi
+{
+ "day": "2026-10-21",
+ "from_entry": "entry_2026-10-20.json",
+ "equity": 8686.39,
+ "orders": [
+  {
+   "symbol": "PENG",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMTC",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AEHR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TTMI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "COHR": "no price or qty 0",
+  "BE": "no price or qty 0",
+  "LITE": "no price or qty 0",
+  "DELL": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-21 09:34:24.273197-04:00"
+}
+PENG 200 {"id":"2f9bcedd-b1fa-4228-ae6a-df4df6427044","client_order_id":"4acfcc19-2c56-4984-9b56-c8581e284b79","created_at":"2026-10-21T13:34:24.771837091Z","updated_at":"2026-10-21T13:34:24.772947006Z","submi
+SMTC 200 {"id":"a7f7a51f-762f-4769-9d81-4b019f5f9208","client_order_id":"8bf7841a-f2c2-486c-88ea-ec936b975c4d","created_at":"2026-10-21T13:34:25.232302542Z","updated_at":"2026-10-21T13:34:25.233758396Z","submi
+AAOI 200 {"id":"8bb820f5-20e1-437f-9726-4a91279af0aa","client_order_id":"7be43d1c-5982-4077-9c4e-3311eb6fd0ce","created_at":"2026-10-21T13:34:25.633292259Z","updated_at":"2026-10-21T13:34:25.636163787Z","submi
+AEHR 200 {"id":"44c41a0e-4ac0-4339-baa6-b42aad200068","client_order_id":"a23b66e4-55d0-4afa-839b-a7bf51ddd476","created_at":"2026-10-21T13:34:26.059803599Z","updated_at":"2026-10-21T13:34:26.061473694Z","submi
+TTMI 200 {"id":"18e2d641-8ceb-4a78-bc02-60044af430a7","client_order_id":"057c3d7c-d923-4e82-933e-f011b9ea28df","created_at":"2026-10-21T13:34:26.452621228Z","updated_at":"2026-10-21T13:34:26.453926807Z","submi
+HPE 200 {"id":"b1a4ded2-7f7a-44d2-be02-cc534aee5742","client_order_id":"925013f2-fdb4-4622-b004-84ed26fb19d2","created_at":"2026-10-21T13:34:26.946659369Z","updated_at":"2026-10-21T13:34:26.948057225Z","submi
