@@ -12,10 +12,15 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-20)
+## Running (batch 2026-10-21)
+- 194: the blend restricted by beta: picks only from low- or mid-beta names (does avoiding the high-beta overnight
+  premium avoid the 2026 losses, and what does it cost?), at cross prices
+- 195: the other candidate legs in the recent stretch: day-session long (study 67) and day short (study 68) by
+  month through October, at cross prices; would shifting weight to them have helped?
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 196 Live record: 14 nights to entry 10-19, compounded -8.3% at auction prints (10-19 night -0.6%)
 - 192 Reject: ranking within sectors costs 9-24 bp a night in both periods
 - 193 Reject: dispersion patterns flip; sizing rule fails on the holdout
 - 190 Reject: no blend part lost much less in October; jump-only lost more with fewer tech-hardware picks
