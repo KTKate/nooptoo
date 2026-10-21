@@ -360,6 +360,17 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("194", "The blend restricted by beta: low-beta only, mid-beta only, beta-neutral, at cross prices", "Reject",
+     "Most of the edge comes from the high-beta tilt (picks average beta 2.2): the beta rules earn 4-17 bp a night over "
+     "2024-26 vs 38 (t -2.6 to -3.9). They were also worse in 2026Q3. In October they lost far less (-2 to -24 bp a "
+     "night vs -87 without 10-16), not significant over 14 nights."),
+    ("195", "The day legs (day-session long, day short of the picks) by month through October, and the study 71 "
+     "cycle in the weak stretch, at cross prices", "Candidate",
+     "Both day legs had their best quarter in 2026Q3: day short +40 bp a night standalone (Sharpe 2.15), day long +16. "
+     "The study 71 cycle made +15 bp a night in 2026Q3 vs -3 for the blend alone (t 1.45) and +6.7 bp over 2024H2-26 "
+     "(Sharpe 2.44 vs 2.17, t 1.7). The live day short added +9 bp a night in October at quarter size. The picks tend "
+     "to fall during the day when the night leg struggles, so the day short offsets part of it. Needs margin and "
+     "opening-auction orders."),
     ("192", "Rank within sector: top name per sector, top 2 from the 5 best sectors, or sector-demeaned scores, at "
      "cross prices", "Reject",
      "Every variant is worse in both periods (-9 to -24 bp a night, t up to -3.4). Spreading across sectors halves "
