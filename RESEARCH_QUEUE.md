@@ -12,7 +12,13 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-21)
+## Running (batch 2026-10-22)
+- 197: the full cycle (night blend + day long + day short) re-weighted at cross prices: day long 0 / 0.25 / 0.5, day
+  short 0 / 0.25 / 0.5; choose on 2024H2-25H1, report later periods and 2026Q3
+- 198: day-short size by regime: does a larger day short pay in weak overnight stretches without costing much in
+  good ones? (rules fixed in advance)
+- 200: how the legs move together: correlation of night, day-long and day-short returns overall and in weak
+  overnight stretches (is the day short a dependable offset?)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
