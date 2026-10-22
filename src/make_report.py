@@ -360,6 +360,17 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("197", "Full-cycle weights at cross prices: day long 0 / 0.25 / 0.5 and day short 0 / 0.25 / 0.5 with the night "
+     "blend", "Candidate",
+     "The choice-period winner is the study 71 setting (day long 0.5, day short 0.25): Sharpe 2.33 vs 2.07 there, "
+     "2.91 vs 2.80 next, 0.86 vs -0.20 in 2026Q3; 2024H2-26 +6.7 bp a night (t 1.7). Deeper drawdown (-27% vs -23%). "
+     "Day short alone lowers Sharpe outside 2026Q3. Needs margin, auction orders and day-trade eligibility."),
+    ("198", "Day-short size by regime (0.5 after weak night stretches, losing nights or high VIX)", "Reject",
+     "No gain (-0.1 bp a night over 2024H2-26); the day short does worse on high-VIX days (-9 vs +25 bp)."),
+    ("200", "How the night, day-long and day-short legs move together", "Caveat",
+     "The day short is not a hedge: after nights losing 1%+ it averaged -25 bp (vs +19 otherwise); correlation with "
+     "the night leg +0.08. The day long does better after bad nights (+34 bp) and offsets the day short's market "
+     "exposure (correlation -0.49)."),
     ("194", "The blend restricted by beta: low-beta only, mid-beta only, beta-neutral, at cross prices", "Reject",
      "Most of the edge comes from the high-beta tilt (picks average beta 2.2): the beta rules earn 4-17 bp a night over "
      "2024-26 vs 38 (t -2.6 to -3.9). They were also worse in 2026Q3. In October they lost far less (-2 to -24 bp a "
@@ -368,9 +379,9 @@ studies = [
      "cycle in the weak stretch, at cross prices", "Candidate",
      "Both day legs had their best quarter in 2026Q3: day short +40 bp a night standalone (Sharpe 2.15), day long +16. "
      "The study 71 cycle made +15 bp a night in 2026Q3 vs -3 for the blend alone (t 1.45) and +6.7 bp over 2024H2-26 "
-     "(Sharpe 2.44 vs 2.17, t 1.7). The live day short added +9 bp a night in October at quarter size. The picks tend "
-     "to fall during the day when the night leg struggles, so the day short offsets part of it. Needs margin and "
-     "opening-auction orders."),
+     "(Sharpe 2.44 vs 2.17, t 1.7). The live day short added +9 bp a night in October at quarter size. Study 200: "
+     "the day short is not a dependable offset (it does worse after losing nights); its 2026Q3 gain was general. "
+     "Needs margin and opening-auction orders."),
     ("192", "Rank within sector: top name per sector, top 2 from the 5 best sectors, or sector-demeaned scores, at "
      "cross prices", "Reject",
      "Every variant is worse in both periods (-9 to -24 bp a night, t up to -3.4). Spreading across sectors halves "

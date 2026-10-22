@@ -13,15 +13,12 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-10-22)
-- 197: the full cycle (night blend + day long + day short) re-weighted at cross prices: day long 0 / 0.25 / 0.5, day
-  short 0 / 0.25 / 0.5; choose on 2024H2-25H1, report later periods and 2026Q3
-- 198: day-short size by regime: does a larger day short pay in weak overnight stretches without costing much in
-  good ones? (rules fixed in advance)
-- 200: how the legs move together: correlation of night, day-long and day-short returns overall and in weak
-  overnight stretches (is the day short a dependable offset?)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 197 Candidate: study 71 weights (day long 0.5, day short 0.25) still best; +6.7 bp a night over 2024H2-26 (t 1.7)
+- 198 Reject: regime-based day-short sizing adds nothing
+- 200 Caveat: the day short is not a hedge for losing nights; the day long is the better partner
 - 194 Reject: low-beta or beta-neutral blends lose most of the edge (4-17 vs 38 bp a night); losses smaller in October
 - 195 Candidate: day legs held up since July (day short +40 bp a night in 2026Q3); full cycle +15 vs -3 bp in Q3
 - 196 Live record: 14 nights to entry 10-19, compounded -8.3% at auction prints (10-19 night -0.6%)
