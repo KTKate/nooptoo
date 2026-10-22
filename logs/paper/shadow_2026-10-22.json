@@ -1,0 +1,134 @@
+{
+ "day": "2026-10-22",
+ "recorded_at": "2026-10-22 15:56:45.437153-04:00",
+ "news_window": [
+  "2026-10-21 19:45:00+00:00",
+  "2026-10-22 19:45:00+00:00"
+ ],
+ "n_news_symbols": 1827,
+ "smallcap_nonews": {
+  "YDES": {
+   "loss": 0.2735,
+   "px": 4.25
+  },
+  "PMI": {
+   "loss": 0.2048,
+   "px": 7.435
+  },
+  "GMTL": {
+   "loss": 0.1764,
+   "px": 4.81
+  },
+  "CEPL": {
+   "loss": 0.1526,
+   "px": 2.72
+  },
+  "FEAM": {
+   "loss": 0.1096,
+   "px": 2.315
+  },
+  "VOGX": {
+   "loss": 0.0986,
+   "px": 18.920000076293945
+  },
+  "SND": {
+   "loss": 0.0962,
+   "px": 4.745
+  },
+  "KPLT": {
+   "loss": 0.0916,
+   "px": 7.485
+  },
+  "VYGR": {
+   "loss": 0.0911,
+   "px": 1.845
+  },
+  "BIAF": {
+   "loss": 0.09,
+   "px": 3.184999942779541
+  }
+ },
+ "adr_loser": {
+  "AIXI": {
+   "loss": 0.1285,
+   "px": 2.509999990463257
+  },
+  "SIMO": {
+   "loss": 0.1123,
+   "px": 188.14
+  },
+  "NOK": {
+   "loss": 0.0834,
+   "px": 7.855
+  },
+  "ASX": {
+   "loss": 0.0578,
+   "px": 37.745
+  },
+  "TX": {
+   "loss": 0.0502,
+   "px": 55.42
+  }
+ },
+ "spy_meanrev": {
+  "SPY": {
+   "action": "flat",
+   "px": 763.835,
+   "down3": false,
+   "above5": false
+  },
+  "QQQ": {
+   "action": "flat",
+   "px": 704.75,
+   "down3": false,
+   "above5": false
+  }
+ },
+ "day_short": {
+  "TSEM": {
+   "etb": true,
+   "shortable": true
+  },
+  "AEHR": {
+   "etb": true,
+   "shortable": true
+  },
+  "FORM": {
+   "etb": true,
+   "shortable": true
+  },
+  "CSQR": {
+   "etb": true,
+   "shortable": true
+  },
+  "VPG": {
+   "etb": true,
+   "shortable": true
+  },
+  "CECO": {
+   "etb": true,
+   "shortable": true
+  },
+  "WULF": {
+   "etb": true,
+   "shortable": true
+  },
+  "BLZE": {
+   "etb": true,
+   "shortable": true
+  },
+  "MTSI": {
+   "etb": true,
+   "shortable": true
+  },
+  "FCX": {
+   "etb": true,
+   "shortable": true
+  }
+ },
+ "universe": {
+  "smallcap": 737,
+  "smallcap_priced": 735,
+  "adr": 173
+ }
+}
