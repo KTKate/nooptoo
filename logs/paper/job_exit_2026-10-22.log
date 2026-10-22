@@ -1,0 +1,163 @@
+== paper job exit 2026-10-22 09:25:10 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-22",
+ "orders": [
+  {
+   "symbol": "BRUN",
+   "qty": 103,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRVO",
+   "qty": 96,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PENG",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "RAPP",
+   "qty": 34,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMCI",
+   "qty": 24,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SPCX",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "VICR",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+BRUN 200 {"id":"52710815-3271-4cec-8460-4d06860b285d","client_order_id":"b39ad155-814a-458f-9b72-455da8e8435f","created_at":"2026-10-22T13:25:35.833020414Z","updated_at":"2026-10-22T13:25:35.833951591Z","submi
+FRVO 200 {"id":"667b1800-6a1e-4409-a69d-02e991206d7e","client_order_id":"a1d8c29c-7e5f-4697-86ee-3132bf59a7e9","created_at":"2026-10-22T13:25:36.207991724Z","updated_at":"2026-10-22T13:25:36.209600687Z","submi
+ONTO 200 {"id":"f094b729-9297-4eca-aa26-fe3700f392e2","client_order_id":"e8b958d7-061e-40a4-8d00-1519b09791d7","created_at":"2026-10-22T13:25:36.743416575Z","updated_at":"2026-10-22T13:25:36.744048423Z","submi
+PENG 200 {"id":"e999155d-bf97-4d1b-8493-e3972f5ab17c","client_order_id":"8cc4bed3-6214-4148-a7e0-e78013ad6b23","created_at":"2026-10-22T13:25:37.178091971Z","updated_at":"2026-10-22T13:25:37.178860484Z","submi
+RAPP 200 {"id":"f9401761-5e01-41c3-90d2-9be171c18f83","client_order_id":"97277f8d-0fb4-4985-9aa4-3599e52f67eb","created_at":"2026-10-22T13:25:37.669312756Z","updated_at":"2026-10-22T13:25:37.670033076Z","submi
+SMCI 200 {"id":"6ce414b6-d17f-47cc-b7c4-573e3147969a","client_order_id":"467f794c-b7ff-433b-bcc4-020308f018cc","created_at":"2026-10-22T13:25:38.09950016Z","updated_at":"2026-10-22T13:25:38.103379619Z","submit
+SPCX 200 {"id":"c58ac1ef-89c3-40c7-9a83-321bbca1d94e","client_order_id":"f5fd740a-44b5-46e4-9951-33676ce567e7","created_at":"2026-10-22T13:25:38.483239942Z","updated_at":"2026-10-22T13:25:38.484029216Z","submi
+TSEM 200 {"id":"3c863721-bec2-4922-a96e-bb02e0d7f15a","client_order_id":"ae7f210a-275d-4590-89ab-28c5953f19f3","created_at":"2026-10-22T13:25:38.853833004Z","updated_at":"2026-10-22T13:25:38.854588648Z","submi
+VICR 200 {"id":"149fdc35-8593-46d3-846b-d0a2dcc71123","client_order_id":"784441ff-a726-46f1-81e1-7cb178448c98","created_at":"2026-10-22T13:25:39.280532877Z","updated_at":"2026-10-22T13:25:39.281202091Z","submi
+{
+ "day": "2026-10-22",
+ "from_entry": "entry_2026-10-21.json",
+ "equity": 8368.7,
+ "orders": [
+  {
+   "symbol": "TSEM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "VICR",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRVO",
+   "qty": 23,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PENG",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SPCX",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMCI",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "RAPP",
+   "qty": 7,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 24,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {},
+ "submitted": true,
+ "at": "2026-10-22 09:34:44.453774-04:00"
+}
+TSEM 200 {"id":"67d0f71f-0900-4267-8c2d-efdf4d8f73cc","client_order_id":"e67c1092-feef-4d90-b39e-75eaf03283d6","created_at":"2026-10-22T13:34:45.001430781Z","updated_at":"2026-10-22T13:34:45.002371983Z","submi
+VICR 200 {"id":"e56a3fee-1c5c-4447-b68b-7224c8f63cdb","client_order_id":"b4fa8126-28ca-424d-83ac-84645088ee71","created_at":"2026-10-22T13:34:45.442599251Z","updated_at":"2026-10-22T13:34:45.446997058Z","submi
+FRVO 200 {"id":"cf51f99c-8e8e-4b31-84fc-965127610155","client_order_id":"e22564ff-fe18-4756-b587-1b4492c1fe70","created_at":"2026-10-22T13:34:45.811750283Z","updated_at":"2026-10-22T13:34:45.812770063Z","submi
+PENG 200 {"id":"d0c24a97-609f-4b12-85a4-2b3b73534e4d","client_order_id":"ca18c973-49af-4ee4-b467-9e0a804f1ebf","created_at":"2026-10-22T13:34:46.169809047Z","updated_at":"2026-10-22T13:34:46.171053203Z","submi
+SPCX 200 {"id":"25466c40-dcc0-4bdc-8c56-5e6e2540f389","client_order_id":"cf5dcf37-a646-4e2b-9a67-2449478b585d","created_at":"2026-10-22T13:34:46.627327081Z","updated_at":"2026-10-22T13:34:46.628560611Z","submi
+ONTO 200 {"id":"b4ced759-7187-47ca-8d7c-22c25ffcf003","client_order_id":"d1573bca-ffba-467f-a999-c3e55dfb44f0","created_at":"2026-10-22T13:34:47.101011385Z","updated_at":"2026-10-22T13:34:47.149066859Z","submi
+SMCI 200 {"id":"8d6f74c6-c486-40ba-b009-26bb0103f179","client_order_id":"28e86e47-d93f-4f76-963c-3111aa4aa72d","created_at":"2026-10-22T13:34:47.545220446Z","updated_at":"2026-10-22T13:34:47.549449569Z","submi
+RAPP 200 {"id":"e610f9a0-45b5-400a-a733-c05bfd8f070b","client_order_id":"c6667582-07b1-4297-be34-78a6c673db45","created_at":"2026-10-22T13:34:47.933725559Z","updated_at":"2026-10-22T13:34:47.935150477Z","submi
+BRUN 200 {"id":"c839e660-ed45-4177-8c3b-2595d41d4898","client_order_id":"1eb506a1-cb93-467b-b89f-545461b76904","created_at":"2026-10-22T13:34:48.363425356Z","updated_at":"2026-10-22T13:34:48.364875992Z","submi
