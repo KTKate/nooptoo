@@ -1,0 +1,75 @@
+{
+ "day": "2026-10-23",
+ "from_entry": "entry_2026-10-22.json",
+ "equity": 8382.75,
+ "orders": [
+  {
+   "symbol": "TSEM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AEHR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FORM",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CSQR",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "VPG",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CECO",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "WULF",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BLZE",
+   "qty": 24,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FCX",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "MTSI": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-23 09:34:27.041233-04:00"
+}

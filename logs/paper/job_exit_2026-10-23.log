@@ -1,0 +1,173 @@
+== paper job exit 2026-10-23 09:23:42 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-23",
+ "orders": [
+  {
+   "symbol": "AEHR",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BLZE",
+   "qty": 99,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CECO",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CSQR",
+   "qty": 59,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FCX",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FORM",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MTSI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "VPG",
+   "qty": 16,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "WULF",
+   "qty": 75,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AEHR 200 {"id":"89ef26c7-141e-4570-bb79-e5e01ada24a4","client_order_id":"6ea3fa2a-4e40-4aee-a501-ca9cd4d5496e","created_at":"2026-10-23T13:24:09.685677424Z","updated_at":"2026-10-23T13:24:09.686379577Z","submi
+BLZE 200 {"id":"6827e10c-32f9-42f8-9f67-d6fc09e9a01d","client_order_id":"bc849cc8-15d1-4d7a-8b4f-756a8bd1d6e8","created_at":"2026-10-23T13:24:10.09455325Z","updated_at":"2026-10-23T13:24:10.095757416Z","submit
+CECO 200 {"id":"80142c5a-93f4-4cdd-bfa7-48f442949d6f","client_order_id":"ac8eb1e7-d8dd-4bb2-82fa-862105542ea8","created_at":"2026-10-23T13:24:10.534668815Z","updated_at":"2026-10-23T13:24:10.535470077Z","submi
+CSQR 200 {"id":"aeb12a93-27bb-4dd7-bae9-dbeb33f0b514","client_order_id":"599ed1f2-1873-4c73-bfe8-6a71d3f1dd42","created_at":"2026-10-23T13:24:11.028956718Z","updated_at":"2026-10-23T13:24:11.030052953Z","submi
+FCX 200 {"id":"be4cbb18-bf29-454a-88b0-969ef7b9e519","client_order_id":"c53f4ace-614a-42ee-bc26-f528e19189f5","created_at":"2026-10-23T13:24:11.478450541Z","updated_at":"2026-10-23T13:24:11.479215168Z","submi
+FORM 200 {"id":"37e18ad1-8548-4d98-b747-c7fb93f9884e","client_order_id":"b49ab30f-adc2-46bc-b6cf-c6ea89f8a423","created_at":"2026-10-23T13:24:11.901726066Z","updated_at":"2026-10-23T13:24:11.902494168Z","submi
+MTSI 200 {"id":"bd4f07a8-8fc7-44f4-95f8-33232345d8de","client_order_id":"8db16bb4-7263-4f14-9bad-baef69c0cd4e","created_at":"2026-10-23T13:24:12.260941771Z","updated_at":"2026-10-23T13:24:12.270539958Z","submi
+TSEM 200 {"id":"b7629608-f386-4417-a907-09176b9a7532","client_order_id":"41e952f1-2c5a-43df-8f7d-1f410f493791","created_at":"2026-10-23T13:24:12.62736706Z","updated_at":"2026-10-23T13:24:12.628120641Z","submit
+VPG 200 {"id":"7b58f930-79a5-4b01-87d6-c17e5005f2df","client_order_id":"71985b56-96e3-4d35-9975-736308206aa8","created_at":"2026-10-23T13:24:12.981567162Z","updated_at":"2026-10-23T13:24:12.991524048Z","submi
+WULF 200 {"id":"71551ccb-458a-4a0f-929b-8005be219b0b","client_order_id":"1776f4e5-9b16-484d-9cf3-fab2a9e921ab","created_at":"2026-10-23T13:24:13.21788478Z","updated_at":"2026-10-23T13:24:13.218587023Z","submit
+{
+ "day": "2026-10-23",
+ "from_entry": "entry_2026-10-22.json",
+ "equity": 8382.75,
+ "orders": [
+  {
+   "symbol": "TSEM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AEHR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FORM",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CSQR",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "VPG",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CECO",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "WULF",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BLZE",
+   "qty": 24,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FCX",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "MTSI": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-23 09:34:27.041233-04:00"
+}
+TSEM 200 {"id":"747f56eb-b9ea-44ea-880f-69e8a5b383b1","client_order_id":"692c6d13-b2a3-4c03-9891-4d4bcf6a587b","created_at":"2026-10-23T13:34:27.468036244Z","updated_at":"2026-10-23T13:34:27.468866829Z","submi
+AEHR 200 {"id":"2e58f730-c24a-4074-a422-1e5d6998e184","client_order_id":"e04279ca-2776-4d2b-b65b-5aa0817659da","created_at":"2026-10-23T13:34:27.865007503Z","updated_at":"2026-10-23T13:34:27.866152701Z","submi
+FORM 200 {"id":"a324f0c4-c18e-4ab7-81c2-e7f1ce55e46d","client_order_id":"f0bca3c4-e8ec-46e6-86c5-1fb99e1309ad","created_at":"2026-10-23T13:34:28.329298242Z","updated_at":"2026-10-23T13:34:28.330914186Z","submi
+CSQR 200 {"id":"13abec72-2939-4500-8d48-dbbfdff42087","client_order_id":"a2ad2fa3-ff35-4b22-8686-f7df6bed7d9c","created_at":"2026-10-23T13:34:28.667720247Z","updated_at":"2026-10-23T13:34:28.669664594Z","submi
+VPG 200 {"id":"14267a4d-c721-4666-85c3-8c62a57e9d61","client_order_id":"aa036310-92db-4dec-a778-71b42b13098a","created_at":"2026-10-23T13:34:29.043108412Z","updated_at":"2026-10-23T13:34:29.056141962Z","submi
+CECO 200 {"id":"b7611ec3-69d2-41a6-995d-6bbe26f6a897","client_order_id":"a911c623-3801-4615-9545-b0b492a3b401","created_at":"2026-10-23T13:34:29.449391489Z","updated_at":"2026-10-23T13:34:29.453456717Z","submi
+WULF 200 {"id":"a27ab8c6-f582-41f5-8b64-0b7c3553fa6e","client_order_id":"34b030d1-bb8d-4039-8997-e9f6f447c7b5","created_at":"2026-10-23T13:34:29.838201297Z","updated_at":"2026-10-23T13:34:29.839322028Z","submi
+BLZE 200 {"id":"b87c1dab-4a14-4450-9afd-3a7b572a2581","client_order_id":"d156916b-585b-4a58-8c27-47c0d339a6d0","created_at":"2026-10-23T13:34:30.299616382Z","updated_at":"2026-10-23T13:34:30.300827018Z","submi
+FCX 200 {"id":"5b63a817-1fae-4a7d-a097-48b1f2590fc6","client_order_id":"1ca7e6bf-a644-44f5-adc8-6fd8af2ea5bc","created_at":"2026-10-23T13:34:30.550935923Z","updated_at":"2026-10-23T13:34:30.563942123Z","submi
