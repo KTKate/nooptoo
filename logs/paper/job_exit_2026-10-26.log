@@ -1,0 +1,166 @@
+== paper job exit 2026-10-26 09:28:51 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-26",
+ "orders": [
+  {
+   "symbol": "BRUN",
+   "qty": 116,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CIFR",
+   "qty": 105,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "COHU",
+   "qty": 17,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CORT",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FTH",
+   "qty": 47,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FWDI",
+   "qty": 123,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PENG",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SCTX",
+   "qty": 54,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+BRUN 200 {"id":"a8db8e1f-7f61-45f8-8857-be3d16c50cf6","client_order_id":"70d99264-793a-404e-99a9-da4e9a8c0100","created_at":"2026-10-26T13:29:14.051843364Z","updated_at":"2026-10-26T13:29:14.052791155Z","submi
+CIFR 200 {"id":"812432a3-0ef8-4cf5-9bfb-c010b5ac652b","client_order_id":"9e2d5cf1-66bb-4921-a015-8f0a2e4303e9","created_at":"2026-10-26T13:29:14.435115621Z","updated_at":"2026-10-26T13:29:14.451131595Z","submi
+COHU 200 {"id":"f692ab41-1347-4537-8663-7ef0bd9d76ac","client_order_id":"83ac4747-e127-40e1-af42-6bf3c7f24837","created_at":"2026-10-26T13:29:14.818437663Z","updated_at":"2026-10-26T13:29:14.819831003Z","submi
+CORT 200 {"id":"9f5007ba-e1d1-419e-a9aa-13249049c654","client_order_id":"5b57005a-7982-48cb-aaee-8e641a042609","created_at":"2026-10-26T13:29:15.189440536Z","updated_at":"2026-10-26T13:29:15.190186365Z","submi
+FTH 200 {"id":"99118670-7dde-4bd0-8e74-4175e0e7c0b9","client_order_id":"eae637f0-bbdd-4d1e-a79c-26775d66eb9b","created_at":"2026-10-26T13:29:15.601700155Z","updated_at":"2026-10-26T13:29:15.613146895Z","submi
+FWDI 200 {"id":"97b51ffd-7a62-45f8-81a6-e20610aae407","client_order_id":"ce32c042-6d85-4574-94e6-3ec5551f06d5","created_at":"2026-10-26T13:29:15.967905032Z","updated_at":"2026-10-26T13:29:15.968727265Z","submi
+ONTO 200 {"id":"36165a3d-bbe0-47ef-a382-012ff133dcf9","client_order_id":"33b8894d-4924-42a4-bf82-2fa0b11dfac3","created_at":"2026-10-26T13:29:16.360433453Z","updated_at":"2026-10-26T13:29:16.362081866Z","submi
+PENG 200 {"id":"27a2539f-5520-43f0-8f32-a53e9c5d1bbc","client_order_id":"4820bb8d-6915-4797-9a8a-277441195c6c","created_at":"2026-10-26T13:29:16.730515616Z","updated_at":"2026-10-26T13:29:16.737113122Z","submi
+SCTX 200 {"id":"3ea3a14f-bf1f-41c1-aa5e-34479a229b38","client_order_id":"744df9eb-5863-4aa3-853e-3b434c9b3ca8","created_at":"2026-10-26T13:29:18.153415563Z","updated_at":"2026-10-26T13:29:18.154243244Z","submi
+TSEM 200 {"id":"691315a4-f72c-47aa-aa4d-aa8f0b1c4daf","client_order_id":"321f3aff-8b70-401d-a76a-627e6a73a6f8","created_at":"2026-10-26T13:29:18.563856153Z","updated_at":"2026-10-26T13:29:18.564515552Z","submi
+{
+ "day": "2026-10-26",
+ "from_entry": "entry_2026-10-23.json",
+ "equity": 8234.24,
+ "orders": [
+  {
+   "symbol": "BRUN",
+   "qty": 29,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CIFR",
+   "qty": 27,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FWDI",
+   "qty": 31,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CORT",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PENG",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "COHU",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "SCTX": "not easy to borrow",
+  "FTH": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-10-26 09:35:24.168123-04:00"
+}
+BRUN 200 {"id":"9dcb69ef-6632-4fd7-9efe-48e29f9d751b","client_order_id":"7e68e61e-bec5-4a25-8d92-baed678f545b","created_at":"2026-10-26T13:35:24.610835746Z","updated_at":"2026-10-26T13:35:24.612567013Z","submi
+CIFR 200 {"id":"69761e80-4951-4d43-992a-e88ee6472c74","client_order_id":"4c4ec868-a2b7-4239-bbe6-f09139d606dd","created_at":"2026-10-26T13:35:24.967660345Z","updated_at":"2026-10-26T13:35:24.968915307Z","submi
+FWDI 200 {"id":"d4375777-1a98-43f7-9966-024a672236a6","client_order_id":"a32f9bb0-ea69-4b0f-b522-ed0671186791","created_at":"2026-10-26T13:35:25.362819014Z","updated_at":"2026-10-26T13:35:25.364140647Z","submi
+CORT 200 {"id":"bc1c7047-89ba-4a31-9d4e-7854c30f1e69","client_order_id":"4da7e714-b56a-43b9-ad73-9fb829aa901a","created_at":"2026-10-26T13:35:26.027604695Z","updated_at":"2026-10-26T13:35:26.02886087Z","submit
+PENG 200 {"id":"90b99e88-847b-4fbb-b846-c6cd07569174","client_order_id":"a19ce6d7-fa73-4837-98a8-a96cf054f59a","created_at":"2026-10-26T13:35:26.388526009Z","updated_at":"2026-10-26T13:35:26.390529754Z","submi
+TSEM 200 {"id":"82e5f3ea-cfd6-4a0e-9a15-8c20d445a553","client_order_id":"d405283f-d5d7-4e98-88c9-28f975c67319","created_at":"2026-10-26T13:35:26.814424088Z","updated_at":"2026-10-26T13:35:26.815921674Z","submi
+COHU 200 {"id":"b253bfcc-b656-4da6-990f-e91beb077d40","client_order_id":"b3e8a06e-1e15-41e6-afa9-d3eaa53f9142","created_at":"2026-10-26T13:35:27.204429597Z","updated_at":"2026-10-26T13:35:27.205530208Z","submi
+ONTO 200 {"id":"7aae65cf-fdf4-492e-9a78-05e943be1042","client_order_id":"c0fb9b51-8c50-46f6-9c99-9a9e9283fa1b","created_at":"2026-10-26T13:35:27.586925873Z","updated_at":"2026-10-26T13:35:27.593796339Z","submi
