@@ -10,3 +10,5 @@ Traceback (most recent call last):
     import numpy as np
 ModuleNotFoundError: No module named 'numpy'
 day short failed
+remote: This repository moved. Please use the new location:        
+remote:   https://github.com/KTKate/nooptoo.git        
