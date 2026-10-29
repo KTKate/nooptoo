@@ -1,0 +1,166 @@
+== paper job exit 2026-10-29 09:26:24 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-29",
+ "orders": [
+  {
+   "symbol": "CHKP",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DJT",
+   "qty": 135,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FFIV",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "INBX",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "LXU",
+   "qty": 78,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NEO",
+   "qty": 45,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "OSS",
+   "qty": 130,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "RAPP",
+   "qty": 35,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ROG",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "STRL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+CHKP 200 {"id":"131fcc16-4626-4e86-969e-9e0cd9884c13","client_order_id":"6de8df25-c990-4c74-92b2-edf9cb52aa8d","created_at":"2026-10-29T13:26:32.22043991Z","updated_at":"2026-10-29T13:26:32.223236925Z","submit
+DJT 200 {"id":"458cc89e-5832-47fc-a86b-17224129df95","client_order_id":"8d00b59a-457f-4f50-9f95-5aca9b6ec1cf","created_at":"2026-10-29T13:26:32.585103406Z","updated_at":"2026-10-29T13:26:32.585960802Z","submi
+FFIV 200 {"id":"b7c9b4aa-6619-4bc2-bdd2-b1d2fe17980e","client_order_id":"db24a628-09ef-4476-9c93-75c1b2e7fdc1","created_at":"2026-10-29T13:26:32.940474044Z","updated_at":"2026-10-29T13:26:32.941077078Z","submi
+INBX 200 {"id":"e47f02a0-f498-472b-bb22-6133479990a8","client_order_id":"b9bd0976-3ac9-4456-962c-3ca59db1c90e","created_at":"2026-10-29T13:26:33.30041714Z","updated_at":"2026-10-29T13:26:33.301115307Z","submit
+LXU 200 {"id":"edbc67cc-b0f9-4eba-80b6-f255adfb12ec","client_order_id":"1ef56b38-766d-485b-83e1-66e0436e47d0","created_at":"2026-10-29T13:26:33.663635589Z","updated_at":"2026-10-29T13:26:33.664315369Z","submi
+NEO 200 {"id":"190830e2-efae-473f-8463-ddf161616589","client_order_id":"6bba4199-e9ec-4698-9576-afd4d8526e7e","created_at":"2026-10-29T13:26:34.031855661Z","updated_at":"2026-10-29T13:26:34.032472907Z","submi
+OSS 200 {"id":"121f3bb0-4793-4644-b28d-e6e1edd87fd5","client_order_id":"207fd6e0-6c01-4461-b9d6-9830e360d12e","created_at":"2026-10-29T13:26:34.510695713Z","updated_at":"2026-10-29T13:26:34.51330032Z","submit
+RAPP 200 {"id":"6af00597-06a5-4a21-8b09-41d0dd5a7ca3","client_order_id":"e6020b88-542b-493f-b2af-2cc8599a12d2","created_at":"2026-10-29T13:26:34.90237874Z","updated_at":"2026-10-29T13:26:34.9074657Z","submitte
+ROG 200 {"id":"68dff292-5956-418f-a6e5-f3acae20a066","client_order_id":"cf0bd008-febd-457d-b19f-650d161586f9","created_at":"2026-10-29T13:26:35.280809578Z","updated_at":"2026-10-29T13:26:35.320757159Z","submi
+STRL 200 {"id":"e6cd9fc8-6a7e-429d-a2bc-80129f51bcf3","client_order_id":"7b790011-4202-4499-be11-b206bea8a60a","created_at":"2026-10-29T13:26:35.66364375Z","updated_at":"2026-10-29T13:26:35.664415869Z","submit
+{
+ "day": "2026-10-29",
+ "from_entry": "entry_2026-10-28.json",
+ "equity": 7952.06,
+ "orders": [
+  {
+   "symbol": "RAPP",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "OSS",
+   "qty": 33,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NEO",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DJT",
+   "qty": 34,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "INBX",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CHKP",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "LXU",
+   "qty": 17,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ROG",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "FFIV": "no price or qty 0",
+  "STRL": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-29 09:34:17.862825-04:00"
+}
+RAPP 200 {"id":"7e946991-085d-4a45-8708-baa63abb2444","client_order_id":"20cdfe90-6bfe-42d8-b577-d4fdddfa31a5","created_at":"2026-10-29T13:34:18.191119751Z","updated_at":"2026-10-29T13:34:18.19433229Z","submit
+OSS 200 {"id":"a6937e14-b812-4b5d-8d5b-189df76b3a4c","client_order_id":"a14e5cb8-e3ea-4487-9b90-860a5fb7bb25","created_at":"2026-10-29T13:34:18.570371491Z","updated_at":"2026-10-29T13:34:18.575939654Z","submi
+NEO 200 {"id":"91d17ed7-5f27-46af-bb2c-6278315373e3","client_order_id":"292118c9-14fc-47c4-aa57-e8567bee5105","created_at":"2026-10-29T13:34:18.862239525Z","updated_at":"2026-10-29T13:34:18.873762149Z","submi
+DJT 200 {"id":"e0ab81aa-2dc2-4340-92b5-8df4821f2cda","client_order_id":"867e9b68-b513-42c4-94f7-5604264e3dec","created_at":"2026-10-29T13:34:19.197398175Z","updated_at":"2026-10-29T13:34:19.199631075Z","submi
+INBX 200 {"id":"e0fc2b77-bad6-4815-bbed-3dca395ef46c","client_order_id":"b98a01b2-c71c-4292-b671-3897828b99cf","created_at":"2026-10-29T13:34:19.52226629Z","updated_at":"2026-10-29T13:34:19.523414892Z","submit
+CHKP 200 {"id":"40b099b8-edca-4ccc-aad6-91aaae4d3e22","client_order_id":"95a6a97f-2ca7-4819-8176-d7150a7522a7","created_at":"2026-10-29T13:34:19.862405991Z","updated_at":"2026-10-29T13:34:19.863455285Z","submi
+LXU 200 {"id":"d84bd3eb-1091-4bda-82ec-27feabce8240","client_order_id":"a6a7db74-3fff-43ac-bec4-ad04011a937d","created_at":"2026-10-29T13:34:20.220695177Z","updated_at":"2026-10-29T13:34:20.222801056Z","submi
+ROG 200 {"id":"179b9b65-57bb-459c-992a-a796311abf6b","client_order_id":"6d53622f-869e-4bf6-aef8-71bd1a18dfab","created_at":"2026-10-29T13:34:20.590930503Z","updated_at":"2026-10-29T13:34:20.592073207Z","submi
