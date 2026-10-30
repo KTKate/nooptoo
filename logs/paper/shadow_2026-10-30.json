@@ -1,0 +1,130 @@
+{
+ "day": "2026-10-30",
+ "recorded_at": "2026-10-30 15:57:22.695030-04:00",
+ "news_window": [
+  "2026-10-29 19:45:00+00:00",
+  "2026-10-30 19:45:00+00:00"
+ ],
+ "n_news_symbols": 2128,
+ "smallcap_nonews": {
+  "DKI": {
+   "loss": 0.201,
+   "px": 1.5499999523162842
+  },
+  "JAGX": {
+   "loss": 0.18,
+   "px": 1.6399999856948853
+  },
+  "KPLT": {
+   "loss": 0.1493,
+   "px": 10.37
+  },
+  "YMAT": {
+   "loss": 0.1479,
+   "px": 1.815
+  },
+  "AMWL": {
+   "loss": 0.1282,
+   "px": 12.92
+  },
+  "CNXU": {
+   "loss": 0.114,
+   "px": 2.525
+  },
+  "OFIX": {
+   "loss": 0.1122,
+   "px": 9.135
+  },
+  "LTGO": {
+   "loss": 0.1003,
+   "px": 14.08
+  },
+  "BVS": {
+   "loss": 0.1001,
+   "px": 13.355
+  },
+  "WATT": {
+   "loss": 0.0995,
+   "px": 9.14
+  }
+ },
+ "adr_loser": {
+  "OPRA": {
+   "loss": 0.0936,
+   "px": 15.39
+  },
+  "JMIA": {
+   "loss": 0.0664,
+   "px": 5.135
+  },
+  "VEON": {
+   "loss": 0.0647,
+   "px": 82.9800033569336
+  },
+  "TAL": {
+   "loss": 0.0362,
+   "px": 9.84
+  },
+  "TIGR": {
+   "loss": 0.0337,
+   "px": 3.865
+  }
+ },
+ "spy_meanrev": {
+  "SPY": {
+   "action": "flat",
+   "px": 754.855,
+   "down3": false,
+   "above5": false
+  },
+  "QQQ": {
+   "action": "flat",
+   "px": 689.67,
+   "down3": false,
+   "above5": false
+  }
+ },
+ "day_short": {
+  "DELL": {
+   "etb": true,
+   "shortable": true
+  },
+  "SMTC": {
+   "etb": true,
+   "shortable": true
+  },
+  "ONTO": {
+   "etb": true,
+   "shortable": true
+  },
+  "MTSI": {
+   "etb": true,
+   "shortable": true
+  },
+  "SGML": {
+   "etb": true,
+   "shortable": true
+  },
+  "SITM": {
+   "etb": true,
+   "shortable": true
+  },
+  "VSH": {
+   "etb": true,
+   "shortable": true
+  },
+  "CIEN": {
+   "etb": true,
+   "shortable": true
+  },
+  "WCC": {
+   "etb": true,
+   "shortable": true
+  }
+ },
+ "universe": {
+  "smallcap": 736,
+  "smallcap_priced": 734,
+  "adr": 174
+ }
+}
