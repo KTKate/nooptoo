@@ -1,0 +1,51 @@
+{
+ "day": "2026-10-30",
+ "from_entry": "entry_2026-10-29.json",
+ "equity": 7474.41,
+ "orders": [
+  {
+   "symbol": "DOCN",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FORM",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ABTC",
+   "qty": 27,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FLEX",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "MRVL": "no price or qty 0",
+  "BE": "no price or qty 0",
+  "CIEN": "no price or qty 0",
+  "TER": "no price or qty 0",
+  "CRWD": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-30 09:40:40.182975-04:00"
+}

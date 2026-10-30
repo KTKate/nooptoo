@@ -1,0 +1,145 @@
+== paper job exit 2026-10-30 09:40:13 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-10-30",
+ "orders": [
+  {
+   "symbol": "ABTC",
+   "qty": 107,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CIEN",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CRWD",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DOCN",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FLEX",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FORM",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TER",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+ABTC 200 {"id":"d0faf6c4-95da-404b-bfff-6679ae391ea9","client_order_id":"a5f6c5b0-c9fe-4670-a2e7-f321490bc166","created_at":"2026-10-30T13:40:21.37861758Z","updated_at":"2026-10-30T13:40:21.379740113Z","submit
+BE 200 {"id":"fabfad74-7435-4e72-bdbe-f4d9725f0677","client_order_id":"a85d8590-9d5c-4bfa-a16e-15aa55f8bb91","created_at":"2026-10-30T13:40:21.704895339Z","updated_at":"2026-10-30T13:40:21.711700727Z","submi
+CIEN 200 {"id":"b7cd7136-b53f-42a3-92be-62e411052ed4","client_order_id":"d2d370a4-0ca4-4e0a-8d09-04a6610f87d5","created_at":"2026-10-30T13:40:22.040031105Z","updated_at":"2026-10-30T13:40:22.044780289Z","submi
+CRWD 200 {"id":"f3590936-6213-4b80-a4f1-184f2a110869","client_order_id":"37e7aa12-0fc7-4935-94e5-06e23b0c5a56","created_at":"2026-10-30T13:40:22.411974933Z","updated_at":"2026-10-30T13:40:22.412901042Z","submi
+DOCN 200 {"id":"cb283cfd-8e08-4e6f-b9b4-6ca562f030b2","client_order_id":"7bb70ff8-243a-4414-b0b3-8d06af89478a","created_at":"2026-10-30T13:40:22.955177361Z","updated_at":"2026-10-30T13:40:22.955829709Z","submi
+FLEX 200 {"id":"df86c51c-ae2d-46d2-8048-4af25402adaa","client_order_id":"a90c4b4e-47c4-408a-ada5-7531ec376a93","created_at":"2026-10-30T13:40:23.264985655Z","updated_at":"2026-10-30T13:40:23.268114138Z","submi
+FORM 200 {"id":"1851c3c5-5791-4d88-b74f-0537ac905f0c","client_order_id":"f16db388-e82a-4ff8-bcbb-0664f639bc24","created_at":"2026-10-30T13:40:23.629563555Z","updated_at":"2026-10-30T13:40:23.630254001Z","submi
+MRVL 200 {"id":"3eb53dbd-e827-4fb6-8770-368bc5571cec","client_order_id":"6ac8be6a-3fd5-490c-8f61-c2b81d35bfc6","created_at":"2026-10-30T13:40:23.977822095Z","updated_at":"2026-10-30T13:40:23.985089336Z","submi
+TER 200 {"id":"7e5a1c30-45ef-4435-8802-08a111ecb3ca","client_order_id":"cb5c25a1-30f7-4eb1-b3df-12261e85a158","created_at":"2026-10-30T13:40:24.321788457Z","updated_at":"2026-10-30T13:40:24.322842298Z","submi
+TSEM 200 {"id":"84e52ee6-f5ef-41d3-aea9-46b1cd4a5e7f","client_order_id":"dfc2bc99-85aa-4245-a517-7e85fe2cf8ca","created_at":"2026-10-30T13:40:24.654002651Z","updated_at":"2026-10-30T13:40:24.659306998Z","submi
+{
+ "day": "2026-10-30",
+ "from_entry": "entry_2026-10-29.json",
+ "equity": 7474.41,
+ "orders": [
+  {
+   "symbol": "DOCN",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FORM",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ABTC",
+   "qty": 27,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FLEX",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "MRVL": "no price or qty 0",
+  "BE": "no price or qty 0",
+  "CIEN": "no price or qty 0",
+  "TER": "no price or qty 0",
+  "CRWD": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-10-30 09:40:40.182975-04:00"
+}
+DOCN 200 {"id":"a5409412-1493-4195-a101-fddb5a27499a","client_order_id":"a0ef1e50-ebfd-4b36-be41-77132518c35c","created_at":"2026-10-30T13:40:40.635636647Z","updated_at":"2026-10-30T13:40:40.643655756Z","submi
+TSEM 200 {"id":"67cc071b-6155-4011-a9c0-d321e6b5c5ca","client_order_id":"34a3069b-69b5-4d8e-815c-c1e0c3dc92b4","created_at":"2026-10-30T13:40:40.985593946Z","updated_at":"2026-10-30T13:40:40.987100015Z","submi
+FORM 200 {"id":"336c8ebc-7ad3-4e65-afd5-1d4f076a8a42","client_order_id":"52b9857d-4c0d-450c-8818-1a2beffd5a6c","created_at":"2026-10-30T13:40:41.359429161Z","updated_at":"2026-10-30T13:40:41.361936582Z","submi
+ABTC 200 {"id":"d1ea3497-129b-4f46-b457-0046ecb345d0","client_order_id":"dfd4e20d-f2fc-43eb-ad0d-0b285e684647","created_at":"2026-10-30T13:40:41.698669094Z","updated_at":"2026-10-30T13:40:41.700288873Z","submi
+FLEX 200 {"id":"2c286c08-ed30-415b-ace0-0323e5e13ce2","client_order_id":"2e978c80-e607-40c4-8b7e-c53e23d9cce9","created_at":"2026-10-30T13:40:41.90350608Z","updated_at":"2026-10-30T13:40:41.934551759Z","submit
