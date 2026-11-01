@@ -13,11 +13,11 @@ The daily panel has survivorship bias (only tickers alive in 2026): multi-day st
 same universe's average (src/horizon_lib.py).
 
 ## Running (batch 2026-11-01)
-- 201-202: same-time-of-day repeat (owner asked for a new idea 2026-10-31): close trade 15:30 -> closing auction,
-  open trade opening auction -> 10:00; settings chosen on 2020-2023, one confirmation run on 2024-2026
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 201 Reject: same-time-of-day repeat, 15:30 -> close: +4.9 bp a day gross in 2024-26 vs 11 bp costs (net Sharpe -1.8)
+- 202 Reject: same-time-of-day repeat, open -> 10:00: no gross return (-0.3 bp) vs 20 bp costs
 - 191 tracker update 2026-10-23: 16 live nights, live -7.6%; halve on tech hardware -3.7%, skip Monday -5.7%,
   top 8 -8.6%, ensemble 5 + jump 5 -10.8%; all within noise (|t| < 0.9)
 - 197 Candidate: study 71 weights (day long 0.5, day short 0.25) still best; +6.7 bp a night over 2024H2-26 (t 1.7)

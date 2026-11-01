@@ -360,6 +360,15 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("201", "Same-time-of-day repeat, close trade: buy the 10 stocks (of the 500 most traded) with the best average "
+     "15:30-to-close return over the past 10 days at 15:30, sell in the closing auction (settings from 2020-23)", "Reject",
+     "The effect is real but too small: picks earn +7.7 bp a day gross in 2020-23 (t 4.0) and +4.9 bp in 2024-26, costs "
+     "are 11-13 bp, so net is -5.8 and -6.0 bp a day (Sharpe -1.5 and -1.8). 2024 and 2025 lose even before costs; "
+     "January-May 2026 was strong (+19.6 bp gross for 2026, not from outliers) but June-October averaged about 0."),
+    ("202", "Same-time-of-day repeat, open trade: buy the 10 stocks with the best average opening-auction-to-10:00 "
+     "return over the past 40 days in the opening auction, sell at 10:00", "Reject",
+     "No usable effect: picks earn 0 bp gross in 2020-23 and -0.3 bp in 2024-26 against 20-27 bp of costs (net Sharpe "
+     "-3.0 and -2.0). The official-cross rescore was skipped because the result is far from the pass rule."),
     ("197", "Full-cycle weights at cross prices: day long 0 / 0.25 / 0.5 and day short 0 / 0.25 / 0.5 with the night "
      "blend", "Candidate",
      "The choice-period winner is the study 71 setting (day long 0.5, day short 0.25): Sharpe 2.33 vs 2.07 there, "

@@ -9,7 +9,7 @@ closing cross). Universe on day t: the 500 stocks with the highest 20-day median
 above $5 (ETFs excluded; delisted names included).
 Signal: mean of the window's return over days t-L .. t-1 (at least 3/4 of them present). Long the top N, equal weight.
 Prices: close trade 15:30 bar open -> daily close. Open trade 09:30 bar open (first trade) -> 09:55 bar close (10:00);
-the confirmation also scores the open trade at the official opening cross.
+the official-cross rescore (--cross) is run only if the first-trade version is near the pass rule.
 Costs per side (bp): market order = quoted half-spread model (15:45 for 15:30; mean of 09:35 and 12:00 for 10:00)
 + 2.0 slippage + 0.3 fees; auction = 1.3 + 0.1 x half-spread + 2.5.
 Protocol (pre-registered 2026-11-01): choose L in {10, 20, 40} and N in {10, 20} on 2020-2023 only by net Sharpe, write
@@ -144,7 +144,7 @@ def confirm():
         for y, oy in o.groupby(o.index.year):
             rows.append(summarize(oy, f"confirm_{y}", trade=k, L=L, N=N))
         daily.append(o.assign(trade=k))
-        if k == "r_open":                     # the same picks at the official opening cross
+        if k == "r_open" and "--cross" in sys.argv:   # the same picks at the official opening cross
             s = f"{k}_s{L}"
             x = p.dropna(subset=[s, k])
             pick = x[x.groupby("date")[s].rank(ascending=False, method="first") <= N]
