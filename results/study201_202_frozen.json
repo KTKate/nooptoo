@@ -1,0 +1,14 @@
+{
+ "r_close": {
+  "L": 10,
+  "N": 10,
+  "discovery_net_sharpe": -1.4813767181429796
+ },
+ "r_open": {
+  "L": 40,
+  "N": 10,
+  "discovery_net_sharpe": -2.9922591938989562
+ },
+ "frozen_on": "2026-11-01",
+ "pass_rule": "confirmation 2024-01..2026-10: net Sharpe > 1, t > 2, gain in each of 2024, 2025, 2026"
+}
