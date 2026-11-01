@@ -12,7 +12,9 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-10-23)
+## Running (batch 2026-11-01)
+- 201-202: same-time-of-day repeat (owner asked for a new idea 2026-10-31): close trade 15:30 -> closing auction,
+  open trade opening auction -> 10:00; settings chosen on 2020-2023, one confirmation run on 2024-2026
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
