@@ -360,6 +360,11 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("203", "Study 201's close trade with a resting limit buy at the 15:30 bid instead of a market order (filled only if "
+     "the price trades below the bid by 15:55; unfilled slots stay in cash)", "Reject",
+     "92% of orders fill, and the limit cuts costs from 11 to about 4 bp, but the fills are the names that fell: filled "
+     "names earn +1.7 bp a day in 2024-26 while the 8% that did not fill rose about 1% each. Net -2.3 bp a day "
+     "(Sharpe -0.7, t -1.2); 2024 and 2025 lose, 2026 gains (+7.3 bp). Quotes found for 87% of picks."),
     ("201", "Same-time-of-day repeat, close trade: buy the 10 stocks (of the 500 most traded) with the best average "
      "15:30-to-close return over the past 10 days at 15:30, sell in the closing auction (settings from 2020-23)", "Reject",
      "The effect is real but too small: picks earn +7.7 bp a day gross in 2020-23 (t 4.0) and +4.9 bp in 2024-26, costs "
