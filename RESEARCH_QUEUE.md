@@ -16,6 +16,7 @@ same universe's average (src/horizon_lib.py).
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 203 Reject: limit buy at the 15:30 bid fills 92% but misses the winners; net -2.3 bp a day in 2024-26
 - 201 Reject: same-time-of-day repeat, 15:30 -> close: +4.9 bp a day gross in 2024-26 vs 11 bp costs (net Sharpe -1.8)
 - 202 Reject: same-time-of-day repeat, open -> 10:00: no gross return (-0.3 bp) vs 20 bp costs
 - 191 tracker update 2026-10-23: 16 live nights, live -7.6%; halve on tech hardware -3.7%, skip Monday -5.7%,
