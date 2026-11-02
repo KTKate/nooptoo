@@ -1,0 +1,108 @@
+== paper job exit 2026-11-02 10:28:39 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-02",
+ "orders": [
+  {
+   "symbol": "CIEN",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MTSI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SGML",
+   "qty": 109,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SITM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMTC",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "VSH",
+   "qty": 28,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "WCC",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+CIEN 200 {"id":"22107232-0231-4059-aae0-d153a5ff6e26","client_order_id":"ff2f2ed2-92df-4598-a1a1-abdcb82c97d6","created_at":"2026-11-02T15:28:48.861010086Z","updated_at":"2026-11-02T15:28:48.863563406Z","submi
+DELL 200 {"id":"40129460-88df-425e-8191-77ef742c5c93","client_order_id":"e6552fcb-9500-4e8d-934a-8f8759fc13b6","created_at":"2026-11-02T15:28:49.219340334Z","updated_at":"2026-11-02T15:28:49.219940354Z","submi
+MTSI 200 {"id":"d7a25ab6-5ebc-49f0-8b4a-bd7857826830","client_order_id":"e0d71f88-d328-429d-b520-8fabbfd8054f","created_at":"2026-11-02T15:28:49.612418443Z","updated_at":"2026-11-02T15:28:49.613105714Z","submi
+ONTO 200 {"id":"b7737e7a-e29a-46e7-9317-3f55973b06e7","client_order_id":"eb81b101-ba73-48d1-8583-9b454530e40a","created_at":"2026-11-02T15:28:49.950845947Z","updated_at":"2026-11-02T15:28:49.954035181Z","submi
+SGML 200 {"id":"7b633b56-4548-4f75-b834-f2c8c0c6906b","client_order_id":"87c56347-2df0-4c75-8648-6844fe619a67","created_at":"2026-11-02T15:28:50.279187872Z","updated_at":"2026-11-02T15:28:50.280959981Z","submi
+SITM 200 {"id":"aee73ecb-268e-4a92-a027-d9d27519fbb4","client_order_id":"5f29a149-6590-43fd-b7c8-970fb09058d1","created_at":"2026-11-02T15:28:50.671285842Z","updated_at":"2026-11-02T15:28:50.683373494Z","submi
+SMTC 200 {"id":"9c428a08-000f-44fe-8037-6e82e0cf936d","client_order_id":"f8cdbfe2-dc7d-40e4-9334-1f2b7477a7cb","created_at":"2026-11-02T15:28:51.030831163Z","updated_at":"2026-11-02T15:28:51.043991573Z","submi
+VSH 200 {"id":"a661cb95-8000-42e2-968c-35ac1ac98b42","client_order_id":"5ce27550-07bb-4599-aa75-b25f6ef2129f","created_at":"2026-11-02T15:28:51.427713269Z","updated_at":"2026-11-02T15:28:51.428484766Z","submi
+WCC 200 {"id":"3c71e7d2-ef5c-4007-9fa0-6f702861b7fa","client_order_id":"d016c081-a6e7-433d-8d9f-b6485a8a0733","created_at":"2026-11-02T15:28:51.790895635Z","updated_at":"2026-11-02T15:28:51.791709375Z","submi
+{
+ "day": "2026-11-02",
+ "from_entry": "entry_2026-10-30.json",
+ "equity": 7411.97,
+ "orders": [
+  {
+   "symbol": "SMTC",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "DELL": "no price or qty 0",
+  "ONTO": "no price or qty 0",
+  "MTSI": "no price or qty 0",
+  "SGML": "position still open",
+  "SITM": "no price or qty 0",
+  "VSH": "position still open",
+  "CIEN": "no price or qty 0",
+  "WCC": "position still open"
+ },
+ "submitted": true,
+ "at": "2026-11-02 10:28:56.719065-05:00"
+}
+SMTC 200 {"id":"34f36253-21e3-4153-b14a-8cb1f73487ab","client_order_id":"2ef7e009-d385-4bad-bf10-766f4d1451fa","created_at":"2026-11-02T15:28:57.046069233Z","updated_at":"2026-11-02T15:28:57.072196674Z","submi

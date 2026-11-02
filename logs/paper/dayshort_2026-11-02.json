@@ -1,0 +1,26 @@
+{
+ "day": "2026-11-02",
+ "from_entry": "entry_2026-10-30.json",
+ "equity": 7411.97,
+ "orders": [
+  {
+   "symbol": "SMTC",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "DELL": "no price or qty 0",
+  "ONTO": "no price or qty 0",
+  "MTSI": "no price or qty 0",
+  "SGML": "position still open",
+  "SITM": "no price or qty 0",
+  "VSH": "position still open",
+  "CIEN": "no price or qty 0",
+  "WCC": "position still open"
+ },
+ "submitted": true,
+ "at": "2026-11-02 10:28:56.719065-05:00"
+}
