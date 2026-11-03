@@ -1,0 +1,159 @@
+== paper job exit 2026-11-03 09:19:25 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-03",
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CIEN",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DDOG",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FSLY",
+   "qty": 35,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "LITE",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NN",
+   "qty": 76,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ORCL",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TXG",
+   "qty": 12,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AAOI 200 {"id":"2862b3bf-815d-4c4f-8df9-43855d39c2ad","client_order_id":"7438c2f0-1db1-4c2d-b6e2-72533df7cea3","created_at":"2026-11-03T14:19:35.076060864Z","updated_at":"2026-11-03T14:19:35.076869436Z","submi
+CIEN 200 {"id":"98f060fa-acec-42dd-a90a-c51670237196","client_order_id":"4af60d31-e3ad-4a05-aa2f-b2bf22e375f6","created_at":"2026-11-03T14:19:35.447695356Z","updated_at":"2026-11-03T14:19:35.448363077Z","submi
+DDOG 200 {"id":"ed47c827-9e88-4683-8245-ec67e9c04e32","client_order_id":"353ffe22-7ba9-4a06-9fe8-cdb875534662","created_at":"2026-11-03T14:19:35.817840203Z","updated_at":"2026-11-03T14:19:35.818479983Z","submi
+FSLY 200 {"id":"92313261-6562-4646-9e10-3bc8c766e620","client_order_id":"f5cf450c-3d99-4841-953e-7497d88bb909","created_at":"2026-11-03T14:19:36.174082127Z","updated_at":"2026-11-03T14:19:36.201461586Z","submi
+LITE 200 {"id":"4c0e70c5-7de0-4626-aa13-de1a9e832706","client_order_id":"4dfd0fa3-a406-4025-97ae-1f29400eb65e","created_at":"2026-11-03T14:19:36.568966914Z","updated_at":"2026-11-03T14:19:36.569582187Z","submi
+MRVL 200 {"id":"b742e6f1-33bd-43bb-a0c6-2997b71fabd5","client_order_id":"94dd4e30-9848-4fb7-8186-8e7f41091365","created_at":"2026-11-03T14:19:36.925356499Z","updated_at":"2026-11-03T14:19:36.92601073Z","submit
+NN 200 {"id":"c378c51a-13f3-494c-8eb3-43cc32863560","client_order_id":"4edcb560-a6a2-498f-94d8-5eedd23f1dd7","created_at":"2026-11-03T14:19:37.330140035Z","updated_at":"2026-11-03T14:19:37.331423219Z","submi
+ORCL 200 {"id":"234198d3-0892-40ad-958d-3229e9a037c7","client_order_id":"41aa454b-b8cf-4027-88e1-88f4f4506ec9","created_at":"2026-11-03T14:19:37.681197001Z","updated_at":"2026-11-03T14:19:37.684701678Z","submi
+TSEM 200 {"id":"63a8a89f-4cc2-40b9-92c9-65f451aba2d0","client_order_id":"75e9ed39-eaa7-4992-8660-140c5f7effd9","created_at":"2026-11-03T14:19:38.041694427Z","updated_at":"2026-11-03T14:19:38.04596332Z","submit
+TXG 200 {"id":"e02f9b28-887f-464d-8ba9-a17818c03d2e","client_order_id":"d85c274e-49c4-4b64-a931-d231f42e68dc","created_at":"2026-11-03T14:19:38.426877432Z","updated_at":"2026-11-03T14:19:38.427504513Z","submi
+{
+ "day": "2026-11-03",
+ "from_entry": "entry_2026-11-02.json",
+ "equity": 7494.62,
+ "orders": [
+  {
+   "symbol": "MRVL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FSLY",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TXG",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TSEM",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ORCL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NN",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "LITE": "no price or qty 0",
+  "CIEN": "no price or qty 0",
+  "DDOG": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-03 09:35:23.215865-05:00"
+}
+MRVL 200 {"id":"53e92783-4f3f-4033-a8ba-930009aa1027","client_order_id":"b6af18e3-f545-47fe-981c-18b3539aa471","created_at":"2026-11-03T14:35:23.601603214Z","updated_at":"2026-11-03T14:35:23.602795343Z","submi
+FSLY 200 {"id":"175dabb0-0502-4d1c-8b36-c603c4f51373","client_order_id":"e109ebdd-99ee-472d-9b86-c1636f62f3ca","created_at":"2026-11-03T14:35:23.991117908Z","updated_at":"2026-11-03T14:35:23.999574493Z","submi
+TXG 200 {"id":"cd44350c-7116-4927-bce3-b6c8c71518bc","client_order_id":"2a2ba947-4369-4c10-82a6-7ed511b6af20","created_at":"2026-11-03T14:35:24.354802887Z","updated_at":"2026-11-03T14:35:24.356072311Z","submi
+TSEM 200 {"id":"ddf20dd9-f1fb-4bec-894b-65ebd6958dd5","client_order_id":"3e8764a5-e5b5-48e7-a07b-4cde4c1fa3aa","created_at":"2026-11-03T14:35:24.716118853Z","updated_at":"2026-11-03T14:35:24.737796149Z","submi
+ORCL 200 {"id":"f558ff03-4319-438c-a4ab-95e9ec2c275f","client_order_id":"e3950b16-d9aa-41fc-8369-92220e38fc05","created_at":"2026-11-03T14:35:25.107400387Z","updated_at":"2026-11-03T14:35:25.113338434Z","submi
+NN 200 {"id":"42ad9a9e-7912-49be-a583-d1231ee01321","client_order_id":"4833654c-60b3-46a3-8c97-df0e33a83bd4","created_at":"2026-11-03T14:35:25.455976733Z","updated_at":"2026-11-03T14:35:25.457185346Z","submi
+AAOI 200 {"id":"7880537a-c546-4a4e-b426-5f978ac3fd18","client_order_id":"88cbf968-109c-4c95-8785-95e63579905a","created_at":"2026-11-03T14:35:25.827062123Z","updated_at":"2026-11-03T14:35:25.833821672Z","submi
