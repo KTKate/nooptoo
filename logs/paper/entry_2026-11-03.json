@@ -1,0 +1,104 @@
+{
+ "day": "2026-11-03",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "MRVL": 0.99947,
+  "ALAB": 0.99815,
+  "OKTA": 0.9971,
+  "LITE": 0.99697,
+  "AUGO": 0.99328,
+  "DDOG": 0.99262,
+  "DELL": 0.99143,
+  "AAOI": 0.99143,
+  "SGML": 0.99104,
+  "DT": 0.98866
+ },
+ "uncapped_top": {
+  "MRVL": 0.99947,
+  "ALAB": 0.99815,
+  "OKTA": 0.9971,
+  "LITE": 0.99697,
+  "AUGO": 0.99328,
+  "DDOG": 0.99262,
+  "DELL": 0.99143,
+  "AAOI": 0.99143,
+  "SGML": 0.99104,
+  "DT": 0.98866
+ },
+ "equity": 7484.59,
+ "orders": [
+  {
+   "symbol": "MRVL",
+   "qty": 4,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ALAB",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "OKTA",
+   "qty": 4,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "LITE",
+   "qty": 1,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AUGO",
+   "qty": 11,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "DDOG",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 1,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 11,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SGML",
+   "qty": 134,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "DT",
+   "qty": 15,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 6747.3
+}
