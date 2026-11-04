@@ -1,0 +1,145 @@
+== paper job exit 2026-11-04 09:20:04 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-04",
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ALAB",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AUGO",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DDOG",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DT",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "LITE",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "OKTA",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SGML",
+   "qty": 134,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AAOI 200 {"id":"476ababa-4df0-432e-b044-dfa52f1e6725","client_order_id":"5656af11-6de2-4fb3-93f7-0bf16b676f40","created_at":"2026-11-04T14:20:16.437247763Z","updated_at":"2026-11-04T14:20:16.437852641Z","submi
+ALAB 200 {"id":"14736b8d-ab43-4ad8-8634-cf95ab914d94","client_order_id":"43c3943e-15a7-4da2-a939-018d026b187d","created_at":"2026-11-04T14:20:16.808507135Z","updated_at":"2026-11-04T14:20:16.811842418Z","submi
+AUGO 200 {"id":"913f56a9-070d-4265-b2ad-abca5f1b3952","client_order_id":"c44f9371-ec33-4e5d-944e-d8aa9948ef3a","created_at":"2026-11-04T14:20:17.182577232Z","updated_at":"2026-11-04T14:20:17.183114689Z","submi
+DDOG 200 {"id":"cda13101-61fc-4499-87fa-44a575cc2ff9","client_order_id":"1ec9aeac-ee1b-44a0-acec-9c1163267fde","created_at":"2026-11-04T14:20:17.507348662Z","updated_at":"2026-11-04T14:20:17.507932117Z","submi
+DELL 200 {"id":"29c1936e-c9fd-425a-a0e5-ac5471706bf6","client_order_id":"521bd547-510e-4bd9-81dd-e1844d87b8fe","created_at":"2026-11-04T14:20:17.860495715Z","updated_at":"2026-11-04T14:20:17.861221013Z","submi
+DT 200 {"id":"ecc70677-e4a6-4994-84ef-86bc28d25953","client_order_id":"d1a74fbb-ea4c-4a16-a8f1-ebddeaf09c7b","created_at":"2026-11-04T14:20:18.179992612Z","updated_at":"2026-11-04T14:20:18.180780564Z","submi
+LITE 200 {"id":"194c98bb-61bb-4866-99b1-04fce96614d7","client_order_id":"0afd6b68-8f65-45ab-bbfd-5fe4d7c96bde","created_at":"2026-11-04T14:20:18.536279134Z","updated_at":"2026-11-04T14:20:18.536840216Z","submi
+MRVL 200 {"id":"1a20635d-b1ab-47b9-96b0-26cd1a8a6c25","client_order_id":"a1953c8b-7cc1-4d8d-b8f7-5ad9a7af6ada","created_at":"2026-11-04T14:20:18.872795251Z","updated_at":"2026-11-04T14:20:18.873350724Z","submi
+OKTA 200 {"id":"df612c33-118c-42fe-a0f7-9c1b47385800","client_order_id":"0ad9ffa9-9cfe-4620-bd0e-043e5ba45fc5","created_at":"2026-11-04T14:20:19.214335263Z","updated_at":"2026-11-04T14:20:19.214997286Z","submi
+SGML 200 {"id":"74d85596-d3a3-4326-b6f0-f020ff428ea2","client_order_id":"ff18e2d0-84f2-473e-af06-4df94c53b95e","created_at":"2026-11-04T14:20:19.582476528Z","updated_at":"2026-11-04T14:20:19.583229116Z","submi
+{
+ "day": "2026-11-04",
+ "from_entry": "entry_2026-11-03.json",
+ "equity": 7256.82,
+ "orders": [
+  {
+   "symbol": "MRVL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AUGO",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SGML",
+   "qty": 32,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DT",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "ALAB": "no price or qty 0",
+  "OKTA": "no price or qty 0",
+  "LITE": "no price or qty 0",
+  "DDOG": "no price or qty 0",
+  "DELL": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-04 09:35:36.569645-05:00"
+}
+MRVL 200 {"id":"c1a91af5-887f-435a-8aa1-f8b35ec026f2","client_order_id":"d1ff5ba0-f529-4aef-bd3e-83a2d58e5ce7","created_at":"2026-11-04T14:35:36.912887334Z","updated_at":"2026-11-04T14:35:36.914520293Z","submi
+AUGO 200 {"id":"f3a12580-f524-4568-b51e-a47cfae537be","client_order_id":"a9a8428f-a05d-4cd3-8e67-98277da0c53f","created_at":"2026-11-04T14:35:37.300540606Z","updated_at":"2026-11-04T14:35:37.301505764Z","submi
+AAOI 200 {"id":"565061cd-f022-4d5d-80f6-d70b5a84c621","client_order_id":"729fec62-df35-4e65-b6b7-362e45e116df","created_at":"2026-11-04T14:35:37.640032776Z","updated_at":"2026-11-04T14:35:37.64139534Z","submit
+SGML 200 {"id":"22dac9c4-4d3d-4f7d-8883-a29758482db1","client_order_id":"77b2acf8-c66e-414b-994a-16c92034c830","created_at":"2026-11-04T14:35:37.966357295Z","updated_at":"2026-11-04T14:35:38.010204776Z","submi
+DT 200 {"id":"75c1b829-0d72-43a6-9c7a-e773beb58a81","client_order_id":"c05aa6d2-46ca-4149-bd87-dee9af1a8138","created_at":"2026-11-04T14:35:38.26749284Z","updated_at":"2026-11-04T14:35:38.278930417Z","submit
