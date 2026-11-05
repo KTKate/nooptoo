@@ -1,0 +1,159 @@
+== paper job exit 2026-11-05 09:19:12 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-05",
+ "orders": [
+  {
+   "symbol": "BRUN",
+   "qty": 109,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CIEN",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "COHR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HUT",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "IESC",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MXL",
+   "qty": 12,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NBIS",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMTC",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+BRUN 200 {"id":"f774548d-b20f-4473-8fbd-e6ce34b87cf8","client_order_id":"40d93d5b-f475-4021-98bd-4822b61047f3","created_at":"2026-11-05T14:19:22.025141666Z","updated_at":"2026-11-05T14:19:22.02583741Z","submit
+CIEN 200 {"id":"b91301bf-6409-4c0a-8366-5cf91a49ea7a","client_order_id":"e27860d9-8841-44fc-89c8-4cbc3dd48d44","created_at":"2026-11-05T14:19:22.358128967Z","updated_at":"2026-11-05T14:19:22.358847666Z","submi
+COHR 200 {"id":"6efe80b5-a9c7-4ef1-818a-c305825875e0","client_order_id":"d766e80d-6dc1-4723-9b41-a353a07c8e34","created_at":"2026-11-05T14:19:22.687334556Z","updated_at":"2026-11-05T14:19:22.688225342Z","submi
+DELL 200 {"id":"e1ee8723-0c3a-47c9-b877-72349d8e1c89","client_order_id":"f04cc65e-2224-457d-b192-2050eec1299a","created_at":"2026-11-05T14:19:22.998349138Z","updated_at":"2026-11-05T14:19:22.999153334Z","submi
+HUT 200 {"id":"ba34b323-f25b-4307-b7a7-2e9331288218","client_order_id":"fdec5f8e-2431-42c4-a8ad-53efc3ddf599","created_at":"2026-11-05T14:19:23.365006514Z","updated_at":"2026-11-05T14:19:23.365713184Z","submi
+IESC 200 {"id":"c20ef3ff-d58e-4236-870e-8be8c7d1e8e9","client_order_id":"5499164e-7456-409a-923c-a54397f2446a","created_at":"2026-11-05T14:19:23.711660536Z","updated_at":"2026-11-05T14:19:23.729065083Z","submi
+MRVL 200 {"id":"d93feb33-692d-400c-b5ec-4b111d19b7ba","client_order_id":"c0bf7b30-69f8-437d-9552-2997d1394463","created_at":"2026-11-05T14:19:24.088442599Z","updated_at":"2026-11-05T14:19:24.093646896Z","submi
+MXL 200 {"id":"6759620a-fc67-45b4-a3a0-60a17d2a3960","client_order_id":"ad35fbc6-11c8-4814-b334-5652d2f2abf1","created_at":"2026-11-05T14:19:24.402451964Z","updated_at":"2026-11-05T14:19:24.403312304Z","submi
+NBIS 200 {"id":"948d0558-0bec-44e0-b273-35228af8a0d1","client_order_id":"afbf19cf-9e08-4589-9725-9a5f3155db7a","created_at":"2026-11-05T14:19:24.757278193Z","updated_at":"2026-11-05T14:19:24.75869625Z","submit
+SMTC 200 {"id":"2be7be6c-2c8c-489f-ba9f-d17d03fc4c3d","client_order_id":"10bb36f9-12c8-452d-9585-a1b807fba27f","created_at":"2026-11-05T14:19:25.111521669Z","updated_at":"2026-11-05T14:19:25.112335129Z","submi
+{
+ "day": "2026-11-05",
+ "from_entry": "entry_2026-11-04.json",
+ "equity": 6865.85,
+ "orders": [
+  {
+   "symbol": "MXL",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMTC",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HUT",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NBIS",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "IESC",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 27,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "DELL": "no price or qty 0",
+  "CIEN": "no price or qty 0",
+  "COHR": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-05 09:37:23.238882-05:00"
+}
+MXL 200 {"id":"703c0c6a-6157-44e1-8f69-c93690c711b9","client_order_id":"ffb1d1b4-cb1d-452c-b451-1aa2b0b4445a","created_at":"2026-11-05T14:37:23.572998852Z","updated_at":"2026-11-05T14:37:23.573953714Z","submi
+SMTC 200 {"id":"954fd083-e17f-4e9c-abcb-2ddf9545a15c","client_order_id":"9347a05f-27fe-4427-b58d-07c84979c05b","created_at":"2026-11-05T14:37:23.881102664Z","updated_at":"2026-11-05T14:37:23.882226419Z","submi
+MRVL 200 {"id":"e1b871d2-33bd-4acb-82e4-78776fbcdc7e","client_order_id":"e32d8ceb-1db6-48f9-beb1-5f39259f0ec7","created_at":"2026-11-05T14:37:24.191694217Z","updated_at":"2026-11-05T14:37:24.274281387Z","submi
+HUT 200 {"id":"37633d46-a711-4373-a0d9-ac6a7798f9a6","client_order_id":"82412a99-6f29-41dc-909e-11d7c878d978","created_at":"2026-11-05T14:37:24.620083286Z","updated_at":"2026-11-05T14:37:24.623083135Z","submi
+NBIS 200 {"id":"fa36efd0-8b5e-4688-bb73-b467f20fc077","client_order_id":"f67261bb-22b8-4f85-b60e-99f13485f425","created_at":"2026-11-05T14:37:24.930320578Z","updated_at":"2026-11-05T14:37:24.95021586Z","submit
+IESC 200 {"id":"7b1ff590-e32f-4406-bb8f-72f67b9ad64d","client_order_id":"3eab3976-2954-443c-8c16-22ab7a03d519","created_at":"2026-11-05T14:37:25.280044529Z","updated_at":"2026-11-05T14:37:25.282577569Z","submi
+BRUN 200 {"id":"aa533407-97f4-4fe7-9b7a-607b899c6fe8","client_order_id":"696e34ec-fc1c-426d-ac7e-f6743f293fa3","created_at":"2026-11-05T14:37:25.602723444Z","updated_at":"2026-11-05T14:37:25.604975502Z","submi

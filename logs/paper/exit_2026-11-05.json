@@ -1,0 +1,76 @@
+{
+ "day": "2026-11-05",
+ "orders": [
+  {
+   "symbol": "BRUN",
+   "qty": 109,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CIEN",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "COHR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HUT",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "IESC",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MXL",
+   "qty": 12,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NBIS",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMTC",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}

@@ -1,0 +1,63 @@
+{
+ "day": "2026-11-05",
+ "from_entry": "entry_2026-11-04.json",
+ "equity": 6865.85,
+ "orders": [
+  {
+   "symbol": "MXL",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMTC",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HUT",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NBIS",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "IESC",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRUN",
+   "qty": 27,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "DELL": "no price or qty 0",
+  "CIEN": "no price or qty 0",
+  "COHR": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-05 09:37:23.238882-05:00"
+}
