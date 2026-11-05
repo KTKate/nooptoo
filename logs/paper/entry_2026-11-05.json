@@ -1,0 +1,104 @@
+{
+ "day": "2026-11-05",
+ "strategy": "ensemble",
+ "model": "ensemble5_night_2026Q4.txt",
+ "ml_top": {
+  "AXTI": 0.97059,
+  "LITE": 0.97019,
+  "FPS": 0.96853,
+  "APA": 0.96813,
+  "AAOI": 0.96734,
+  "DELL": 0.96568,
+  "MXL": 0.9648,
+  "CDNL": 0.9633,
+  "ONTO": 0.96306,
+  "MEI": 0.95925
+ },
+ "uncapped_top": {
+  "AXTI": 0.97059,
+  "LITE": 0.97019,
+  "FPS": 0.96853,
+  "APA": 0.96813,
+  "AAOI": 0.96734,
+  "DELL": 0.96568,
+  "MXL": 0.9648,
+  "CDNL": 0.9633,
+  "ONTO": 0.96306,
+  "MEI": 0.95925
+ },
+ "equity": 6931.7,
+ "orders": [
+  {
+   "symbol": "AXTI",
+   "qty": 18,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "LITE",
+   "qty": 1,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "FPS",
+   "qty": 38,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "APA",
+   "qty": 15,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 14,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 2,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "MXL",
+   "qty": 15,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "CDNL",
+   "qty": 54,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 4,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "MEI",
+   "qty": 66,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 6531.45
+}
