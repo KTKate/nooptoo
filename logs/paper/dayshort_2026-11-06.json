@@ -1,0 +1,69 @@
+{
+ "day": "2026-11-06",
+ "from_entry": "entry_2026-11-05.json",
+ "equity": 7211.48,
+ "orders": [
+  {
+   "symbol": "AXTI",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FPS",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "APA",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MXL",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CDNL",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MEI",
+   "qty": 17,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "LITE": "no price or qty 0",
+  "DELL": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-06 09:35:13.689358-05:00"
+}

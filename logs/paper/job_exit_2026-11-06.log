@@ -1,0 +1,166 @@
+== paper job exit 2026-11-06 09:20:28 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-06",
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "APA",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AXTI",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CDNL",
+   "qty": 54,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FPS",
+   "qty": 38,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "LITE",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MEI",
+   "qty": 66,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MXL",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AAOI 200 {"id":"b6890794-787f-482e-8ed7-7ab28d9243ba","client_order_id":"c468344a-3e11-4a6d-9ea2-4dca3504fa12","created_at":"2026-11-06T14:20:37.168911546Z","updated_at":"2026-11-06T14:20:37.187595382Z","submi
+APA 200 {"id":"d2e93d59-ee70-4581-b3ca-e982462d8790","client_order_id":"dc2547d5-2954-4847-a954-a8ed9803ef67","created_at":"2026-11-06T14:20:37.522697307Z","updated_at":"2026-11-06T14:20:37.523330446Z","submi
+AXTI 200 {"id":"fe41ab22-b1d4-4fa2-b67d-e5db3dbe1947","client_order_id":"e06db87f-3d7b-46a0-8d0e-5b62943f2d89","created_at":"2026-11-06T14:20:37.861451289Z","updated_at":"2026-11-06T14:20:37.862069497Z","submi
+CDNL 200 {"id":"f209c916-abde-447f-93b4-8422e3b39509","client_order_id":"6447b716-3cc7-42e0-a096-83e6cfa60a2d","created_at":"2026-11-06T14:20:38.236896459Z","updated_at":"2026-11-06T14:20:38.256088007Z","submi
+DELL 200 {"id":"9c5d7237-1d9e-4588-b294-007ca362337b","client_order_id":"ab270633-3537-4551-bec6-775f6b9959b8","created_at":"2026-11-06T14:20:38.608087999Z","updated_at":"2026-11-06T14:20:38.609137513Z","submi
+FPS 200 {"id":"4628ff79-d2b7-4a36-baeb-33d6c92268b5","client_order_id":"6a6ef4ab-60bc-4f61-8d15-c1fcb8254cd9","created_at":"2026-11-06T14:20:39.015476333Z","updated_at":"2026-11-06T14:20:39.016095061Z","submi
+LITE 200 {"id":"9b576a2f-5925-4008-983e-572207fde708","client_order_id":"dff4c2c8-d59b-4043-9d97-d1d995a67dbf","created_at":"2026-11-06T14:20:39.35667957Z","updated_at":"2026-11-06T14:20:39.357378719Z","submit
+MEI 200 {"id":"525b052a-7282-4f4f-b93f-a64ade1bd810","client_order_id":"3d275edc-803c-4356-8b60-2d90c0b35dea","created_at":"2026-11-06T14:20:39.700840433Z","updated_at":"2026-11-06T14:20:39.701440603Z","submi
+MXL 200 {"id":"d8cebb14-f6b9-4c75-b5e3-2c5d7f246050","client_order_id":"0059bed9-66bc-4598-8f1b-99b7e827e039","created_at":"2026-11-06T14:20:40.096729319Z","updated_at":"2026-11-06T14:20:40.107324171Z","submi
+ONTO 200 {"id":"8f41434c-f25c-4c01-b248-7f57833505e8","client_order_id":"8bf5bd6a-ff93-40ac-a96b-b7a9e12fc392","created_at":"2026-11-06T14:20:40.439214198Z","updated_at":"2026-11-06T14:20:40.439779957Z","submi
+{
+ "day": "2026-11-06",
+ "from_entry": "entry_2026-11-05.json",
+ "equity": 7211.48,
+ "orders": [
+  {
+   "symbol": "AXTI",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FPS",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "APA",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MXL",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CDNL",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ONTO",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MEI",
+   "qty": 17,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "LITE": "no price or qty 0",
+  "DELL": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-06 09:35:13.689358-05:00"
+}
+AXTI 200 {"id":"4a6bb6fb-5e33-4fa8-a9f5-76180b1ede71","client_order_id":"d8510b71-cd1a-45d9-a820-f19a637e4212","created_at":"2026-11-06T14:35:14.039302324Z","updated_at":"2026-11-06T14:35:14.052396365Z","submi
+FPS 200 {"id":"7db61a09-1297-493d-9cbc-6a957c44f08a","client_order_id":"1d1cc46b-6fd4-499e-a4d4-44c39a2736dc","created_at":"2026-11-06T14:35:14.377254603Z","updated_at":"2026-11-06T14:35:14.378378739Z","submi
+APA 200 {"id":"7e8e365c-cfef-4835-a08e-27968fa77315","client_order_id":"76f68fa6-9c26-4add-906d-125ee9f582ff","created_at":"2026-11-06T14:35:14.717616436Z","updated_at":"2026-11-06T14:35:14.722408514Z","submi
+AAOI 200 {"id":"e0f38a9b-1882-4362-ac42-66f0c43d35f9","client_order_id":"e9453a1c-7a87-4090-bcc2-1bae8377c8f5","created_at":"2026-11-06T14:35:15.020691639Z","updated_at":"2026-11-06T14:35:15.021833171Z","submi
+MXL 200 {"id":"44cc7ea5-ac35-480e-b7b6-713f89176c93","client_order_id":"0581824a-86b3-46a6-b4d6-937a5c187a22","created_at":"2026-11-06T14:35:15.343349947Z","updated_at":"2026-11-06T14:35:15.344772861Z","submi
+CDNL 200 {"id":"bc63a0fb-a8b4-44a5-8cff-19c74d80bcd5","client_order_id":"488d41dd-3e45-457a-8691-9a7085c65dfc","created_at":"2026-11-06T14:35:15.551727073Z","updated_at":"2026-11-06T14:35:15.590299882Z","submi
+ONTO 200 {"id":"e262ce71-fd27-40c9-b609-79d6cd85b53f","client_order_id":"fa9da3bc-f1f2-42f8-9e6d-0c97d92ab1c6","created_at":"2026-11-06T14:35:15.918165941Z","updated_at":"2026-11-06T14:35:15.919909286Z","submi
+MEI 200 {"id":"26b8f7ef-cb3d-49e3-8640-7e0959ae7f5a","client_order_id":"fc31e05d-e3b8-4c9b-95c0-bee4e2bb95ba","created_at":"2026-11-06T14:35:16.26337176Z","updated_at":"2026-11-06T14:35:16.264519572Z","submit
