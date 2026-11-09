@@ -65,7 +65,7 @@ MANUAL = {"ALK": "Alaska_Air_Group", "AMR": "Alpha_Metallurgical_Resources", "BK
           "GOOG": "Alphabet_Inc.", "GOOGL": "Alphabet_Inc.", "DNKN": "Dunkin'_Brands", "FOXA": "Fox_Corporation"}
 
 
-def http_get(url, params=None, tries=12):
+def http_get(url, params=None, tries=40):
     wait = 4.0
     for _ in range(tries):
         try:
@@ -78,7 +78,8 @@ def http_get(url, params=None, tries=12):
             return r
         if r.status_code == 404:
             return None
-        time.sleep(wait)          # 429 or 5xx: back off and retry
+        ra = r.headers.get("retry-after", "")
+        time.sleep(float(ra) + 1 if ra.isdigit() else wait)     # 429 or 5xx: honour Retry-After, else back off
         wait = min(wait * 2, 120)
     raise RuntimeError(f"gave up on {url}")
 
@@ -127,8 +128,8 @@ def fetch_views(titles, done):
         rows.append(pd.DataFrame({"title": ti, "date": [x["timestamp"][:8] for x in items],
                                   "views": [x["views"] for x in items]}) if items
                     else pd.DataFrame({"title": [ti], "date": [None], "views": [np.nan]}))
-        time.sleep(0.7)
-        if len(rows) >= 50 or i == len(titles) - 1:
+        time.sleep(1.0)
+        if len(rows) >= 20 or i == len(titles) - 1:
             yield pd.concat(rows)
             rows = []
     if rows:

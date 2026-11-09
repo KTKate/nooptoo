@@ -68,14 +68,32 @@ BETA_N, BETA_MIN, BLOCK, NBOOT, SEED = 60, 40, 10, 5000, 206
 
 
 # ------------------------------------------------------------------ step 1: rebuild the jump scores
+def ml_features_light():
+    """src/ml_features.py without its module-level full-history feature build (about 4 GB; not used here)."""
+    import types
+    fn = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ml_features.py")
+    src = open(fn).read()
+    a = src.index("\no, h, l, c, rawc, v, dv = (P[k][cols]")
+    b = src.index("\ndef features_frame")
+    mod = types.ModuleType("ml_features_light")
+    mod.__file__ = fn
+    exec(compile(src[:a] + "\n" + src[b:], fn, "exec"), mod.__dict__)
+    return mod
+
+
 def rescore():
     import lightgbm as lgb
     import alpaca_data as A
-    import ml_features as M
-    import news_features as NF
+    M = ml_features_light()
     import store
-    P, cols, days = M.P, M.cols, M.days
-    earn = M.earnings_features()
+    import gc
+    import resource
+    P, days = M.P, M.days
+    cols = [t for t in M.cols if P["dv"][t].loc["2023-06":].max() > 3e6]   # study 23 live_cols
+    live_cols = cols
+    keep = days >= pd.Timestamp("2022-12-01")                                # 260-day windows from 2024-01
+    earn = {k: v.loc[keep, cols].astype("float32") for k, v in M.earnings_features().items()}
+    gc.collect()
     parts = []
     for f in sorted(os.listdir(os.path.join(A.LOCAL, "m5snap"))):
         if f.endswith(".parquet") and f[:7] >= "2023-12":
@@ -89,26 +107,48 @@ def rescore():
     m1 = m1[m1.ts.dt.strftime("%H:%M") == "15:44"]
     m1["date"] = m1.ts.dt.normalize()
     etf1545 = m1.pivot(index="date", columns="ticker", values="c")
-    o, h, l, c, rawc, v, dv = (P[k][cols] for k in ["o", "h", "l", "c", "rawc", "v", "dv"])
+    o, h, l, c, rawc, v, dv = (P[k].loc[keep, cols] for k in ["o", "h", "l", "c", "rawc", "v", "dv"])
     adjf = c / rawc
-    live_cols = [t for t in cols if P["dv"][t].loc["2023-06":].max() > 3e6]
+    i0 = int(np.argmax(keep))
+    days = days[keep]
     test_days = [d for d in days if pd.Timestamp("2024-01-02") <= d <= pd.Timestamp("2026-09-25")
                  and d in p1545.index and d in etf1545.index]
-    # study 33 extra inputs
+    # study 33 extra inputs: earn_tonight (report on t or t+1) and news_today (n_news of news_features.build:
+    # articles assigned to the first trading day whose 15:45 cutoff is at or after the timestamp)
     E = store.read("earnings")
     di = days.searchsorted(pd.to_datetime(E.date))
-    EARN = pd.DataFrame(0.0, index=days, columns=cols)
+    EARN = np.zeros((len(days), len(cols)), dtype="float32")
     ci = {t: i for i, t in enumerate(cols)}
     for d, t in zip(di, E.symbol):
         if t in ci and 0 < d < len(days):
-            EARN.iat[d, ci[t]] = 1.0
-            EARN.iat[d - 1, ci[t]] = 1.0
-    NEWS = NF.build(save=False)["n_news"].reindex(index=days, columns=cols)
+            EARN[d, ci[t]] = 1.0
+            EARN[d - 1, ci[t]] = 1.0
+    del E
+    nparts = []
+    for f in sorted(os.listdir(os.path.join(LOC, "news_scored"))):
+        if f.endswith(".parquet"):
+            x = pd.read_parquet(os.path.join(LOC, "news_scored", f), columns=["id", "ts", "symbols"])
+            if len(x):
+                nparts.append(x)
+    nw = pd.concat(nparts, ignore_index=True).drop_duplicates("id")
+    del nparts
+    nw["sym"] = nw.symbols.str.split("|")
+    nw = nw.explode("sym")
+    nw = nw[nw.sym.isin(cols)]
+    ts = pd.to_datetime(nw.ts, utc=True).dt.tz_convert("America/New_York").dt.tz_localize(None)
+    cut = pd.DatetimeIndex(M.days) + pd.Timedelta(hours=15, minutes=45)
+    i = cut.searchsorted(ts.values, side="left")
+    nw = nw.assign(day=M.days[np.minimum(i, len(M.days) - 1)])[i < len(M.days)]
+    NEWS = nw.groupby(["day", "sym"]).size().unstack().reindex(index=M.days, columns=cols).fillna(0.0)
+    NEWS.loc[:nw.day.min() - pd.Timedelta(days=1)] = np.nan
+    NEWS = NEWS.loc[keep].astype("float32").values
+    del nw, ts
+    gc.collect()
 
     def frame_1545(d):   # study23_ensemble_timing.frame_1545, verbatim logic
         i = days.get_loc(d)
         sl = slice(max(0, i - 260), i + 1)
-        oo, hh, ll, cc, rr, vv, dd = (x[live_cols].iloc[sl].copy() for x in (o, h, l, c, rawc, v, dv))
+        oo, hh, ll, cc, rr, vv, dd = (x.iloc[sl].copy() for x in (o, h, l, c, rawc, v, dv))
         px = p1545.loc[d].reindex(live_cols)
         ok = px.notna()
         cc.iloc[-1] = np.where(ok, px * adjf.loc[d, live_cols], np.nan)
@@ -117,11 +157,12 @@ def rescore():
         ll.iloc[-1] = np.minimum(ll.iloc[-1], cc.iloc[-1])
         vv.iloc[-1] = vv.iloc[-1] * 0.85
         dd.iloc[-1] = dd.iloc[-1] * 0.85
-        spy = P["c"]["SPY"].iloc[sl].copy()
+        psl = slice(sl.start + i0, sl.stop + i0)
+        spy = P["c"]["SPY"].iloc[psl].copy()
         spy.iloc[-1] = etf1545.at[d, "SPY"] * (P["c"]["SPY"].loc[d] / P["rawc"]["SPY"].loc[d])
-        iwm = P["c"]["IWM"].iloc[sl].copy()
+        iwm = P["c"]["IWM"].iloc[psl].copy()
         iwm.iloc[-1] = etf1545.at[d, "IWM"] * (P["c"]["IWM"].loc[d] / P["rawc"]["IWM"].loc[d])
-        F, mkt, adv20 = M.build(oo, hh, ll, cc, rr, vv, dd, spy, P["c"]["^VIX"].iloc[sl], P["c"]["^VIX3M"].iloc[sl],
+        F, mkt, adv20 = M.build(oo, hh, ll, cc, rr, vv, dd, spy, P["c"]["^VIX"].iloc[psl], P["c"]["^VIX3M"].iloc[psl],
                                 iwm, earn=earn)
         last = {k: f.iloc[[-1]] for k, f in F.items()}
         univ = ((rr > 5) & (adv20 > 5e6)).iloc[[-1]] & ok.values
@@ -129,6 +170,7 @@ def rescore():
 
     models = {}
     rows = []
+    print("memory GB", resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e6, flush=True)
     for n, d in enumerate(test_days):
         q = str(pd.Period(d, freq="Q"))
         if q not in models:
@@ -137,12 +179,13 @@ def rescore():
         r = days.get_indexer(X.index.get_level_values(0))
         cc_ = pd.Index(cols).get_indexer(X.index.get_level_values(1))
         for k, panel in [("earn_tonight", EARN), ("news_today", NEWS)]:
-            X[k] = panel.values[r, cc_].astype("float32")
+            X[k] = panel[r, cc_]
         X = X[models[q]["jump"].feature_name()]
         rows.append(pd.DataFrame({"p_jump": models[q]["jump"].predict(X),
                                   "p_drop": models[q]["drop"].predict(X)}, index=X.index))
         if n % 50 == 0:
-            print("scored", d.date(), n, "/", len(test_days), flush=True)
+            print("scored", d.date(), n, "/", len(test_days), "GB",
+                  resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e6, flush=True)
     pd.concat(rows).to_parquet(JPRED)
     print("wrote", JPRED)
 

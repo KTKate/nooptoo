@@ -192,8 +192,22 @@ def build_ideas():
     a["mw"] = a.value / a.q.map(tot)
     mret = a.dropna(subset=["ret"]).groupby("q").apply(lambda g: np.average(g.ret, weights=g.value),
                                                        include_groups=False)
-    hold = load_parsed("hold")
-    hold = hold[hold.acc.isin(set(fil.acc))].merge(fil[["acc", "cik", "q", "aum"]], on="acc")
+    # holdings loaded one file at a time with categorical keys (memory)
+    cats = pd.Index(sorted(a.cusip.unique()))
+    ever = set(fil.cik[(fil.aum >= MIN_AUM) & (fil.npos <= MAX_POS)])   # only managers ever eligible need holdings
+    accs = set(fil.acc[fil.cik.isin(ever)])
+    acat = sorted(accs)
+    parts = []
+    for fn in sorted(glob.glob(os.path.join(PARSED, "*_hold.parquet"))):
+        h = pd.read_parquet(fn)
+        h = h[h.acc.isin(accs)]
+        parts.append(pd.DataFrame({"acc": pd.Categorical(h.acc, categories=acat),
+                                   "cusip": pd.Categorical(h.cusip, categories=cats),
+                                   "value": h.value.values.astype("float32")}))
+    hold = pd.concat(parts, ignore_index=True)
+    del parts
+    hold = hold.merge(fil[["acc", "cik", "q", "aum"]].astype({"acc": hold.acc.dtype}), on="acc")
+    a["cusip"] = pd.Categorical(a.cusip, categories=cats)
     hold["w"] = hold.value / hold.aum
     hold = hold.merge(a[["q", "cusip", "ret"]], on=["q", "cusip"], how="left")
     ok = hold.ret.notna()
@@ -203,7 +217,7 @@ def build_ideas():
     fil["xret"] = fil.hret - fil.q.map(mret)
     # skill at q: mean xret of reports q-8 .. q-1 (each realised by the end of q)
     x = fil.pivot_table(index="q", columns="cik", values="xret")
-    x = x.reindex(range(x.index.min(), x.index.max() + 1))
+    x = x.reindex(range(x.index.min(), int(fil.q.max()) + 1))
     sk = x.shift(1).rolling(8, min_periods=6).mean().stack().rename("skill").reset_index()
     fil = fil.merge(sk, on=["q", "cik"], how="left")
     fil["elig"] = (fil.aum >= MIN_AUM) & (fil.npos <= MAX_POS)
@@ -223,9 +237,10 @@ def build_ideas():
     e = e.sort_values(["acc", "ow"], ascending=[True, False]).groupby("acc").head(3)
     ideas = e[["acc", "cusip", "ow", "w"]].merge(
         fil[["acc", "cik", "mgr", "q", "period", "filed", "skill", "skill_pct"]], on="acc")
+    ideas = ideas.astype({"acc": str, "cusip": str})
     ideas.to_parquet(os.path.join(D13, "ideas.parquet"), index=False)
     fil.drop(columns=["wr", "wc"]).to_parquet(os.path.join(D13, "filings.parquet"), index=False)
-    a[["q", "cusip", "ret", "lpx", "n"]].to_parquet(os.path.join(D13, "cusip_ret.parquet"), index=False)
+    a[["q", "cusip", "ret", "lpx", "n"]].astype({"cusip": str}).to_parquet(os.path.join(D13, "cusip_ret.parquet"), index=False)
     names.to_parquet(os.path.join(D13, "names.parquet"), index=False)
     print("filings", len(fil), "eligible", int(fil.elig.sum()), "with skill pct", int(fil.skill_pct.notna().sum()),
           "ideas", len(ideas), "distinct cusips", ideas.cusip.nunique())
@@ -278,7 +293,8 @@ def insider_names():
     parts = []
     for fn in sorted(glob.glob(os.path.join(D13, "f345", "*.zip"))):
         z = zipfile.ZipFile(fn)
-        d = pd.read_csv(z.open("SUBMISSION.tsv"), sep="\t", usecols=["ISSUERNAME", "ISSUERTRADINGSYMBOL", "FILING_DATE"],
+        mem = {os.path.basename(n): n for n in z.namelist()}
+        d = pd.read_csv(z.open(mem["SUBMISSION.tsv"]), sep="\t", usecols=["ISSUERNAME", "ISSUERTRADINGSYMBOL", "FILING_DATE"],
                         dtype=str, on_bad_lines="skip", quoting=3, keep_default_na=False)
         d["filed"] = pd.to_datetime(d.FILING_DATE, format="%d-%b-%Y", errors="coerce")
         d["symbol"] = d.ISSUERTRADINGSYMBOL.str.upper().str.strip().str.split().str[0].str.replace("-", ".")
@@ -401,30 +417,29 @@ def fetch_prices(tickers):
 
 
 def daily_returns(pa, py, tickers):
-    """Wide daily return panel. Alpaca from 2019-12 (official closing cross), yfinance before; each fills gaps."""
-    def wide(p):
-        p = p[p.ticker.isin(tickers)]
-        c = p.pivot_table(index="date", columns="ticker", values="c")
-        v = p.pivot_table(index="date", columns="ticker", values="v")
-        return c, v
-    ca, va = wide(pa)
-    cy, vy = wide(py)
-    idx = ca.index.union(cy.index)
+    """Wide daily return panel. Alpaca from 2019-12 (official closing cross), yfinance before; each fills gaps.
+    Built in column chunks (float32) to stay well under the memory limit."""
+    pa, py = pa[pa.ticker.isin(tickers)], py[py.ticker.isin(tickers)]
+    idx = pd.DatetimeIndex(sorted(set(pa.date) | set(py.date)))
     idx = idx[idx.dayofweek < 5]
-    cols = sorted(set(ca.columns) | set(cy.columns))
-    ca, cy = ca.reindex(index=idx, columns=cols), cy.reindex(index=idx, columns=cols)
-    ra, ry = ca / ca.ffill().shift(1) - 1, cy / cy.ffill().shift(1) - 1
-    # a return across a gap of more than 5 trading days is not used (stale or reused symbol)
-    ra = ra.where(ca.ffill(limit=5).shift(1).notna())
-    ry = ry.where(cy.ffill(limit=5).shift(1).notna())
+    cols = sorted(set(pa.ticker) | set(py.ticker))
     late = (idx >= "2019-12-02")[:, None]
-    r = pd.DataFrame(np.where(late, ra.fillna(ry), ry.fillna(ra)), index=idx, columns=cols)
-    r = r.where((r > -0.95) & (r < 3.0))
-    c = pd.DataFrame(np.where(late, ca.fillna(cy), cy.fillna(ca)), index=idx, columns=cols)
-    v = pd.DataFrame(np.where(late, va.reindex(index=idx, columns=cols).fillna(vy.reindex(index=idx, columns=cols)),
-                              vy.reindex(index=idx, columns=cols).fillna(va.reindex(index=idx, columns=cols))),
-                     index=idx, columns=cols)
-    return r, c, v
+    R, C, V = [], [], []
+    for i in range(0, len(cols), 1000):
+        cc = set(cols[i:i + 1000])
+        w = lambda p, k: p[p.ticker.isin(cc)].pivot_table(index="date", columns="ticker", values=k).reindex(
+            index=idx, columns=sorted(cc)).astype("float32")
+        ca, cy, va, vy = w(pa, "c"), w(py, "c"), w(pa, "v"), w(py, "v")
+        ra, ry = ca / ca.ffill().shift(1) - 1, cy / cy.ffill().shift(1) - 1
+        # a return across a gap of more than 5 trading days is not used (stale or reused symbol)
+        ra = ra.where(ca.ffill(limit=5).shift(1).notna())
+        ry = ry.where(cy.ffill(limit=5).shift(1).notna())
+        r = pd.DataFrame(np.where(late, ra.fillna(ry), ry.fillna(ra)), index=idx, columns=ca.columns)
+        R.append(r.where((r > -0.95) & (r < 3.0)).astype("float32"))
+        C.append(pd.DataFrame(np.where(late, ca.fillna(cy), cy.fillna(ca)), index=idx, columns=ca.columns))
+        V.append(pd.DataFrame(np.where(late, va.fillna(vy), vy.fillna(va)), index=idx, columns=ca.columns))
+        del ca, cy, va, vy, ra, ry
+    return pd.concat(R, axis=1), pd.concat(C, axis=1), pd.concat(V, axis=1)
 
 
 def build_map():
@@ -495,9 +510,10 @@ def load_bt():
     m = pd.read_csv(os.path.join(D13, "ticker_map.csv"))
     m = m[m.mapped == True]   # noqa: E712
     ideas = ideas.merge(m[["cusip", "ticker"]], on="cusip", how="left")
-    r = pd.read_parquet(os.path.join(D13, "ret_wide.parquet"))
-    c = pd.read_parquet(os.path.join(D13, "close_wide.parquet"))
-    v = pd.read_parquet(os.path.join(D13, "vol_wide.parquet"))
+    keep = sorted(set(m.ticker) | {"SPY"})
+    r = pd.read_parquet(os.path.join(D13, "ret_wide.parquet"), columns=keep)
+    c = pd.read_parquet(os.path.join(D13, "close_wide.parquet"), columns=keep)
+    v = pd.read_parquet(os.path.join(D13, "vol_wide.parquet"), columns=keep)
     spy = r["SPY"].copy()
     days = spy.dropna().index
     days = days[days >= "2013-06-01"]
