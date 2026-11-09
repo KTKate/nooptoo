@@ -360,6 +360,11 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("205", "Option-implied signals for 150 large stocks (call-put IV spread, put skew, 5-day change in ATM IV from "
+     "Alpaca option closes), 1-5 day holds; chosen on 2024, confirmed on 2025-26", "Reject",
+     "Frozen choice (largest 5-day fall in ATM IV, 5-day hold, top 10) made +4.6 bp a day net excess in 2024 (t 0.9) and "
+     "-4.2 bp in 2025-26 (Sharpe -0.86), losing in both years. Published effects out of sample: IV spread -1.7 bp a day "
+     "(t -0.4), skew +1.3 (t 0.3). Option closes are stale last trades, which adds noise."),
     ("211", "Study 15's best insider rule (exactly 2 insider buyers in 20 days, mid caps, buy at the close, hold 60 "
      "days) frozen and rescored on filings after 2026-03, plus a $10k long-only account 2020-26", "Reject",
      "New filings (Apr-Sep 2026, 97 complete holds): -26 bp per event unhedged, -395 bp vs SPY (t -2.3), the opposite "

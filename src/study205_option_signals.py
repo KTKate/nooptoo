@@ -203,8 +203,8 @@ def build():
     a["dist"] = (a.m - 1).abs()
     piv = a.pivot_table(index=["ticker", "date", "E", "K", "dist"], columns="type", values="iv").reset_index()
     piv["atm"] = piv[["call", "put"]].mean(axis=1)
-    atm = piv.sort_values("dist").groupby(["ticker", "date", "E"]).first().reset_index()
-    atm_call = a[a.type == "call"].sort_values("dist").groupby(["ticker", "date", "E"]).iv.first().rename("atm_call")
+    atm = piv.sort_values(["dist", "K"], kind="mergesort").groupby(["ticker", "date", "E"]).first().reset_index()
+    atm_call = a[a.type == "call"].sort_values(["dist", "K"], kind="mergesort").groupby(["ticker", "date", "E"]).iv.first().rename("atm_call")
     # selected expiry per (ticker, date): nearest monthly with 20-60 days to go
     dte = (b.E - b.date).dt.days
     sel = b[(dte >= 20) & (dte <= 60)].groupby(["ticker", "date"]).E.min().rename("E").reset_index()
@@ -215,7 +215,7 @@ def build():
     ivs = ivs[ivs["size"] >= 2]["mean"].rename("ivs")
     p = x[(x.type == "put") & (x.m >= 0.90) & (x.m <= 0.95)].copy()
     p["d"] = (p.m - 0.95).abs()
-    otm = p.sort_values("d").groupby(["ticker", "date"]).iv.first().rename("otm_put")
+    otm = p.sort_values(["d", "K"], kind="mergesort").groupby(["ticker", "date"]).iv.first().rename("otm_put")
     s = sel.set_index(["ticker", "date", "E"]).join(atm.set_index(["ticker", "date", "E"]).atm).join(atm_call)
     s = s.reset_index()
     # 5-trading-day change of ATM IV at the same expiry
