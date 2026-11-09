@@ -1,0 +1,4 @@
+measure,n,name_candidate,mapped_and_price_checked
+distinct best-idea CUSIPs,5503,0.9414864619298564,0.7959294930038161
+best-idea rows (filing x CUSIP),123695,0.975843809369821,0.940329035126723
+skilled best-idea rows (top 20%),19730,0.9812975164723771,0.9566649771920933

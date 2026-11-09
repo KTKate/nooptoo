@@ -385,6 +385,13 @@ studies = [
      "dip, monthly; chosen on 2005-18)", "Reject",
      "2019-26: CAGR 7.8%, Sharpe 0.31, max drawdown -38% vs SPY 16.9% / 0.77 / -34%; the dip entry adds nothing on the "
      "confirmation. 12-month versions reach 0.72, still below SPY. Stock version not run."),
+    ("210", "Copy SEC 13F best ideas: the 40 names most held as top-3 overweights by the top 20% of concentrated "
+     "managers ($500M+, <= 100 positions) by past 8-quarter holdings return, bought in the closing auction 2 days "
+     "after each filing (settings from 2014-19)", "Reject",
+     "No configuration beat SPY on 2014-19 (best net Sharpe 0.60 vs 0.93). Confirmation 2020-26: net 11.7% a year, "
+     "Sharpe 0.53 vs SPY 14.9% / 0.81, monthly excess t -0.24; ahead of SPY in 2020, 2023, 2024, 2025, behind in 2021, "
+     "2022, 2026. About 1 point a year above the equal-weight average of all best ideas (t 0.3). 94% of best-idea "
+     "rows mapped to price-checked tickers; 1% of confirmation slots had no price."),
     ("203", "Study 201's close trade with a resting limit buy at the 15:30 bid instead of a market order (filled only if "
      "the price trades below the bid by 15:55; unfilled slots stay in cash)", "Reject",
      "92% of orders fill, and the limit cuts costs from 11 to about 4 bp, but the fills are the names that fell: filled "

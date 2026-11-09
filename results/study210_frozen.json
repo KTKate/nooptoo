@@ -1,0 +1,8 @@
+{
+ "cut": 0.2,
+ "N": 40,
+ "choice_net_sharpe": 0.5995553562253745,
+ "choice_spy_sharpe": 0.9266352630460857,
+ "frozen_on": "2026-11-09",
+ "pass_rule": "confirmation 2020-01..2026-10: net Sharpe > SPY Sharpe, monthly excess over SPY t > 2, positive excess in most calendar years"
+}
