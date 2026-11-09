@@ -1,0 +1,17 @@
+{
+ "variant": "b_half",
+ "choice_sharpe": 3.120458541371201,
+ "choice_unhedged_sharpe": 3.112727412734762,
+ "choice_maxdd": -0.16142167546349862,
+ "frozen_on": "2026-11-09",
+ "rule": "highest net Sharpe on 2024-01..2025-06 among a, b, a_half, b_half",
+ "pass_rule": "confirmation 2025-07..2026-09-25: Sharpe(hedged) > Sharpe(unhedged) with paired block-bootstrap t > 2 (10-night blocks), or max drawdown cut by at least 1/3 with Sharpe not lower",
+ "beta": {
+  "nights": 60,
+  "min": 40,
+  "clip": [
+   0,
+   3
+  ]
+ }
+}

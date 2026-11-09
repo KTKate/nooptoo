@@ -33,7 +33,21 @@ then score 2025-07..2026-09-25 once. Pass: hedged Sharpe above unhedged with a p
 (10-night blocks, 5,000 draws, seed 206) t > 2 on the confirmation period, or a max drawdown cut of at least one third
 with Sharpe not lower. Live nights from 2026-09-29 reported with the frozen rule (h from the backtest + live series).
 
-    python src/study206_smh_hedge.py rescore     # rebuild P(jump), P(drop) (about 1 hour, ~1.5 GB)
+Data checks: rebuilt capped blend at panel prices Sharpe 3.11 / 2.85 / 2.98 (2024-25H1 / 2025H2-26 / 2024-26), mean
+46 bp a night, vs study 33c's 3.00 / 2.86 / 2.93; no held leg without a return. Rescore peak memory 1.6 GB (ml_features
+is loaded without its module-level 4 GB feature build).
+Result (frozen 2026-11-09: b_half, the best choice-period Sharpe 3.12 vs unhedged 3.11; a 2.66, b 3.12, a_half 3.04).
+  Confirmation 2025-07..2026-09-25, 312 nights (net bp a night, Sharpe, max drawdown): unhedged 47.3, 2.85, -21.5%;
+  b_half 44.9, 2.85, -20.5% (Sharpe diff -0.0004, bootstrap t -0.01; drawdown cut 5%); b 42.4, 2.83, -19.5% (t -0.17);
+  a 8.3, 0.65, -29.2% (t -4.0); a_half 27.8, 2.03, -18.0% (t -3.4). Book-SMH correlation 0.52 / 0.64, mean beta
+  0.64 / 1.14, SMH overnight +19 / +24 bp a night (Sharpe 2.0 / 2.3): shorting SMH overnight pays away a strongly
+  positive overnight drift, so the beta hedge costs far more than it saves. 2026Q3: b_half -0.2 vs +1.1 bp.
+  Live 27 nights 2026-09-29..11-05 (virtual book, official prints; correlation with SMH 0.95): unhedged -55.9 bp a
+  night, -15.1% compounded, drawdown -22.8%; b_half -47.8, -12.9%, -19.5% (diff +8.1 bp, t 0.74); a -32.8, -8.6%,
+  -9.2% (t 0.44). Verdict Reject: the frozen hedge does not raise the Sharpe and cuts the drawdown by 5%, not a
+  third; the hedges that would have helped live (a, a_half) lose 20-39 bp a night in the confirmation backtest.
+
+    python src/study206_smh_hedge.py rescore     # rebuild P(jump), P(drop) (about 70 minutes, 1.6 GB)
     python src/study206_smh_hedge.py discover    # choice period, writes the frozen choice
     python src/study206_smh_hedge.py confirm     # confirmation and live nights (run once)
 

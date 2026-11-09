@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("206", "Short SMH overnight against the blend's chip exposure (60-night beta, or notional = share of tech-hardware "
+     "picks, full or half); chosen on 2024-01..2025-06, confirmed on 2025-07..2026-09", "Reject",
+     "Frozen half-share hedge: Sharpe 2.85 vs 2.85 unhedged, drawdown -20.5% vs -21.5% (needed a one-third cut). "
+     "SMH itself gained about 20 bp a night overnight, so shorting it gives that up; the beta hedge costs 39 bp a night "
+     "(Sharpe 0.65). On the 27 live nights the book tracked SMH (correlation 0.95 vs 0.5-0.6 in backtests) and the beta "
+     "hedge would have cut the loss from -15% to -9% (t 0.4)."),
     ("205", "Option-implied signals for 150 large stocks (call-put IV spread, put skew, 5-day change in ATM IV from "
      "Alpaca option closes), 1-5 day holds; chosen on 2024, confirmed on 2025-26", "Reject",
      "Frozen choice (largest 5-day fall in ATM IV, 5-day hold, top 10) made +4.6 bp a day net excess in 2024 (t 0.9) and "
