@@ -1,0 +1,104 @@
+{
+ "day": "2026-11-09",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "PURR": 0.99908,
+  "BMNR": 0.9933,
+  "SLS": 0.99252,
+  "HPE": 0.99225,
+  "FSLY": 0.99094,
+  "MSTR": 0.99042,
+  "DELL": 0.9895,
+  "AAOI": 0.98923,
+  "BAND": 0.98884,
+  "FTNT": 0.97978
+ },
+ "uncapped_top": {
+  "PURR": 0.99908,
+  "BMNR": 0.9933,
+  "SLS": 0.99252,
+  "HPE": 0.99225,
+  "FSLY": 0.99094,
+  "MSTR": 0.99042,
+  "DELL": 0.9895,
+  "AAOI": 0.98923,
+  "BAND": 0.98884,
+  "OKTA": 0.98753
+ },
+ "equity": 7098.25,
+ "orders": [
+  {
+   "symbol": "PURR",
+   "qty": 79,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "BMNR",
+   "qty": 37,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SLS",
+   "qty": 82,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 14,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "FSLY",
+   "qty": 44,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "MSTR",
+   "qty": 5,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 2,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 13,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "BAND",
+   "qty": 17,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "FTNT",
+   "qty": 5,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 6814.13
+}

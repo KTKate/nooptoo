@@ -1,0 +1,134 @@
+{
+ "day": "2026-11-09",
+ "recorded_at": "2026-11-09 15:56:54.407882-05:00",
+ "news_window": [
+  "2026-11-06 20:45:00+00:00",
+  "2026-11-09 20:45:00+00:00"
+ ],
+ "n_news_symbols": 2413,
+ "smallcap_nonews": {
+  "ZSQR": {
+   "loss": 0.1875,
+   "px": 2.795
+  },
+  "DTIL": {
+   "loss": 0.0943,
+   "px": 9.705
+  },
+  "NFE": {
+   "loss": 0.0837,
+   "px": 4.05
+  },
+  "AEHL": {
+   "loss": 0.0801,
+   "px": 12.050100326538086
+  },
+  "GLAS": {
+   "loss": 0.0786,
+   "px": 1.935
+  },
+  "STFS": {
+   "loss": 0.0754,
+   "px": 5.150000095367432
+  },
+  "BDL": {
+   "loss": 0.0677,
+   "px": 55.5
+  },
+  "GOGO": {
+   "loss": 0.058,
+   "px": 3.655
+  },
+  "AIBZ": {
+   "loss": 0.0566,
+   "px": 2.5
+  },
+  "MMI": {
+   "loss": 0.0539,
+   "px": 26.49
+  }
+ },
+ "adr_loser": {
+  "BZ": {
+   "loss": 0.0431,
+   "px": 16.87
+  },
+  "DQ": {
+   "loss": 0.0339,
+   "px": 12.26
+  },
+  "VEON": {
+   "loss": 0.0243,
+   "px": 76.915
+  },
+  "ATHM": {
+   "loss": 0.0217,
+   "px": 22.295
+  },
+  "BABA": {
+   "loss": 0.0196,
+   "px": 105.37
+  }
+ },
+ "spy_meanrev": {
+  "SPY": {
+   "action": "flat",
+   "px": 753.16,
+   "down3": false,
+   "above5": true
+  },
+  "QQQ": {
+   "action": "exit",
+   "px": 679.565,
+   "down3": false,
+   "above5": true
+  }
+ },
+ "day_short": {
+  "PURR": {
+   "etb": true,
+   "shortable": true
+  },
+  "BMNR": {
+   "etb": true,
+   "shortable": true
+  },
+  "SLS": {
+   "etb": false,
+   "shortable": false
+  },
+  "HPE": {
+   "etb": true,
+   "shortable": true
+  },
+  "FSLY": {
+   "etb": true,
+   "shortable": true
+  },
+  "MSTR": {
+   "etb": true,
+   "shortable": true
+  },
+  "DELL": {
+   "etb": true,
+   "shortable": true
+  },
+  "AAOI": {
+   "etb": true,
+   "shortable": true
+  },
+  "BAND": {
+   "etb": true,
+   "shortable": true
+  },
+  "FTNT": {
+   "etb": true,
+   "shortable": true
+  }
+ },
+ "universe": {
+  "smallcap": 715,
+  "smallcap_priced": 712,
+  "adr": 174
+ }
+}
