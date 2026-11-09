@@ -360,6 +360,14 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("208", "Trend-following across 12 asset-class ETFs (price above its 200-day average, inverse-volatility weights, 10% "
+     "volatility target, monthly; rule chosen on 2005-18)", "Reject",
+     "2019-26: CAGR 5.6%, Sharpe 0.37, max drawdown -17% vs 60/40 SPY/IEF 10.6% / 0.70 / -21% and SPY 16.9% / 0.77 / "
+     "-34%. Smaller drawdowns but half the benchmarks' Sharpe; $10k became about $15.9k vs $22.0k (60/40) and $33.9k (SPY)."),
+    ("209", "Industry momentum on 24 sector/industry ETFs (top 3 by 6-month return skipping a month, entered on a 5-day "
+     "dip, monthly; chosen on 2005-18)", "Reject",
+     "2019-26: CAGR 7.8%, Sharpe 0.31, max drawdown -38% vs SPY 16.9% / 0.77 / -34%; the dip entry adds nothing on the "
+     "confirmation. 12-month versions reach 0.72, still below SPY. Stock version not run."),
     ("203", "Study 201's close trade with a resting limit buy at the 15:30 bid instead of a market order (filled only if "
      "the price trades below the bid by 15:55; unfilled slots stay in cash)", "Reject",
      "92% of orders fill, and the limit cuts costs from 11 to about 4 bp, but the fills are the names that fell: filled "

@@ -20,13 +20,13 @@ Holds of weeks to about 3 months are now allowed in addition to 1-5 day holds.
 - 205: option-implied signals (call-put IV spread, put skew), 1-5 day holds (choose 2024, confirm 2025-26)
 - 206: SMH hedge of the overnight blend's chip exposure (choose 2024-25H1, confirm 2025H2-26)
 - 207: screen of ~200 published predictors (Chen-Zimmermann) for post-2020 survival; rebuild survivors at 5d-3m holds
-- 208: trend-following across asset-class ETFs with volatility sizing (choose 2005-18, confirm 2019-26)
-- 209: industry momentum entered on dips (ETF and stock versions)
 - 210: copying 13F "best ideas" of concentrated managers with past skill (choose 2014-19, confirm 2020-26)
 - Later: an AI model reading filings and press releases at release time (needs an API key and a budget)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 208 Reject: ETF trend-following 2019-26 Sharpe 0.37 vs 60/40 0.70 and SPY 0.77 (smaller drawdowns only)
+- 209 Reject: ETF industry momentum 2019-26 Sharpe 0.31 vs SPY 0.77, drawdown worse
 - 203 Reject: limit buy at the 15:30 bid fills 92% but misses the winners; net -2.3 bp a day in 2024-26
 - 201 Reject: same-time-of-day repeat, 15:30 -> close: +4.9 bp a day gross in 2024-26 vs 11 bp costs (net Sharpe -1.8)
 - 202 Reject: same-time-of-day repeat, open -> 10:00: no gross return (-0.3 bp) vs 20 bp costs

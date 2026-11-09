@@ -1,0 +1,23 @@
+{
+ "signal": "sma200",
+ "rebal": "monthly",
+ "target_vol": 0.1,
+ "choose_net_sharpe": 0.6505416928499497,
+ "universe": [
+  "SPY",
+  "QQQ",
+  "IWM",
+  "EFA",
+  "EEM",
+  "TLT",
+  "IEF",
+  "LQD",
+  "HYG",
+  "GLD",
+  "DBC",
+  "VNQ"
+ ],
+ "cash": "SHY",
+ "frozen_on": "2026-11-09",
+ "pass_rule": "2019-01..2026-10: net Sharpe (excess of T-bill) above SPY's and 60/40's, max drawdown no worse than 60/40's, positive return in >= 5 of 8 calendar years"
+}
