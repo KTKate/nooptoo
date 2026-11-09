@@ -1,0 +1,11 @@
+{
+ "W": 3,
+ "K": 3,
+ "dir": "bottom",
+ "N": 10,
+ "min_median_views": 20,
+ "discovery_net_sharpe": 0.044222626431819276,
+ "discovery_net_t": 0.10702554316587758,
+ "frozen_on": "2026-11-09",
+ "pass_rule": "confirmation 2022-01..2026-10: net Sharpe > 1, t > 2, net gain in at least 4 of 2022..2026"
+}

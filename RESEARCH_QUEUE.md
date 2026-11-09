@@ -16,11 +16,11 @@ same universe's average (src/horizon_lib.py).
 Holds of weeks to about 3 months are now allowed in addition to 1-5 day holds.
 
 ## Running (batch 2026-11-09)
-- 204: Wikipedia page-view attention, 1-5 day holds (choose 2016-21, confirm 2022-26)
 - Later: an AI model reading filings and press releases at release time (needs an API key and a budget)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 204 Reject: Wikipedia attention has no 1-5 day edge in either direction (2022-26 net Sharpe -0.98)
 - 206 Reject: SMH hedge adds nothing in the confirmation (Sharpe 2.85 both); SMH's own overnight drift makes shorting it costly
 - 210 Reject: 13F best ideas of skilled concentrated managers 2020-26 net Sharpe 0.53 vs SPY 0.81 (excess t -0.24);
   no setting beat SPY on 2014-19 either

@@ -7,10 +7,15 @@ for trading it at the closing auctions?
 Data: ticker -> enwiki title from Wikidata SPARQL (P414 NYSE Q13677 / Nasdaq Q82059 statements with a P249 ticker
 qualifier, enwiki sitelink), restricted to data/local/hks_universe.csv; ambiguous tickers resolved by statement dates /
 rank and a short hand list (MANUAL) chosen by name only. Daily user page views 2016-01-01.. from the Wikimedia REST
-API, summed over the current title and its former titles (page moves found in the article's revision comments since
-2015, so a rename does not show up as a fake attention jump). Cache: data/local/wikiviews.parquet,
-data/local/wiki_titles.csv. Prices: Yahoo daily store (store.read("daily")) for 2016-2019, Alpaca daily bars
-(alpaca_data.read("d1"), close = official closing cross) from 2020-01 on.
+API, summed over the current title and its former titles (page moves read from the revision comments of the
+articles whose series start late or shift level 4x, see candidates(); 399 histories read, 281 articles with moves),
+so a rename does not show up as a fake attention jump; a former title's redirect traffic is kept after the move.
+Cache: data/local/wikiviews.parquet, data/local/wiki_titles.csv, data/local/wiki_moves.csv.
+Prices: the Yahoo daily store starts in 2019-06, so 2016-01..2019-11 uses Alpaca SIP daily bars fetched for this study
+into data/local/d1pre (read-only market data), and Alpaca d1 from 2019-12 (close = official closing cross). Split
+jumps from month-by-month fetching are repaired with Yahoo adjusted returns from 2019-06 on (165 days).
+Survivorship: only the hks_universe tickers (alive in the 2020s) are in the 2016-2019 panel; returns are excess over
+the same universe's average.
 Universe on day t: the 500 stocks with the highest 20-day median dollar volume up to t-1, prior close above $5, with
 a mapped article whose prior-60-day median views are at least MIN_MED.
 Signal (known before the close of t; page views are UTC daily counts, so only views through day t-1 are used):
@@ -24,7 +29,7 @@ Costs per side (bp): auction 1.3 + 0.1 x half-spread(15:45 model) + 2.5; a cohor
 Protocol (pre-registered 2026-11-09): choose W, K and direction on 2016-2021 only by net Sharpe of daily excess
 returns, write results/study204_frozen.json, then score 2022-01..2026-10 once. Pass: net Sharpe > 1, t > 2, and a net
 gain in at least 4 of the 5 confirmation years (2022..2026). No changes after the confirmation run.
-    python src/study204_wiki_attention.py map | fetch | moves | fetch_old | discover | confirm
+    python src/study204_wiki_attention.py map | d1pre | fetch | moves | fetch_old | discover | confirm
 Output: results/study204_wiki_attention.csv (grid, confirmation and per-year rows), results/study204_frozen.json,
         results/study204_daily.csv (confirmation daily returns)
 """
@@ -43,6 +48,7 @@ from core import RES, half_spread_model
 UA = {"User-Agent": "nooptoo-research/1.0 (stock research script)"}
 WINS, HOLDS, DIRS = [1, 3], [1, 3, 5], ["top", "bottom", "top_minus_bottom"]
 N, MIN_MED = 10, 20
+CUT_DAYS = 100000          # former titles: redirect traffic after the move is kept (search engines keep sending it)
 START, END = "2016-01-01", "2026-10-31"
 DISC_END, CONF_START = "2021-12-31", "2022-01-01"
 FROZEN = os.path.join(RES, "study204_frozen.json")
@@ -214,6 +220,13 @@ def fetch_old():
 
 
 # ------------------------------------------------------------------ panel and signal
+def fetch_d1pre():
+    """Alpaca SIP daily bars 2016-01..2019-11 for the hks universe (market data only) into data/local/d1pre."""
+    t = list(pd.read_csv(os.path.join(A.LOCAL, "hks_universe.csv")).ticker)
+    for m in A.months("2016-01", "2019-11"):
+        print(m, A.fetch_month("d1pre", t, m, "1Day", chunk=100, workers=2), flush=True)
+
+
 def prices():
     """Daily close panel (wide). Alpaca d1pre (2016-01..2019-11, fetched for this study) + d1 (2019-12..).
     Alpaca bars are split-adjusted as of each month's fetch date, so a split after a month was fetched shows up as a
@@ -248,10 +261,14 @@ def views_panel(dates):
     mv = pd.read_csv(MOVES).dropna(subset=["old"]) if os.path.exists(MOVES) else pd.DataFrame(columns=["title", "old"])
     cur = set(t.title)
     mv = mv[mv.title.isin(cur) & ~mv.old.isin(cur)]        # a former title that is now another mapped article: skip
-    alias = pd.concat([pd.DataFrame({"title": sorted(cur), "src": sorted(cur)}),
-                       mv[["title", "old"]].rename(columns={"old": "src"})]).drop_duplicates()
+    # a former title counts only up to the day it was last moved away (afterwards it is a redirect or may be reused)
+    mv = mv.assign(cut=pd.to_datetime(mv.ts, utc=True).dt.tz_localize(None).dt.normalize())
+    mv = mv.groupby(["title", "old"]).cut.max().reset_index().rename(columns={"old": "src"})
+    alias = pd.concat([pd.DataFrame({"title": sorted(cur), "src": sorted(cur), "cut": pd.Timestamp("2100-01-01")}),
+                       mv])
     v = v.merge(alias, left_on="title", right_on="src", suffixes=("_src", ""))
     v["date"] = pd.to_datetime(v.date, format="%Y%m%d")
+    v = v[v.date <= v.cut + pd.Timedelta(days=CUT_DAYS)]
     w = v.groupby(["date", "title"]).views.sum().unstack()
     cal = pd.date_range(START, max(dates.max(), w.index.max()))
     w = w.reindex(cal)
@@ -263,7 +280,6 @@ def views_panel(dates):
 
 def signal(dates):
     t, w = views_panel(dates)
-    lw = np.log1p(w)
     out = {}
     for W in WINS:
         recent = np.log1p(w.rolling(W, min_periods=W).mean())
@@ -271,7 +287,6 @@ def signal(dates):
         a = (recent - np.log1p(base)).where(base >= MIN_MED)
         a = a.shift(1)                              # value at calendar day t uses views through t-1
         out[W] = a.reindex(dates)
-    del lw
     return t, out
 
 
@@ -402,4 +417,4 @@ def confirm():
 
 
 if __name__ == "__main__":
-    {"map": build_map, "fetch": fetch, "moves": moves, "fetch_old": fetch_old, "discover": discover, "confirm": confirm}[sys.argv[1]]()
+    {"map": build_map, "d1pre": fetch_d1pre, "fetch": fetch, "moves": moves, "fetch_old": fetch_old, "discover": discover, "confirm": confirm}[sys.argv[1]]()
