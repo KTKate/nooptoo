@@ -169,21 +169,31 @@ def panel():
     set to 0), universe U (decision day d: top 500 by 20-day median dollar volume of d-20..d-1 among stocks whose
     traded close of d-1 is above $5), auction cost per side CS (fraction)."""
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    import horizon_lib as HL
-    from core import half_spread_panel
-    P = HL.P
-    cols = HL.cols
+    from core import load_panel, stock_cols, traded_close, half_spread_model
+    P = load_panel()
+    allc = stock_cols(P)
+    adv_all = P["dv"][allc].rolling(20, min_periods=10).median().shift(1)
+    # candidates: ever in the top 1000 by dollar volume (the $5 filter can only promote names from below rank 500)
+    cand = (adv_all.rank(axis=1, ascending=False) <= 1000).any()
+    cols = list(cand[cand].index)
+    adv = adv_all[cols].astype("float64")
+    del adv_all
     C = P["c"][cols].astype("float64")
+    # traded close (Alpaca raw) from 2023-12; earlier the Yahoo close scaled by the first traded/Yahoo ratio
+    # (same construction as src/horizon_lib.py)
+    TC = traded_close(P)[cols].astype("float64")
+    raw = P["rawc"][cols].astype("float64")
+    TPX = TC.fillna(raw * (TC / raw.where(raw > 0)).bfill().iloc[0].fillna(1.0))
     R = C / C.shift(1) - 1
     bad = R.abs() > 0.6
-    print("daily returns beyond +-60% treated as errors:", int(bad.sum().sum()))
+    print("daily returns beyond +-60% treated as errors (candidate names):", int(bad.sum().sum()))
     R = R.mask(bad)
-    adv = P["dv"][cols].rolling(20, min_periods=10).median().shift(1)
-    ok = (HL.TPX.shift(1) > 5) & C.notna() & adv.notna()
+    ok = (TPX.shift(1) > 5) & C.notna() & adv.notna()
     U = adv.where(ok).rank(axis=1, ascending=False, method="first") <= 500
     keep = U.any()
     keep = keep[keep].index
-    hs = half_spread_panel(P, "15:45")[keep].astype("float64")
+    vol = np.log(C / C.shift(1)).rolling(20, min_periods=10).std().shift(1)
+    hs = half_spread_model(adv[keep], raw[keep].shift(1), vol[keep].clip(lower=1e-3), "15:45")
     CS = (1.3 + 0.1 * hs + 2.5) / 1e4
     spy = P["c"]["SPY"].astype("float64")
     return dict(P=P, C=C[keep], Call=C, R=R[keep], U=U[keep], CS=CS, spy=spy / spy.shift(1) - 1, cols=list(keep))
@@ -257,14 +267,13 @@ def earnings_streak(D):
     # usable from the first trading day strictly after the announcement date
     e["start"] = np.searchsorted(days.values, e.date.values, side="right")
     e["nxt"] = e.groupby("ticker").start.shift(-1).fillna(len(days)).astype(int)
-    S = pd.DataFrame(np.nan, index=days, columns=D["C"].columns)
-    a = S.values
-    ci = {t: i for i, t in enumerate(S.columns)}
+    a = np.full((len(days), D["C"].shape[1]), np.nan)
+    ci = {t: i for i, t in enumerate(D["C"].columns)}
     for t, st, nx, sp, k in zip(e.ticker, e.start, e.nxt, e.surp, e.streak):
         if not k or st >= len(days):
             continue
         a[st:min(nx, st + 63), ci[t]] = sp
-    return S
+    return pd.DataFrame(a, index=days, columns=D["C"].columns)
 
 
 def run(D, score, h, N):
