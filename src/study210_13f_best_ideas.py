@@ -101,7 +101,9 @@ def fetch():
 def parse(fn):
     tag = os.path.basename(fn).replace(".zip", "")
     z = zipfile.ZipFile(fn)
-    rd = lambda f, cols: pd.read_csv(z.open(f), sep="\t", usecols=cols, dtype=str, on_bad_lines="skip",
+    mem = {os.path.basename(n): n for n in z.namelist()}      # some zips hold the files in a subfolder
+    zo = lambda f: z.open(mem[f])
+    rd = lambda f, cols: pd.read_csv(zo(f), sep="\t", usecols=cols, dtype=str, on_bad_lines="skip",
                                      quoting=3, keep_default_na=False)
     sub = rd("SUBMISSION.tsv", ["ACCESSION_NUMBER", "FILING_DATE", "SUBMISSIONTYPE", "CIK", "PERIODOFREPORT"])
     cov = rd("COVERPAGE.tsv", ["ACCESSION_NUMBER", "ISAMENDMENT", "REPORTTYPE", "FILINGMANAGER_NAME"])
@@ -115,7 +117,7 @@ def parse(fn):
     parts = []
     cols = ["ACCESSION_NUMBER", "NAMEOFISSUER", "TITLEOFCLASS", "CUSIP", "VALUE", "SSHPRNAMT", "SSHPRNAMTTYPE",
             "PUTCALL"]
-    for ch in pd.read_csv(z.open("INFOTABLE.tsv"), sep="\t", usecols=cols, dtype=str, on_bad_lines="skip",
+    for ch in pd.read_csv(zo("INFOTABLE.tsv"), sep="\t", usecols=cols, dtype=str, on_bad_lines="skip",
                           quoting=3, keep_default_na=False, chunksize=1_000_000):
         ch = ch[ch.ACCESSION_NUMBER.isin(keep) & (ch.SSHPRNAMTTYPE.str.upper() == "SH") & (ch.PUTCALL.str.strip() == "")]
         ch = pd.DataFrame({"acc": ch.ACCESSION_NUMBER, "cusip": ch.CUSIP.str.upper().str.strip().str.zfill(9).str[:9],
@@ -211,7 +213,8 @@ def build_ideas():
     base["skill_pct"] = base.groupby("q").skill.rank(pct=True, ascending=False)
     fil = fil.merge(base[["cik", "q", "skill_pct"]], on=["cik", "q"], how="left")
     # best ideas: top 3 by weight minus previous-period market weight, ETF-like names excluded
-    names = load_parsed("names").sort_values("nrow").drop_duplicates("cusip", keep="last")
+    names = load_parsed("names").groupby(["cusip", "name"]).agg(title=("title", "first"), nrow=("nrow", "sum"))
+    names = names.reset_index()
     etf = set(names.cusip[names.name.str.contains(ETF_RE) | names.title.str.contains(r"\bETF|\bETN|UNIT|WARR|RIGHT")])
     e = hold[hold.acc.isin(set(fil.acc[fil.elig])) & ~hold.cusip.isin(etf)].copy()
     pm = a[["q", "cusip", "mw"]].assign(q=lambda d: d.q + 1)
@@ -236,7 +239,7 @@ ABBR = {"INTL": "INTERNATIONAL", "INTERNATL": "INTERNATIONAL", "TECHNOLOGIES": "
         "FINL": "FINANCIAL", "FIN": "FINANCIAL", "MGMT": "MANAGEMENT", "SVCS": "SERVICES", "SVC": "SERVICES",
         "COMMUNICATIONS": "COMM", "COMMUNICATION": "COMM", "COMMUNICATNS": "COMM", "ENTMT": "ENTERTAINMENT",
         "RES": "RESOURCES", "PPTYS": "PROPERTIES", "PPTY": "PROPERTIES", "INDS": "INDUSTRIES", "MFG": "MANUFACTURING",
-        "AMER": "AMERICA", "AMERN": "AMERICAN", "NATL": "NATIONAL", "BANCORPORATION": "BANCORP", "BK": "BANK",
+        "AMER": "AMERICA", "MLS": "MILLS", "ENGR": "ENGINEERING", "RESH": "RESEARCH", "CTRS": "CENTERS", "STRS": "STORES", "AMERN": "AMERICAN", "NATL": "NATIONAL", "BANCORPORATION": "BANCORP", "BK": "BANK",
         "LABS": "LABORATORIES", "LAB": "LABORATORIES", "ENTERPRISES": "ENTERPRISE", "SOLUTIONS": "SOLUTION",
         "THERAPEUTICS": "THERAP", "THERAPEUTIC": "THERAP", "HLTH": "HEALTH", "HEALTHCARE": "HEALTH CARE",
         "ELEC": "ELECTRIC", "ELECTR": "ELECTRIC", "MTRS": "MOTORS", "BRANDS": "BRAND", "DEV": "DEVELOPMENT",
@@ -266,48 +269,83 @@ def norm(s):
     return " ".join(toks)
 
 
+def insider_names():
+    """(ticker, issuer name) pairs from SEC Form 3/4/5 data sets 2013-2026 (EDGAR conformed issuer names with the
+    trading symbol as filed at the time), cached; covers companies delisted since."""
+    out = os.path.join(D13, "f345_names.parquet")
+    if os.path.exists(out):
+        return pd.read_parquet(out)
+    parts = []
+    for fn in sorted(glob.glob(os.path.join(D13, "f345", "*.zip"))):
+        z = zipfile.ZipFile(fn)
+        d = pd.read_csv(z.open("SUBMISSION.tsv"), sep="\t", usecols=["ISSUERNAME", "ISSUERTRADINGSYMBOL", "FILING_DATE"],
+                        dtype=str, on_bad_lines="skip", quoting=3, keep_default_na=False)
+        d["filed"] = pd.to_datetime(d.FILING_DATE, format="%d-%b-%Y", errors="coerce")
+        d["symbol"] = d.ISSUERTRADINGSYMBOL.str.upper().str.strip().str.split().str[0].str.replace("-", ".")
+        g = d.dropna(subset=["filed", "symbol"]).groupby(["symbol", "ISSUERNAME"]).agg(
+            first=("filed", "min"), last=("filed", "max"), n=("filed", "size")).reset_index()
+        parts.append(g)
+    g = pd.concat(parts).groupby(["symbol", "ISSUERNAME"]).agg(first=("first", "min"), last=("last", "max"),
+                                                                n=("n", "sum")).reset_index()
+    g = g.rename(columns={"ISSUERNAME": "name"})
+    g = g[g.symbol.str.fullmatch(r"[A-Z]{1,5}(\.[A-Z])?") & (g.n >= 2)]
+    g.to_parquet(out, index=False)
+    return g
+
+
 def ticker_candidates(cusips, names):
+    """Name-based candidates per CUSIP from every issuer name the CUSIP carried in 13F filings, matched to Alpaca
+    asset names and Form 3/4/5 issuer names: exact, no-space, sorted-token, prefix, then close fuzzy matches."""
+    import difflib
     a = pd.concat([pd.read_parquet(os.path.join(ROOT, "data", "local", f"alpaca_assets_{k}.parquet"))
                    for k in ["active", "inactive"]], ignore_index=True)
     a = a[a.exchange.isin(["NYSE", "NASDAQ", "AMEX", "ARCA", "BATS"]) & a.symbol.str.fullmatch(r"[A-Z]{1,5}(\.[A-Z])?")]
     a = a[~a.name.str.contains(r"\bETF\b|\bETN\b|Warrant|\bRights?\b|\bUnits?\b|Preferred|Notes due|%", case=False,
                                regex=True, na=False)]
-    a["key"] = a.name.map(norm)
-    a["key0"] = a.key.str.replace(" ", "")
-    a["active"] = a.status == "active"
-    a = a[a.key.str.len() > 0]
-    by = a.groupby("key").symbol.apply(list).to_dict()
-    by0 = a.groupby("key0").symbol.apply(list).to_dict()
+    ins = insider_names()
+    ref = pd.concat([a[["symbol", "name"]], ins[["symbol", "name"]]], ignore_index=True).drop_duplicates()
+    ref["key"] = ref.name.map(norm)
+    ref = ref[ref.key.str.len() > 0]
+    ref["key0"] = ref.key.str.replace(" ", "")
+    ref["keys"] = ref.key.map(lambda k: " ".join(sorted(k.split())))
+    by = ref.groupby("key").symbol.apply(set).to_dict()
+    by0 = ref.groupby("key0").symbol.apply(set).to_dict()
+    bys = ref.groupby("keys").symbol.apply(set).to_dict()
     keys0 = np.array(sorted(by0))
-    nm = names.set_index("cusip").reindex(cusips)
+    nm = names[names.cusip.isin(set(cusips))].sort_values("nrow", ascending=False)
     rows = []
-    for c, (nme, title) in nm[["name", "title"]].iterrows():
-        k = norm(nme)
-        k0 = k.replace(" ", "")
-        how, cand = None, []
-        if k in by:
-            how, cand = "exact", by[k]
-        elif k0 in by0:
-            how, cand = "nospace", by0[k0]
-        elif len(k0) >= 6:
-            i = np.searchsorted(keys0, k0)
-            pre = []
-            while i < len(keys0) and keys0[i].startswith(k0):
-                pre.extend(by0[keys0[i]])
-                i += 1
-            if pre:
-                how, cand = "prefix", pre
-            else:   # 13F name longer than the asset name (asset key is a prefix of it)
-                sh = [k0[:j] for j in range(len(k0) - 1, 5, -1) if k0[:j] in by0]
-                if sh:
-                    how, cand = "shorter", by0[sh[0]]
-        cand = sorted(set(cand))
+    for c, g in nm.groupby("cusip", sort=False):
+        cand, how = set(), None
+        title = g.title.iat[0]
+        for nme in g.name.drop_duplicates().head(4):
+            k = norm(nme)
+            k0 = k.replace(" ", "")
+            ks = " ".join(sorted(k.split()))
+            hit = by.get(k) or by0.get(k0) or bys.get(ks)
+            h = "exact" if hit else None
+            if not hit and len(k0) >= 6:
+                i = np.searchsorted(keys0, k0)
+                pre = set()
+                while i < len(keys0) and keys0[i].startswith(k0) and len(pre) < 6:
+                    pre |= by0[keys0[i]]
+                    i += 1
+                if not pre:
+                    sh = [k0[:j] for j in range(len(k0) - 1, 6, -1) if k0[:j] in by0]
+                    pre = by0[sh[0]] if sh else set()
+                hit, h = pre, "prefix"
+            if not hit and len(k0) >= 5:
+                close = difflib.get_close_matches(k0, keys0, n=3, cutoff=0.85)
+                hit = set().union(*[by0[x] for x in close]) if close else set()
+                h = "fuzzy"
+            if hit:
+                cand |= hit
+                how = how or h
+        cand = sorted(cand)
         if len(cand) > 1 and isinstance(title, str):      # share classes
             m = re.search(r"\bCL(?:ASS)?\s*([A-C])\b", title)
             if m:
-                cl = [s for s in cand if s.endswith("." + m.group(1)) or len(cand) <= 1]
-                cand = cl or cand
-        rows.append(dict(cusip=c, name=nme, key=k, how=how, cand=cand[:6]))
+                cand = [x for x in cand if x.endswith("." + m.group(1))] or cand
+        rows.append(dict(cusip=c, name=g.name.iat[0], how=how, cand=cand[:8]))
     return pd.DataFrame(rows)
 
 
