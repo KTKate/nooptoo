@@ -24,7 +24,7 @@ Costs per side (bp): auction 1.3 + 0.1 x half-spread(15:45 model) + 2.5; a cohor
 Protocol (pre-registered 2026-11-09): choose W, K and direction on 2016-2021 only by net Sharpe of daily excess
 returns, write results/study204_frozen.json, then score 2022-01..2026-10 once. Pass: net Sharpe > 1, t > 2, and a net
 gain in at least 4 of the 5 confirmation years (2022..2026). No changes after the confirmation run.
-    python src/study204_wiki_attention.py map | fetch | moves | discover | confirm
+    python src/study204_wiki_attention.py map | fetch | moves | fetch_old | discover | confirm
 Output: results/study204_wiki_attention.csv (grid, confirmation and per-year rows), results/study204_frozen.json,
         results/study204_daily.csv (confirmation daily returns)
 """
@@ -153,9 +153,29 @@ def fetch(titles=None):
         print(time.strftime("%H:%M:%S"), v.title.nunique(), "titles cached", flush=True)
 
 
+def candidates():
+    """Cached titles whose series could hide a page move (checked against revision history in moves()): the series
+    starts after 2016-01-10, or the next-30-day median is over 4x or under 1/4 of the prior-60-day median somewhere.
+    This only picks which histories to read (rate limits make reading all ~950 slow); the repair uses logged moves."""
+    v = pd.read_parquet(VIEWS).dropna(subset=["date"])
+    v["date"] = pd.to_datetime(v.date, format="%Y%m%d")
+    w = v.pivot_table(index="date", columns="title", values="views", aggfunc="sum")
+    w = w.reindex(pd.date_range(START, w.index.max()))
+    w = w.fillna(0).where(w.notna().cumsum() > 0)
+    first = w.apply(lambda s: s.first_valid_index())
+    after = w[::-1].rolling(30, min_periods=20).median()[::-1]
+    before = w.rolling(60, min_periods=30).median().shift(1)
+    up_ = (after / (before + 1)).where(after > 100).max()
+    dn_ = (before / (after + 1)).where(before > 100).max()
+    cur = set(pd.read_csv(TITLES).title)
+    c = (first > pd.Timestamp("2016-01-10")) | (up_ > 4) | (dn_ > 4)
+    return [t for t in c[c].index if t in cur]
+
+
 def moves():
     """Former titles: 'moved page [[Old]] to [[New]]' in revision comments since 2015-06 (follow chains)."""
-    titles = list(pd.read_csv(TITLES).title.unique())
+    titles = candidates()
+    print(len(titles), "candidate titles", flush=True)
     have = pd.read_csv(MOVES) if os.path.exists(MOVES) else pd.DataFrame(columns=["title", "old", "ts", "scanned"])
     pat = re.compile(r"moved page \[\[([^\]]+)\]\] to \[\[([^\]]+)\]\]")
     for i, ti in enumerate(titles):
@@ -182,8 +202,14 @@ def moves():
             have.to_csv(MOVES, index=False)
             print(time.strftime("%H:%M:%S"), i, "scanned", have.old.notna().sum(), "moves", flush=True)
     have.to_csv(MOVES, index=False)
-    olds = sorted(set(have.old.dropna()) - set(titles))
-    print(len(olds), "former titles; fetching their views", flush=True)
+
+
+def fetch_old():
+    """Views of the former titles found by moves() (run after fetch, never concurrently: both write VIEWS)."""
+    have = pd.read_csv(MOVES)
+    olds = sorted(o for o in set(have.old.dropna()) - set(pd.read_csv(TITLES).title)
+                  if not re.match(r"(Draft|User|Wikipedia|Talk|Template):", o))
+    print(len(olds), "former titles", flush=True)
     fetch(olds)
 
 
@@ -273,7 +299,7 @@ def build():
         for title, g in t.groupby("title"):
             tk = [x for x in g.ticker if x in s.columns]
             if len(tk) > 1:
-                best = adv[tk].idxmax(axis=1)
+                best = adv[tk].fillna(-1.0).idxmax(axis=1)
                 for x in tk:
                     s[x] = s[x].where(best == x)
         S[W] = s.where(elig & C.notna())
@@ -376,4 +402,4 @@ def confirm():
 
 
 if __name__ == "__main__":
-    {"map": build_map, "fetch": fetch, "moves": moves, "discover": discover, "confirm": confirm}[sys.argv[1]]()
+    {"map": build_map, "fetch": fetch, "moves": moves, "fetch_old": fetch_old, "discover": discover, "confirm": confirm}[sys.argv[1]]()

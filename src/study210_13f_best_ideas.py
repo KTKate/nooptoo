@@ -74,7 +74,11 @@ CUTS, NS = [0.10, 0.20, 0.33], [10, 20, 40]
 MIN_AUM, MAX_POS = 500e6, 100
 ETF_RE = re.compile(r"ISHARES|SPDR|VANGUARD|POWERSHARES|PROSHARES|DIREXION|WISDOMTREE|INVESCO QQQ|SELECT SECTOR|"
                     r"\bETF\b|\bETN\b|\bFUND\b|\bFD\b|\bINDEX\b|GRAYSCALE|ISHS|\bTR UNIT\b|VANECK|MARKET VECTORS|"
-                    r"\bETP\b|ULTRA\b|\bS&P 500\b|GLOBAL X|FIRST TR|SCHWAB STRATEGIC|JPMORGAN CHASE & CO ALERIAN")
+                    r"\bETP\b|ULTRA\b|\bS&P 500\b|GLOBAL X|FIRST TR|SCHWAB STRATEGIC|JPMORGAN CHASE & CO ALERIAN|"
+                    r"EXCHANGE TRADED|\bETFS\b|ETF TR|COVINGTON|KRANESHARES|NUVEEN|ABERDEEN|PACER F|INNOVATOR|"
+                    r"SERIES TRUST|SIMPLIFY EXCH|\bMUN\b|\bMUNI|AMPLIFY ETF|TIDAL|\bTR II\b|EXCH TRADED|ALPS ETF|"
+                    r"WESTERN ASSET|BLACKROCK .*(TR|FD|INCOME)|PIMCO|EATON VANCE .*(FD|TR|FUND)|ADVISORSHARES|"
+                    r"ISHARES|SPROTT PHYSICAL|BITCOIN|ETHEREUM|PHYSICAL GOLD|GOLD TR|SILVER TR")
 
 
 # ------------------------------------------------------------------ fetch + parse (one zip at a time)
@@ -214,7 +218,7 @@ def build_ideas():
     g = hold[ok].assign(wr=lambda x: x.w * x.ret).groupby("acc").agg(wr=("wr", "sum"), wc=("w", "sum"))
     fil = fil.merge(g, left_on="acc", right_index=True, how="left")
     fil["hret"] = np.where(fil.wc >= 0.8, fil.wr / fil.wc, np.nan)
-    fil["xret"] = fil.hret - fil.q.map(mret)
+    fil["xret"] = (fil.hret - fil.q.map(mret)).clip(-0.5, 0.5)   # a quarter beyond +-50% is mostly data error
     # skill at q: mean xret of reports q-8 .. q-1 (each realised by the end of q)
     x = fil.pivot_table(index="q", columns="cik", values="xret")
     x = x.reindex(range(x.index.min(), int(fil.q.max()) + 1))
@@ -367,29 +371,25 @@ def ticker_candidates(cusips, names):
 
 # ------------------------------------------------------------------ prices
 def fetch_prices(tickers):
-    """Daily total-return closes and volumes: Alpaca (adjustment=all, 2016+) and yfinance (2013+). Cached."""
+    """Daily total-return closes and volumes: Alpaca (adjustment=all, 2016+) and yfinance (2013+). Each batch of 100
+    symbols is cached as its own file under data/local/13f/px (memory stays small)."""
     import alpaca_data as A
     import yfinance as yf
-    fa, fy = os.path.join(D13, "px_alpaca.parquet"), os.path.join(D13, "px_yf.parquet")
-    have_a = pd.read_parquet(fa) if os.path.exists(fa) else pd.DataFrame(columns=["date", "ticker", "c", "v"])
-    have_y = pd.read_parquet(fy) if os.path.exists(fy) else pd.DataFrame(columns=["date", "ticker", "c", "v"])
+    pdir = os.path.join(D13, "px")
+    os.makedirs(pdir, exist_ok=True)
     done = os.path.join(D13, "px_done.json")
     dn = json.load(open(done)) if os.path.exists(done) else {"a": [], "y": []}
     need_a = sorted(set(tickers) - set(dn["a"]))
-    parts = [have_a]
     for i in range(0, len(need_a), 100):
         b = need_a[i:i + 100]
         d = A.bars(b, "1Day", "2016-01-01T00:00:00Z", "2026-11-01T00:00:00Z", adjustment="all")
         if len(d):
-            parts.append(pd.DataFrame({"date": d.ts.dt.normalize(), "ticker": d.ticker, "c": d.c.astype("float64"),
-                                       "v": d.v}))
+            pd.DataFrame({"date": d.ts.dt.normalize(), "ticker": d.ticker.astype(str), "c": d.c.astype("float32"),
+                          "v": d.v.astype("float32")}).to_parquet(os.path.join(pdir, f"a_{len(dn['a']):06d}.parquet"))
         dn["a"].extend(b)
+        json.dump(dn, open(done, "w"))
         print("alpaca", i, len(need_a), flush=True)
-    pa = pd.concat(parts, ignore_index=True).drop_duplicates(["date", "ticker"])
-    pa.to_parquet(fa, index=False)
-    json.dump(dn, open(done, "w"))
     need_y = sorted(set(tickers) - set(dn["y"]))
-    parts = [have_y]
     for i in range(0, len(need_y), 100):
         b = need_y[i:i + 100]
         ys = [t.replace(".", "-") for t in b]
@@ -404,30 +404,38 @@ def fetch_prices(tickers):
             v = x["Volume"] if isinstance(x.columns, pd.MultiIndex) else x[["Volume"]].set_axis(ys, axis=1)
             d = c.stack().rename("c").to_frame().join(v.stack().rename("v")).reset_index()
             d.columns = ["date", "ticker", "c", "v"]
-            d["ticker"] = d.ticker.str.replace("-", ".")
-            parts.append(d)
+            d["ticker"] = d.ticker.astype(str).str.replace("-", ".")
+            d.astype({"c": "float32", "v": "float32"}).to_parquet(
+                os.path.join(pdir, f"y_{len(dn['y']):06d}.parquet"))
         dn["y"].extend(b)
-        print("yf", i, len(need_y), flush=True)
         json.dump(dn, open(done, "w"))
+        print("yf", i, len(need_y), flush=True)
         time.sleep(1)
-    py = pd.concat(parts, ignore_index=True).drop_duplicates(["date", "ticker"])
-    py.to_parquet(fy, index=False)
-    json.dump(dn, open(done, "w"))
-    return pa, py
+
+
+def read_prices(src, tickers):
+    parts = []
+    for fn in sorted(glob.glob(os.path.join(D13, "px", f"{src}_*.parquet"))):
+        d = pd.read_parquet(fn)
+        d = d[d.ticker.isin(tickers)]
+        d["ticker"] = d.ticker.astype("category")
+        parts.append(d)
+    d = pd.concat(parts, ignore_index=True)
+    d["ticker"] = d.ticker.astype(str).astype("category")
+    return d.drop_duplicates(["date", "ticker"])
 
 
 def daily_returns(pa, py, tickers):
     """Wide daily return panel. Alpaca from 2019-12 (official closing cross), yfinance before; each fills gaps.
     Built in column chunks (float32) to stay well under the memory limit."""
-    pa, py = pa[pa.ticker.isin(tickers)], py[py.ticker.isin(tickers)]
-    idx = pd.DatetimeIndex(sorted(set(pa.date) | set(py.date)))
+    idx = pd.DatetimeIndex(sorted(set(pa.date.unique()) | set(py.date.unique())))
     idx = idx[idx.dayofweek < 5]
-    cols = sorted(set(pa.ticker) | set(py.ticker))
+    cols = sorted(set(pa.ticker.unique()) | set(py.ticker.unique()))
     late = (idx >= "2019-12-02")[:, None]
     R, C, V = [], [], []
     for i in range(0, len(cols), 1000):
         cc = set(cols[i:i + 1000])
-        w = lambda p, k: p[p.ticker.isin(cc)].pivot_table(index="date", columns="ticker", values=k).reindex(
+        w = lambda p, k: p[p.ticker.isin(cc)].astype({"ticker": str}).pivot_table(index="date", columns="ticker", values=k).reindex(
             index=idx, columns=sorted(cc)).astype("float32")
         ca, cy, va, vy = w(pa, "c"), w(py, "c"), w(pa, "v"), w(py, "v")
         ra, ry = ca / ca.ffill().shift(1) - 1, cy / cy.ffill().shift(1) - 1
@@ -447,11 +455,20 @@ def build_map():
     names = pd.read_parquet(os.path.join(D13, "names.parquet"))
     cr = pd.read_parquet(os.path.join(D13, "cusip_ret.parquet"))
     cus = sorted(ideas.cusip.unique())
-    m = ticker_candidates(cus, names)
+    fc = os.path.join(D13, "candidates.parquet")
+    old = pd.read_parquet(fc) if os.path.exists(fc) else pd.DataFrame(columns=["cusip", "name", "how", "cand"])
+    miss = sorted(set(cus) - set(old.cusip))
+    if miss:
+        new = ticker_candidates(miss, names).assign(cand=lambda d: d.cand.map(" ".join))
+        old = pd.concat([old, new], ignore_index=True)
+        old.to_parquet(fc, index=False)
+    m = old[old.cusip.isin(set(cus))].copy()
+    m["cand"] = m.cand.fillna("").str.split()
     allc = sorted({t for c in m.cand for t in c} | {"SPY"})
     print("cusips", len(cus), "with candidates", int(m.cand.map(len).gt(0).sum()), "tickers", len(allc), flush=True)
-    pa, py = fetch_prices(allc)
-    r, c, v = daily_returns(pa, py, set(allc))
+    fetch_prices(allc)
+    r, c, v = daily_returns(read_prices("a", set(allc)), read_prices("y", set(allc)), set(allc))
+    print("panel", r.shape, flush=True)
     # quarter-end returns of each candidate vs 13F implied returns of the CUSIP
     qe = c.ffill(limit=5).resample("QE").last()
     qret = (qe.shift(-1) / qe - 1)
