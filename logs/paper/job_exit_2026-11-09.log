@@ -1,0 +1,175 @@
+== paper job exit 2026-11-09 09:24:17 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-09",
+ "orders": [
+  {
+   "symbol": "AES",
+   "qty": 47,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AWR",
+   "qty": 7,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BPRE",
+   "qty": 58,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CHT",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRT",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "LCLN",
+   "qty": 27,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NUV",
+   "qty": 84,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "STAG",
+   "qty": 19,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TRLV",
+   "qty": 62,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TXNM",
+   "qty": 12,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AES 200 {"id":"40848ef8-e106-4256-aadf-7b4eeb510680","client_order_id":"aab2851f-6922-4be0-ab90-2c172c4a1021","created_at":"2026-11-09T14:24:24.176011442Z","updated_at":"2026-11-09T14:24:24.176679504Z","submi
+AWR 200 {"id":"374b272b-2589-46af-b717-bad51e54a967","client_order_id":"6e701d31-ec30-40f2-819e-e3a7415061a4","created_at":"2026-11-09T14:24:24.483894377Z","updated_at":"2026-11-09T14:24:24.484679064Z","submi
+BPRE 200 {"id":"7994d06e-cda6-4003-a36d-2c805a49a56b","client_order_id":"1dc1d6c0-461c-48dd-aa9b-34c2aade86e2","created_at":"2026-11-09T14:24:24.821202429Z","updated_at":"2026-11-09T14:24:24.821898533Z","submi
+CHT 200 {"id":"fe5a9b22-70a2-44c3-93f6-65849d0a61b5","client_order_id":"63eee2cd-38ec-48d0-9920-1be83b431bd9","created_at":"2026-11-09T14:24:25.131741007Z","updated_at":"2026-11-09T14:24:25.132355619Z","submi
+FRT 200 {"id":"98962d8d-c95b-4fcd-abec-d04b6f8ca435","client_order_id":"ef5a3153-9428-4be6-a53c-2dbd840d6a10","created_at":"2026-11-09T14:24:25.465211233Z","updated_at":"2026-11-09T14:24:25.466230041Z","submi
+LCLN 200 {"id":"694c1986-4401-4188-8b1a-2a92aa37d24f","client_order_id":"13757695-2aad-4b3c-bd3b-790160cb63d8","created_at":"2026-11-09T14:24:25.780295369Z","updated_at":"2026-11-09T14:24:25.780931083Z","submi
+NUV 200 {"id":"b6012352-3822-4520-ad13-d186dbe894b8","client_order_id":"b431ad56-37ba-416d-b894-7a9f5c5b638f","created_at":"2026-11-09T14:24:26.115741859Z","updated_at":"2026-11-09T14:24:26.116441388Z","submi
+STAG 200 {"id":"92206cd4-9e18-4877-a40d-ed59b87ccb01","client_order_id":"3d4f2e33-9b35-4089-85b9-cef2eafb8aed","created_at":"2026-11-09T14:24:26.607847828Z","updated_at":"2026-11-09T14:24:26.608512065Z","submi
+TRLV 200 {"id":"621b1ee9-2c00-4c03-a82d-6105f723dce8","client_order_id":"7a4c1036-4af8-43f8-8f43-f7828d66f6c3","created_at":"2026-11-09T14:24:26.952251594Z","updated_at":"2026-11-09T14:24:26.953042931Z","submi
+TXNM 200 {"id":"4498a977-5bae-425c-b402-990e15f833b4","client_order_id":"e69eaeb5-348f-463a-84cf-2162e9013a05","created_at":"2026-11-09T14:24:27.286366667Z","updated_at":"2026-11-09T14:24:27.287088219Z","submi
+{
+ "day": "2026-11-09",
+ "from_entry": "entry_2026-11-06.json",
+ "equity": 7103.59,
+ "orders": [
+  {
+   "symbol": "LCLN",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CHT",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NUV",
+   "qty": 20,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "STAG",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TXNM",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AES",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRT",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "TRLV",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AWR",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "BPRE": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-11-09 09:35:41.074573-05:00"
+}
+LCLN 200 {"id":"70e82cd2-ed34-4a5e-929a-958099cc51e6","client_order_id":"1cdab36c-e070-49b8-b40f-6f90b48cd76b","created_at":"2026-11-09T14:35:41.360972164Z","updated_at":"2026-11-09T14:35:41.361906576Z","submi
+CHT 200 {"id":"cbc8579e-ea66-4a93-b59d-8b1430662821","client_order_id":"301fb6ce-c4d2-4c2c-bf5d-40fb7cbe7bf3","created_at":"2026-11-09T14:35:41.856136926Z","updated_at":"2026-11-09T14:35:41.85789957Z","submit
+NUV 200 {"id":"7df2e0aa-6438-4d22-9547-f9f4e4ea79cc","client_order_id":"316e358f-6013-4653-9210-d96ed0ca8e5a","created_at":"2026-11-09T14:35:42.197787474Z","updated_at":"2026-11-09T14:35:42.200514765Z","submi
+STAG 200 {"id":"fda289f6-5e08-4f14-b6a2-d213dfe48570","client_order_id":"0390b24c-f91c-4d74-89d7-bb8985ecb662","created_at":"2026-11-09T14:35:42.557895489Z","updated_at":"2026-11-09T14:35:42.579783902Z","submi
+TXNM 200 {"id":"58352209-e19f-4721-bdc1-962a554f8293","client_order_id":"dc34aa6f-9809-4188-aeae-4f5cf18c6f4a","created_at":"2026-11-09T14:35:42.92261438Z","updated_at":"2026-11-09T14:35:42.926599458Z","submit
+AES 200 {"id":"38e93432-a826-4bdf-940a-d7793aa01e55","client_order_id":"25d0408a-77f0-4674-8fc1-cf633c32b937","created_at":"2026-11-09T14:35:43.297020212Z","updated_at":"2026-11-09T14:35:43.298575725Z","submi
+FRT 200 {"id":"82627e03-a16c-43ec-8564-b06960f83187","client_order_id":"302bf5b0-4b47-4e63-aeec-db4f1d0ec94c","created_at":"2026-11-09T14:35:43.630165422Z","updated_at":"2026-11-09T14:35:43.639449769Z","submi
+TRLV 200 {"id":"8298e1a4-bfc2-4219-89ea-09702d75ca0f","client_order_id":"634e5f08-68c2-4325-a7c9-93628199026d","created_at":"2026-11-09T14:35:43.938923893Z","updated_at":"2026-11-09T14:35:43.9422752Z","submitt
+AWR 200 {"id":"e74f1c2c-0575-425b-805e-979aaf8b7919","client_order_id":"03ea18f4-fcab-46ce-b39f-3bf1b2f5bbb1","created_at":"2026-11-09T14:35:44.265813019Z","updated_at":"2026-11-09T14:35:44.266897806Z","submi
+remote: This repository moved. Please use the new location:        
+remote:   https://github.com/KTKate/nooptoo.git        
