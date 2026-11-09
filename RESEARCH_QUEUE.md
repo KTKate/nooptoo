@@ -12,7 +12,18 @@ signal needed before 15:30 must work with IEX or with data older than 15 minutes
 The daily panel has survivorship bias (only tickers alive in 2026): multi-day studies report excess returns over the
 same universe's average (src/horizon_lib.py).
 
-## Running (batch 2026-11-01)
+## Scope change (owner, 2026-11-09)
+Holds of weeks to about 3 months are now allowed in addition to 1-5 day holds.
+
+## Running (batch 2026-11-09)
+- 204: Wikipedia page-view attention, 1-5 day holds (choose 2016-21, confirm 2022-26)
+- 205: option-implied signals (call-put IV spread, put skew), 1-5 day holds (choose 2024, confirm 2025-26)
+- 206: SMH hedge of the overnight blend's chip exposure (choose 2024-25H1, confirm 2025H2-26)
+- 207: screen of ~200 published predictors (Chen-Zimmermann) for post-2020 survival; rebuild survivors at 5d-3m holds
+- 208: trend-following across asset-class ETFs with volatility sizing (choose 2005-18, confirm 2019-26)
+- 209: industry momentum entered on dips (ETF and stock versions)
+- 210: copying 13F "best ideas" of concentrated managers with past skill (choose 2014-19, confirm 2020-26)
+- Later: an AI model reading filings and press releases at release time (needs an API key and a budget)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
