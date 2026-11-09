@@ -360,6 +360,11 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("204", "Wikipedia page-view attention (abnormal views vs the prior 60 days, 958 mapped stocks), buy the top or "
+     "bottom 10 at the close, hold 1-5 days; chosen on 2016-21, confirmed on 2022-26", "Reject",
+     "Attention jumps are followed by reversal, not continuation: the top-attention cells lose in every setting. The "
+     "frozen cell (lowest attention, 3-day window, 3-day hold) was only Sharpe 0.04 in 2016-21 and -0.98 net on 2022-26 "
+     "(-20 bp a trade, t -2.1), gaining in 1 of 5 years."),
     ("206", "Short SMH overnight against the blend's chip exposure (60-night beta, or notional = share of tech-hardware "
      "picks, full or half); chosen on 2024-01..2025-06, confirmed on 2025-07..2026-09", "Reject",
      "Frozen half-share hedge: Sharpe 2.85 vs 2.85 unhedged, drawdown -20.5% vs -21.5% (needed a one-third cut). "
