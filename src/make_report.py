@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("207", "Screen of 200 published stock-return predictors (Chen-Zimmermann, through 2025-12) for survival after 2020, "
+     "and 4 survivors rebuilt on our 500-stock universe at 5-day, 1-month and 3-month holds", "Reject",
+     "Published returns decay to about 38% of the in-paper level; 17 of 200 are positive with t > 2 in 2020-25 (about 5-10 "
+     "expected by chance), 1-2 pass multiple-testing bars (MomVol, EarningsStreak). Rebuilt long-only versions (MomVol, "
+     "EarningsStreak, Mom6m, Coskewness) all fail on 2024-26: net Sharpe 0.72-1.08 vs SPY 1.22, excess t 0.2-1.3. "
+     "Accounting predictors not rebuilt (no point-in-time fundamentals panel)."),
     ("208", "Trend-following across 12 asset-class ETFs (price above its 200-day average, inverse-volatility weights, 10% "
      "volatility target, monthly; rule chosen on 2005-18)", "Reject",
      "2019-26: CAGR 5.6%, Sharpe 0.37, max drawdown -17% vs 60/40 SPY/IEF 10.6% / 0.70 / -21% and SPY 16.9% / 0.77 / "

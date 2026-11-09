@@ -1,0 +1,28 @@
+{
+ "MomVol": {
+  "h": 5,
+  "N": 20,
+  "discovery_net_sharpe": 0.8189853998846451,
+  "discovery_excess_t": 1.4369812935995019
+ },
+ "EarningsStreak": {
+  "h": 63,
+  "N": 20,
+  "discovery_net_sharpe": 0.9163235248805668,
+  "discovery_excess_t": 2.6606427087294597
+ },
+ "Mom6m": {
+  "h": 5,
+  "N": 20,
+  "discovery_net_sharpe": 0.6398505739969186,
+  "discovery_excess_t": 0.9385374175711031
+ },
+ "Coskewness": {
+  "h": 5,
+  "N": 10,
+  "discovery_net_sharpe": 1.0838258876667424,
+  "discovery_excess_t": 1.0882638118036512
+ },
+ "frozen_on": "2026-11-09",
+ "pass_rule": "confirmation 2024-01..2026-10: net Sharpe > 1 and > SPY Sharpe on the same days, t > 2 on daily net excess over the universe equal-weight average"
+}
