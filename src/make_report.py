@@ -360,6 +360,12 @@ studies = [
      "2020-23: +1.5 to +5.9 bp over the universe (t < 1); 2024-26: +8 to +20 bp (t 2.9-3.4), +35 bp with net analyst "
      "target raises, mostly large caps. Rules chosen on 2020-23 (Energy; weak 5-day return) fail or reduce to generic "
      "reversal. Recheck the 2024-26 drift in 2027. 207 cells."),
+    ("211", "Study 15's best insider rule (exactly 2 insider buyers in 20 days, mid caps, buy at the close, hold 60 "
+     "days) frozen and rescored on filings after 2026-03, plus a $10k long-only account 2020-26", "Reject",
+     "New filings (Apr-Sep 2026, 97 complete holds): -26 bp per event unhedged, -395 bp vs SPY (t -2.3), the opposite "
+     "of study 15's +199 to +639 bp. The $10k account (10% per name, max 10, idle cash in BIL) made -2.1% a year "
+     "2020-26 (median over tie-break orders +2.4%) vs SPY +14.2%, drawdown -56%. Study 15's 'hedged' Sharpe was an "
+     "in-sample regression, not a holdable hedge."),
     ("207", "Screen of 200 published stock-return predictors (Chen-Zimmermann, through 2025-12) for survival after 2020, "
      "and 4 survivors rebuilt on our 500-stock universe at 5-day, 1-month and 3-month holds", "Reject",
      "Published returns decay to about 38% of the in-paper level; 17 of 200 are positive with t > 2 in 2020-25 (about 5-10 "

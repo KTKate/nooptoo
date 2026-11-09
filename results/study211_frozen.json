@@ -1,0 +1,25 @@
+{
+  "study": 211,
+  "frozen_at": "2026-11-09, before any SEC download or scoring for study 211",
+  "source": "study 15 (src/study15_insider.py, results/study15_best.csv row 'sharpe in full 2020-01..2026-03' = tier M, variant nb2, hold 60)",
+  "note_on_rule": "The study 15 winner is variant 'nb2' = EXACTLY 2 distinct buyers, not '2+' (cluster2p, 2+ buyers, was a separate and weaker variant: hedged Sharpe 1.25/1.16/0.92). Frozen as nb2.",
+  "data": "SEC Form 3/4/5 structured data sets (quarterly zips), document types 4 and 4/A, NONDERIV_TRANS with TRANS_CODE P, acquired (A or blank), shares > 0, price > 0; duplicate (owner, ticker, trade date, shares, price) rows dropped (amendments); trade value < $1e9; aggregated to one row per accession (owner = first reporting owner). Ticker = ISSUERTRADINGSYMBOL upper-cased, must be a stock column of the daily panel (ETFs excluded).",
+  "entry_timing": "Filing with FILING_DATE d is usable on t = first panel trading day strictly after d. Decision 15:45 on t, buy in the closing auction of t.",
+  "event": "(ticker, t) with at least one purchase filing usable on t.",
+  "cluster": "nb = number of distinct reporting owners with purchase filings of that ticker usable on trading days t-20 .. t (21 trading days including t). Rule: nb == 2.",
+  "mid_cap_tier_M": "20-day median dollar volume (Yahoo raw close x volume, min 10 obs) through t-1 in (5e6, 5e7], AND prior close (t-1) > $5 (Alpaca raw traded close, Yahoo raw close where missing).",
+  "minimum_size": "none (no trade value or relative-size filter in nb2)",
+  "hold": "60 trading days, close to close (sell in the closing auction of t+60).",
+  "portfolio_study15": "Daily event weight 1/max(#events that day, 10) of the cohort; overlapping cohorts, each 1/60 of capital (bt.hold_k_days); idle capital in cash at 0. About 15% of capital invested on average.",
+  "costs": "per side: exec_cost_bps(P, 'auction') = 0.3 fee + 1.0 + 0.1 x half_spread_model('15:45') ; plus 2.5 bp.",
+  "hedge": "Study 15's hedged Sharpe 1.55/1.42/1.33 is hsharpe_spy_iwm: OLS of the daily net book return on SPY and IWM daily returns within each period, Sharpe of (return - beta_spy*SPY - beta_iwm*IWM). It is an in-sample regression hedge, not a fixed short. Book betas: SPY ~0.19 (one-factor). Per-event study 15 measure: 60-day return minus SPY 60-day return (study15_car.csv).",
+  "study15_reference": {
+    "hsharpe_spy_iwm": {"2020-23": 1.550, "2024-01..2025-06": 1.422, "2025-07..2026-03": 1.330, "full": 1.361},
+    "raw_sharpe": {"2020-23": 1.113, "2024-01..2025-06": 1.201, "2025-07..2026-03": 1.657, "full": 1.111},
+    "hedged_dsr": 0.862, "raw_dsr": 0.356, "ann_ret_full": 0.065, "invested_full": 0.147,
+    "event_net_excess_vs_spy_60d_bps": {"2020-23": 638.8, "2024-01..2025-06": 199.4, "2025-07..2026-03": 436.7,
+       "full": 531.4, "t_month_full": 2.36, "by_year_range": [-79.5, 1448.7], "2026Q1": -972.4},
+    "events": {"2020-23": 1674, "2024-01..2025-06": 475, "2025-07..2026-03": 232}
+  },
+  "new_data_test": "events with FILING_DATE after 2026-03-31 only; report mean net excess per event (vs SPY, vs IWM, vs tier equal-weight) with month-clustered t; consistency = same sign and within study 15's per-period range (199..639 bp vs SPY); no pass/fail threshold given the low power."
+}

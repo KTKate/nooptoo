@@ -19,12 +19,12 @@ Holds of weeks to about 3 months are now allowed in addition to 1-5 day holds.
 - 204: Wikipedia page-view attention, 1-5 day holds (choose 2016-21, confirm 2022-26)
 - 205: option-implied signals (call-put IV spread, put skew), 1-5 day holds (choose 2024, confirm 2025-26)
 - 206: SMH hedge of the overnight blend's chip exposure (choose 2024-25H1, confirm 2025H2-26)
-- 211: insider cluster buys in mid caps held 60 days (study 15 rule), rescored on data after study 15 + paper shadow plan
 - 210: copying 13F "best ideas" of concentrated managers with past skill (choose 2014-19, confirm 2020-26)
 - Later: an AI model reading filings and press releases at release time (needs an API key and a budget)
 - 81: deferred (live earnings-model pipeline is a large build for ~0.1 Sharpe)
 
 ## Done
+- 211 Reject: study 15 insider-cluster rule loses on new filings (-395 bp vs SPY per event); $10k account -2.1%/yr vs SPY +14.2%
 - 207 Reject: few published predictors survive multiple testing after 2020; 4 rebuilt survivors fail on 2024-26
 - 208 Reject: ETF trend-following 2019-26 Sharpe 0.37 vs 60/40 0.70 and SPY 0.77 (smaller drawdowns only)
 - 209 Reject: ETF industry momentum 2019-26 Sharpe 0.31 vs SPY 0.77, drawdown worse
