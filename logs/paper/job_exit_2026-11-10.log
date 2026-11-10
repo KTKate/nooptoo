@@ -1,0 +1,166 @@
+== paper job exit 2026-11-10 09:23:10 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-10",
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BAND",
+   "qty": 17,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BMNR",
+   "qty": 37,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FSLY",
+   "qty": 44,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FTNT",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MSTR",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PURR",
+   "qty": 79,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SLS",
+   "qty": 82,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AAOI 200 {"id":"a33c8d91-e9b5-4abf-8c48-05c0e477ef34","client_order_id":"618993a0-50f8-4c75-ab24-0d87f4514fb0","created_at":"2026-11-10T14:23:19.336013315Z","updated_at":"2026-11-10T14:23:19.336839514Z","submi
+BAND 200 {"id":"bec17abc-340a-43ff-bde1-08f7dd70d1db","client_order_id":"75acdddd-ff32-4d1a-9043-3b4d83407a89","created_at":"2026-11-10T14:23:19.68621438Z","updated_at":"2026-11-10T14:23:19.687070935Z","submit
+BMNR 200 {"id":"8ecdf3b3-f968-423e-886f-7f8580c583e7","client_order_id":"04c4b427-7b8d-442f-8f5b-0ece2561d315","created_at":"2026-11-10T14:23:20.001629185Z","updated_at":"2026-11-10T14:23:20.002470957Z","submi
+DELL 200 {"id":"64d8e3b1-a2bf-4884-a3d3-048ec8937122","client_order_id":"105caebc-c9f8-473b-9702-11412f559e1d","created_at":"2026-11-10T14:23:20.379323019Z","updated_at":"2026-11-10T14:23:20.380208127Z","submi
+FSLY 200 {"id":"23376c50-9ecd-477b-a678-e37cd32c5dc1","client_order_id":"c927be76-b0d9-4d70-9176-07e9806992ea","created_at":"2026-11-10T14:23:20.707943853Z","updated_at":"2026-11-10T14:23:20.710708951Z","submi
+FTNT 200 {"id":"2fad16dd-7356-4d99-93f4-5be884626f12","client_order_id":"843947f6-d661-4b80-a0b6-83b650f9c709","created_at":"2026-11-10T14:23:21.034200461Z","updated_at":"2026-11-10T14:23:21.035123385Z","submi
+HPE 200 {"id":"733e6bda-3a8d-48e9-9478-209a83b5fb6b","client_order_id":"4894cc90-1a44-46b2-bcad-922ac7c98139","created_at":"2026-11-10T14:23:21.419929618Z","updated_at":"2026-11-10T14:23:21.420693274Z","submi
+MSTR 200 {"id":"a1334281-8eb5-41be-aa4a-95676b9ea075","client_order_id":"84dcc348-c3e9-411a-a5ed-b9c0a10c03a1","created_at":"2026-11-10T14:23:21.733368469Z","updated_at":"2026-11-10T14:23:21.734028289Z","submi
+PURR 200 {"id":"c31ac238-62cd-4a7c-aa97-94b79721c544","client_order_id":"968fc670-3b57-42f6-9e4b-b322d9a5aa6f","created_at":"2026-11-10T14:23:22.027678517Z","updated_at":"2026-11-10T14:23:22.028338868Z","submi
+SLS 200 {"id":"3166a651-93e3-4de5-b464-1d663ae4fcdc","client_order_id":"db127baf-dd86-448e-8e5a-c2574c3e610d","created_at":"2026-11-10T14:23:22.364517549Z","updated_at":"2026-11-10T14:23:22.365144489Z","submi
+{
+ "day": "2026-11-10",
+ "from_entry": "entry_2026-11-09.json",
+ "equity": 6844.45,
+ "orders": [
+  {
+   "symbol": "PURR",
+   "qty": 20,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BMNR",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FSLY",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MSTR",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AAOI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BAND",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FTNT",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "SLS": "not easy to borrow",
+  "DELL": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-10 09:35:25.972486-05:00"
+}
+PURR 200 {"id":"aa7f8ba5-c6e2-423d-aa0a-5e5748a7b316","client_order_id":"cd1274c0-48ed-47bf-8117-7be6f85fee3b","created_at":"2026-11-10T14:35:26.302283431Z","updated_at":"2026-11-10T14:35:26.303241238Z","submi
+BMNR 200 {"id":"4900a3d9-c04f-4e3c-9a88-74fccb0fd14c","client_order_id":"2a9c45c5-123e-4cb2-87ac-aac403a9d62f","created_at":"2026-11-10T14:35:26.688748682Z","updated_at":"2026-11-10T14:35:26.690284326Z","submi
+HPE 200 {"id":"1d4f9637-8a82-4fd2-b35d-98f77ca9ebec","client_order_id":"bf44e74e-1bb3-4df6-9499-b4ba0ff1019e","created_at":"2026-11-10T14:35:27.065692481Z","updated_at":"2026-11-10T14:35:27.06700521Z","submit
+FSLY 200 {"id":"5c23ccd5-4db6-47d1-b349-7d4ea9681715","client_order_id":"c479b81f-9a2e-41c7-bf2f-51a4c1554667","created_at":"2026-11-10T14:35:27.392695668Z","updated_at":"2026-11-10T14:35:27.402458122Z","submi
+MSTR 200 {"id":"b615bdf3-747b-4e11-8673-d9a0f45747a8","client_order_id":"256c3d42-e089-489a-9b68-b49de137d616","created_at":"2026-11-10T14:35:27.69995526Z","updated_at":"2026-11-10T14:35:27.701456101Z","submit
+AAOI 200 {"id":"b06978a6-9ec2-4981-874a-ce785b41a3dc","client_order_id":"0d24f76d-f3a5-4ae2-b6f7-c276b887bd17","created_at":"2026-11-10T14:35:27.994851547Z","updated_at":"2026-11-10T14:35:27.996301181Z","submi
+BAND 200 {"id":"cb5ebc44-ed57-4ce2-bc2c-92be21d65516","client_order_id":"3a55cb0d-4403-45db-b205-765ce7e206be","created_at":"2026-11-10T14:35:28.290830127Z","updated_at":"2026-11-10T14:35:28.292083147Z","submi
+FTNT 200 {"id":"6b7cc2c7-a011-4f31-b739-61948c8f87de","client_order_id":"a9dcbd26-cf70-498f-b3ab-6067d0cf4f57","created_at":"2026-11-10T14:35:28.592642418Z","updated_at":"2026-11-10T14:35:28.594974616Z","submi
