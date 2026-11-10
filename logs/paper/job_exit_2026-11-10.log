@@ -164,3 +164,5 @@ MSTR 200 {"id":"b615bdf3-747b-4e11-8673-d9a0f45747a8","client_order_id":"256c3d4
 AAOI 200 {"id":"b06978a6-9ec2-4981-874a-ce785b41a3dc","client_order_id":"0d24f76d-f3a5-4ae2-b6f7-c276b887bd17","created_at":"2026-11-10T14:35:27.994851547Z","updated_at":"2026-11-10T14:35:27.996301181Z","submi
 BAND 200 {"id":"cb5ebc44-ed57-4ce2-bc2c-92be21d65516","client_order_id":"3a55cb0d-4403-45db-b205-765ce7e206be","created_at":"2026-11-10T14:35:28.290830127Z","updated_at":"2026-11-10T14:35:28.292083147Z","submi
 FTNT 200 {"id":"6b7cc2c7-a011-4f31-b739-61948c8f87de","client_order_id":"a9dcbd26-cf70-498f-b3ab-6067d0cf4f57","created_at":"2026-11-10T14:35:28.592642418Z","updated_at":"2026-11-10T14:35:28.594974616Z","submi
+remote: This repository moved. Please use the new location:        
+remote:   https://github.com/KTKate/nooptoo.git        
