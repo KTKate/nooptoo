@@ -1,0 +1,50 @@
+{
+ "day": "2026-11-11",
+ "from_entry": "entry_2026-11-10.json",
+ "equity": 7227.75,
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "INTC",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "P",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HIMS",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "DELL": "no price or qty 0",
+  "LITE": "no price or qty 0",
+  "BE": "no price or qty 0",
+  "SECZ": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-11-11 09:34:15.551921-05:00"
+}

@@ -1,0 +1,136 @@
+== paper job exit 2026-11-11 09:20:31 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-11",
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HIMS",
+   "qty": 36,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "INTC",
+   "qty": 11,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "LITE",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "P",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SECZ",
+   "qty": 81,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AAOI 200 {"id":"50478fb3-7c01-4e06-90d4-f28907ecf184","client_order_id":"3e275cc9-74c3-4868-941c-303ebc9e9e49","created_at":"2026-11-11T14:20:41.638321008Z","updated_at":"2026-11-11T14:20:41.639031233Z","submi
+BE 200 {"id":"29bc59e7-ac23-49cb-8bca-4764eb5bb80a","client_order_id":"0e6c14b1-de2f-4882-843f-dddd88ea9111","created_at":"2026-11-11T14:20:41.974702744Z","updated_at":"2026-11-11T14:20:41.975447892Z","submi
+DELL 200 {"id":"9378836b-2fb0-48fe-8a61-051f2d912953","client_order_id":"f7e944b4-f8c7-4ff0-a4e8-f2d9835c3f1a","created_at":"2026-11-11T14:20:42.396885342Z","updated_at":"2026-11-11T14:20:42.397587655Z","submi
+HIMS 200 {"id":"c3b732e2-5fc6-4b9e-865e-ab30771650ee","client_order_id":"0a5a6c71-11d5-4dcb-80e1-b35c36839421","created_at":"2026-11-11T14:20:42.735371745Z","updated_at":"2026-11-11T14:20:42.736137904Z","submi
+INTC 200 {"id":"c73b1a07-76a7-4cb5-bd40-6d4091487fe1","client_order_id":"c1cc3ada-4bac-49de-95d5-fb13a4286a6d","created_at":"2026-11-11T14:20:43.059485869Z","updated_at":"2026-11-11T14:20:43.061891267Z","submi
+LITE 200 {"id":"e5a95e54-f631-4a03-98b8-d5f28d3049a3","client_order_id":"ea7f2014-4e0f-490c-88fa-6d41631f0fdd","created_at":"2026-11-11T14:20:43.269279912Z","updated_at":"2026-11-11T14:20:43.269926142Z","submi
+MRVL 200 {"id":"101aa300-6c89-461d-8bcc-74f20ec604fe","client_order_id":"a1a6d74a-f8d4-448e-b5d9-7c9eec94279f","created_at":"2026-11-11T14:20:43.614384783Z","updated_at":"2026-11-11T14:20:43.61517573Z","submit
+P 200 {"id":"48619265-925d-4a08-b921-f68715914b07","client_order_id":"7f407e0c-2c10-459e-816b-8585f33b6ef9","created_at":"2026-11-11T14:20:43.942251416Z","updated_at":"2026-11-11T14:20:43.943381071Z","submi
+SECZ 200 {"id":"f3337994-bf62-4ee8-a0fd-38014f85d5cc","client_order_id":"3cf438d5-3f95-419a-b41c-e08bf7ea0880","created_at":"2026-11-11T14:20:44.279110588Z","updated_at":"2026-11-11T14:20:44.285167414Z","submi
+{
+ "day": "2026-11-11",
+ "from_entry": "entry_2026-11-10.json",
+ "equity": 7227.75,
+ "orders": [
+  {
+   "symbol": "AAOI",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MRVL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "INTC",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "P",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HIMS",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "DELL": "no price or qty 0",
+  "LITE": "no price or qty 0",
+  "BE": "no price or qty 0",
+  "SECZ": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-11-11 09:34:15.551921-05:00"
+}
+AAOI 200 {"id":"a0dc6cf8-2ab9-4faf-a50d-a17142f08b08","client_order_id":"e40fc236-0a17-488b-803f-752884dc04a9","created_at":"2026-11-11T14:34:15.95510882Z","updated_at":"2026-11-11T14:34:15.958906046Z","submit
+MRVL 200 {"id":"7bda46b3-baf5-433b-bf27-023f954b4d3f","client_order_id":"11c4b273-a402-4e3f-8031-9b3ef0e33751","created_at":"2026-11-11T14:34:16.282576474Z","updated_at":"2026-11-11T14:34:16.283661441Z","submi
+INTC 200 {"id":"a0e97f7d-760b-42bf-8dcb-98fe41e46daf","client_order_id":"9c902e51-850a-4b26-aca2-c6b9a1be6ff4","created_at":"2026-11-11T14:34:16.573910938Z","updated_at":"2026-11-11T14:34:16.575147583Z","submi
+P 200 {"id":"2cbf6c17-1bea-4ff3-9f51-cf05a985f38d","client_order_id":"abd934d0-7bed-40d9-ab18-bdbc533db79c","created_at":"2026-11-11T14:34:16.890371862Z","updated_at":"2026-11-11T14:34:16.900596779Z","submi
+HIMS 200 {"id":"eab0955c-78ba-433f-849c-e8761ae38e5e","client_order_id":"5ed35b37-56a5-442e-9e97-33543eba2c71","created_at":"2026-11-11T14:34:17.238244392Z","updated_at":"2026-11-11T14:34:17.239512003Z","submi
