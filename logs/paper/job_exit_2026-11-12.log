@@ -1,0 +1,143 @@
+== paper job exit 2026-11-12 09:19:50 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-12",
+ "orders": [
+  {
+   "symbol": "BOT",
+   "qty": 34,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRCB",
+   "qty": 81,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CLMT",
+   "qty": 20,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ELMT",
+   "qty": 34,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRNM",
+   "qty": 63,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NAVI",
+   "qty": 117,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "P",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PAYS",
+   "qty": 74,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PS",
+   "qty": 16,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+BOT 200 {"id":"8c7f439b-4e5a-48df-959a-8070ff258cb2","client_order_id":"94377e1e-cfea-4f3f-b5a5-57204c6041eb","created_at":"2026-11-12T14:20:02.549454921Z","updated_at":"2026-11-12T14:20:02.55068099Z","submit
+BRCB 200 {"id":"4c34d75e-995a-4854-aaa4-f8cd48f3cb14","client_order_id":"0f1fdeb9-e7e8-4c05-8271-37a5bed75288","created_at":"2026-11-12T14:20:02.978458698Z","updated_at":"2026-11-12T14:20:02.979303255Z","submi
+CLMT 200 {"id":"91daaa29-5697-44cb-829d-baee46a48853","client_order_id":"a94d283e-8e7e-4ce6-8069-5e591c1b6f50","created_at":"2026-11-12T14:20:03.323256248Z","updated_at":"2026-11-12T14:20:03.323967254Z","submi
+ELMT 200 {"id":"ab1465fb-6e30-4114-b89b-39f6f46fe0cf","client_order_id":"3a1b9863-4c85-4aba-aca1-d84d9d5b9350","created_at":"2026-11-12T14:20:03.69573599Z","updated_at":"2026-11-12T14:20:03.698584072Z","submit
+FRNM 200 {"id":"122e3ff5-9d3c-4bf2-a428-f358f4bd3740","client_order_id":"de63b5d3-75d2-4394-966c-4b2a4268b38b","created_at":"2026-11-12T14:20:04.064818426Z","updated_at":"2026-11-12T14:20:04.113239146Z","submi
+NAVI 200 {"id":"5a13f2ef-2070-4822-9266-c434da21f7cd","client_order_id":"63862109-5d21-4b26-b0c5-3a6a5f2c55ed","created_at":"2026-11-12T14:20:04.474764927Z","updated_at":"2026-11-12T14:20:04.475828523Z","submi
+P 200 {"id":"ae0f7426-5494-4f39-95f4-084bfe429fb4","client_order_id":"45f15054-e0b4-4dad-b367-dcecd0859b98","created_at":"2026-11-12T14:20:04.819942577Z","updated_at":"2026-11-12T14:20:04.820778981Z","submi
+PAYS 200 {"id":"77d4115b-3166-4439-8386-2a4340b4cf2d","client_order_id":"fb678817-f91d-420d-8279-278faa4c5c1f","created_at":"2026-11-12T14:20:05.139115059Z","updated_at":"2026-11-12T14:20:05.139980898Z","submi
+PS 200 {"id":"6281ee91-54df-4b43-9474-8cace9b5ac27","client_order_id":"c375bcbe-29e4-4f3a-8f94-61b02f699e29","created_at":"2026-11-12T14:20:05.468540521Z","updated_at":"2026-11-12T14:20:05.469817096Z","submi
+{
+ "day": "2026-11-12",
+ "from_entry": "entry_2026-11-11.json",
+ "equity": 6985.54,
+ "orders": [
+  {
+   "symbol": "BRCB",
+   "qty": 19,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "P",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PAYS",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NAVI",
+   "qty": 29,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRNM",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CLMT",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "ELMT": "not easy to borrow",
+  "PS": "not easy to borrow",
+  "BOT": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-11-12 09:35:08.899532-05:00"
+}
+BRCB 200 {"id":"d1642bde-97a3-4479-8a26-2bfa90d008ab","client_order_id":"fa89134e-ec8c-4579-be9e-918f0f80db07","created_at":"2026-11-12T14:35:09.225817758Z","updated_at":"2026-11-12T14:35:09.234464638Z","submi
+P 200 {"id":"336c66b4-462d-4041-8481-3e17a6f02c00","client_order_id":"276ed45b-d17b-4e16-befa-f10bfc651810","created_at":"2026-11-12T14:35:09.665135426Z","updated_at":"2026-11-12T14:35:09.739483088Z","submi
+PAYS 200 {"id":"b1f44aa8-39a0-429e-abcf-7c64675ac6a1","client_order_id":"c62d6f49-2d81-431c-9821-e00812e4f4c1","created_at":"2026-11-12T14:35:10.105946896Z","updated_at":"2026-11-12T14:35:10.121669049Z","submi
+NAVI 200 {"id":"53e0225e-4b3b-44dd-ac00-12c7e87347ed","client_order_id":"7406e1f9-811a-40b6-b0c1-a571898c7164","created_at":"2026-11-12T14:35:10.494686347Z","updated_at":"2026-11-12T14:35:10.495968701Z","submi
+FRNM 200 {"id":"2fe77d12-7fd5-415a-946c-3ae60fee553f","client_order_id":"dd15df28-33ac-4660-89b6-114af6a86f6b","created_at":"2026-11-12T14:35:10.825951156Z","updated_at":"2026-11-12T14:35:10.83609376Z","submit
+CLMT 200 {"id":"1cdf2293-1184-4111-b7f1-f8edabe390ce","client_order_id":"604accf1-f277-4d92-a45a-78836271286d","created_at":"2026-11-12T14:35:11.173460242Z","updated_at":"2026-11-12T14:35:11.174579961Z","submi

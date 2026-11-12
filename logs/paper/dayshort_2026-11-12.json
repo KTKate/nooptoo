@@ -1,0 +1,56 @@
+{
+ "day": "2026-11-12",
+ "from_entry": "entry_2026-11-11.json",
+ "equity": 6985.54,
+ "orders": [
+  {
+   "symbol": "BRCB",
+   "qty": 19,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "P",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PAYS",
+   "qty": 18,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NAVI",
+   "qty": 29,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRNM",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CLMT",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "ELMT": "not easy to borrow",
+  "PS": "not easy to borrow",
+  "BOT": "not easy to borrow"
+ },
+ "submitted": true,
+ "at": "2026-11-12 09:35:08.899532-05:00"
+}
