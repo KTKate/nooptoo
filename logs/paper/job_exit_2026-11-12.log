@@ -141,3 +141,5 @@ PAYS 200 {"id":"b1f44aa8-39a0-429e-abcf-7c64675ac6a1","client_order_id":"c62d6f4
 NAVI 200 {"id":"53e0225e-4b3b-44dd-ac00-12c7e87347ed","client_order_id":"7406e1f9-811a-40b6-b0c1-a571898c7164","created_at":"2026-11-12T14:35:10.494686347Z","updated_at":"2026-11-12T14:35:10.495968701Z","submi
 FRNM 200 {"id":"2fe77d12-7fd5-415a-946c-3ae60fee553f","client_order_id":"dd15df28-33ac-4660-89b6-114af6a86f6b","created_at":"2026-11-12T14:35:10.825951156Z","updated_at":"2026-11-12T14:35:10.83609376Z","submit
 CLMT 200 {"id":"1cdf2293-1184-4111-b7f1-f8edabe390ce","client_order_id":"604accf1-f277-4d92-a45a-78836271286d","created_at":"2026-11-12T14:35:11.173460242Z","updated_at":"2026-11-12T14:35:11.174579961Z","submi
+remote: This repository moved. Please use the new location:        
+remote:   https://github.com/KTKate/nooptoo.git        
