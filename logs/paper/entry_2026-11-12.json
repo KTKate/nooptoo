@@ -1,0 +1,104 @@
+{
+ "day": "2026-11-12",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "GRRR": 0.99762,
+  "QDEL": 0.99696,
+  "IREN": 0.98983,
+  "POET": 0.98983,
+  "RGTI": 0.98745,
+  "ODD": 0.98507,
+  "DNA": 0.98481,
+  "REAX": 0.98467,
+  "STRL": 0.98362,
+  "AESI": 0.98282
+ },
+ "uncapped_top": {
+  "GRRR": 0.99762,
+  "QDEL": 0.99696,
+  "IREN": 0.98983,
+  "POET": 0.98983,
+  "RGTI": 0.98745,
+  "ODD": 0.98507,
+  "DNA": 0.98481,
+  "REAX": 0.98467,
+  "STRL": 0.98362,
+  "AESI": 0.98282
+ },
+ "equity": 6953.55,
+ "orders": [
+  {
+   "symbol": "GRRR",
+   "qty": 96,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "QDEL",
+   "qty": 65,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "IREN",
+   "qty": 36,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "POET",
+   "qty": 133,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "RGTI",
+   "qty": 66,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ODD",
+   "qty": 41,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "DNA",
+   "qty": 68,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "REAX",
+   "qty": 65,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "STRL",
+   "qty": 2,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AESI",
+   "qty": 125,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 6820.89
+}
