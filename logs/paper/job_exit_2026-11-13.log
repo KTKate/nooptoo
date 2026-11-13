@@ -1,0 +1,117 @@
+== paper job exit 2026-11-13 10:06:07 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-13",
+ "orders": [
+  {
+   "symbol": "AESI",
+   "qty": 125,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DNA",
+   "qty": 68,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "GRRR",
+   "qty": 96,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "IREN",
+   "qty": 36,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ODD",
+   "qty": 41,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "POET",
+   "qty": 133,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "QDEL",
+   "qty": 65,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "REAX",
+   "qty": 65,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "RGTI",
+   "qty": 66,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "STRL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AESI 200 {"id":"92c6e956-5c59-43fe-b8b3-d38f52982330","client_order_id":"09c98d2e-6ede-4e87-b934-7019c3706c21","created_at":"2026-11-13T15:06:18.719411316Z","updated_at":"2026-11-13T15:06:18.720730364Z","submi
+DNA 200 {"id":"dd239d83-623e-4bb9-94bf-6d23d4b22c5a","client_order_id":"cd6f3b89-5671-46c7-ac3e-8260c22816a9","created_at":"2026-11-13T15:06:19.067716685Z","updated_at":"2026-11-13T15:06:19.115762404Z","submi
+GRRR 200 {"id":"b4a14c61-fef6-4428-aadb-c84623d1282b","client_order_id":"f691edf2-3164-458a-8631-11891051272e","created_at":"2026-11-13T15:06:19.453085139Z","updated_at":"2026-11-13T15:06:19.453656997Z","submi
+IREN 200 {"id":"ca42e555-c58b-4c75-8587-43fe4ff78da4","client_order_id":"219418df-275b-4125-a464-7fd6b796e2b6","created_at":"2026-11-13T15:06:19.797869007Z","updated_at":"2026-11-13T15:06:19.825152442Z","submi
+ODD 200 {"id":"a9dee89c-d477-4b5c-9f3c-3e7e786ffc84","client_order_id":"18e49a60-de9d-4a55-bacb-81244217e82f","created_at":"2026-11-13T15:06:20.164860305Z","updated_at":"2026-11-13T15:06:20.16556333Z","submit
+POET 200 {"id":"aa7c92eb-ac95-4ad6-9514-8df06a0efb9e","client_order_id":"5a9d6ec1-f210-4d62-bf85-a089cc4b566b","created_at":"2026-11-13T15:06:20.516036026Z","updated_at":"2026-11-13T15:06:20.518782606Z","submi
+QDEL 200 {"id":"94408c09-61c9-460d-a6f0-d2a45848da28","client_order_id":"62c59dd0-db03-4097-8e1c-1259139e952f","created_at":"2026-11-13T15:06:20.841125747Z","updated_at":"2026-11-13T15:06:20.845769914Z","submi
+REAX 200 {"id":"1c51ed72-58c6-49d1-8f7e-e04068cbd83d","client_order_id":"a515036b-826c-4ff2-9d60-0901e0baaf7a","created_at":"2026-11-13T15:06:21.204236381Z","updated_at":"2026-11-13T15:06:21.209073226Z","submi
+RGTI 200 {"id":"62a3fc65-c4e4-4082-ac96-50e1c9b930a7","client_order_id":"b59f9903-eb00-4dea-8ddb-b90cab865e99","created_at":"2026-11-13T15:06:21.534875196Z","updated_at":"2026-11-13T15:06:21.53601787Z","submit
+STRL 200 {"id":"142cb012-641c-46bb-8efa-1acf3020114b","client_order_id":"f1d3e43e-c88d-428c-8412-6638627cfa77","created_at":"2026-11-13T15:06:21.913829876Z","updated_at":"2026-11-13T15:06:21.928416506Z","submi
+{
+ "day": "2026-11-13",
+ "from_entry": "entry_2026-11-12.json",
+ "equity": 6837.88,
+ "orders": [
+  {
+   "symbol": "IREN",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "GRRR": "not easy to borrow",
+  "QDEL": "position still open",
+  "POET": "position still open",
+  "RGTI": "position still open",
+  "ODD": "position still open",
+  "DNA": "position still open",
+  "REAX": "position still open",
+  "STRL": "position still open",
+  "AESI": "position still open"
+ },
+ "submitted": true,
+ "at": "2026-11-13 10:06:27.018049-05:00"
+}
+IREN 200 {"id":"638460fe-e67f-41c7-b4e5-27e801eb76bc","client_order_id":"8268952e-7100-45d0-a71d-d8350bbe98e4","created_at":"2026-11-13T15:06:27.314003537Z","updated_at":"2026-11-13T15:06:27.315758389Z","submi
