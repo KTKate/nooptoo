@@ -1,0 +1,104 @@
+{
+ "day": "2026-11-13",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "RMIX": 0.99021,
+  "VIR": 0.9869,
+  "AESI": 0.98029,
+  "ZVRA": 0.97765,
+  "AYA": 0.97579,
+  "BLZE": 0.9709,
+  "EZPW": 0.96124,
+  "NMAX": 0.96085,
+  "HTFL": 0.94815,
+  "LYTS": 0.94392
+ },
+ "uncapped_top": {
+  "RMIX": 0.99021,
+  "VIR": 0.9869,
+  "AESI": 0.98029,
+  "ZVRA": 0.97765,
+  "AYA": 0.97579,
+  "BLZE": 0.9709,
+  "EZPW": 0.96124,
+  "NMAX": 0.96085,
+  "HTFL": 0.94815,
+  "LYTS": 0.94392
+ },
+ "equity": 6826.78,
+ "orders": [
+  {
+   "symbol": "RMIX",
+   "qty": 128,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "VIR",
+   "qty": 69,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AESI",
+   "qty": 124,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ZVRA",
+   "qty": 73,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AYA",
+   "qty": 29,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "BLZE",
+   "qty": 88,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "EZPW",
+   "qty": 24,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "NMAX",
+   "qty": 71,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "HTFL",
+   "qty": 14,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "LYTS",
+   "qty": 44,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 6761.28
+}
