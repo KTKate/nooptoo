@@ -1,0 +1,97 @@
+{
+ "day": "2026-11-16",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "MU": 0.9932,
+  "ASTS": 0.98774,
+  "AOSL": 0.98307,
+  "VRT": 0.98081,
+  "DELL": 0.98081,
+  "USAR": 0.97868,
+  "AMAT": 0.97788,
+  "SCCO": 0.97428,
+  "AADX": 0.97334,
+  "BELFA": 0.97228
+ },
+ "uncapped_top": {
+  "MU": 0.9932,
+  "ASTS": 0.98774,
+  "AOSL": 0.98307,
+  "VRT": 0.98081,
+  "DELL": 0.98081,
+  "USAR": 0.97868,
+  "AMAT": 0.97788,
+  "INTC": 0.97588,
+  "SCCO": 0.97428,
+  "AADX": 0.97334
+ },
+ "equity": 6495.39,
+ "orders": [
+  {
+   "symbol": "ASTS",
+   "qty": 22,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AOSL",
+   "qty": 25,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "VRT",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 2,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "USAR",
+   "qty": 90,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AMAT",
+   "qty": 1,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SCCO",
+   "qty": 4,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AADX",
+   "qty": 95,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "BELFA",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 5202.48
+}
