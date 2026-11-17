@@ -1,0 +1,129 @@
+== paper job exit 2026-11-17 09:20:27 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-17",
+ "orders": [
+  {
+   "symbol": "AADX",
+   "qty": 95,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AMAT",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AOSL",
+   "qty": 25,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ASTS",
+   "qty": 22,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BELFA",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "DELL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SCCO",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "USAR",
+   "qty": 90,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "VRT",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AADX 200 {"id":"9bc413c6-8677-478c-a78f-d04ff3f37143","client_order_id":"5d7d6234-4912-4161-9bef-764e65dea923","created_at":"2026-11-17T14:20:37.823152994Z","updated_at":"2026-11-17T14:20:37.823899293Z","submi
+AMAT 200 {"id":"759ccd93-d008-46d6-b5c2-e2fe7978a94f","client_order_id":"1f6b5bf7-09ac-4de9-8a0a-7fd43fa4779e","created_at":"2026-11-17T14:20:38.195699346Z","updated_at":"2026-11-17T14:20:38.19967562Z","submit
+AOSL 200 {"id":"bb086750-a2cf-42d9-aa78-b2bfbe0d43cc","client_order_id":"f6781266-81e9-4902-8605-1166106aacc8","created_at":"2026-11-17T14:20:38.558026219Z","updated_at":"2026-11-17T14:20:38.560121912Z","submi
+ASTS 200 {"id":"9880a638-2f04-408b-9707-a5b541526e78","client_order_id":"b33b3421-1078-4bc6-9577-8b47bd92a67a","created_at":"2026-11-17T14:20:38.902830337Z","updated_at":"2026-11-17T14:20:38.903467513Z","submi
+BELFA 200 {"id":"c0fc67c9-4386-4c09-b220-b81627cad3c2","client_order_id":"eb9d70e0-bbf4-416e-81d4-137e60307358","created_at":"2026-11-17T14:20:39.264487926Z","updated_at":"2026-11-17T14:20:39.265123699Z","submi
+DELL 200 {"id":"828b3c4a-aeff-45f7-970c-f412845460d5","client_order_id":"b808abe0-bca7-4e12-b886-ce807498dc1c","created_at":"2026-11-17T14:20:39.639899476Z","updated_at":"2026-11-17T14:20:39.640672145Z","submi
+SCCO 200 {"id":"c2e80cad-fc4c-49df-a195-958058a763cc","client_order_id":"359a1d5a-0d66-43e1-a05d-07dd6eda81bb","created_at":"2026-11-17T14:20:40.005324455Z","updated_at":"2026-11-17T14:20:40.00614778Z","submit
+USAR 200 {"id":"b43b472d-5bc1-42d2-a19d-e55d27a98fe9","client_order_id":"5da82193-0e33-44ee-83dc-4d72e5990a00","created_at":"2026-11-17T14:20:40.396735565Z","updated_at":"2026-11-17T14:20:40.397546291Z","submi
+VRT 200 {"id":"fce98f48-9850-44e0-8ff0-dc5d5960f4d9","client_order_id":"34521602-e756-45b8-9aa4-04504ad5c33e","created_at":"2026-11-17T14:20:40.82013735Z","updated_at":"2026-11-17T14:20:40.820815818Z","submit
+{
+ "day": "2026-11-17",
+ "from_entry": "entry_2026-11-16.json",
+ "equity": 6479.13,
+ "orders": [
+  {
+   "symbol": "ASTS",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AOSL",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SCCO",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AADX",
+   "qty": 23,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "VRT": "no price or qty 0",
+  "DELL": "no price or qty 0",
+  "USAR": "not easy to borrow",
+  "AMAT": "no price or qty 0",
+  "BELFA": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-17 09:33:20.901039-05:00"
+}
+ASTS 200 {"id":"8c735fac-565a-445c-8cb5-39e1f1815223","client_order_id":"0990dd51-d420-472c-b32f-6e5fe6935771","created_at":"2026-11-17T14:33:21.266297121Z","updated_at":"2026-11-17T14:33:21.268988939Z","submi
+AOSL 200 {"id":"f0ef6f04-0ab2-44a7-aa54-243eef654683","client_order_id":"1ffd4e1f-7de8-4844-a418-dd6749c4ce8f","created_at":"2026-11-17T14:33:21.640904124Z","updated_at":"2026-11-17T14:33:21.642069682Z","submi
+SCCO 200 {"id":"56ad9184-b1ce-42ac-9699-9689fe4fd8d9","client_order_id":"e5e3d0b3-22fb-4233-9983-765beab1afbb","created_at":"2026-11-17T14:33:22.038735303Z","updated_at":"2026-11-17T14:33:22.044034623Z","submi
+AADX 200 {"id":"2791cdea-1d58-4c73-8828-c8929bb51b12","client_order_id":"1bcb80d5-de54-4378-a4a9-aa087979ea4f","created_at":"2026-11-17T14:33:22.25648547Z","updated_at":"2026-11-17T14:33:22.259069386Z","submit
