@@ -1,0 +1,134 @@
+{
+ "day": "2026-11-17",
+ "recorded_at": "2026-11-17 15:56:09.206651-05:00",
+ "news_window": [
+  "2026-11-16 20:45:00+00:00",
+  "2026-11-17 20:45:00+00:00"
+ ],
+ "n_news_symbols": 1618,
+ "smallcap_nonews": {
+  "PSIG": {
+   "loss": 0.3171,
+   "px": 3.36
+  },
+  "AEYE": {
+   "loss": 0.1559,
+   "px": 10.99
+  },
+  "ANGI": {
+   "loss": 0.1372,
+   "px": 5.375
+  },
+  "SWMR": {
+   "loss": 0.1303,
+   "px": 7.74
+  },
+  "AGPU": {
+   "loss": 0.1302,
+   "px": 6.88
+  },
+  "KXIN": {
+   "loss": 0.1289,
+   "px": 2.5
+  },
+  "ZSQR": {
+   "loss": 0.1261,
+   "px": 1.94
+  },
+  "VIVO": {
+   "loss": 0.1232,
+   "px": 1.85
+  },
+  "ALMU": {
+   "loss": 0.1028,
+   "px": 5.67
+  },
+  "RXST": {
+   "loss": 0.1017,
+   "px": 4.725
+  }
+ },
+ "adr_loser": {
+  "JKS": {
+   "loss": 0.1088,
+   "px": 7.905
+  },
+  "DQ": {
+   "loss": 0.0932,
+   "px": 9.485
+  },
+  "TIGR": {
+   "loss": 0.0599,
+   "px": 3.77
+  },
+  "SIMO": {
+   "loss": 0.0568,
+   "px": 151.985
+  },
+  "JMIA": {
+   "loss": 0.0553,
+   "px": 4.695
+  }
+ },
+ "spy_meanrev": {
+  "SPY": {
+   "action": "hold",
+   "px": 730.535,
+   "down3": true,
+   "above5": false
+  },
+  "QQQ": {
+   "action": "hold",
+   "px": 654.48,
+   "down3": true,
+   "above5": false
+  }
+ },
+ "day_short": {
+  "ASST": {
+   "etb": true,
+   "shortable": true
+  },
+  "SMMT": {
+   "etb": true,
+   "shortable": true
+  },
+  "ENPH": {
+   "etb": true,
+   "shortable": true
+  },
+  "IMXI": {
+   "etb": true,
+   "shortable": true
+  },
+  "ABX": {
+   "etb": true,
+   "shortable": true
+  },
+  "CSIQ": {
+   "etb": true,
+   "shortable": true
+  },
+  "BRC": {
+   "etb": true,
+   "shortable": true
+  },
+  "UUUU": {
+   "etb": true,
+   "shortable": true
+  },
+  "EXPE": {
+   "etb": true,
+   "shortable": true
+  },
+  "IDYA": {
+   "etb": true,
+   "shortable": true
+  }
+ },
+ "universe": {
+  "smallcap": 694,
+  "smallcap_priced": 691,
+  "adr": 174
+ }
+}
