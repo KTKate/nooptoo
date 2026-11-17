@@ -127,3 +127,5 @@ ASTS 200 {"id":"8c735fac-565a-445c-8cb5-39e1f1815223","client_order_id":"0990dd5
 AOSL 200 {"id":"f0ef6f04-0ab2-44a7-aa54-243eef654683","client_order_id":"1ffd4e1f-7de8-4844-a418-dd6749c4ce8f","created_at":"2026-11-17T14:33:21.640904124Z","updated_at":"2026-11-17T14:33:21.642069682Z","submi
 SCCO 200 {"id":"56ad9184-b1ce-42ac-9699-9689fe4fd8d9","client_order_id":"e5e3d0b3-22fb-4233-9983-765beab1afbb","created_at":"2026-11-17T14:33:22.038735303Z","updated_at":"2026-11-17T14:33:22.044034623Z","submi
 AADX 200 {"id":"2791cdea-1d58-4c73-8828-c8929bb51b12","client_order_id":"1bcb80d5-de54-4378-a4a9-aa087979ea4f","created_at":"2026-11-17T14:33:22.25648547Z","updated_at":"2026-11-17T14:33:22.259069386Z","submit
+remote: This repository moved. Please use the new location:        
+remote:   https://github.com/KTKate/nooptoo.git        
