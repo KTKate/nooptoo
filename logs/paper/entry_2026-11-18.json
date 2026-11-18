@@ -1,0 +1,104 @@
+{
+ "day": "2026-11-18",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "INBX": 0.99268,
+  "ALIT": 0.97418,
+  "AYA": 0.97379,
+  "ARIS": 0.96647,
+  "SSRM": 0.965,
+  "APPS": 0.96287,
+  "HL": 0.96194,
+  "MUX": 0.96181,
+  "UEC": 0.95702,
+  "FCX": 0.95183
+ },
+ "uncapped_top": {
+  "INBX": 0.99268,
+  "ALIT": 0.97418,
+  "AYA": 0.97379,
+  "ARIS": 0.96647,
+  "SSRM": 0.965,
+  "APPS": 0.96287,
+  "HL": 0.96194,
+  "MUX": 0.96181,
+  "SKE": 0.95755,
+  "UEC": 0.95702
+ },
+ "equity": 6409.06,
+ "orders": [
+  {
+   "symbol": "INBX",
+   "qty": 9,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ALIT",
+   "qty": 64,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AYA",
+   "qty": 31,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ARIS",
+   "qty": 48,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "SSRM",
+   "qty": 26,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "APPS",
+   "qty": 98,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "HL",
+   "qty": 54,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "MUX",
+   "qty": 61,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "UEC",
+   "qty": 107,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "FCX",
+   "qty": 12,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 6314.6
+}
