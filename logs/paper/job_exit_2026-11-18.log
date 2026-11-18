@@ -1,0 +1,173 @@
+== paper job exit 2026-11-18 09:20:06 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-18",
+ "orders": [
+  {
+   "symbol": "ABX",
+   "qty": 97,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ASST",
+   "qty": 35,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRC",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CSIQ",
+   "qty": 82,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ENPH",
+   "qty": 28,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "EXPE",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "IDYA",
+   "qty": 23,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "IMXI",
+   "qty": 117,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMMT",
+   "qty": 61,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "UUUU",
+   "qty": 110,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+ABX 200 {"id":"72912fdb-a44e-42d1-9acc-51fc2db19c9d","client_order_id":"b6d1a635-1804-4d7f-a38c-ed3e36552e36","created_at":"2026-11-18T14:20:18.27744952Z","updated_at":"2026-11-18T14:20:18.278110562Z","submit
+ASST 200 {"id":"5adc4269-5469-4b24-9e5e-89d7bb2cdd97","client_order_id":"f70a7b08-1e53-40fa-be13-2e64c0f55dea","created_at":"2026-11-18T14:20:18.773005319Z","updated_at":"2026-11-18T14:20:18.773680612Z","submi
+BRC 200 {"id":"d14e60cc-471b-4bfd-8312-6e7c6b75a413","client_order_id":"58268a97-1fb1-4707-adbb-2f7d50ef7c0e","created_at":"2026-11-18T14:20:19.163781206Z","updated_at":"2026-11-18T14:20:19.164386514Z","submi
+CSIQ 200 {"id":"23d0ab5a-e9d2-4555-bd9e-92c1c23d2646","client_order_id":"58a4432c-15eb-4c4a-b18a-cc47f8f5f7d4","created_at":"2026-11-18T14:20:19.52722124Z","updated_at":"2026-11-18T14:20:19.527978986Z","submit
+ENPH 200 {"id":"19da4cac-3d69-480a-b503-e85c3ab52436","client_order_id":"2ecbb2c4-ca62-4849-bc5a-5b49ca5950f9","created_at":"2026-11-18T14:20:19.871917167Z","updated_at":"2026-11-18T14:20:19.872775585Z","submi
+EXPE 200 {"id":"fbc3ffe9-cfa2-4844-b164-21352e1cd351","client_order_id":"c524371e-3775-46c0-963c-e897b5e0ec1e","created_at":"2026-11-18T14:20:20.25712309Z","updated_at":"2026-11-18T14:20:20.260027927Z","submit
+IDYA 200 {"id":"df208490-3ac4-4ee2-a862-2f2ade9940de","client_order_id":"fc1a5748-f301-4198-8d44-56147f896ece","created_at":"2026-11-18T14:20:20.63439404Z","updated_at":"2026-11-18T14:20:20.635315161Z","submit
+IMXI 200 {"id":"62a00f9e-0c00-4e11-b9d5-afe7966ed78d","client_order_id":"b5735923-7d9e-4072-9a1b-8fa31531f783","created_at":"2026-11-18T14:20:20.982160743Z","updated_at":"2026-11-18T14:20:20.984587223Z","submi
+SMMT 200 {"id":"e6e50709-51f3-409c-ac79-56b5cf44feda","client_order_id":"43c1cce3-12d1-4e57-a5c1-c66f177c032b","created_at":"2026-11-18T14:20:21.338431453Z","updated_at":"2026-11-18T14:20:21.339203631Z","submi
+UUUU 200 {"id":"94919a3c-0a56-4e7e-8cef-e7bc91be7de7","client_order_id":"2633ea0a-b797-4acb-bf86-105a126c9c26","created_at":"2026-11-18T14:20:21.706447851Z","updated_at":"2026-11-18T14:20:21.70720733Z","submit
+{
+ "day": "2026-11-18",
+ "from_entry": "entry_2026-11-17.json",
+ "equity": 6409.75,
+ "orders": [
+  {
+   "symbol": "ASST",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SMMT",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ENPH",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "IMXI",
+   "qty": 28,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ABX",
+   "qty": 24,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CSIQ",
+   "qty": 20,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BRC",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "UUUU",
+   "qty": 27,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "IDYA",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "EXPE": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-18 09:33:43.381309-05:00"
+}
+ASST 200 {"id":"9b607fb6-9096-4746-b704-a371029539a5","client_order_id":"be911b82-5528-4e40-83a8-fdeada06eded","created_at":"2026-11-18T14:33:43.602499644Z","updated_at":"2026-11-18T14:33:43.604735938Z","submi
+SMMT 200 {"id":"c4bef9c1-610d-4266-aac5-78c2e9599b88","client_order_id":"2c5a2d74-37b8-418e-b5da-372147a6995e","created_at":"2026-11-18T14:33:43.977888149Z","updated_at":"2026-11-18T14:33:43.980147718Z","submi
+ENPH 200 {"id":"2fa10d78-f184-44d4-84f1-70bc57150c25","client_order_id":"b31066c2-c649-4f6f-ad7d-8054d9dd23ed","created_at":"2026-11-18T14:33:44.340169313Z","updated_at":"2026-11-18T14:33:44.349070955Z","submi
+IMXI 200 {"id":"68a67777-72dd-44d7-ad0e-ad50dae7ed98","client_order_id":"4eef6fe9-7e8b-459d-b72e-af1a0dd16e03","created_at":"2026-11-18T14:33:44.707149535Z","updated_at":"2026-11-18T14:33:44.708301363Z","submi
+ABX 200 {"id":"f29e1a45-a1bf-4ce3-921e-f55c792db802","client_order_id":"be181f39-ce96-4bb6-8f0b-16e73f788902","created_at":"2026-11-18T14:33:45.070571651Z","updated_at":"2026-11-18T14:33:45.072849928Z","submi
+CSIQ 200 {"id":"eeab703a-85b9-41c6-b261-4d60784ba1fe","client_order_id":"7731690f-ff1e-4867-898f-642904c6a8d8","created_at":"2026-11-18T14:33:45.600276227Z","updated_at":"2026-11-18T14:33:45.601726192Z","submi
+BRC 200 {"id":"58a55aba-83f3-4a25-b92d-645c759b62f8","client_order_id":"26d0b310-3b3f-44c3-9eaf-7e57024d022f","created_at":"2026-11-18T14:33:45.999763299Z","updated_at":"2026-11-18T14:33:46.001286554Z","submi
+UUUU 200 {"id":"13650fe1-966b-4e9e-8172-bd54a29e3e59","client_order_id":"e21e7711-f17e-4caf-ac86-6a5b66d32fbd","created_at":"2026-11-18T14:33:46.356365094Z","updated_at":"2026-11-18T14:33:46.358146937Z","submi
+IDYA 200 {"id":"96adf34a-5e93-41d6-818c-fa48a5eb989f","client_order_id":"75605db1-b42a-4ce1-a18d-b509abe15248","created_at":"2026-11-18T14:33:46.755995621Z","updated_at":"2026-11-18T14:33:46.757260629Z","submi
