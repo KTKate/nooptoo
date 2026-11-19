@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Scheduled paper-trading job for a fresh cloud session (Alpaca PAPER account only).
 #   bash src/paper_job.sh entry    # start ~15:05 ET: setup, update data, wait until 15:45 ET, pick; buys at 15:55
-#   bash src/paper_job.sh exit     # start ~09:20 ET: sells queued for the open, then day shorts from 09:31
+#   bash src/paper_job.sh exit     # start ~08:45 ET: sells queued for the open, then day shorts from 09:31
 # Paper orders are regular market orders (PAPER_ORDERS=market): Alpaca's paper simulator does not run auctions and
 # let 9 of 10 market-on-close orders expire on 2026-09-29. The virtual book scores the picks at official auction prints.
 # Orders are submitted only on or after SUBMIT_FROM (owner approved paper trading after a short dry run).
@@ -18,7 +18,7 @@ exec > >(tee -a "$LOGF") 2>&1
 echo "== paper job $MODE $TODAY $(TZ=America/New_York date +%T) ET"
 
 git fetch -q origin "$BRANCH" && git checkout -q "$BRANCH" && git -c pull.rebase=false pull -q --no-edit origin "$BRANCH"
-pip install -q -r requirements.txt huggingface_hub 2>&1 | grep -v "root user" | tail -2
+python -m pip install -q -r requirements.txt huggingface_hub 2>&1 | grep -v "root user" | tail -2
 
 SESSION=$(python src/paper_overnight.py session 2>/dev/null | tail -1)
 echo "session: $SESSION"
@@ -36,7 +36,7 @@ commit_logs() {
 if [ "$MODE" = "exit" ]; then
   python src/paper_overnight.py exit $SUBMIT
   # study 68 (paper only): after the longs are sold at the open, short yesterday's easy-to-borrow picks at 2.5% of
-  # equity each; the entry job covers them at 15:55. Waits until 09:31 ET (start the job around 09:20).
+  # equity each; the entry job covers them at 15:55. Waits until 09:31 ET (start the job around 08:45; it runs about 50 minutes).
   python src/paper_overnight.py dayshort $SUBMIT || echo "day short failed"
   commit_logs
   exit 0

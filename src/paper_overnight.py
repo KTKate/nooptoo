@@ -16,7 +16,7 @@ auction (market-on-open). Positions are held overnight only, so no day trades ar
 Steps (cron, America/New_York, trading days):
   15:45  python src/paper_overnight.py entry      # builds today's 15:45 features and the order list
          (Alpaca accepts market-on-close orders until 15:50; the run takes about 1-2 minutes)
-  09:20  python src/paper_overnight.py exit       # market-on-open sells for every open position
+  08:45  python src/paper_overnight.py exit       # market-on-open sells for every open position
   daily 17:30  python src/update_data.py daily    # keeps the Yahoo daily store current (used by the features)
   src/paper_job.sh wraps these for scheduled cloud runs (setup, calendar check, wait, run, commit the logs).
   python src/paper_overnight.py reconcile         # fills vs official auction prints, equity history
@@ -100,10 +100,23 @@ def news_counts(since_utc, until_utc):
     in [since, until)."""
     p = dict(start=since_utc.strftime("%Y-%m-%dT%H:%M:%SZ"), end=until_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
              limit=50, sort="asc", include_content="false")
+    import time
     out = {}
     for _ in range(400):
-        A.RL.wait()
-        j = A._sess().get(NEWS, params=p, timeout=60).json()
+        # retry dropped connections and 429/5xx like alpaca_data.get (2026-11-05: one truncated response failed blend)
+        for k in range(6):
+            A.RL.wait()
+            try:
+                r = A._sess().get(NEWS, params=p, timeout=60)
+                if r.status_code not in (429, 500, 502, 503, 504):
+                    j = r.json()
+                    break
+                print("news", r.status_code, flush=True)
+            except (requests.RequestException, ValueError) as e:
+                print("news net err", e, flush=True)
+            time.sleep(2 ** k)
+        else:
+            raise RuntimeError("news API: too many retries")
         for n in j.get("news", []):
             s = n.get("symbols") or []
             if 1 <= len(s) <= 3:
