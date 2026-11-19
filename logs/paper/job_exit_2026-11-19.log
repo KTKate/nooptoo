@@ -177,3 +177,5 @@ HL 200 {"id":"eb42875c-9b18-4728-8ea5-de2e811418eb","client_order_id":"50a6ed31-
 MUX 200 {"id":"472005ec-ec05-49b5-88ed-6d7a55a149b6","client_order_id":"cc5c3473-feb3-4387-b725-1bdfecb35f02","created_at":"2026-11-19T14:34:31.336003166Z","updated_at":"2026-11-19T14:34:31.337186361Z","submi
 UEC 200 {"id":"846a1a2e-d558-489e-9179-0220f4bad5df","client_order_id":"b26538f8-bde3-4d6d-accc-7b95f9391e68","created_at":"2026-11-19T14:34:31.734446987Z","updated_at":"2026-11-19T14:34:31.740139596Z","submi
 FCX 200 {"id":"2bccd887-1998-43ae-ae50-8b19d8ea0d90","client_order_id":"5163a8e5-b92c-444f-bc4a-765ee5f5f1c5","created_at":"2026-11-19T14:34:32.088482355Z","updated_at":"2026-11-19T14:34:32.101392711Z","submi
+remote: This repository moved. Please use the new location:        
+remote:   https://github.com/KTKate/nooptoo.git        
