@@ -1,0 +1,179 @@
+== paper job exit 2026-11-23 08:50:37 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-23",
+ "orders": [
+  {
+   "symbol": "AEE",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AEP",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AMH",
+   "qty": 20,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CWT",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FE",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FTS",
+   "qty": 10,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NWN",
+   "qty": 12,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SWX",
+   "qty": 7,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "WPC",
+   "qty": 9,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "XEL",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AEE 200 {"id":"4776f01b-f428-48b6-9a2e-9f54766fe469","client_order_id":"70c07464-b44e-44e5-a99e-da36920fa085","created_at":"2026-11-23T13:50:44.199544368Z","updated_at":"2026-11-23T13:50:44.199927392Z","submi
+AEP 200 {"id":"a272b3e3-be0b-43a6-ab0d-6ef4d799a544","client_order_id":"0242c20c-3ea0-4636-a2fe-90520572354c","created_at":"2026-11-23T13:50:44.611499804Z","updated_at":"2026-11-23T13:50:44.611865122Z","submi
+AMH 200 {"id":"78ad5eef-fc91-4643-9a3b-afefe03b3941","client_order_id":"e27b6cfe-0307-4679-a3b5-84e30232cb84","created_at":"2026-11-23T13:50:45.000767549Z","updated_at":"2026-11-23T13:50:45.001123593Z","submi
+CWT 200 {"id":"3c22c20a-d04d-4270-9b08-4757c8e1868a","client_order_id":"b945f347-cbdf-4a00-9e1b-242965ee9d69","created_at":"2026-11-23T13:50:45.351729005Z","updated_at":"2026-11-23T13:50:45.352123607Z","submi
+FE 200 {"id":"35629758-0a7e-47b9-b10b-103a148bb1ab","client_order_id":"60bf5c1b-c5af-4327-8dd8-3cb0c59114c4","created_at":"2026-11-23T13:50:45.699140715Z","updated_at":"2026-11-23T13:50:45.699521246Z","submi
+FTS 200 {"id":"f4f8707b-4242-42e9-bfc6-51565ca81082","client_order_id":"f63118ce-1181-4f98-bbce-d799f5d0bfa4","created_at":"2026-11-23T13:50:46.098881219Z","updated_at":"2026-11-23T13:50:46.099249552Z","submi
+NWN 200 {"id":"673bfbd2-ab4c-4262-8ed9-da9f02a2e5a8","client_order_id":"7a6f84e7-5401-49c4-bb0d-164731f0b88e","created_at":"2026-11-23T13:50:46.458563286Z","updated_at":"2026-11-23T13:50:46.458921693Z","submi
+SWX 200 {"id":"25b4e849-c247-499f-a4ba-4085d6dc4179","client_order_id":"d61deddb-9ef1-4986-8014-26cfa97af9f8","created_at":"2026-11-23T13:50:46.833451642Z","updated_at":"2026-11-23T13:50:46.833801887Z","submi
+WPC 200 {"id":"60229065-2a42-4fa1-b766-826d8e392b11","client_order_id":"a6030f5b-53e6-4505-90a7-594a5198b897","created_at":"2026-11-23T13:50:47.195841279Z","updated_at":"2026-11-23T13:50:47.196285115Z","submi
+XEL 200 {"id":"3d966e29-8a0d-4eb0-b919-4bd3b89b7b45","client_order_id":"4e9d7b89-2689-4f17-b779-614dcea5f3ab","created_at":"2026-11-23T13:50:47.555860712Z","updated_at":"2026-11-23T13:50:47.556240571Z","submi
+{
+ "day": "2026-11-23",
+ "from_entry": "entry_2026-11-20.json",
+ "equity": 6451.55,
+ "orders": [
+  {
+   "symbol": "FE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CWT",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AMH",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AEP",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SWX",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FTS",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AEE",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "NWN",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "WPC",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "XEL",
+   "qty": 2,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {},
+ "submitted": true,
+ "at": "2026-11-23 09:37:48.001046-05:00"
+}
+FE 200 {"id":"51135ae7-c8e0-4a17-9408-625c8fcb1daa","client_order_id":"94c19946-109f-491b-9077-ab3706ace278","created_at":"2026-11-23T14:37:48.208347518Z","updated_at":"2026-11-23T14:37:48.209170923Z","submi
+CWT 200 {"id":"4b6c516a-e257-4180-80d2-156770e70f95","client_order_id":"5f3a1ba9-d655-4d06-a298-e5d895074ded","created_at":"2026-11-23T14:37:48.571952338Z","updated_at":"2026-11-23T14:37:48.577568953Z","submi
+AMH 200 {"id":"472d92b6-6a0b-4f90-827f-91c3086e2cb6","client_order_id":"88181cb3-d30e-4057-a319-aa22491f6175","created_at":"2026-11-23T14:37:48.936445571Z","updated_at":"2026-11-23T14:37:48.937657879Z","submi
+AEP 200 {"id":"f4fecf5c-61b5-4b45-b0f3-910e02f1a288","client_order_id":"3191dac3-b6d0-4451-a8cb-88bb938e9499","created_at":"2026-11-23T14:37:49.289611071Z","updated_at":"2026-11-23T14:37:49.29541031Z","submit
+SWX 200 {"id":"ab7faa8c-0324-4a96-984a-89bc7c628b32","client_order_id":"c8c5b88e-772c-434d-bcc1-3f546fa516c9","created_at":"2026-11-23T14:37:49.652859867Z","updated_at":"2026-11-23T14:37:49.654082451Z","submi
+FTS 200 {"id":"663e39fc-0397-42c0-9b9d-674b0243220a","client_order_id":"95cb564c-2882-409c-b25c-8094ee19ac81","created_at":"2026-11-23T14:37:50.041258417Z","updated_at":"2026-11-23T14:37:50.042452308Z","submi
+AEE 200 {"id":"4941a236-2e6b-49d5-adb2-a22a7c455c45","client_order_id":"80f6bee4-a2f2-4717-b88c-ec548cecf73c","created_at":"2026-11-23T14:37:50.447689417Z","updated_at":"2026-11-23T14:37:50.449003428Z","submi
+NWN 200 {"id":"248f3127-eedd-4bf1-9c12-9971584acf0b","client_order_id":"8aa2793b-c4c9-4565-8750-6476f84dfa71","created_at":"2026-11-23T14:37:50.798028588Z","updated_at":"2026-11-23T14:37:50.801356961Z","submi
+WPC 200 {"id":"7ee24c3e-0c3d-453b-9479-22fc3688be03","client_order_id":"dbaee1eb-6f0c-492e-866d-acc94bca8ed0","created_at":"2026-11-23T14:37:51.155514369Z","updated_at":"2026-11-23T14:37:51.169051965Z","submi
+XEL 200 {"id":"9240bc26-373f-4af0-9b7a-295cb9303d04","client_order_id":"084ea605-d327-47c7-82e3-50c4b0ec2bb2","created_at":"2026-11-23T14:37:51.53655301Z","updated_at":"2026-11-23T14:37:51.537849685Z","submit
