@@ -1,0 +1,45 @@
+{
+ "day": "2026-11-24",
+ "from_entry": "entry_2026-11-23.json",
+ "equity": 6326.21,
+ "orders": [
+  {
+   "symbol": "EROC",
+   "qty": 27,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "GRPN",
+   "qty": 16,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AGL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRO",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "VCX": "not easy to borrow",
+  "CRWD": "no price or qty 0",
+  "BSP": "not easy to borrow",
+  "SSMR": "not easy to borrow",
+  "PS": "not easy to borrow",
+  "VLO": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-24 09:35:21.263378-05:00"
+}

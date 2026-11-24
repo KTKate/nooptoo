@@ -1,0 +1,138 @@
+== paper job exit 2026-11-24 08:50:26 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-24",
+ "orders": [
+  {
+   "symbol": "AGL",
+   "qty": 8,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "BSP",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "CRWD",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "EROC",
+   "qty": 102,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRO",
+   "qty": 13,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "GRPN",
+   "qty": 67,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PS",
+   "qty": 19,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "SSMR",
+   "qty": 64,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "VCX",
+   "qty": 45,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "VLO",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AGL 200 {"id":"2fc47180-a16f-4894-b156-7e713a751808","client_order_id":"b46f8c52-ca3b-4bc0-98ac-394a00922003","created_at":"2026-11-24T13:50:32.942815667Z","updated_at":"2026-11-24T13:50:32.943131361Z","submi
+BSP 200 {"id":"4911654a-1b31-4d4d-b824-abf5a5591fc8","client_order_id":"c12e30fa-3506-4b74-be52-c05d34a434d5","created_at":"2026-11-24T13:50:33.337313659Z","updated_at":"2026-11-24T13:50:33.337736964Z","submi
+CRWD 200 {"id":"7d350f1b-1382-4775-accf-2afcdba1705f","client_order_id":"90d86c46-ed65-4594-84fc-c3ed7a390e01","created_at":"2026-11-24T13:50:33.694278972Z","updated_at":"2026-11-24T13:50:33.694730499Z","submi
+EROC 200 {"id":"674fb5b8-37cf-4aa3-bec2-f761bb1ab7d8","client_order_id":"94fe91f5-cfc6-4e7d-a4ce-33b8dcea3289","created_at":"2026-11-24T13:50:34.055822853Z","updated_at":"2026-11-24T13:50:34.056245447Z","submi
+FRO 200 {"id":"44d0c859-3cf7-474e-8fe8-bcc50b3bf980","client_order_id":"954bb33e-275e-4e88-b871-be125fb13c72","created_at":"2026-11-24T13:50:34.445745031Z","updated_at":"2026-11-24T13:50:34.446326874Z","submi
+GRPN 200 {"id":"9d147d3c-8430-4a5f-98b6-c56c1be2e223","client_order_id":"b1d2ab26-4b21-4e95-bce0-33e2c2b197fb","created_at":"2026-11-24T13:50:34.835641531Z","updated_at":"2026-11-24T13:50:34.835965497Z","submi
+PS 200 {"id":"3a4a59c0-cbac-48a7-acda-1d5dcba31758","client_order_id":"5f272f62-6f7d-4029-adfa-fab0289ca278","created_at":"2026-11-24T13:50:35.204494996Z","updated_at":"2026-11-24T13:50:35.204922418Z","submi
+SSMR 200 {"id":"1e327dd7-9e11-47b4-a97e-860b78a5d0f7","client_order_id":"7efcb744-aa5e-4e56-9bba-b67213ce2660","created_at":"2026-11-24T13:50:35.592971086Z","updated_at":"2026-11-24T13:50:35.593316935Z","submi
+VCX 200 {"id":"d454d397-5069-43de-b03d-f4e2b83c912f","client_order_id":"d1a7044c-9153-4fac-97c2-818986ab96c0","created_at":"2026-11-24T13:50:35.93703106Z","updated_at":"2026-11-24T13:50:35.937387875Z","submit
+VLO 200 {"id":"b1fb049f-6dd6-421d-b79a-1b7438be83a9","client_order_id":"11d9ac02-ad7a-41a9-b2ec-7cae94f2c6c7","created_at":"2026-11-24T13:50:36.293210314Z","updated_at":"2026-11-24T13:50:36.293549002Z","submi
+{
+ "day": "2026-11-24",
+ "from_entry": "entry_2026-11-23.json",
+ "equity": 6326.21,
+ "orders": [
+  {
+   "symbol": "EROC",
+   "qty": 27,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "GRPN",
+   "qty": 16,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AGL",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FRO",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "VCX": "not easy to borrow",
+  "CRWD": "no price or qty 0",
+  "BSP": "not easy to borrow",
+  "SSMR": "not easy to borrow",
+  "PS": "not easy to borrow",
+  "VLO": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-24 09:35:21.263378-05:00"
+}
+EROC 200 {"id":"28a6d3e5-f7ea-4e89-bff7-76260ee141e0","client_order_id":"73b4c585-9146-40ff-aa39-2cbba2cf2ecd","created_at":"2026-11-24T14:35:21.672487813Z","updated_at":"2026-11-24T14:35:21.673510197Z","submi
+GRPN 200 {"id":"d644be4e-5f92-4118-9409-324277f5fefa","client_order_id":"dc1ba124-44d3-46f3-844b-9e53a3c3e1b4","created_at":"2026-11-24T14:35:22.094142191Z","updated_at":"2026-11-24T14:35:22.095334319Z","submi
+AGL 200 {"id":"2d0dd6b5-f7a2-440b-8d28-57af9fa61116","client_order_id":"a7aaa1ce-2ac1-477b-9179-bff436bb1791","created_at":"2026-11-24T14:35:22.433255055Z","updated_at":"2026-11-24T14:35:22.439155355Z","submi
+FRO 200 {"id":"e6edc6d7-82e5-4dc8-9efb-c3fc274f4045","client_order_id":"3c317ac3-02e0-4c57-a159-5ba149bad7fa","created_at":"2026-11-24T14:35:22.827054048Z","updated_at":"2026-11-24T14:35:22.828397614Z","submi
