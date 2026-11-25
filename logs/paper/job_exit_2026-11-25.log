@@ -1,0 +1,173 @@
+== paper job exit 2026-11-25 08:50:03 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '16:00')
+{
+ "day": "2026-11-25",
+ "orders": [
+  {
+   "symbol": "AEHR",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AXTI",
+   "qty": 19,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FCEL",
+   "qty": 90,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 15,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "ICHR",
+   "qty": 23,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "LITE",
+   "qty": 1,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MEI",
+   "qty": 63,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PURR",
+   "qty": 82,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "RDW",
+   "qty": 106,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "UCTT",
+   "qty": 17,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "submitted": true
+}
+AEHR 200 {"id":"4645bfdd-9cac-46cf-af75-39bba6d2f322","client_order_id":"a41d3143-65f3-4430-ba6e-10681d2291e8","created_at":"2026-11-25T13:50:10.764209676Z","updated_at":"2026-11-25T13:50:10.764582134Z","submi
+AXTI 200 {"id":"4abbe9f0-5ce1-4ee3-83c9-6cc3d6c5ccef","client_order_id":"98490fff-46c6-4129-bcbd-702f8bbac481","created_at":"2026-11-25T13:50:11.119554147Z","updated_at":"2026-11-25T13:50:11.119890932Z","submi
+FCEL 200 {"id":"e9fea18b-8c92-4ed1-adbe-5829799775e0","client_order_id":"52e68119-4e4b-4ccb-89b5-42f5c490ba4b","created_at":"2026-11-25T13:50:11.481005389Z","updated_at":"2026-11-25T13:50:11.48139962Z","submit
+HPE 200 {"id":"214005d5-02b6-4b40-be4e-034b1ce48a73","client_order_id":"161e1c95-3f3e-4e4b-bc33-0b00149b1ba7","created_at":"2026-11-25T13:50:11.82644969Z","updated_at":"2026-11-25T13:50:11.826843401Z","submit
+ICHR 200 {"id":"2b565147-aa0d-4621-916d-2837f64f4d4e","client_order_id":"766876cd-891b-4213-bbdb-4e8a8207f9f4","created_at":"2026-11-25T13:50:12.216495434Z","updated_at":"2026-11-25T13:50:12.217018328Z","submi
+LITE 200 {"id":"d4ae6167-aaa1-46a9-81bf-510d52a3f276","client_order_id":"15b80903-61be-472c-b223-6b933d786567","created_at":"2026-11-25T13:50:12.649360678Z","updated_at":"2026-11-25T13:50:12.649705114Z","submi
+MEI 200 {"id":"cb28e84c-df05-4df0-aedc-0e73db913b02","client_order_id":"7065a51b-65f1-42d7-9cf8-4d100d5f93e9","created_at":"2026-11-25T13:50:13.013767152Z","updated_at":"2026-11-25T13:50:13.014154273Z","submi
+PURR 200 {"id":"733bdfe1-6899-4745-8338-09d107947b76","client_order_id":"20f0544c-debc-4a6f-a8a8-8ecaa2e412ce","created_at":"2026-11-25T13:50:13.379565355Z","updated_at":"2026-11-25T13:50:13.379936341Z","submi
+RDW 200 {"id":"64a1832c-fe1a-4f6f-aae3-c0f81be24efd","client_order_id":"09317a1c-72fe-44a4-97a5-14adc9f26e1f","created_at":"2026-11-25T13:50:13.735055314Z","updated_at":"2026-11-25T13:50:13.735451098Z","submi
+UCTT 200 {"id":"2ab38b17-5a77-4655-9f37-752c0698f7bd","client_order_id":"429eee8a-6fff-4c3e-8138-51e3148b79bc","created_at":"2026-11-25T13:50:14.102255099Z","updated_at":"2026-11-25T13:50:14.102670232Z","submi
+{
+ "day": "2026-11-25",
+ "from_entry": "entry_2026-11-24.json",
+ "equity": 5837.61,
+ "orders": [
+  {
+   "symbol": "ICHR",
+   "qty": 6,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AXTI",
+   "qty": 5,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "FCEL",
+   "qty": 22,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "PURR",
+   "qty": 20,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "AEHR",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "UCTT",
+   "qty": 4,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "RDW",
+   "qty": 26,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "MEI",
+   "qty": 14,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 3,
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day"
+  }
+ ],
+ "skipped": {
+  "LITE": "no price or qty 0"
+ },
+ "submitted": true,
+ "at": "2026-11-25 09:36:20.617927-05:00"
+}
+ICHR 200 {"id":"774e1f42-e624-4e0a-8fe5-96b03c7c42d7","client_order_id":"7e635b02-a4eb-4fac-b944-a64d657e1bd3","created_at":"2026-11-25T14:36:20.998591249Z","updated_at":"2026-11-25T14:36:21.002328935Z","submi
+AXTI 200 {"id":"22204d1d-c999-4534-9bd8-700338463f0e","client_order_id":"cf8cfb04-7ba6-4f6a-86ec-299b6871ce02","created_at":"2026-11-25T14:36:21.348255217Z","updated_at":"2026-11-25T14:36:21.349618783Z","submi
+FCEL 200 {"id":"1491ff58-4549-4c36-95ee-501bb1beabab","client_order_id":"b35dfa21-a974-4cf8-9e4e-6ccfe11455c2","created_at":"2026-11-25T14:36:21.690887709Z","updated_at":"2026-11-25T14:36:21.692204524Z","submi
+PURR 200 {"id":"73ea8060-7f9d-4400-a104-3a4501ebe186","client_order_id":"b06849fc-0678-4959-b0c4-78324d00dffa","created_at":"2026-11-25T14:36:22.047308643Z","updated_at":"2026-11-25T14:36:22.054085138Z","submi
+AEHR 200 {"id":"2bbec053-be8c-4de2-8a1f-f0d50704c880","client_order_id":"f5598b55-6294-460b-9d37-0574081a739b","created_at":"2026-11-25T14:36:22.401532522Z","updated_at":"2026-11-25T14:36:22.40368444Z","submit
+UCTT 200 {"id":"2dde3c9a-0124-4718-ba49-c86ac1624c18","client_order_id":"71a6ec79-9e4d-44a8-b7d2-357843f1cbd3","created_at":"2026-11-25T14:36:22.840492616Z","updated_at":"2026-11-25T14:36:22.856631925Z","submi
+RDW 200 {"id":"7699b412-35db-4df4-8a69-803bd159f84e","client_order_id":"8ec2fe55-b8d6-44a7-8d73-dfd39d2f17c8","created_at":"2026-11-25T14:36:23.247040601Z","updated_at":"2026-11-25T14:36:23.2545335Z","submitt
+MEI 200 {"id":"ab0a52d4-4c8d-4c40-ba1f-79f4168d04cd","client_order_id":"38736d28-a5be-4ea9-b0f1-a50c575d193e","created_at":"2026-11-25T14:36:23.63125801Z","updated_at":"2026-11-25T14:36:23.632511691Z","submit
+HPE 200 {"id":"1d929d9f-7bbc-4c93-b9c5-a48248672e0a","client_order_id":"1b1dfd5d-c84e-4bb2-86e4-dbb1ebf5ca5a","created_at":"2026-11-25T14:36:24.047173086Z","updated_at":"2026-11-25T14:36:24.048479666Z","submi
