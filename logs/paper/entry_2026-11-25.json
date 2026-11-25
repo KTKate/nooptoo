@@ -1,0 +1,104 @@
+{
+ "day": "2026-11-25",
+ "strategy": "blend",
+ "model": "blend_ensemble5_night_2026Q4.txt_jump2026Q4",
+ "ml_top": {
+  "AMD": 0.99666,
+  "NTAP": 0.99465,
+  "AMBQ": 0.99345,
+  "UMAC": 0.99278,
+  "ICHR": 0.99145,
+  "RDW": 0.98704,
+  "MTRN": 0.9869,
+  "HPE": 0.98637,
+  "TSAT": 0.9857,
+  "XE": 0.98476
+ },
+ "uncapped_top": {
+  "AMD": 0.99666,
+  "NTAP": 0.99465,
+  "AMBQ": 0.99345,
+  "UMAC": 0.99278,
+  "ICHR": 0.99145,
+  "STM": 0.99145,
+  "MU": 0.99105,
+  "RDW": 0.98704,
+  "MTRN": 0.9869,
+  "HPE": 0.98637
+ },
+ "equity": 5731.11,
+ "orders": [
+  {
+   "symbol": "AMD",
+   "qty": 1,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "NTAP",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "AMBQ",
+   "qty": 15,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "UMAC",
+   "qty": 63,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "ICHR",
+   "qty": 22,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "RDW",
+   "qty": 97,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "MTRN",
+   "qty": 3,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "HPE",
+   "qty": 14,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "TSAT",
+   "qty": 13,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  },
+  {
+   "symbol": "XE",
+   "qty": 69,
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "cls"
+  }
+ ],
+ "submitted": true,
+ "notional": 5355.13
+}
