@@ -1,0 +1,4 @@
+== paper job entry 2026-11-27 15:06:46 ET
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+session: ('09:30', '13:00')
+early close, no entry today
